@@ -828,6 +828,8 @@ h1 em {
 .btn svg { width: 16px; height: 16px }
 
 .btn:hover { transform: translateY(-2px) }
+.btn:active { transform: scale(0.97); opacity: 0.88 }
+.btn:focus-visible { outline: 2px solid var(--cyan); outline-offset: 3px }
 
 .btn-primary {
   color: #04111d;
@@ -988,6 +990,8 @@ h1 em {
 }
 
 .dock-item:hover { transform: translateY(-2px) }
+.dock-item:active { transform: scale(0.94); background: rgba(255,255,255,0.08) }
+.dock-item:focus-visible { outline: 2px solid var(--cyan); outline-offset: 2px }
 
 .dock-glyph {
   font-size: 0.95rem;
@@ -1111,19 +1115,32 @@ h1 em {
 
 @media (max-width: 900px) {
   body { min-height: 360vh }
-  .topbar { inset: 12px 12px auto 12px; padding: 10px 12px }
+  .topbar {
+    inset: max(12px, env(safe-area-inset-top)) max(12px, env(safe-area-inset-right)) auto max(12px, env(safe-area-inset-left));
+    padding: 10px max(12px, env(safe-area-inset-right));
+  }
   .topbar-meta { display: none }
   .hero {
-    top: 76px; left: 12px; right: 12px; width: auto;
+    top: calc(max(12px, env(safe-area-inset-top)) + 64px);
+    left: max(12px, env(safe-area-inset-left));
+    right: max(12px, env(safe-area-inset-right));
+    width: auto;
     border-radius: var(--radius-md); padding: 20px;
   }
   h1 { font-size: clamp(2.2rem, 9vw, 3.4rem) }
   .hud {
-    right: 12px; bottom: 88px; width: calc(100vw - 24px);
+    right: max(12px, env(safe-area-inset-right));
+    bottom: calc(88px + env(safe-area-inset-bottom));
+    width: calc(100vw - 24px);
     max-width: 360px; padding: 16px;
   }
   .hud-stats { grid-template-columns: repeat(3, 1fr); gap: 6px }
-  .dock { bottom: 14px; max-width: calc(100vw - 18px); overflow-x: auto; padding: 6px }
+  .dock {
+    bottom: max(14px, env(safe-area-inset-bottom));
+    max-width: calc(100vw - max(18px, env(safe-area-inset-left)) - max(18px, env(safe-area-inset-right)));
+    overflow-x: auto;
+    padding: 6px;
+  }
   .dock-item { padding: 9px 12px; font-size: 0.84rem }
   .scroll-story { margin: 0 16px; padding-top: 100vh; padding-bottom: 60vh }
   .scroll-story article { min-height: 70vh }
@@ -1140,6 +1157,50 @@ h1 em {
   .meter span,
   .loader-mark,
   .dot { animation: none }
+}
+
+/* ─── Very small phones (iPhone SE, Galaxy A series) ─────────── */
+@media (max-width: 480px) {
+  .topbar-brand { font-size: 0.78rem }
+  .swatch-btn { width: 15px; height: 15px }
+  .hero { padding: 16px }
+  h1 { font-size: clamp(1.9rem, 10vw, 2.8rem) }
+  .intro { font-size: 0.88rem; margin-top: 14px }
+  .intro-chips { font-size: 0.72rem }
+  .hero-actions { gap: 8px; margin-top: 18px }
+  .btn { padding: 11px 16px; font-size: 0.86rem }
+  .hud { padding: 12px }
+  .dock-item { padding: 8px 9px }
+  .dock-glyph { font-size: 1.1rem }
+  .dock { gap: 2px; scrollbar-width: none; -webkit-overflow-scrolling: touch }
+  .dock::-webkit-scrollbar { display: none }
+  .screen-focus-panel { padding: 20px 16px 20px }
+  .sfp-skill-grid { grid-template-columns: 1fr }
+}
+
+/* ─── Landscape on short-viewport phones ─────────────────────── */
+@media (max-height: 430px) and (orientation: landscape) {
+  .hero {
+    top: max(8px, env(safe-area-inset-top));
+    left: max(8px, env(safe-area-inset-left));
+    right: max(8px, env(safe-area-inset-right));
+    width: auto;
+    padding: 10px 16px;
+  }
+  .hero .kicker,
+  .hero h1,
+  .hero .intro,
+  .hero .intro-chips { display: none }
+  .hero-actions { margin-top: 0 }
+  .hud { display: none }
+  .dock {
+    bottom: max(8px, env(safe-area-inset-bottom));
+    max-width: calc(100vw - max(16px, env(safe-area-inset-left)) - max(16px, env(safe-area-inset-right)));
+  }
+  .screen-focus-panel {
+    max-height: calc(100dvh - max(8px, env(safe-area-inset-bottom)) - 80px) !important;
+  }
+  .back-btn { top: calc(max(8px, env(safe-area-inset-top)) + 4px) }
 }
 
 /* Ensure the HTML hidden attribute beats any display: rule above. */
@@ -1183,6 +1244,8 @@ h1 em {
   color: #000;
   box-shadow: 0 0 30px color-mix(in srgb, var(--accent) 55%, transparent);
 }
+.back-btn:active { transform: translateX(-50%) scale(0.96); opacity: 0.85 }
+.back-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px }
 
 /* Panel base */
 .screen-focus-panel {
@@ -1617,6 +1680,10 @@ body.hero-dismissed .hero {
   border-color: color-mix(in srgb, var(--accent) 55%, transparent);
   box-shadow: 0 0 18px color-mix(in srgb, var(--accent) 22%, transparent);
 }
+.sfp-contact-card:active {
+  border-color: color-mix(in srgb, var(--accent) 55%, transparent);
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+}
 .sfp-contact-icon { font-size: 1.3rem }
 .sfp-contact-label {
   font-family: var(--font-mono);
@@ -1646,7 +1713,11 @@ body.hero-dismissed .hero {
   .sfp-about-grid { grid-template-columns: 1fr }
   .sfp-skill-grid { grid-template-columns: 1fr 1fr }
   .sfp-contact-grid { grid-template-columns: 1fr 1fr }
-  .back-btn { top: 68px }
+  .back-btn { top: calc(max(12px, env(safe-area-inset-top)) + 56px) }
+  .screen-focus-panel {
+    max-height: min(82vh, calc(100dvh - max(14px, env(safe-area-inset-bottom)) - 120px));
+    padding-bottom: max(28px, env(safe-area-inset-bottom));
+  }
 }
 
 /* ─── MISSING SFP CLASS ALIASES (match JS content builder names) ──────────── */
