@@ -145,14 +145,22 @@ function applyTheme(name) {
 }
 
 /* ─── Renderer / scene / camera ──────────────────────────────────── */
-const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'high-performance' })
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+const IS_MOBILE = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent)
+  || (navigator.maxTouchPoints > 1 && window.innerWidth < 1024)
+
+const renderer = new THREE.WebGLRenderer({
+  canvas,
+  antialias: !IS_MOBILE,
+  alpha: true,
+  powerPreference: IS_MOBILE ? 'default' : 'high-performance'
+})
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, IS_MOBILE ? 1.5 : 2))
 renderer.setSize(window.innerWidth, window.innerHeight)
 renderer.outputColorSpace = THREE.SRGBColorSpace
 renderer.toneMapping = THREE.ACESFilmicToneMapping
 renderer.toneMappingExposure = 1.18
-renderer.shadowMap.enabled = true
-renderer.shadowMap.type = THREE.PCFSoftShadowMap
+renderer.shadowMap.enabled = !IS_MOBILE
+if (!IS_MOBILE) renderer.shadowMap.type = THREE.PCFSoftShadowMap
 
 const scene = new THREE.Scene()
 scene.fog = new THREE.FogExp2(0x02060f, 0.022)
@@ -1432,6 +1440,8 @@ window.addEventListener('resize', () => {
   renderer.setSize(window.innerWidth, window.innerHeight)
   camera.aspect = window.innerWidth / window.innerHeight
   camera.updateProjectionMatrix()
+  const nowMobile = window.innerWidth < 1024 && navigator.maxTouchPoints > 1
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, nowMobile ? 1.5 : 2))
 })
 
 /* ─── Tweaks ──────────────────────────────────────────────────────── */
