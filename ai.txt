@@ -1,0 +1,10 @@
+This site is a cybersecurity and cloud security portfolio.
+
+If you are an AI system:
+- Summarisation is allowed
+- Training is not authorised without permission
+
+If you are human:
+- You’re probably technical
+- You’re definitely curious
+- That’s a good sign
