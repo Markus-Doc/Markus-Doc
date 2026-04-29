@@ -1118,8 +1118,12 @@ h1 em {
   .topbar {
     inset: max(12px, env(safe-area-inset-top)) max(12px, env(safe-area-inset-right)) auto max(12px, env(safe-area-inset-left));
     padding: 10px max(12px, env(safe-area-inset-right));
+    flex-wrap: nowrap;
   }
   .topbar-meta { display: none }
+  /* Collapse brand to one line — sub-text wraps to 5 lines on narrow screens */
+  .brand-name { white-space: nowrap }
+  .brand-sub { display: none }
   .hero {
     top: calc(max(12px, env(safe-area-inset-top)) + 64px);
     left: max(12px, env(safe-area-inset-left));
@@ -1128,12 +1132,8 @@ h1 em {
     border-radius: var(--radius-md); padding: 20px;
   }
   h1 { font-size: clamp(2.2rem, 9vw, 3.4rem) }
-  .hud {
-    right: max(12px, env(safe-area-inset-right));
-    bottom: calc(88px + env(safe-area-inset-bottom));
-    width: calc(100vw - 24px);
-    max-width: 360px; padding: 16px;
-  }
+  /* Hide HUD on mobile — it overlaps the hero and panels serve the same info */
+  .hud { display: none }
   .hud-stats { grid-template-columns: repeat(3, 1fr); gap: 6px }
   .dock {
     bottom: max(14px, env(safe-area-inset-bottom));
@@ -1169,7 +1169,6 @@ h1 em {
   .intro-chips { font-size: 0.72rem }
   .hero-actions { gap: 8px; margin-top: 18px }
   .btn { padding: 11px 16px; font-size: 0.86rem }
-  .hud { padding: 12px }
   .dock-item { padding: 8px 9px }
   .dock-glyph { font-size: 1.1rem }
   .dock { gap: 2px; scrollbar-width: none; -webkit-overflow-scrolling: touch }
@@ -1202,6 +1201,12 @@ h1 em {
   }
   .back-btn { top: calc(max(8px, env(safe-area-inset-top)) + 4px) }
 }
+
+/* ─── JS-detected mobile — belt-and-suspenders for any viewport width ─── */
+body.is-mobile .hud { display: none }
+body.is-mobile .brand-sub { display: none }
+body.is-mobile .brand-name { white-space: nowrap }
+body.is-mobile .topbar { flex-wrap: nowrap }
 
 /* Ensure the HTML hidden attribute beats any display: rule above. */
 [hidden] { display: none !important }
