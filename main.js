@@ -147,6 +147,7 @@ function applyTheme(name) {
 /* ─── Renderer / scene / camera ──────────────────────────────────── */
 const IS_MOBILE = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent)
   || (navigator.maxTouchPoints > 1 && window.innerWidth < 1024)
+if (IS_MOBILE) document.body.classList.add('is-mobile')
 
 const renderer = new THREE.WebGLRenderer({
   canvas,
