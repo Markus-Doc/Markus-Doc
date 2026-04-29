@@ -1,78 +1,352 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-AU" data-theme="azure-glass">
 <head>
-  <meta charset="UTF-8">
-  <title>Markus Walker | Cybersecurity Portfolio</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      background: #0f172a;
-      color: #e2e8f0;
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#02060f">
+  <title>Markus Walker - Security, AI and Cloud Engineering Portfolio</title>
+  <meta name="description" content="Markus Walker is a Brisbane-based Security, AI and Cloud Engineer with 7+ years of infrastructure and field engineering experience across Australia's mining and energy sectors, supported by AWS, OCI, cyber security, cloud security, incident response, offensive security lab work, and AI security portfolio evidence.">
+  <meta name="color-scheme" content="dark light">
+  <meta property="og:title" content="Markus Walker - Security, Cloud and AI Security Portfolio">
+  <meta property="og:description" content="Security, cloud security and AI security portfolio for recruiters, hiring managers and security teams.">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="stylesheet" href="./styles.css?v=9">
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.181.2/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.181.2/examples/jsm/"
+      }
     }
-    header {
-      padding: 60px 20px;
-      text-align: center;
-      background: #020617;
-    }
-    h1 { margin: 0; font-size: 2.5em; }
-    h2 { color: #38bdf8; }
-    .container {
-      max-width: 900px;
-      margin: auto;
-      padding: 20px;
-    }
-    .card {
-      background: #020617;
-      padding: 20px;
-      margin-bottom: 20px;
-      border-radius: 10px;
-    }
-    a {
-      color: #38bdf8;
-      text-decoration: none;
-    }
-    a:hover {
-      text-decoration: underline;
-    }
-  </style>
+  </script>
 </head>
-
 <body>
-
-<header>
-  <h1>Markus Walker</h1>
-  <p>Cloud Security | Cybersecurity | AI Security</p>
-</header>
-
-<div class="container">
-
-  <h2>Projects</h2>
-
-  <div class="card">
-    <h3>Enterprise Incident Response Program</h3>
-    <p>Full incident response program aligned to ACSC and NIST principles.</p>
-    <a href="assets/pdfs/IRP_Portfolio.pdf" target="_blank">View Project</a>
+  <div id="loader" class="loader" role="status" aria-live="polite">
+    <div class="loader-shell">
+      <svg class="loader-mark" viewBox="0 0 64 64" aria-hidden="true">
+        <defs>
+          <linearGradient id="lg" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#6ee7ff"></stop>
+            <stop offset="1" stop-color="#a78bfa"></stop>
+          </linearGradient>
+        </defs>
+        <path d="M32 4 L56 14 V32 C56 46 44 56 32 60 C20 56 8 46 8 32 V14 Z" fill="none" stroke="url(#lg)" stroke-width="2.4" stroke-linejoin="round"></path>
+        <path d="M22 32 L29 39 L43 24" fill="none" stroke="#edfaff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+      <p class="loader-title">Initialising Security Operations Interface</p>
+      <div class="loader-bar"><span id="loaderBar"></span></div>
+      <p class="loader-step" id="loaderStep">Establishing telemetry</p>
+    </div>
   </div>
 
-  <div class="card">
-    <h3>AWS Cloud Security Architecture</h3>
-    <p>Secure multi-AZ architecture with IAM, WAF, GuardDuty, and KMS.</p>
-    <a href="assets/pdfs/Cloud_Security_Plan.pdf" target="_blank">View Project</a>
+  <noscript>
+    <div class="noscript">
+      JavaScript is required to render the interactive portfolio interface.
+      You can still contact Markus Walker via email at <a href="mailto:markus@markuswalker.com">markus@markuswalker.com</a>
+      or connect on LinkedIn: <a href="https://www.linkedin.com/in/markus-walker-au/">https://www.linkedin.com/in/markus-walker-au/</a>
+    </div>
+  </noscript>
+
+  <main id="app" hidden>
+    <canvas id="scene" aria-label="Interactive 3D miniature cyber security command centre" data-engine="three.js r181"></canvas>
+
+    <div class="grain" aria-hidden="true"></div>
+    <div class="scanlines" aria-hidden="true"></div>
+    <div class="vignette" aria-hidden="true"></div>
+
+    <header class="topbar" aria-label="Command bar">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <div class="brand-text">
+          <p class="brand-name">MARKUS WALKER</p>
+          <p class="brand-sub">Security · AI · Cloud · Brisbane AU</p>
+        </div>
+      </div>
+      <div class="theme-swatches" aria-label="Colour theme" role="group">
+        <span class="theme-swatches-label" aria-hidden="true">THEME</span>
+        <button class="swatch-btn" data-theme="dark" type="button" title="Midnight SOC" style="--sc:linear-gradient(135deg,#02060f,#1a3a5c)"></button>
+        <button class="swatch-btn active" data-theme="azure-glass" type="button" title="Azure Glassmorphism" style="--sc:linear-gradient(135deg,#6ab4e8,#c8e3f7)"></button>
+        <button class="swatch-btn" data-theme="digital-sky" type="button" title="Digital Sky" style="--sc:linear-gradient(135deg,#a0c8e0,#d8ecf8)"></button>
+        <button class="swatch-btn" data-theme="cyber-ice" type="button" title="Cyber Ice" style="--sc:linear-gradient(135deg,#90d8f8,#f0f8ff)"></button>
+        <button class="swatch-btn" data-theme="neon-cyberpunk" type="button" title="Neon Cyberpunk" style="--sc:linear-gradient(135deg,#00ffff,#ff00ff)"></button>
+        <button class="swatch-btn" data-theme="quantum-blue" type="button" title="Quantum Blue" style="--sc:linear-gradient(135deg,#1a4090,#3a8fff)"></button>
+        <button class="swatch-btn" data-theme="cloud-minimal" type="button" title="Cloud Minimal" style="--sc:linear-gradient(135deg,#a8c8e0,#f0f8ff)"></button>
+        <button class="swatch-btn" data-theme="hacker-terminal" type="button" title="Hacker Terminal" style="--sc:linear-gradient(135deg,#001800,#00ff41)"></button>
+        <button class="swatch-btn" data-theme="aurora-tech" type="button" title="Aurora Tech" style="--sc:linear-gradient(135deg,#00d4ff,#9d4eff)"></button>
+        <button class="swatch-btn" data-theme="arctic-network" type="button" title="Arctic Network" style="--sc:linear-gradient(135deg,#60b8e0,#d4eef8)"></button>
+      </div>
+      <div class="topbar-meta" aria-hidden="true">
+        <span class="dot ok"></span><span class="topbar-label">Systems operational</span>
+        <span class="sep">/</span>
+        <span class="topbar-label" id="clock">--:--:--</span>
+        <span class="sep">/</span>
+        <span class="topbar-label">QLD AU</span>
+      </div>
+    </header>
+
+    <section class="hero" aria-label="Introduction">
+      <p class="kicker">Security · AI · Cloud Engineering Portfolio</p>
+      <h1>Security, AI<br><em>and Cloud Engineering.</em></h1>
+      <p class="intro">
+        Brisbane-based Security, AI and Cloud Engineer with 7+ years of infrastructure and field engineering experience across Australia's mining and energy sectors. Explore evidence-backed work across incident response, AWS cloud security, security operations, offensive security labs, web application testing, and AI security.
+      </p>
+      <p class="intro-chips">AWS SAA &middot; 3&times; OCI Certified &middot; AISA Member MAISA &middot; Brisbane, Australia</p>
+      <div class="hero-actions">
+        <button class="btn btn-primary" type="button" data-focus="contact">
+          Get in touch
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+        </button>
+        <button class="btn btn-secondary" type="button" data-focus="resume">View resume</button>
+      </div>
+    </section>
+
+    <aside class="hud" aria-live="polite">
+      <header class="hud-head">
+        <p class="hud-title" id="hudTitle">Command Layer</p>
+        <span class="hud-badge" id="hudBadge">PROFILE</span>
+      </header>
+      <p class="hud-body" id="hudBody">Markus Walker, Brisbane-based Security, AI and Cloud Engineer. Select a monitor or dock zone to inspect evidence across cloud security, incident response, security operations, offensive lab work, web security, and AI security.</p>
+      <ul class="hud-stats" id="hudStats">
+        <li><span>Sections</span><strong>7</strong></li>
+        <li><span>Certified</span><strong>True</strong></li>
+        <li><span>Region</span><strong>QLD AU</strong></li>
+      </ul>
+      <div class="meter" aria-hidden="true"><span></span></div>
+    </aside>
+
+    <nav class="dock" aria-label="Portfolio sections">
+      <button class="dock-item active" data-target="about"    data-zone="core"     type="button" aria-current="true"><span class="dock-glyph" aria-hidden="true">⬢</span><span class="dock-label">About</span></button>
+      <button class="dock-item"        data-target="skills"   data-zone="core"     type="button"><span class="dock-glyph" aria-hidden="true">◆</span><span class="dock-label">Skills</span></button>
+      <button class="dock-item"        data-target="ir"       data-zone="ir"       type="button"><span class="dock-glyph" aria-hidden="true">◬</span><span class="dock-label">IR</span></button>
+      <button class="dock-item"        data-target="cloud"    data-zone="cloud"    type="button"><span class="dock-glyph" aria-hidden="true">☁</span><span class="dock-label">Cloud</span></button>
+      <button class="dock-item"        data-target="resume"   data-zone="ai"       type="button"><span class="dock-glyph" aria-hidden="true">⌬</span><span class="dock-label">Resume</span></button>
+      <button class="dock-item"        data-target="writeups" data-zone="writeups" type="button"><span class="dock-glyph" aria-hidden="true">▤</span><span class="dock-label">Writeups</span></button>
+      <button class="dock-item"        data-target="contact"  data-zone="core"     type="button"><span class="dock-glyph" aria-hidden="true">✉</span><span class="dock-label">Contact</span></button>
+    </nav>
+
+    <!-- Left-side companion panels -->
+    <div class="story-panels" aria-hidden="true">
+      <div class="story-panel is-active" data-zone="core">
+        <p class="sp-label">PROFILE · MARKUS WALKER</p>
+        <p class="sp-summary">Security, AI and Cloud Engineer with 7+ years of IT Field Engineering, Dedicated Service Engineering and IT Analyst experience across large-scale FIFO mining, energy and LNG environments in Queensland. Portfolio evidence spans cloud security, incident response, offensive security lab work, web application testing and AI security.</p>
+        <div class="sp-stat-row">
+          <div class="sp-stat"><span>AWS</span><strong>SAA</strong></div>
+          <div class="sp-stat"><span>OCI</span><strong>3×</strong></div>
+          <div class="sp-stat"><span>Region</span><strong>BNE QLD</strong></div>
+        </div>
+      </div>
+
+      <div class="story-panel" data-zone="ir">
+        <p class="sp-label">INCIDENT RESPONSE · NIST SP 800-61</p>
+        <ul class="sp-timeline">
+          <li><span class="sp-dot" style="background:#fb7185"></span><span class="sp-time">Prepare</span><span class="sp-event">Response planning, roles, communications, evidence handling and escalation paths</span></li>
+          <li><span class="sp-dot" style="background:#fcd34d"></span><span class="sp-time">Detect</span><span class="sp-event">SIEM monitoring, log ingestion, triage, severity classification and anomaly review</span></li>
+          <li><span class="sp-dot" style="background:#6ee7ff"></span><span class="sp-time">Contain</span><span class="sp-event">Isolation, account control, segmentation, validation, hardening and restoration planning</span></li>
+          <li><span class="sp-dot" style="background:#c4b5fd"></span><span class="sp-time">Learn</span><span class="sp-event">Lessons learned, reporting, playbook updates and continuous improvement</span></li>
+        </ul>
+        <div class="sp-stat-row">
+          <div class="sp-stat"><span>Artefact</span><strong>IRP</strong></div>
+          <div class="sp-stat"><span>Frameworks</span><strong>NIST · MITRE</strong></div>
+          <div class="sp-stat"><span>Status</span><strong class="sp-ok">PORTFOLIO</strong></div>
+        </div>
+      </div>
+
+      <div class="story-panel" data-zone="cloud">
+        <p class="sp-label">ROSSCO'S COFFEE · AWS SECURITY UPLIFT</p>
+        <div class="sp-regions">
+          <div class="sp-region"><span class="sp-region-dot ok"></span><strong>WAF + Shield</strong><span>Edge protection, HTTPS, OWASP rules</span><span class="sp-badge ok">Active</span></div>
+          <div class="sp-region"><span class="sp-region-dot ok"></span><strong>Multi-AZ ALB</strong><span>Auto Scaling, RDS Multi-AZ</span><span class="sp-badge ok">Resilient</span></div>
+          <div class="sp-region"><span class="sp-region-dot ok"></span><strong>IAM + KMS</strong><span>Identity Center, Secrets Manager</span><span class="sp-badge ok">Hardened</span></div>
+          <div class="sp-region"><span class="sp-region-dot ok"></span><strong>CloudTrail + GuardDuty</strong><span>Logging, monitoring, threat detection</span><span class="sp-badge ok">Observable</span></div>
+        </div>
+        <div class="sp-stat-row">
+          <div class="sp-stat"><span>Artefact</span><strong>AWS Plan</strong></div>
+          <div class="sp-stat"><span>Controls</span><strong>12+</strong></div>
+          <div class="sp-stat"><span>Strategy</span><strong class="sp-ok">BLUE / GREEN</strong></div>
+        </div>
+      </div>
+
+      <div class="story-panel" data-zone="ai">
+        <p class="sp-label">RESUME · QUICK LOOK</p>
+        <div class="sp-ai-grid">
+          <div class="sp-ai-cell"><span>Experience</span><strong>7+ years</strong></div>
+          <div class="sp-ai-cell"><span>Sector</span><strong>Mining · Energy · LNG</strong></div>
+          <div class="sp-ai-cell"><span>Mode</span><strong>FIFO · Remote</strong></div>
+          <div class="sp-ai-cell"><span>Scope</span><strong>Multi-site ops</strong></div>
+          <div class="sp-ai-cell"><span>AWS</span><strong>SAA</strong></div>
+          <div class="sp-ai-cell"><span>OCI</span><strong>3× Certified</strong></div>
+        </div>
+      </div>
+
+      <div class="story-panel" data-zone="writeups">
+        <p class="sp-label">PUBLISHED WRITEUPS</p>
+        <ul class="sp-writeups">
+          <li><span class="sp-tag">THM</span><span class="sp-wtitle">Red Team Capstone Crawl-Through · published</span></li>
+          <li><span class="sp-tag">AD</span><span class="sp-wtitle">Kerberoast, Golden Ticket, DCSync practice</span></li>
+          <li><span class="sp-tag">LAB</span><span class="sp-wtitle">Tunnelling, pivoting, credential handling and hashcat</span></li>
+          <li><span class="sp-tag">AI</span><span class="sp-wtitle">OWASP LLM Top 10, MITRE ATLAS and secure AI notes</span></li>
+        </ul>
+        <a class="sp-link" href="https://markus-doc.github.io/cybersecurity-writeups/articles/tryhackme/rtcc/1-Red_Team_Capstone_Crawl-Through" target="_blank" rel="noopener noreferrer">Open RTCC writeup ↗</a>
+      </div>
+    </div>
+
+    <!-- Screen content layer — all focused section content lives here -->
+    <div id="screenContentLayer" hidden aria-live="polite">
+      <button id="backBtn" class="back-btn" type="button" aria-label="Return to command centre overview">
+        ← Back to command centre
+      </button>
+      <div id="screenFocusPanel" class="screen-focus-panel" role="region" aria-label="Section content"></div>
+    </div>
+
+    <footer class="legal">
+      <p>Built with Three.js &middot; Markus Walker MAISA &middot; Security, AI and Cloud Portfolio &middot; <a href="mailto:markus@markuswalker.com">markus@markuswalker.com</a> &middot; <a href="https://www.linkedin.com/in/markus-walker-au/" target="_blank" rel="noopener noreferrer">LinkedIn</a></p>
+    </footer>
+  </main>
+
+  <div id="errorScreen" class="error-screen" hidden role="alert">
+    <div class="error-shell">
+      <p class="error-kicker">Render fallback</p>
+      <h2>The 3D scene could not initialise.</h2>
+      <p>Your browser may not support WebGL. You can still access the portfolio links below.</p>
+      <a class="btn btn-primary" href="mailto:markus@markuswalker.com">Email Markus</a>
+      <a class="btn btn-secondary" href="https://www.linkedin.com/in/markus-walker-au/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+      <pre id="errorDetail" class="error-detail"></pre>
+    </div>
   </div>
 
-  <h2>Writeups</h2>
-
-  <div class="card">
-    <h3>Red Team Capstone (RTCC)</h3>
-    <p>End-to-end red team engagement covering initial access to domain compromise.</p>
-    <a href="https://markus-doc.github.io/cybersecurity-writeups" target="_blank">
-      View Writeup
-    </a>
+  <!-- Tweaks panel -->
+  <div id="tweaksPanel" class="tweaks-panel" hidden aria-label="Design tweaks">
+    <header class="tweaks-hd" id="tweaksDrag">
+      <span class="tweaks-ttl">TWEAKS</span>
+      <button class="tweaks-x" id="tweaksClose" type="button" aria-label="Close tweaks">✕</button>
+    </header>
+    <div class="tweaks-body">
+      <div class="tweak-section">
+        <p class="tweak-section-label">Scene Energy</p>
+        <p class="tweak-section-desc">Scales all lights and glow, quiet room to blazing core.</p>
+        <div class="tweak-slider-row">
+          <span class="tweak-hint">Dim</span>
+          <input class="tweak-range" type="range" id="twkEnergy" min="0" max="100" step="1" value="51">
+          <span class="tweak-hint">Blazing</span>
+          <span class="tweak-val" id="twkEnergyVal">51</span>
+        </div>
+      </div>
+      <div class="tweak-section">
+        <p class="tweak-section-label">Lens Mode</p>
+        <p class="tweak-section-desc">Camera field of view, reshapes the whole spatial feel.</p>
+        <div class="tweak-radios">
+          <button class="twk-opt" data-val="diorama" type="button">Diorama</button>
+          <button class="twk-opt active" data-val="cinematic" type="button">Cinematic</button>
+          <button class="twk-opt" data-val="immersive" type="button">Immersive</button>
+        </div>
+      </div>
+      <div class="tweak-section">
+        <p class="tweak-section-label">Motion</p>
+        <p class="tweak-section-desc">Global animation speed, frozen ambient to frenetic ops.</p>
+        <div class="tweak-slider-row">
+          <span class="tweak-hint">Still</span>
+          <input class="tweak-range" type="range" id="twkMotion" min="0" max="100" step="1" value="50">
+          <span class="tweak-hint">Frenetic</span>
+          <span class="tweak-val" id="twkMotionVal">50</span>
+        </div>
+      </div>
+    </div>
   </div>
 
-</div>
+  <script>
+    const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+      "sceneEnergy": 51,
+      "lensMode": "cinematic",
+      "motionSpeed": 50
+    }/*EDITMODE-END*/;
+    window.TWEAKS = Object.assign({}, TWEAK_DEFAULTS);
 
+    (function () {
+      const panel    = document.getElementById('tweaksPanel');
+      const closeBtn = document.getElementById('tweaksClose');
+      const energyIn = document.getElementById('twkEnergy');
+      const energyLb = document.getElementById('twkEnergyVal');
+      const motionIn = document.getElementById('twkMotion');
+      const motionLb = document.getElementById('twkMotionVal');
+      const lensOpts = document.querySelectorAll('.twk-opt');
+
+      function showPanel() { panel.hidden = false; }
+      function hidePanel() {
+        panel.hidden = true;
+        window.parent.postMessage({ type: '__edit_mode_dismissed' }, '*');
+      }
+      closeBtn.addEventListener('click', hidePanel);
+
+      window.addEventListener('message', function (e) {
+        if (e.data && e.data.type === '__activate_edit_mode')   showPanel();
+        if (e.data && e.data.type === '__deactivate_edit_mode') hidePanel();
+      });
+      window.parent.postMessage({ type: '__edit_mode_available' }, '*');
+
+      function persist(edits) {
+        Object.assign(window.TWEAKS, edits);
+        window.parent.postMessage({ type: '__edit_mode_set_keys', edits: edits }, '*');
+      }
+
+      energyIn.value       = TWEAK_DEFAULTS.sceneEnergy;
+      energyLb.textContent = TWEAK_DEFAULTS.sceneEnergy;
+      motionIn.value       = TWEAK_DEFAULTS.motionSpeed;
+      motionLb.textContent = TWEAK_DEFAULTS.motionSpeed;
+      lensOpts.forEach(function (b) {
+        b.classList.toggle('active', b.dataset.val === TWEAK_DEFAULTS.lensMode);
+      });
+
+      energyIn.addEventListener('input', function () {
+        var v = +energyIn.value;
+        energyLb.textContent = v;
+        persist({ sceneEnergy: v });
+        if (window.applyEnergy) window.applyEnergy(v);
+      });
+      motionIn.addEventListener('input', function () {
+        var v = +motionIn.value;
+        motionLb.textContent = v;
+        persist({ motionSpeed: v });
+      });
+      lensOpts.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          lensOpts.forEach(function (b) { b.classList.remove('active'); });
+          btn.classList.add('active');
+          var mode = btn.dataset.val;
+          persist({ lensMode: mode });
+          if (window.applyLens) window.applyLens(mode);
+        });
+      });
+
+      var hd = document.getElementById('tweaksDrag');
+      hd.addEventListener('pointerdown', function (e) {
+        var ox = e.clientX - panel.offsetLeft, oy = e.clientY - panel.offsetTop;
+        hd.setPointerCapture(e.pointerId);
+        function onMove(ev) {
+          panel.style.left   = (ev.clientX - ox) + 'px';
+          panel.style.top    = (ev.clientY - oy) + 'px';
+          panel.style.right  = 'auto';
+          panel.style.bottom = 'auto';
+        }
+        hd.addEventListener('pointermove', onMove);
+        hd.addEventListener('pointerup', function () {
+          hd.removeEventListener('pointermove', onMove);
+        }, { once: true });
+      });
+    })();
+  </script>
+
+  <!-- Hero and dock open-section delegation -->
+  <script>
+    document.addEventListener('click', function (e) {
+      var el = e.target.closest('[data-focus]');
+      if (!el) return;
+      var key = el.dataset.focus;
+      if (key && window.focusSection) window.focusSection(key);
+    });
+  </script>
+
+  <script type="module" src="./main.js?v=9"></script>
 </body>
 </html>
