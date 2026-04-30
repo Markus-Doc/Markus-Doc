@@ -312,6 +312,7 @@ canvas.addEventListener('webglcontextrestored', () => {
     attemptedContextReload = true
     sessionStorage.setItem('cf-context-reload-attempted', '1')
     setLoaderStatus('Graphics context restored. Rebuilding scene...')
+    try { disposeRuntimeScene() } catch {}
     window.location.reload()
     return
   }
@@ -338,6 +339,14 @@ const targetLook = desiredTgt.clone()
 
 const root = new THREE.Group()
 scene.add(root)
+
+function disposeRuntimeScene() {
+  disposeObject3D(root)
+  disposeSceneResources()
+  animatedObjects.length = 0
+  interactive.length = 0
+  panelRepainters.length = 0
+}
 
 let lastRenderWidth = 0
 let lastRenderHeight = 0
@@ -507,7 +516,9 @@ function panelArt(kind, title, accent) {
   const [tw, th] = profileTextureSize(1024, 640, IS_MOBILE ? 256 : 512)
   const c = mc(tw, th), ctx = c.getContext('2d'), tex = ctex(c)
   const pc = { width: 1024, height: 640 }
+  let paintedTheme = ''
   function repaint() {
+    if (paintedTheme === activeTheme) return
     const col = getCanvasColors()
     ctx.clearRect(0, 0, c.width, c.height)
     ctx.save()
@@ -535,6 +546,7 @@ function panelArt(kind, title, accent) {
     else if (kind === 'ai') drawAI(ctx, pc, accent, col)
     else drawWriteups(ctx, pc, accent, col)
     ctx.restore()
+    paintedTheme = activeTheme
     tex.needsUpdate = true
   }
   repaint()
@@ -743,12 +755,12 @@ let networkBus
 /* ─── Plinth + grid floor ─────────────────────────────────────────── */
 function plinth() {
   const g = new THREE.Group()
-  const p = new THREE.Mesh(new THREE.CylinderGeometry(7.6, 8.0, 0.55, 6, 1), M.hull)
+  const p = new THREE.Mesh(cylGeo(7.6, 8.0, 0.55, 6), M.hull)
   p.position.y = -1.3; p.receiveShadow = true; g.add(p)
-  const bv = new THREE.Mesh(new THREE.TorusGeometry(7.55, 0.04, 12, 96), M.cyan)
+  const bv = new THREE.Mesh(torusGeo(7.55, 0.04), M.cyan)
   bv.rotation.x = -Math.PI / 2; bv.position.y = -1.02; g.add(bv)
-  const inset = new THREE.Mesh(new THREE.CylinderGeometry(6.8, 6.8, 0.02, 64),
-    new THREE.MeshStandardMaterial({ color: 0x06121f, roughness: 0.85, metalness: 0.18 }))
+  const inset = new THREE.Mesh(cylGeo(6.8, 6.8, 0.02, SCENE_BUDGET.cylinderHigh),
+    matStandard({ color: 0x06121f, roughness: 0.85, metalness: 0.18 }))
   inset.position.y = -1.0; inset.receiveShadow = true; g.add(inset)
   const [gw, gh] = profileTextureSize(1024, 1024, IS_MOBILE ? 256 : 512)
   const gc = mc(gw, gh), x = gc.getContext('2d')
@@ -762,12 +774,13 @@ function plinth() {
   }
   x.strokeStyle = 'rgba(167,139,250,0.55)'; x.lineWidth = 4
   for (const r of [0.215, 0.352, 0.469]) { x.beginPath(); x.arc(gs / 2, gs / 2, gs * r, 0, Math.PI * 2); x.stroke() }
-  const gm = new THREE.Mesh(new THREE.CircleGeometry(6.6, 96),
-    new THREE.MeshBasicMaterial({ map: ctex(gc), transparent: true, opacity: 0.85 }))
+  const gm = new THREE.Mesh(circleGeo(6.6),
+    matBasic({ map: ctex(gc), transparent: true, opacity: 0.85 }))
   gm.rotation.x = -Math.PI / 2; gm.position.y = -0.985; g.add(gm)
-  for (let i = 0; i < 4; i++) {
-    const ring = new THREE.Mesh(new THREE.RingGeometry(2.2 + i * 1.3, 2.24 + i * 1.3, 96),
-      new THREE.MeshBasicMaterial({ color: i % 2 ? 0xa78bfa : 0x6ee7ff, transparent: true,
+  const ringCount = tierValue(4, 3, 2, 1)
+  for (let i = 0; i < ringCount; i++) {
+    const ring = new THREE.Mesh(ringGeo(2.2 + i * 1.3, 2.24 + i * 1.3),
+      matBasic({ color: i % 2 ? 0xa78bfa : 0x6ee7ff, transparent: true,
         opacity: 0.32 - i * 0.06, side: THREE.DoubleSide, blending: THREE.AdditiveBlending, depthWrite: false }))
     ring.rotation.x = -Math.PI / 2; ring.position.y = -0.97; g.add(ring)
   }
@@ -777,48 +790,52 @@ function plinth() {
 /* ─── Security core ───────────────────────────────────────────────── */
 function securityCore() {
   const g = new THREE.Group(); g.position.set(0, 1.55, 0)
-  const ped = new THREE.Mesh(new THREE.CylinderGeometry(0.85, 1.05, 0.4, 6), M.trim)
+  const ped = new THREE.Mesh(cylGeo(0.85, 1.05, 0.4, 6), M.trim)
   ped.position.y = -1.05; ped.castShadow = true; g.add(ped)
-  const pr = new THREE.Mesh(new THREE.TorusGeometry(0.92, 0.03, 10, 64), M.cyan)
+  const pr = new THREE.Mesh(torusGeo(0.92, 0.03, tierValue(10, 8, 8, 6), tierValue(64, 48, 32, 20)), M.cyan)
   pr.rotation.x = -Math.PI / 2; pr.position.y = -0.86; g.add(pr)
   const lowGeo = GRAPHICS_PROFILE.tier === 'mobileLow' || GRAPHICS_PROFILE.tier === 'mobileMedium'
-  const inner = new THREE.Mesh(new THREE.IcosahedronGeometry(0.78, lowGeo ? 0 : 1),
-    new THREE.MeshStandardMaterial({ color: 0xc4f5ff, emissive: 0x22d3ee, emissiveIntensity: 1.4, roughness: 0.18, metalness: 0.32 }))
+  const inner = new THREE.Mesh(icoGeo(0.78, lowGeo ? 0 : SCENE_BUDGET.coreDetail),
+    matStandard({ color: 0xc4f5ff, emissive: 0x22d3ee, emissiveIntensity: 1.4, roughness: 0.18, metalness: 0.32 }))
   g.add(inner)
-  const shell = new THREE.Mesh(new THREE.IcosahedronGeometry(1.45, lowGeo ? 0 : 1),
-    new THREE.MeshBasicMaterial({ color: 0x6ee7ff, wireframe: true, transparent: true, opacity: 0.55 }))
+  const shell = new THREE.Mesh(icoGeo(1.45, lowGeo ? 0 : SCENE_BUDGET.coreDetail),
+    matBasic({ color: 0x6ee7ff, wireframe: true, transparent: true, opacity: 0.55 }))
   g.add(shell)
   // MeshPhysicalMaterial with transmission requires an extra render pass — skip on mobile
-  const dome = new THREE.Mesh(new THREE.IcosahedronGeometry(2.0, lowGeo ? 0 : 2),
+  const dome = new THREE.Mesh(icoGeo(2.0, lowGeo ? 0 : SCENE_BUDGET.icoDetail),
     IS_MOBILE
-      ? new THREE.MeshBasicMaterial({ color: 0x5fc3ff, transparent: true, opacity: 0.06, side: THREE.DoubleSide, depthWrite: false })
-      : new THREE.MeshPhysicalMaterial({ color: 0x5fc3ff, transparent: true, opacity: 0.10, transmission: 0.6,
+      ? matBasic({ color: 0x5fc3ff, transparent: true, opacity: 0.06, side: THREE.DoubleSide, depthWrite: false })
+      : matPhysical({ color: 0x5fc3ff, transparent: true, opacity: 0.10, transmission: 0.6,
           thickness: 0.4, roughness: 0.05, metalness: 0.05, side: THREE.DoubleSide }))
   g.add(dome)
   const rings = []
-  for (let i = 0; i < 3; i++) {
-    const r = new THREE.Mesh(new THREE.TorusGeometry(1.7 + i * 0.18, 0.018, 10, 96),
-      new THREE.MeshStandardMaterial({ color: 0xa78bfa, emissive: 0x7c3aed, emissiveIntensity: 0.85, roughness: 0.4, metalness: 0.3 }))
+  const coreRingCount = tierValue(3, 3, 2, 1)
+  for (let i = 0; i < coreRingCount; i++) {
+    const r = new THREE.Mesh(torusGeo(1.7 + i * 0.18, 0.018, tierValue(10, 8, 8, 6), tierValue(96, 64, 40, 24)),
+      matStandard({ color: 0xa78bfa, emissive: 0x7c3aed, emissiveIntensity: 0.85, roughness: 0.4, metalness: 0.3 }))
     r.rotation.x = (i + 1) * 0.7; r.rotation.y = i * 0.5; g.add(r); rings.push(r)
   }
   const motes = []
-  const moteCount = GRAPHICS_PROFILE.tier === 'mobileLow' ? 2 : IS_MOBILE ? 4 : 12
+  const moteCount = DECOR.coreMotes
   for (let i = 0; i < moteCount; i++) {
-    const m = new THREE.Mesh(new THREE.SphereGeometry(0.05, IS_MOBILE ? 6 : 12, IS_MOBILE ? 6 : 12),
-      new THREE.MeshBasicMaterial({ color: i % 3 === 0 ? 0xfb7185 : 0x6ee7ff }))
+    const m = new THREE.Mesh(sphereGeo(0.05, SCENE_BUDGET.sphereTinySegments, SCENE_BUDGET.sphereTinySegments),
+      matBasic({ color: i % 3 === 0 ? 0xfb7185 : 0x6ee7ff }))
     m.userData = { theta: Math.random() * Math.PI * 2, r: 1.7 + Math.random() * 0.45, speed: 0.4 + Math.random() * 0.7 }
     g.add(m); motes.push(m)
   }
-  const beam = new THREE.Mesh(new THREE.CylinderGeometry(0.09, 0.18, 6.0, 16, 1, true),
-    new THREE.MeshBasicMaterial({ color: 0x6ee7ff, transparent: true, opacity: 0.18, side: THREE.DoubleSide,
-      blending: THREE.AdditiveBlending, depthWrite: false }))
-  beam.position.y = 3.0; g.add(beam)
+  let beam = null
+  if (GRAPHICS_PROFILE.tier !== 'mobileLow') {
+    beam = new THREE.Mesh(cylGeo(0.09, 0.18, 6.0, tierValue(16, 12, 8, 6), 1, true),
+      matBasic({ color: 0x6ee7ff, transparent: true, opacity: 0.18, side: THREE.DoubleSide,
+        blending: THREE.AdditiveBlending, depthWrite: false }))
+    beam.position.y = 3.0; g.add(beam)
+  }
   inner.userData = {
     title: 'About Markus', desc: 'The active heart of the command centre.',
     key: 'core', zone: 'core', badge: 'PROFILE', badgeClass: '', group: g
   }
   interactive.push(inner)
-  g.userData.animate = (t) => {
+  registerAnimated(g, (t) => {
     const q = GRAPHICS_PROFILE.animationIntensity * decorativeAnimationScale
     inner.rotation.y = t * 0.4 * q; inner.rotation.x = Math.sin(t * 0.6) * 0.3 * q
     inner.material.emissiveIntensity = 1.2 + Math.sin(t * 2.2) * 0.3
@@ -830,8 +847,8 @@ function securityCore() {
         Math.sin(t * m.userData.speed + i) * 0.5,
         Math.sin(m.userData.theta) * m.userData.r)
     })
-    beam.material.opacity = 0.14 + Math.sin(t * 3) * 0.06
-  }
+    if (beam) beam.material.opacity = 0.14 + Math.sin(t * 3) * 0.06 * q
+  }, { decorative: false })
   root.add(g)
 }
 
@@ -847,28 +864,28 @@ function serverRack(x, z, rotY) {
     const u = new THREE.Mesh(new THREE.BoxGeometry(1.16, 0.18, 0.03), M.trim)
     u.position.set(0, 0.22 + i * 0.22, 0.535); g.add(u)
     if (!IS_MOBILE) for (let j = 0; j < 5; j++) {
-      const lm = (Math.random() > 0.7 ? M.rose : Math.random() > 0.5 ? M.violet : M.cyan).clone()
-      const led = new THREE.Mesh(new THREE.SphereGeometry(0.022, 10, 10), lm)
+      const lm = trackResource((Math.random() > 0.7 ? M.rose : Math.random() > 0.5 ? M.violet : M.cyan).clone())
+      const led = new THREE.Mesh(sphereGeo(0.022, SCENE_BUDGET.sphereTinySegments, SCENE_BUDGET.sphereTinySegments), lm)
       led.position.set(-0.5 + j * 0.06, 0.22 + i * 0.22, 0.555)
       led.userData = { phase: Math.random() * Math.PI * 2 }
       g.add(led); leds.push(led)
     }
-    const strip = new THREE.Mesh(new THREE.BoxGeometry(0.55, 0.04, 0.01), M.cyan.clone())
+    const strip = new THREE.Mesh(new THREE.BoxGeometry(0.55, 0.04, 0.01), M.cyan)
     strip.position.set(0.18, 0.22 + i * 0.22, 0.553); g.add(strip)
   }
   const top = new THREE.Mesh(new THREE.BoxGeometry(1.45, 0.06, 1.05), M.steel)
   top.position.y = 2.63; g.add(top)
-  const ant = new THREE.Mesh(new THREE.CylinderGeometry(0.012, 0.012, 0.32, 6), M.steel)
+  const ant = new THREE.Mesh(cylGeo(0.012, 0.012, 0.32, 6), M.steel)
   ant.position.set(0.55, 2.84, 0.4); g.add(ant)
-  const tip = new THREE.Mesh(new THREE.SphereGeometry(0.04, 10, 10), M.rose)
+  const tip = new THREE.Mesh(sphereGeo(0.04, SCENE_BUDGET.sphereTinySegments, SCENE_BUDGET.sphereTinySegments), M.rose)
   tip.position.set(0.55, 3.02, 0.4); g.add(tip)
   for (let i = 0; i < 4; i++) {
-    const f = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.05, 0.06, 10), M.steel)
+    const f = new THREE.Mesh(cylGeo(0.05, 0.05, 0.06, tierValue(10, 8, 6, 6)), M.steel)
     f.position.set(i % 2 ? 0.6 : -0.6, 0.03, i < 2 ? 0.4 : -0.4); g.add(f)
   }
-  g.userData.animate = (t) => {
+  registerAnimated(g, (t) => {
     leds.forEach(l => { l.material.emissiveIntensity = (0.4 + (0.6 + Math.sin(t * 4.5 + l.userData.phase) * 0.5)) * 1.3 })
-  }
+  }, { decorative: true, every: SCENE_BUDGET.decorativeUpdateEvery })
   root.add(g)
 }
 
@@ -878,7 +895,7 @@ function workstation() {
   const desk = new THREE.Mesh(new THREE.BoxGeometry(5.4, 0.12, 1.7), M.panel)
   desk.position.y = 0.45; desk.castShadow = desk.receiveShadow = true; g.add(desk)
   const dg = new THREE.Mesh(new THREE.BoxGeometry(5.42, 0.02, 1.72),
-    new THREE.MeshBasicMaterial({ color: 0x6ee7ff, transparent: true, opacity: 0.35 }))
+    matBasic({ color: 0x6ee7ff, transparent: true, opacity: GRAPHICS_PROFILE.tier === 'mobileLow' ? 0.22 : 0.35 }))
   dg.position.y = 0.51; g.add(dg)
   for (let i = 0; i < 2; i++) {
     const leg = new THREE.Mesh(new THREE.BoxGeometry(0.16, 0.45, 1.5), M.trim)
@@ -893,42 +910,50 @@ function workstation() {
   ]
   for (let i = 0; i < 3; i++) {
     const p = profiles[i], x = -1.85 + i * 1.85
-    const stand = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.1, 0.35, 12), M.steel)
+    const stand = new THREE.Mesh(cylGeo(0.06, 0.1, 0.35, tierValue(12, 10, 8, 6)), M.steel)
     stand.position.set(x, 0.7, -0.05); g.add(stand)
-    const base = new THREE.Mesh(new THREE.CylinderGeometry(0.22, 0.22, 0.04, 16), M.steel)
+    const base = new THREE.Mesh(cylGeo(0.22, 0.22, 0.04, tierValue(16, 12, 10, 8)), M.steel)
     base.position.set(x, 0.52, -0.05); g.add(base)
     const frame = new THREE.Mesh(new THREE.BoxGeometry(1.55, 1.0, 0.06), M.hull)
     frame.position.set(x, 1.35, -0.05); frame.rotation.x = -0.06; g.add(frame)
     const tk = tickerScreen(p.lbl, p.acc, p.handle, p.stat); tickers.push(tk)
-    const screen = new THREE.Mesh(new THREE.PlaneGeometry(1.46, 0.92), new THREE.MeshBasicMaterial({ map: tk.tex }))
+    const screen = new THREE.Mesh(geometry(new THREE.PlaneGeometry(1.46, 0.92)), matBasic({ map: tk.tex }))
     screen.position.set(x, 1.35, -0.018); screen.rotation.x = -0.06
     screen.userData = { title: p.lbl, desc: p.handle, key: p.key, badge: p.badge, badgeClass: '', group: g }
     interactive.push(screen); g.add(screen)
-    const halo = new THREE.Mesh(new THREE.PlaneGeometry(1.7, 1.12),
-      new THREE.MeshBasicMaterial({ color: new THREE.Color(p.acc), transparent: true, opacity: 0.10,
-        blending: THREE.AdditiveBlending, depthWrite: false }))
-    halo.position.set(x, 1.35, -0.06); halo.rotation.x = -0.06; g.add(halo)
+    if (DECOR.monitorHalos) {
+      const halo = new THREE.Mesh(geometry(new THREE.PlaneGeometry(1.7, 1.12)),
+        matBasic({ color: new THREE.Color(p.acc), transparent: true, opacity: 0.10,
+          blending: THREE.AdditiveBlending, depthWrite: false }))
+      halo.position.set(x, 1.35, -0.06); halo.rotation.x = -0.06; g.add(halo)
+    }
   }
   const kb = new THREE.Mesh(new THREE.BoxGeometry(1.6, 0.06, 0.5), M.trim)
   kb.position.set(0, 0.55, 0.45); g.add(kb)
-  const mouse = new THREE.Mesh(new THREE.SphereGeometry(0.08, 16, 16), M.steel)
+  const mouse = new THREE.Mesh(sphereGeo(0.08, tierValue(16, 12, 8, 6), tierValue(16, 12, 8, 6)), M.steel)
   mouse.scale.set(1, 0.55, 1.6); mouse.position.set(0.95, 0.55, 0.45); g.add(mouse)
-  const mug = new THREE.Mesh(new THREE.CylinderGeometry(0.1, 0.09, 0.18, 16), M.rubber)
+  const mug = new THREE.Mesh(cylGeo(0.1, 0.09, 0.18, tierValue(16, 12, 8, 6)), M.rubber)
   mug.position.set(-1.4, 0.61, 0.55); g.add(mug)
-  const handle = new THREE.Mesh(new THREE.TorusGeometry(0.06, 0.015, 8, 16), M.rubber)
+  const handle = new THREE.Mesh(torusGeo(0.06, 0.015, tierValue(8, 8, 6, 6), tierValue(16, 12, 8, 6)), M.rubber)
   handle.rotation.y = Math.PI / 2; handle.position.set(-1.28, 0.62, 0.55); g.add(handle)
-  const steam = new THREE.Mesh(new THREE.PlaneGeometry(0.18, 0.5),
-    new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.06, depthWrite: false }))
-  steam.position.set(-1.4, 0.95, 0.55); g.add(steam)
-  g.userData.animate = (t) => {
+  let steam = null
+  if (DECOR.steam) {
+    steam = new THREE.Mesh(geometry(new THREE.PlaneGeometry(0.18, 0.5)),
+      matBasic({ color: 0xffffff, transparent: true, opacity: 0.06, depthWrite: false }))
+    steam.position.set(-1.4, 0.95, 0.55); g.add(steam)
+  }
+  const tickerStatic = GRAPHICS_PROFILE.tier === 'mobileLow' || PREFERS_REDUCED_MOTION
+  registerAnimated(g, (t) => {
     tkFrame++
     // On mobile: only push ticker textures to GPU every 4th frame (~15fps) to save GPU bandwidth.
     // On desktop: every frame for smooth animated waveform.
-    if (!PREFERS_REDUCED_MOTION && (!IS_MOBILE || tkFrame % GRAPHICS_PROFILE.tickerFrameMod === 0)) tickers.forEach(tk => tk.paint())
+    if (!tickerStatic && (!IS_MOBILE || tkFrame % SCENE_BUDGET.tickerUpdateEvery === 0)) tickers.forEach(tk => tk.paint())
     const q = GRAPHICS_PROFILE.animationIntensity * decorativeAnimationScale
-    steam.material.opacity = (0.04 + Math.sin(t * 1.2) * 0.025) * q
-    steam.position.y = 0.95 + Math.sin(t * 0.8) * 0.04 * q
-  }
+    if (steam) {
+      steam.material.opacity = (0.04 + Math.sin(t * 1.2) * 0.025) * q
+      steam.position.y = 0.95 + Math.sin(t * 0.8) * 0.04 * q
+    }
+  }, { decorative: true, every: tickerStatic ? 999999 : 1 })
   tickers.forEach(tk => tk.paint())
   root.add(g)
 }
@@ -938,36 +963,39 @@ function holoPanel({ key, title, subtitle, position, rotation, accent, kind }) {
   const g = new THREE.Group(); g.position.copy(position); g.rotation.set(rotation.x, rotation.y, rotation.z)
   // Multi-material box: face order is [+X, -X, +Y, -Y, +Z(front), -Z(back)]
   // Back face uses a frosted dark-glass material so backs read as translucent, not solid colour
-  const backGlass = new THREE.MeshBasicMaterial({
+  const backGlass = matBasic({
     color: 0x0c1e3a, transparent: true, opacity: 0.20
   })
   const frameMats = [M.panel, M.panel, M.panel, M.panel, M.panel, backGlass]
   const frame = new THREE.Mesh(new THREE.BoxGeometry(3.0, 1.95, 0.10), frameMats); g.add(frame)
   const accentCol = new THREE.Color(accent)
-  const trimFront = new THREE.MeshBasicMaterial({ color: accentCol, transparent: true, opacity: 0.55, blending: THREE.AdditiveBlending, depthWrite: false })
-  const trimBack  = new THREE.MeshBasicMaterial({ color: accentCol, transparent: true, opacity: 0.0,  blending: THREE.AdditiveBlending, depthWrite: false })
+  const trimFront = matBasic({ color: accentCol, transparent: true, opacity: 0.55, blending: THREE.AdditiveBlending, depthWrite: false })
+  const trimBack  = matBasic({ color: accentCol, transparent: true, opacity: 0.0,  blending: THREE.AdditiveBlending, depthWrite: false })
   const trim = new THREE.Mesh(new THREE.BoxGeometry(3.06, 2.01, 0.04),
     [trimFront, trimFront, trimFront, trimFront, trimFront, trimBack])
   trim.position.z = -0.04; g.add(trim)
-  const screen = new THREE.Mesh(new THREE.PlaneGeometry(2.86, 1.82),
-    new THREE.MeshBasicMaterial({ map: panelArt(kind, title, accent) }))
+  const screen = new THREE.Mesh(geometry(new THREE.PlaneGeometry(2.86, 1.82)),
+    matBasic({ map: panelArt(kind, title, accent) }))
   screen.position.z = 0.058
   const badges = { core: 'PROFILE', ir: 'IRP', cloud: 'AWS', ai: 'RESUME', writeups: 'PUBLIC' }
   screen.userData = { title, desc: subtitle, key, zone: key, group: g,
     badge: badges[kind] || 'LIVE', badgeClass: kind === 'ir' ? 'warn' : '' }
   g.add(screen); interactive.push(screen)
-  const halo = new THREE.Mesh(new THREE.PlaneGeometry(3.4, 2.36),
-    new THREE.MeshBasicMaterial({ color: new THREE.Color(accent), transparent: true, opacity: 0.10,
-      blending: THREE.AdditiveBlending, depthWrite: false }))
-  halo.position.z = 0.03; g.add(halo)
-  const stem = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.07, 1.0, 12), M.trim)
+  let halo = null
+  if (DECOR.panelHalos) {
+    halo = new THREE.Mesh(geometry(new THREE.PlaneGeometry(3.4, 2.36)),
+      matBasic({ color: new THREE.Color(accent), transparent: true, opacity: 0.10,
+        blending: THREE.AdditiveBlending, depthWrite: false }))
+    halo.position.z = 0.03; g.add(halo)
+  }
+  const stem = new THREE.Mesh(cylGeo(0.05, 0.07, 1.0, tierValue(12, 10, 8, 6)), M.trim)
   stem.position.y = -1.45; g.add(stem)
-  const sb = new THREE.Mesh(new THREE.CylinderGeometry(0.32, 0.36, 0.10, 24), M.trim)
+  const sb = new THREE.Mesh(cylGeo(0.32, 0.36, 0.10, SCENE_BUDGET.cylinderMedium), M.trim)
   sb.position.y = -2.0; g.add(sb)
-  const sr = new THREE.Mesh(new THREE.TorusGeometry(0.34, 0.015, 8, 48),
-    new THREE.MeshBasicMaterial({ color: new THREE.Color(accent) }))
+  const sr = new THREE.Mesh(torusGeo(0.34, 0.015, tierValue(8, 8, 6, 6), tierValue(48, 36, 24, 16)),
+    matBasic({ color: new THREE.Color(accent) }))
   sr.rotation.x = -Math.PI / 2; sr.position.y = -1.94; g.add(sr)
-  const brk = new THREE.MeshBasicMaterial({ color: new THREE.Color(accent) })
+  const brk = matBasic({ color: new THREE.Color(accent) })
   function bracket(sx, sy) {
     const m = new THREE.Group()
     const a = new THREE.Mesh(new THREE.BoxGeometry(0.35, 0.04, 0.02), brk)
@@ -979,32 +1007,32 @@ function holoPanel({ key, title, subtitle, position, rotation, accent, kind }) {
     const b = bracket(sx, sy); b.position.set(x, y, 0.07); g.add(b)
   }
   g.userData.halo = halo; g.userData.trim = trim; g.userData.trimFront = trimFront; g.userData.key = key
-  g.userData.animate = (t) => {
+  registerAnimated(g, (t) => {
     const q = GRAPHICS_PROFILE.animationIntensity * decorativeAnimationScale
     g.position.y = position.y + Math.sin(t * 1.0 + position.x) * 0.04 * q
-    halo.material.opacity = 0.08 + Math.sin(t * 1.4 + position.x) * 0.025 * q
+    if (halo) halo.material.opacity = 0.08 + Math.sin(t * 1.4 + position.x) * 0.025 * q
     trimFront.opacity = 0.45 + Math.sin(t * 1.8 + position.z) * 0.10 * q
-  }
+  }, { decorative: true, every: SCENE_BUDGET.decorativeUpdateEvery })
   routeTargets.set(key, position.clone()); root.add(g)
 }
 
 /* ─── Beacon ──────────────────────────────────────────────────────── */
 function beacon(x, z, color) {
   const g = new THREE.Group(); g.position.set(x, -0.95, z)
-  const base = new THREE.Mesh(new THREE.CylinderGeometry(0.32, 0.36, 0.12, 24), M.trim); g.add(base)
-  const post = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.04, 0.7, 12), M.steel)
+  const base = new THREE.Mesh(cylGeo(0.32, 0.36, 0.12, SCENE_BUDGET.cylinderMedium), M.trim); g.add(base)
+  const post = new THREE.Mesh(cylGeo(0.04, 0.04, 0.7, tierValue(12, 10, 8, 6)), M.steel)
   post.position.y = 0.4; g.add(post)
-  const orb = new THREE.Mesh(new THREE.SphereGeometry(0.16, 24, 24),
-    new THREE.MeshStandardMaterial({ color: 0xffffff, emissive: new THREE.Color(color), emissiveIntensity: 1.2, roughness: 0.3, metalness: 0.2 }))
+  const orb = new THREE.Mesh(sphereGeo(0.16),
+    matStandard({ color: 0xffffff, emissive: new THREE.Color(color), emissiveIntensity: 1.2, roughness: 0.3, metalness: 0.2 }))
   orb.position.y = 0.85; g.add(orb)
-  const ring = new THREE.Mesh(new THREE.TorusGeometry(0.34, 0.015, 8, 48),
-    new THREE.MeshBasicMaterial({ color: new THREE.Color(color) }))
+  const ring = new THREE.Mesh(torusGeo(0.34, 0.015, tierValue(8, 8, 6, 6), tierValue(48, 36, 24, 16)),
+    matBasic({ color: new THREE.Color(color) }))
   ring.rotation.x = -Math.PI / 2; ring.position.y = 0.07; g.add(ring)
-  g.userData.animate = (t) => {
+  registerAnimated(g, (t) => {
     const q = GRAPHICS_PROFILE.animationIntensity * decorativeAnimationScale
     orb.material.emissiveIntensity = 1.0 + Math.sin(t * 2.4 + x) * 0.4 * q
     g.position.y = -0.95 + Math.sin(t * 1.6 + z) * 0.02 * q
-  }
+  }, { decorative: true, every: SCENE_BUDGET.decorativeUpdateEvery })
   root.add(g)
 }
 
@@ -1014,34 +1042,38 @@ function backWall() {
   const w = new THREE.Mesh(new THREE.BoxGeometry(13, 4.2, 0.18), M.hull)
   w.position.y = 1.0; w.receiveShadow = true; g.add(w)
   const strip = new THREE.Mesh(new THREE.BoxGeometry(12.8, 0.04, 0.02),
-    new THREE.MeshBasicMaterial({ color: 0x6ee7ff, transparent: true, opacity: 0.85 }))
+    matBasic({ color: 0x6ee7ff, transparent: true, opacity: 0.85 }))
   strip.position.set(0, 2.8, 0.10); g.add(strip)
-  for (let i = 0; i < 6; i++) {
+  const wallPanelCount = DECOR.wallPanels ? tierValue(6, 5, 3, 0) : 0
+  for (let i = 0; i < wallPanelCount; i++) {
     const p = new THREE.Mesh(new THREE.BoxGeometry(1.6, 0.6, 0.02), M.panel)
     p.position.set(-5 + i * 2, 0.3, 0.10); g.add(p)
-    const led = new THREE.Mesh(new THREE.SphereGeometry(0.028, 10, 10), i % 2 ? M.violet : M.cyan)
+    const led = new THREE.Mesh(sphereGeo(0.028, SCENE_BUDGET.sphereTinySegments, SCENE_BUDGET.sphereTinySegments), i % 2 ? M.violet : M.cyan)
     led.position.set(-5 + i * 2 + 0.6, 0.3, 0.12); g.add(led)
   }
-  const bar = new THREE.Mesh(new THREE.BoxGeometry(7, 0.08, 0.4),
-    new THREE.MeshBasicMaterial({ color: 0xc4f5ff, transparent: true, opacity: 0.9 }))
-  bar.position.set(0, 4.2, 0); g.add(bar)
+  if (GRAPHICS_PROFILE.tier !== 'mobileLow') {
+    const bar = new THREE.Mesh(new THREE.BoxGeometry(7, 0.08, 0.4),
+      matBasic({ color: 0xc4f5ff, transparent: true, opacity: 0.9 }))
+    bar.position.set(0, 4.2, 0); g.add(bar)
+  }
   root.add(g)
 }
 
 /* ─── Drone ───────────────────────────────────────────────────────── */
 function drone() {
   const g = new THREE.Group()
-  const body = new THREE.Mesh(new THREE.IcosahedronGeometry(0.18, 0),
-    new THREE.MeshStandardMaterial({ color: 0xedfaff, emissive: 0xa78bfa, emissiveIntensity: 0.65, roughness: 0.35, metalness: 0.4 }))
+  const body = new THREE.Mesh(icoGeo(0.18, 0),
+    matStandard({ color: 0xedfaff, emissive: 0xa78bfa, emissiveIntensity: 0.65, roughness: 0.35, metalness: 0.4 }))
   g.add(body)
-  const r1 = new THREE.Mesh(new THREE.TorusGeometry(0.28, 0.012, 8, 48), new THREE.MeshBasicMaterial({ color: 0x6ee7ff }))
+  const r1 = new THREE.Mesh(torusGeo(0.28, 0.012, tierValue(8, 8, 6, 6), tierValue(48, 32, 20, 12)), matBasic({ color: 0x6ee7ff }))
   g.add(r1)
   const r2 = r1.clone(); r2.rotation.x = Math.PI / 2; g.add(r2)
-  g.userData.animate = (t) => {
+  registerAnimated(g, (t) => {
+    const q = GRAPHICS_PROFILE.animationIntensity * decorativeAnimationScale
     const r = 4.2
-    g.position.set(Math.cos(t * 0.4) * r, 2.6 + Math.sin(t * 0.8) * 0.4, Math.sin(t * 0.4) * r * 0.4)
-    body.rotation.y = t * 1.5; r1.rotation.z = t * 0.8; r2.rotation.x = Math.PI / 2 + t * 0.6
-  }
+    g.position.set(Math.cos(t * 0.4) * r, 2.6 + Math.sin(t * 0.8) * 0.4 * q, Math.sin(t * 0.4) * r * 0.4)
+    body.rotation.y = t * 1.5 * q; r1.rotation.z = t * 0.8 * q; r2.rotation.x = Math.PI / 2 + t * 0.6 * q
+  }, { decorative: true, every: SCENE_BUDGET.decorativeUpdateEvery })
   root.add(g)
 }
 
@@ -1052,12 +1084,12 @@ function networkBusBuild(panels) {
   for (const p of panels) {
     const mid = hub.clone().lerp(p, 0.5).add(new THREE.Vector3(0, 0.3, 0))
     const curve = new THREE.QuadraticBezierCurve3(hub, mid, p.clone())
-    const pts = curve.getPoints(40)
-    const geo = new THREE.BufferGeometry().setFromPoints(pts)
-    root.add(new THREE.Line(geo, new THREE.LineBasicMaterial({ color: 0x6ee7ff, transparent: true, opacity: 0.22 })))
-    const busMotes = GRAPHICS_PROFILE.tier === 'mobileLow' ? 0 : IS_MOBILE ? 1 : 3
+    const pts = curve.getPoints(SCENE_BUDGET.networkPoints)
+    const geo = geometry(new THREE.BufferGeometry().setFromPoints(pts))
+    root.add(new THREE.Line(geo, matBasic({ color: 0x6ee7ff, transparent: true, opacity: GRAPHICS_PROFILE.tier === 'mobileLow' ? 0.14 : 0.22 })))
+    const busMotes = DECOR.networkMotes
     for (let i = 0; i < busMotes; i++) {
-      const m = new THREE.Mesh(new THREE.SphereGeometry(0.05, IS_MOBILE ? 6 : 12, IS_MOBILE ? 6 : 12), new THREE.MeshBasicMaterial({ color: 0xa78bfa }))
+      const m = new THREE.Mesh(sphereGeo(0.05, SCENE_BUDGET.sphereTinySegments, SCENE_BUDGET.sphereTinySegments), matBasic({ color: 0xa78bfa }))
       m.userData = { curve, t: (i / 3) + Math.random() * 0.05, speed: 0.18 + Math.random() * 0.18 }
       root.add(m); motes.push(m)
     }
@@ -1082,16 +1114,16 @@ function particles() {
     const c = v > 0.85 ? new THREE.Color(0xfb7185) : v > 0.55 ? new THREE.Color(0xa78bfa) : new THREE.Color(0x6ee7ff)
     col[i3] = c.r; col[i3 + 1] = c.g; col[i3 + 2] = c.b
   }
-  const g = new THREE.BufferGeometry()
+  const g = geometry(new THREE.BufferGeometry())
   g.setAttribute('position', new THREE.BufferAttribute(pos, 3))
   g.setAttribute('color', new THREE.BufferAttribute(col, 3))
-  const pts = new THREE.Points(g, new THREE.PointsMaterial({ size: 0.04, vertexColors: true, transparent: true,
-    opacity: 0.85, blending: THREE.AdditiveBlending, depthWrite: false }))
-  pts.userData.animate = (t) => {
+  const pts = new THREE.Points(g, trackResource(new THREE.PointsMaterial({ size: 0.04, vertexColors: true, transparent: true,
+    opacity: GRAPHICS_PROFILE.tier === 'mobileLow' ? 0.55 : 0.85, blending: THREE.AdditiveBlending, depthWrite: false })))
+  registerAnimated(pts, (t) => {
     const q = GRAPHICS_PROFILE.animationIntensity * decorativeAnimationScale
     pts.rotation.y = t * 0.012 * q
     pts.rotation.x = Math.sin(t * 0.1) * 0.014 * q
-  }
+  }, { decorative: true, every: SCENE_BUDGET.decorativeUpdateEvery })
   scene.add(pts)
 }
 
@@ -1115,8 +1147,8 @@ function buildScene() {
   serverRack(-5.2, -3.8, Math.PI / 7); serverRack(-3.4, -4.4, Math.PI / 9)
   serverRack(3.4, -4.4, -Math.PI / 9); serverRack(5.2, -3.8, -Math.PI / 7)
   workstation()
-  beacon(-3.6, 1.2, 0xa78bfa); beacon(3.6, 1.2, 0x38bdf8)
-  beacon(-3.0, 3.4, 0xfb7185); beacon(3.0, 3.4, 0x22d3ee)
+  const beaconDefs = [[-3.6, 1.2, 0xa78bfa], [3.6, 1.2, 0x38bdf8], [-3.0, 3.4, 0xfb7185], [3.0, 3.4, 0x22d3ee]]
+  beaconDefs.slice(0, DECOR.beacons).forEach(b => beacon(...b))
   const panels = [
     { key: 'core',     title: 'About',                   subtitle: 'Markus Walker, Brisbane-based cyber engineer.',          position: new THREE.Vector3(0, 2.6, -4.6),   rotation: new THREE.Euler(0, 0, 0),              accent: '#6ee7ff', kind: 'core'     },
     { key: 'ir',       title: 'Incident Response Program',subtitle: 'NIST SP 800-61. 28 page IRP portfolio.',                position: new THREE.Vector3(-5.2, 2.0, -1.0), rotation: new THREE.Euler(0, Math.PI / 3.4, 0), accent: '#a78bfa', kind: 'ir'       },
@@ -1125,7 +1157,8 @@ function buildScene() {
     { key: 'ai',       title: 'Resume',                    subtitle: 'AWS SAA, three OCI certs, Cert IV in Cyber.',          position: new THREE.Vector3(4.4, 1.6, 3.2),   rotation: new THREE.Euler(0, Math.PI + Math.PI / 5.2, 0), accent: '#22d3ee', kind: 'ai'       }
   ]
   panels.forEach(holoPanel)
-  drone(); particles()
+  if (DECOR.drone) drone()
+  particles()
   networkBus = networkBusBuild(panels.map(p => p.position.clone()))
 }
 
@@ -1580,6 +1613,7 @@ function renderScreenContent(key) {
 /* ─── Focus / unfocus ─────────────────────────────────────────────── */
 window.focusSection = function focusSection(key) {
   if (state.isTransitioning) return
+  if (GRAPHICS_PROFILE.tier === 'mobileLow' && !force) return
   if (key === 'core') { returnToCommandCentre(); return }
   if (!SECTION_CONTENT[key]) return
 
@@ -1687,10 +1721,13 @@ function updatePointerFromEvent(e) {
 }
 
 function runRaycastHover(now = performance.now(), force = false) {
-  if (state.isTransitioning || (IS_MOBILE && !force)) return
-  if (!GRAPHICS_PROFILE.hoverRaycast && !force) return
-  if (GRAPHICS_PROFILE.coarsePointer && !force) return
-  if (!force && now - lastHoverRaycastAt < 80) return
+  if (state.isTransitioning) return
+  if (!GRAPHICS_PROFILE.hoverRaycast && !force && !IS_MOBILE) return
+  const raycastInterval = GRAPHICS_PROFILE.coarsePointer
+    ? tierValue(120, 220, 360, 999999)
+    : tierValue(80, 120, 180, 240)
+  if (GRAPHICS_PROFILE.coarsePointer && !force && isDragging) return
+  if (!force && now - lastHoverRaycastAt < raycastInterval) return
   lastHoverRaycastAt = now
   raycaster.setFromCamera(pointer, camera)
   const hits = raycaster.intersectObjects(interactive, false)
@@ -1897,13 +1934,18 @@ function animate(now = 0) {
   camera.position.lerp(camTarget, 0.045)
   targetLook.lerp(desiredTgt, 0.08)
   camera.lookAt(targetLook)
-  scene.traverse(o => { if (o.userData?.animate) o.userData.animate(vt) })
+  for (const item of animatedObjects) {
+    if (item.decorative && item.every > 1 && (++item.frame % item.every !== 0)) continue
+    item.update(vt, dt)
+  }
   if (networkBus && GRAPHICS_PROFILE.animationIntensity > 0) networkBus.update(Math.min(dt * speed * decorativeAnimationScale, 0.05))
-  for (const obj of interactive) {
-    const g = obj.userData.group
-    if (!g || g === hovered?.userData?.group) continue
-    if (!g.userData._wob) g.userData._wob = Math.random() * Math.PI * 2
-    if (!state.focused) g.scale.setScalar(1 + Math.sin(vt * 1.6 + g.userData._wob) * 0.005 * decorativeAnimationScale)
+  if (DECOR.animatedWobble) {
+    for (const obj of interactive) {
+      const g = obj.userData.group
+      if (!g || g === hovered?.userData?.group) continue
+      if (!g.userData._wob) g.userData._wob = Math.random() * Math.PI * 2
+      if (!state.focused) g.scale.setScalar(1 + Math.sin(vt * 1.6 + g.userData._wob) * 0.005 * decorativeAnimationScale)
+    }
   }
   renderer.render(scene, camera)
 }
