@@ -214,37 +214,22 @@ body, .topbar, .hero, .hud, .dock, .dock-item,
 
 /* ── Light-bg shared overrides ──────────────────────────────── */
 [data-theme="azure-glass"] .brand-mark,
-[data-theme="digital-sky"] .brand-mark,
-[data-theme="cyber-ice"] .brand-mark,
-[data-theme="cloud-minimal"] .brand-mark,
-[data-theme="arctic-network"] .brand-mark {
+[data-theme="cloud-minimal"] .brand-mark {
   background: conic-gradient(from 200deg,var(--cyan),var(--violet),var(--rose),var(--cyan));
   box-shadow: inset 0 0 0 2px rgba(0,0,0,.15),0 0 14px rgba(14,106,173,.30);
 }
 [data-theme="azure-glass"] .brand-mark::after,
-[data-theme="digital-sky"] .brand-mark::after,
-[data-theme="cyber-ice"] .brand-mark::after,
-[data-theme="cloud-minimal"] .brand-mark::after,
-[data-theme="arctic-network"] .brand-mark::after {
+[data-theme="cloud-minimal"] .brand-mark::after {
   background:rgba(220,240,255,.90); border-color:rgba(14,106,173,.20);
 }
 [data-theme="azure-glass"] .btn-primary,
-[data-theme="digital-sky"] .btn-primary,
-[data-theme="cyber-ice"] .btn-primary,
-[data-theme="cloud-minimal"] .btn-primary,
-[data-theme="arctic-network"] .btn-primary { color:#f0f8ff }
+[data-theme="cloud-minimal"] .btn-primary { color:#f0f8ff }
 
 [data-theme="azure-glass"] .dock-item.active,
-[data-theme="digital-sky"] .dock-item.active,
-[data-theme="cyber-ice"] .dock-item.active,
-[data-theme="cloud-minimal"] .dock-item.active,
-[data-theme="arctic-network"] .dock-item.active { color:#f0f8ff }
+[data-theme="cloud-minimal"] .dock-item.active { color:#f0f8ff }
 
 [data-theme="azure-glass"] .dock-item.active .dock-glyph,
-[data-theme="digital-sky"] .dock-item.active .dock-glyph,
-[data-theme="cyber-ice"] .dock-item.active .dock-glyph,
-[data-theme="cloud-minimal"] .dock-item.active .dock-glyph,
-[data-theme="arctic-network"] .dock-item.active .dock-glyph { color:#f0f8ff }
+[data-theme="cloud-minimal"] .dock-item.active .dock-glyph { color:#f0f8ff }
 
 /* ── Theme swatch buttons ─────────────────────────────────────── */
 .theme-swatches {
@@ -1121,6 +1106,7 @@ h1 em {
     flex-wrap: nowrap;
   }
   .topbar-meta { display: none }
+  .theme-swatches-label { display: none }
   /* Collapse brand to one line — sub-text wraps to 5 lines on narrow screens */
   .brand-name { white-space: nowrap }
   .brand-sub { display: none }
@@ -1206,6 +1192,7 @@ h1 em {
 body.is-mobile .hud { display: none }
 body.is-mobile .brand-sub { display: none }
 body.is-mobile .brand-name { white-space: nowrap }
+body.is-mobile .theme-swatches-label { display: none }
 body.is-mobile .topbar { flex-wrap: nowrap }
 
 /* Ensure the HTML hidden attribute beats any display: rule above. */
