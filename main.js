@@ -125,13 +125,30 @@ const renderer = new THREE.WebGLRenderer({
   alpha: true,
   powerPreference: IS_MOBILE ? 'default' : 'high-performance'
 })
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, IS_MOBILE ? 1.5 : 2))
+renderer.setPixelRatio(IS_MOBILE ? Math.min(window.devicePixelRatio, 1.0) : Math.min(window.devicePixelRatio, 2))
 renderer.setSize(window.innerWidth, window.innerHeight)
 renderer.outputColorSpace = THREE.SRGBColorSpace
 renderer.toneMapping = THREE.ACESFilmicToneMapping
 renderer.toneMappingExposure = 1.18
 renderer.shadowMap.enabled = !IS_MOBILE
 if (!IS_MOBILE) renderer.shadowMap.type = THREE.PCFSoftShadowMap
+
+/* ─── Context loss + visibility recovery ──────────────────────── */
+let animFrameId = null
+canvas.addEventListener('webglcontextlost', e => {
+  e.preventDefault()
+  if (animFrameId) { cancelAnimationFrame(animFrameId); animFrameId = null }
+}, false)
+canvas.addEventListener('webglcontextrestored', () => {
+  animFrameId = requestAnimationFrame(animate)
+}, false)
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) {
+    if (animFrameId) { cancelAnimationFrame(animFrameId); animFrameId = null }
+  } else if (!animFrameId) {
+    animFrameId = requestAnimationFrame(animate)
+  }
+})
 
 const scene = new THREE.Scene()
 scene.fog = new THREE.FogExp2(0x02060f, 0.022)
@@ -166,7 +183,7 @@ function rr(ctx, x, y, w, h, r) {
 function ctex(c) {
   const t = new THREE.CanvasTexture(c)
   t.colorSpace = THREE.SRGBColorSpace
-  t.anisotropy = renderer.capabilities.getMaxAnisotropy()
+  t.anisotropy = IS_MOBILE ? 1 : renderer.capabilities.getMaxAnisotropy()
   t.needsUpdate = true; return t
 }
 
@@ -462,15 +479,18 @@ function securityCore() {
   ped.position.y = -1.05; ped.castShadow = true; g.add(ped)
   const pr = new THREE.Mesh(new THREE.TorusGeometry(0.92, 0.03, 10, 64), M.cyan)
   pr.rotation.x = -Math.PI / 2; pr.position.y = -0.86; g.add(pr)
-  const inner = new THREE.Mesh(new THREE.IcosahedronGeometry(0.78, 1),
+  const inner = new THREE.Mesh(new THREE.IcosahedronGeometry(0.78, IS_MOBILE ? 0 : 1),
     new THREE.MeshStandardMaterial({ color: 0xc4f5ff, emissive: 0x22d3ee, emissiveIntensity: 1.4, roughness: 0.18, metalness: 0.32 }))
   g.add(inner)
-  const shell = new THREE.Mesh(new THREE.IcosahedronGeometry(1.45, 1),
+  const shell = new THREE.Mesh(new THREE.IcosahedronGeometry(1.45, IS_MOBILE ? 0 : 1),
     new THREE.MeshBasicMaterial({ color: 0x6ee7ff, wireframe: true, transparent: true, opacity: 0.55 }))
   g.add(shell)
-  const dome = new THREE.Mesh(new THREE.IcosahedronGeometry(2.0, 2),
-    new THREE.MeshPhysicalMaterial({ color: 0x5fc3ff, transparent: true, opacity: 0.10, transmission: 0.6,
-      thickness: 0.4, roughness: 0.05, metalness: 0.05, side: THREE.DoubleSide }))
+  // MeshPhysicalMaterial with transmission requires an extra render pass — skip on mobile
+  const dome = new THREE.Mesh(new THREE.IcosahedronGeometry(2.0, IS_MOBILE ? 0 : 2),
+    IS_MOBILE
+      ? new THREE.MeshBasicMaterial({ color: 0x5fc3ff, transparent: true, opacity: 0.06, side: THREE.DoubleSide, depthWrite: false })
+      : new THREE.MeshPhysicalMaterial({ color: 0x5fc3ff, transparent: true, opacity: 0.10, transmission: 0.6,
+          thickness: 0.4, roughness: 0.05, metalness: 0.05, side: THREE.DoubleSide }))
   g.add(dome)
   const rings = []
   for (let i = 0; i < 3; i++) {
@@ -479,8 +499,8 @@ function securityCore() {
     r.rotation.x = (i + 1) * 0.7; r.rotation.y = i * 0.5; g.add(r); rings.push(r)
   }
   const motes = []
-  for (let i = 0; i < 12; i++) {
-    const m = new THREE.Mesh(new THREE.SphereGeometry(0.05, 12, 12),
+  for (let i = 0; i < (IS_MOBILE ? 4 : 12); i++) {
+    const m = new THREE.Mesh(new THREE.SphereGeometry(0.05, IS_MOBILE ? 6 : 12, IS_MOBILE ? 6 : 12),
       new THREE.MeshBasicMaterial({ color: i % 3 === 0 ? 0xfb7185 : 0x6ee7ff }))
     m.userData = { theta: Math.random() * Math.PI * 2, r: 1.7 + Math.random() * 0.45, speed: 0.4 + Math.random() * 0.7 }
     g.add(m); motes.push(m)
@@ -521,7 +541,7 @@ function serverRack(x, z, rotY) {
   for (let i = 0; i < 10; i++) {
     const u = new THREE.Mesh(new THREE.BoxGeometry(1.16, 0.18, 0.03), M.trim)
     u.position.set(0, 0.22 + i * 0.22, 0.535); g.add(u)
-    for (let j = 0; j < 5; j++) {
+    if (!IS_MOBILE) for (let j = 0; j < 5; j++) {
       const lm = (Math.random() > 0.7 ? M.rose : Math.random() > 0.5 ? M.violet : M.cyan).clone()
       const led = new THREE.Mesh(new THREE.SphereGeometry(0.022, 10, 10), lm)
       led.position.set(-0.5 + j * 0.06, 0.22 + i * 0.22, 0.555)
@@ -560,6 +580,7 @@ function workstation() {
     leg.position.set(i ? 2.5 : -2.5, 0.22, 0); g.add(leg)
   }
   const tickers = []
+  let tkFrame = 0  // throttle ticker GPU uploads
   const profiles = [
     { lbl: 'LINKEDIN',   acc: '#6ee7ff', handle: 'markus-walker-au', stat: 'CAREER · CONNECT · OPEN',    badge: 'LINKEDIN', key: 'linkedin'  },
     { lbl: 'GITHUB',     acc: '#a78bfa', handle: 'markus-doc',        stat: 'WRITEUPS · PORTFOLIO · OPEN', badge: 'GITHUB',   key: 'github'    },
@@ -595,7 +616,10 @@ function workstation() {
     new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.06, depthWrite: false }))
   steam.position.set(-1.4, 0.95, 0.55); g.add(steam)
   g.userData.animate = (t) => {
-    tickers.forEach(tk => tk.paint())
+    tkFrame++
+    // On mobile: only push ticker textures to GPU every 4th frame (~15fps) to save GPU bandwidth.
+    // On desktop: every frame for smooth animated waveform.
+    if (!IS_MOBILE || tkFrame % 4 === 0) tickers.forEach(tk => tk.paint())
     steam.material.opacity = 0.04 + Math.sin(t * 1.2) * 0.025
     steam.position.y = 0.95 + Math.sin(t * 0.8) * 0.04
   }
@@ -722,8 +746,8 @@ function networkBusBuild(panels) {
     const pts = curve.getPoints(40)
     const geo = new THREE.BufferGeometry().setFromPoints(pts)
     root.add(new THREE.Line(geo, new THREE.LineBasicMaterial({ color: 0x6ee7ff, transparent: true, opacity: 0.22 })))
-    for (let i = 0; i < 3; i++) {
-      const m = new THREE.Mesh(new THREE.SphereGeometry(0.05, 12, 12), new THREE.MeshBasicMaterial({ color: 0xa78bfa }))
+    for (let i = 0; i < (IS_MOBILE ? 1 : 3); i++) {
+      const m = new THREE.Mesh(new THREE.SphereGeometry(0.05, IS_MOBILE ? 6 : 12, IS_MOBILE ? 6 : 12), new THREE.MeshBasicMaterial({ color: 0xa78bfa }))
       m.userData = { curve, t: (i / 3) + Math.random() * 0.05, speed: 0.18 + Math.random() * 0.18 }
       root.add(m); motes.push(m)
     }
@@ -739,7 +763,7 @@ function networkBusBuild(panels) {
 
 /* ─── Particles ───────────────────────────────────────────────────── */
 function particles() {
-  const n = 1100
+  const n = IS_MOBILE ? 220 : 1100
   const pos = new Float32Array(n * 3), col = new Float32Array(n * 3)
   for (let i = 0; i < n; i++) {
     const i3 = i * 3, r = 8 + Math.random() * 18, a = Math.random() * Math.PI * 2
@@ -1376,6 +1400,11 @@ canvas.addEventListener('click', () => {
 /* ─── Scroll (browse mode only) ──────────────────────────────────── */
 window.addEventListener('scroll', () => {
   if (state.focused) return
+  // On mobile, dismiss the hero panel on first scroll so the 3D scene can breathe
+  if (IS_MOBILE && !state.heroDismissed && window.scrollY > 20) {
+    state.heroDismissed = true
+    document.body.classList.add('hero-dismissed')
+  }
   const max = document.body.scrollHeight - window.innerHeight
   const progress = max > 0 ? window.scrollY / max : 0
   const order = ['core', 'ir', 'cloud', 'ai', 'writeups', 'core']
@@ -1412,7 +1441,7 @@ window.addEventListener('resize', () => {
   camera.aspect = window.innerWidth / window.innerHeight
   camera.updateProjectionMatrix()
   const nowMobile = window.innerWidth < 1024 && navigator.maxTouchPoints > 1
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, nowMobile ? 1.5 : 2))
+  renderer.setPixelRatio(nowMobile ? Math.min(window.devicePixelRatio, 1.0) : Math.min(window.devicePixelRatio, 2))
 })
 
 /* ─── Tweaks ──────────────────────────────────────────────────────── */
@@ -1442,8 +1471,15 @@ window.applyLens = function (mode) {
 /* ─── Render loop ─────────────────────────────────────────────────── */
 const clock = new THREE.Clock()
 let last = 0, vt = 0
+// Mobile 30fps cap: skip frames that arrive faster than ~33ms apart
+const MOBILE_FRAME_MS = IS_MOBILE ? 1000 / 30 : 0
+let mobileLastFrameTs = 0
 
-function animate() {
+function animate(now = 0) {
+  animFrameId = requestAnimationFrame(animate)
+  // Throttle to 30fps on mobile to spare GPU
+  if (IS_MOBILE && now - mobileLastFrameTs < MOBILE_FRAME_MS) return
+  if (IS_MOBILE) mobileLastFrameTs = now
   const t = clock.getElapsedTime(), dt = t - last; last = t
   const speed = window.TWEAKS ? (0.05 + (window.TWEAKS.motionSpeed / 100) * 1.9) : 1.0
   vt += dt * speed
@@ -1455,46 +1491,4 @@ function animate() {
   targetLook.lerp(desiredTgt, 0.08)
   camera.lookAt(targetLook)
   scene.traverse(o => { if (o.userData?.animate) o.userData.animate(vt) })
-  if (networkBus) networkBus.update(Math.min(dt * speed, 0.05))
-  for (const obj of interactive) {
-    const g = obj.userData.group
-    if (!g || g === hovered?.userData?.group) continue
-    if (!g.userData._wob) g.userData._wob = Math.random() * Math.PI * 2
-    if (!state.focused) g.scale.setScalar(1 + Math.sin(vt * 1.6 + g.userData._wob) * 0.005)
-  }
-  renderer.render(scene, camera)
-  requestAnimationFrame(animate)
-}
-
-/* ─── Clock + latency ─────────────────────────────────────────────── */
-function tickClock() {
-  const d = new Date(), pad = n => String(n).padStart(2, '0')
-  clockEl.textContent = pad(d.getHours()) + ':' + pad(d.getMinutes()) + ':' + pad(d.getSeconds())
-  const latEl = document.getElementById('hudLatency')
-  if (latEl) latEl.textContent = (10 + Math.round(Math.sin(d.getTime() * 0.001) * 4 + Math.random() * 3)) + 'ms'
-}
-setInterval(tickClock, 1000); tickClock()
-
-/* ─── Theme delegation ────────────────────────────────────────────── */
-document.documentElement.setAttribute('data-theme', activeTheme)
-document.querySelectorAll('.swatch-btn').forEach(b => b.classList.toggle('active', b.dataset.theme === activeTheme))
-document.addEventListener('click', e => {
-  const btn = e.target.closest('.swatch-btn')
-  if (btn) applyTheme(btn.dataset.theme)
-})
-
-/* ─── Boot ────────────────────────────────────────────────────────── */
-try {
-  buildScene()
-  updateHUD('core')
-  animate()
-  applyTheme(activeTheme)
-  if (window.TWEAKS) {
-    window.applyEnergy(window.TWEAKS.sceneEnergy)
-    window.applyLens(window.TWEAKS.lensMode)
-  }
-  setTimeout(finishLoader, 1500)
-} catch (err) { showError(err) }
-
-window.addEventListener('error', (e) => showError(e.error || e))
-window.addEventListener('unhandledrejection', (e) => showError(e.reason))
+  if (networkBus) networkBus.update(Math.min(dt * spe
