@@ -1077,13 +1077,16 @@ h1 em {
   inset: 0;
   display: grid;
   place-items: center;
+  overflow-x: hidden;
   background: var(--bg-0);
   z-index: 60;
   padding: 24px;
 }
 
 .error-shell {
-  max-width: 720px;
+  max-width: min(720px, calc(100vw - 48px));
+  width: min(720px, calc(100vw - 48px));
+  box-sizing: border-box;
   padding: 30px;
   border-radius: var(--radius-lg);
   background: var(--glass-strong);
@@ -1155,6 +1158,7 @@ h1 em {
   font-size: 0.72rem;
   color: var(--muted);
   white-space: pre-wrap;
+  word-break: break-all;
   max-height: 160px;
   overflow: auto;
 }
