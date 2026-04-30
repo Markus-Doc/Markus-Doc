@@ -1491,4 +1491,45 @@ function animate(now = 0) {
   targetLook.lerp(desiredTgt, 0.08)
   camera.lookAt(targetLook)
   scene.traverse(o => { if (o.userData?.animate) o.userData.animate(vt) })
-  if (networkBus) networkBus.update(Math.min(dt * spe
+  if (networkBus) networkBus.update(Math.min(dt * speed, 0.05))
+  for (const obj of interactive) {
+    const g = obj.userData.group
+    if (!g || g === hovered?.userData?.group) continue
+    if (!g.userData._wob) g.userData._wob = Math.random() * Math.PI * 2
+    if (!state.focused) g.scale.setScalar(1 + Math.sin(vt * 1.6 + g.userData._wob) * 0.005)
+  }
+  renderer.render(scene, camera)
+}
+
+/* ─── Clock + latency ─────────────────────────────────────────────── */
+function tickClock() {
+  const d = new Date(), pad = n => String(n).padStart(2, '0')
+  clockEl.textContent = pad(d.getHours()) + ':' + pad(d.getMinutes()) + ':' + pad(d.getSeconds())
+  const latEl = document.getElementById('hudLatency')
+  if (latEl) latEl.textContent = (10 + Math.round(Math.sin(d.getTime() * 0.001) * 4 + Math.random() * 3)) + 'ms'
+}
+setInterval(tickClock, 1000); tickClock()
+
+/* ─── Theme delegation ────────────────────────────────────────────── */
+document.documentElement.setAttribute('data-theme', activeTheme)
+document.querySelectorAll('.swatch-btn').forEach(b => b.classList.toggle('active', b.dataset.theme === activeTheme))
+document.addEventListener('click', e => {
+  const btn = e.target.closest('.swatch-btn')
+  if (btn) applyTheme(btn.dataset.theme)
+})
+
+/* ─── Boot ────────────────────────────────────────────────────────── */
+try {
+  buildScene()
+  updateHUD('core')
+  animFrameId = requestAnimationFrame(animate)
+  applyTheme(activeTheme)
+  if (window.TWEAKS) {
+    window.applyEnergy(window.TWEAKS.sceneEnergy)
+    window.applyLens(window.TWEAKS.lensMode)
+  }
+  setTimeout(finishLoader, 1500)
+} catch (err) { showError(err) }
+
+window.addEventListener('error', (e) => showError(e.error || e))
+window.addEventListener('unhandledrejection', (e) => showError(e.reason))
