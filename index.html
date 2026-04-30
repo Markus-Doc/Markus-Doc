@@ -12,7 +12,7 @@
   <meta property="og:type" content="website">
   <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
-  <link rel="stylesheet" href="./styles.css?v=10">
+  <link rel="stylesheet" href="./styles.css?v=11">
   <script type="importmap">
     {
       "imports": {
@@ -204,9 +204,14 @@
     <div class="error-shell">
       <p class="error-kicker">Render fallback</p>
       <h2>The 3D scene could not initialise.</h2>
-      <p>Your browser may not support WebGL. You can still access the portfolio links below.</p>
-      <a class="btn btn-primary" href="mailto:markus@markuswalker.com">Email Markus</a>
-      <a class="btn btn-secondary" href="https://www.linkedin.com/in/markus-walker-au/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+      <p>Your browser may not support WebGL. The portfolio links below remain available as normal HTML.</p>
+      <nav class="fallback-nav" aria-label="Portfolio fallback navigation">
+        <a class="btn btn-primary" href="mailto:markus@markuswalker.com">Email Markus</a>
+        <a class="btn btn-secondary" href="https://www.linkedin.com/in/markus-walker-au/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        <a class="btn btn-secondary" href="https://github.com/markus-doc" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a class="btn btn-secondary" href="https://tryhackme.com/p/Triage" target="_blank" rel="noopener noreferrer">TryHackMe</a>
+        <a class="btn btn-secondary" href="https://markus-doc.github.io/cybersecurity-writeups/articles/tryhackme/rtcc/1-Red_Team_Capstone_Crawl-Through" target="_blank" rel="noopener noreferrer">RTCC Writeup</a>
+      </nav>
       <pre id="errorDetail" class="error-detail"></pre>
     </div>
   </div>
@@ -342,6 +347,6 @@
     });
   </script>
 
-  <script type="module" src="./main.js?v=10"></script>
+  <script type="module" src="./main.js?v=11"></script>
 </body>
 </html>

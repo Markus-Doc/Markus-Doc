@@ -1,6 +1,6 @@
 /* Cyberfolio Command Centre v2.6
    Premium dark cyber HUD, glass morph panels, dock and loader.
-   Au English. */
+   Au */
 
 * { box-sizing: border-box }
 
@@ -510,6 +510,7 @@ body {
   inset: 0;
   width: 100%;
   height: 100%;
+  min-height: 100dvh;
   display: block;
   z-index: 1;
   /* Allow native scroll to pass through on mobile while still receiving pointer events */
@@ -546,6 +547,24 @@ body {
   mix-blend-mode: screen;
 }
 
+body.quality-mobile-medium .scanlines,
+body.quality-mobile-low .scanlines {
+  display: none;
+}
+
+body.quality-mobile-low .grain {
+  display: none;
+}
+
+body.quality-mobile-high .grain {
+  opacity: 0.035;
+}
+
+body.quality-mobile-medium .grain {
+  opacity: 0.02;
+  background-size: 5px 5px, 8px 8px;
+}
+
 .vignette {
   pointer-events: none;
   position: fixed;
@@ -554,6 +573,11 @@ body {
   background:
     radial-gradient(circle at 55% 38%, transparent 0%, transparent 42%, rgba(0,0,0,0.55) 100%),
     linear-gradient(90deg, rgba(0,0,0,0.28), transparent 34%, rgba(0,0,0,0.28));
+}
+
+body.quality-mobile-low .vignette {
+  background:
+    radial-gradient(circle at 55% 38%, transparent 0%, transparent 50%, rgba(0,0,0,0.38) 100%);
 }
 
 .loader {
@@ -1066,6 +1090,17 @@ h1 em {
   text-align: left;
 }
 
+.fallback-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.fallback-nav .btn {
+  min-height: 44px;
+}
+
 .error-kicker {
   margin: 0 0 8px;
   font-family: var(--mono);
@@ -1195,7 +1230,13 @@ h1 em {
   html { scroll-behavior: auto }
   .meter span,
   .loader-mark,
-  .dot { animation: none }
+  .dot,
+  .hero::after { animation: none }
+  *, *::before, *::after {
+    transition-duration: 0.001ms !important;
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+  }
 }
 
 /* ─── Very small phones (iPhone SE, Galaxy A series) ─────────── */
@@ -1219,17 +1260,8 @@ h1 em {
 /* ─── Landscape on short-viewport phones ─────────────────────── */
 @media (max-height: 430px) and (orientation: landscape) {
   .hero {
-    top: max(8px, env(safe-area-inset-top));
-    left: max(8px, env(safe-area-inset-left));
-    right: max(8px, env(safe-area-inset-right));
-    width: auto;
-    padding: 10px 16px;
+    display: none;
   }
-  .hero .kicker,
-  .hero h1,
-  .hero .intro,
-  .hero .intro-chips { display: none }
-  .hero-actions { margin-top: 0 }
   .hud { display: none }
   .dock {
     bottom: max(8px, env(safe-area-inset-bottom));
@@ -1247,6 +1279,58 @@ body.is-mobile .brand-sub { display: none }
 body.is-mobile .brand-name { white-space: nowrap }
 body.is-mobile .theme-swatches-label { display: none }
 body.is-mobile .topbar { flex-wrap: nowrap }
+
+body.quality-mobile-high .topbar,
+body.quality-mobile-high .hero,
+body.quality-mobile-high .hud,
+body.quality-mobile-high .dock,
+body.quality-mobile-high .story-panel,
+body.quality-mobile-high .screen-focus-panel,
+body.quality-mobile-high .back-btn,
+body.quality-mobile-high .loader-shell {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+body.quality-mobile-medium .topbar,
+body.quality-mobile-medium .hero,
+body.quality-mobile-medium .hud,
+body.quality-mobile-medium .dock,
+body.quality-mobile-medium .story-panel,
+body.quality-mobile-medium .screen-focus-panel,
+body.quality-mobile-medium .back-btn,
+body.quality-mobile-medium .loader-shell {
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: 0 16px 44px rgba(0, 0, 0, 0.26);
+}
+
+body.quality-mobile-low .topbar,
+body.quality-mobile-low .hero,
+body.quality-mobile-low .hud,
+body.quality-mobile-low .dock,
+body.quality-mobile-low .story-panel,
+body.quality-mobile-low .screen-focus-panel,
+body.quality-mobile-low .back-btn,
+body.quality-mobile-low .loader-shell {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.24);
+}
+
+body.quality-mobile-medium .dock-item.active,
+body.quality-mobile-low .dock-item.active,
+body.quality-mobile-medium .btn-primary,
+body.quality-mobile-low .btn-primary,
+body.quality-mobile-medium .brand-mark,
+body.quality-mobile-low .brand-mark {
+  box-shadow: none;
+}
+
+body.quality-reduced-motion .grain,
+body.quality-reduced-motion .scanlines {
+  display: none;
+}
 
 /* Ensure the HTML hidden attribute beats any display: rule above. */
 [hidden] { display: none !important }
@@ -1971,4 +2055,3 @@ body.hero-dismissed .hero {
   color: var(--accent);
   flex-shrink: 0;
 }
-

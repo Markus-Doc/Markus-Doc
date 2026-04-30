@@ -30,19 +30,165 @@ function finishLoader() {
   clearInterval(tick)
   loaderBar.style.width = '100%'; loaderStep.textContent = 'Online'
   appEl.hidden = false
-  setTimeout(() => loaderEl.classList.add('is-hidden'), 380)
+  setTimeout(() => {
+    loaderEl.classList.add('is-hidden')
+    loaderEl.style.opacity = '0'
+    loaderEl.style.visibility = 'hidden'
+    loaderEl.style.pointerEvents = 'none'
+  }, 380)
 }
 function showError(err) {
   console.error('[cyberfolio]', err)
+  document.body.classList.add('webgl-fallback')
   appEl.hidden = true; loaderEl.classList.add('is-hidden')
   errorScreen.hidden = false
   errorDetail.textContent = (err && (err.stack || err.message || String(err))) || 'unknown'
 }
 
-try {
+function isDevelopmentHost() {
+  return ['localhost', '127.0.0.1', '::1'].includes(location.hostname) || location.protocol === 'file:'
+}
+
+function getDisplaySize() {
+  const vv = window.visualViewport
+  const root = document.documentElement
+  const width = Math.max(1, Math.round(vv?.width || root.clientWidth || window.innerWidth || 1))
+  const height = Math.max(1, Math.round(vv?.height || root.clientHeight || window.innerHeight || 1))
+  return { width, height }
+}
+
+function buildGraphicsProfile() {
+  const ua = navigator.userAgent || ''
+  const nav = navigator
+  const display = getDisplaySize()
+  const coarsePointer = matchMedia('(pointer: coarse)').matches
+  const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches
+  const touchHeavy = coarsePointer || nav.maxTouchPoints > 1
+  const smallViewport = Math.min(display.width, display.height) < 760 || display.width < 900
+  const likelyMobileSafari = /iP(ad|hone|od)/i.test(ua) && /WebKit/i.test(ua) && !/CriOS|FxiOS|EdgiOS/i.test(ua)
   const probe = document.createElement('canvas')
-  if (!(probe.getContext('webgl2') || probe.getContext('webgl'))) throw new Error('WebGL is not available.')
-} catch (e) { showError(e); throw e }
+  const webgl2 = probe.getContext('webgl2', { failIfMajorPerformanceCaveat: false })
+  const webgl1 = webgl2 ? null : probe.getContext('webgl', { failIfMajorPerformanceCaveat: false })
+  const gl = webgl2 || webgl1
+
+  if (!gl) {
+    return {
+      tier: 'fallback',
+      webgl2: false,
+      webgl1: false,
+      maxTextureSize: 0,
+      maxRenderbufferSize: 0,
+      maxTextureImageUnits: 0,
+      compressedTextures: { astc: false, etc: false, pvrtc: false },
+      coarsePointer,
+      touchHeavy,
+      smallViewport,
+      reducedMotion,
+      likelyMobileSafari,
+      isMobileTier: false,
+      dprCap: 0,
+      dprFloor: 0,
+      targetFps: 0,
+      frameMs: Infinity,
+      antialias: false,
+      shadows: false,
+      particleCount: 0,
+      textureScale: 0.5,
+      animationIntensity: 0,
+      decorativeEffects: false,
+      hoverRaycast: false,
+      tickerFrameMod: 8,
+      powerPreference: 'default',
+    }
+  }
+
+  const maxTextureSize = gl.getParameter(gl.MAX_TEXTURE_SIZE) || 0
+  const maxRenderbufferSize = gl.getParameter(gl.MAX_RENDERBUFFER_SIZE) || 0
+  const maxTextureImageUnits = gl.getParameter(gl.MAX_TEXTURE_IMAGE_UNITS) || 0
+  const compressedTextures = {
+    astc: !!gl.getExtension('WEBGL_compressed_texture_astc'),
+    etc: !!(gl.getExtension('WEBGL_compressed_texture_etc') || gl.getExtension('WEBGL_compressed_texture_etc1')),
+    pvrtc: !!(gl.getExtension('WEBGL_compressed_texture_pvrtc') || gl.getExtension('WEBKIT_WEBGL_compressed_texture_pvrtc')),
+  }
+
+  const constrained = maxTextureSize < 4096 || maxRenderbufferSize < 4096 || maxTextureImageUnits < 8
+  let tier = 'desktop'
+  if (touchHeavy || smallViewport || likelyMobileSafari) {
+    if (!webgl2 || constrained || reducedMotion || (smallViewport && likelyMobileSafari)) tier = 'mobileLow'
+    else if (maxTextureSize < 8192 || maxTextureImageUnits < 16 || display.width < 430) tier = 'mobileMedium'
+    else tier = 'mobileHigh'
+  }
+
+  const presets = {
+    desktop: {
+      dprCap: 2.0, dprFloor: 1.0, targetFps: 60, antialias: true, shadows: true,
+      particleCount: 1100, textureScale: 1, animationIntensity: reducedMotion ? 0 : 1,
+      decorativeEffects: !reducedMotion, hoverRaycast: true, tickerFrameMod: 1, powerPreference: 'high-performance',
+    },
+    mobileHigh: {
+      dprCap: 1.5, dprFloor: 0.9, targetFps: 45, antialias: false, shadows: false,
+      particleCount: 420, textureScale: 0.75, animationIntensity: reducedMotion ? 0 : 0.75,
+      decorativeEffects: !reducedMotion, hoverRaycast: false, tickerFrameMod: 3, powerPreference: 'default',
+    },
+    mobileMedium: {
+      dprCap: 1.25, dprFloor: 0.85, targetFps: 30, antialias: false, shadows: false,
+      particleCount: 260, textureScale: 0.5, animationIntensity: reducedMotion ? 0 : 0.55,
+      decorativeEffects: !reducedMotion, hoverRaycast: false, tickerFrameMod: 4, powerPreference: 'low-power',
+    },
+    mobileLow: {
+      dprCap: 1.0, dprFloor: 0.85, targetFps: 30, antialias: false, shadows: false,
+      particleCount: 140, textureScale: 0.375, animationIntensity: reducedMotion ? 0 : 0.35,
+      decorativeEffects: false, hoverRaycast: false, tickerFrameMod: 6, powerPreference: 'low-power',
+    },
+  }
+
+  return {
+    tier,
+    webgl2: !!webgl2,
+    webgl1: !webgl2 && !!webgl1,
+    maxTextureSize,
+    maxRenderbufferSize,
+    maxTextureImageUnits,
+    compressedTextures,
+    coarsePointer,
+    touchHeavy,
+    smallViewport,
+    reducedMotion,
+    likelyMobileSafari,
+    isMobileTier: tier.startsWith('mobile'),
+    frameMs: 1000 / presets[tier].targetFps,
+    ...presets[tier],
+  }
+}
+
+const GRAPHICS_PROFILE = buildGraphicsProfile()
+const IS_MOBILE = GRAPHICS_PROFILE.isMobileTier
+const PREFERS_REDUCED_MOTION = GRAPHICS_PROFILE.reducedMotion
+let currentDpr = 1
+let decorativeAnimationScale = GRAPHICS_PROFILE.decorativeEffects ? 1 : 0.55
+
+function updateQualityClasses(profile) {
+  document.body.classList.toggle('is-mobile', profile.isMobileTier)
+  document.body.classList.toggle('quality-desktop', profile.tier === 'desktop')
+  document.body.classList.toggle('quality-mobile-high', profile.tier === 'mobileHigh')
+  document.body.classList.toggle('quality-mobile-medium', profile.tier === 'mobileMedium')
+  document.body.classList.toggle('quality-mobile-low', profile.tier === 'mobileLow')
+  document.body.classList.toggle('quality-reduced-motion', profile.reducedMotion)
+  document.body.classList.toggle('webgl-fallback', profile.tier === 'fallback')
+}
+
+function getEffectiveDpr(profile, overrideCap = profile.dprCap) {
+  const raw = window.devicePixelRatio || 1
+  return THREE.MathUtils.clamp(Math.min(raw, overrideCap), profile.dprFloor || 0.85, overrideCap || 1)
+}
+
+updateQualityClasses(GRAPHICS_PROFILE)
+if (GRAPHICS_PROFILE.tier === 'fallback') {
+  const e = new Error('WebGL is not available.')
+  showError(e)
+  throw e
+}
+if (isDevelopmentHost()) console.info('[cyberfolio] graphics profile', GRAPHICS_PROFILE)
 
 /* ─── Theme config ────────────────────────────────────────────────── */
 const THEMES = {
@@ -115,32 +261,63 @@ function applyTheme(name) {
 }
 
 /* ─── Renderer / scene / camera ──────────────────────────────────── */
-const IS_MOBILE = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent)
-  || (navigator.maxTouchPoints > 1 && window.innerWidth < 1024)
-if (IS_MOBILE) document.body.classList.add('is-mobile')
-
-const renderer = new THREE.WebGLRenderer({
-  canvas,
-  antialias: !IS_MOBILE,
-  alpha: true,
-  powerPreference: IS_MOBILE ? 'default' : 'high-performance'
-})
-renderer.setPixelRatio(IS_MOBILE ? Math.min(window.devicePixelRatio, 1.0) : Math.min(window.devicePixelRatio, 2))
-renderer.setSize(window.innerWidth, window.innerHeight)
+let renderer
+try {
+  renderer = new THREE.WebGLRenderer({
+    canvas,
+    antialias: GRAPHICS_PROFILE.antialias,
+    alpha: true, // The CSS background and fixed overlays remain part of the visual identity.
+    depth: true,
+    stencil: false,
+    preserveDrawingBuffer: false,
+    powerPreference: GRAPHICS_PROFILE.powerPreference,
+    failIfMajorPerformanceCaveat: false,
+  })
+} catch (e) {
+  showError(e)
+  throw e
+}
+currentDpr = getEffectiveDpr(GRAPHICS_PROFILE)
+renderer.setPixelRatio(currentDpr)
 renderer.outputColorSpace = THREE.SRGBColorSpace
 renderer.toneMapping = THREE.ACESFilmicToneMapping
 renderer.toneMappingExposure = 1.18
-renderer.shadowMap.enabled = !IS_MOBILE
-if (!IS_MOBILE) renderer.shadowMap.type = THREE.PCFSoftShadowMap
+renderer.shadowMap.enabled = GRAPHICS_PROFILE.shadows
+if (GRAPHICS_PROFILE.shadows) renderer.shadowMap.type = THREE.PCFSoftShadowMap
 
 /* ─── Context loss + visibility recovery ──────────────────────── */
 let animFrameId = null
+let contextLost = false
+let attemptedContextReload = sessionStorage.getItem('cf-context-reload-attempted') === '1'
+function setLoaderStatus(text) {
+  loaderEl.classList.remove('is-hidden')
+  loaderEl.style.opacity = ''
+  loaderEl.style.visibility = ''
+  loaderEl.style.pointerEvents = ''
+  loaderStep.textContent = text
+  loaderBar.style.width = '100%'
+}
+canvas.addEventListener('webglcontextcreationerror', e => {
+  showError(new Error(e.statusMessage || 'WebGL context creation failed.'))
+}, false)
 canvas.addEventListener('webglcontextlost', e => {
   e.preventDefault()
+  contextLost = true
   if (animFrameId) { cancelAnimationFrame(animFrameId); animFrameId = null }
+  setLoaderStatus('Graphics context paused. Restoring...')
 }, false)
 canvas.addEventListener('webglcontextrestored', () => {
-  animFrameId = requestAnimationFrame(animate)
+  contextLost = false
+  if (!attemptedContextReload) {
+    attemptedContextReload = true
+    sessionStorage.setItem('cf-context-reload-attempted', '1')
+    setLoaderStatus('Graphics context restored. Rebuilding scene...')
+    window.location.reload()
+    return
+  }
+  sessionStorage.removeItem('cf-context-reload-attempted')
+  if (!animFrameId) animFrameId = requestAnimationFrame(animate)
+  loaderEl.classList.add('is-hidden')
 }, false)
 document.addEventListener('visibilitychange', () => {
   if (document.hidden) {
@@ -152,7 +329,8 @@ document.addEventListener('visibilitychange', () => {
 
 const scene = new THREE.Scene()
 scene.fog = new THREE.FogExp2(0x02060f, 0.022)
-const camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 0.1, 240)
+const initialDisplaySize = getDisplaySize()
+const camera = new THREE.PerspectiveCamera(40, initialDisplaySize.width / initialDisplaySize.height, 0.1, 240)
 camera.position.set(0, 5.6, 16.5)
 const desiredCam = camera.position.clone()
 const desiredTgt = new THREE.Vector3(0, 1.6, 0)
@@ -160,6 +338,30 @@ const targetLook = desiredTgt.clone()
 
 const root = new THREE.Group()
 scene.add(root)
+
+let lastRenderWidth = 0
+let lastRenderHeight = 0
+let resizeRaf = 0
+let resizingForDpr = false
+function resizeRendererToDisplaySize(force = false) {
+  if (!renderer || contextLost) return false
+  const { width, height } = getDisplaySize()
+  if (!force && width === lastRenderWidth && height === lastRenderHeight) return false
+  lastRenderWidth = width
+  lastRenderHeight = height
+  renderer.setSize(width, height, false)
+  camera.aspect = width / height
+  camera.updateProjectionMatrix()
+  return true
+}
+function scheduleResize(force = false) {
+  if (resizeRaf) cancelAnimationFrame(resizeRaf)
+  resizeRaf = requestAnimationFrame(() => {
+    resizeRaf = 0
+    resizeRendererToDisplaySize(force)
+  })
+}
+resizeRendererToDisplaySize(true)
 
 /* ─── Materials ───────────────────────────────────────────────────── */
 const M = {
@@ -175,6 +377,96 @@ const M = {
 
 /* ─── Helpers ─────────────────────────────────────────────────────── */
 const mc = (w, h) => { const c = document.createElement('canvas'); c.width = w; c.height = h; return c }
+function tierValue(desktop, mobileHigh = desktop, mobileMedium = mobileHigh, mobileLow = mobileMedium) {
+  if (GRAPHICS_PROFILE.tier === 'mobileLow') return mobileLow
+  if (GRAPHICS_PROFILE.tier === 'mobileMedium') return mobileMedium
+  if (GRAPHICS_PROFILE.tier === 'mobileHigh') return mobileHigh
+  return desktop
+}
+const SCENE_BUDGET = {
+  torusRadial: tierValue(12, 10, 8, 6),
+  torusTubular: tierValue(96, 64, 40, 24),
+  ringSegments: tierValue(96, 72, 48, 28),
+  circleSegments: tierValue(96, 72, 48, 32),
+  cylinderHigh: tierValue(64, 48, 32, 18),
+  cylinderMedium: tierValue(24, 18, 14, 10),
+  sphereSegments: tierValue(24, 16, 10, 8),
+  sphereTinySegments: tierValue(12, 10, 8, 6),
+  icoDetail: tierValue(2, 1, 0, 0),
+  coreDetail: tierValue(1, 1, 0, 0),
+  networkPoints: tierValue(40, 28, 18, 10),
+  decorativeUpdateEvery: tierValue(1, 1, 2, 4),
+  tickerUpdateEvery: GRAPHICS_PROFILE.tickerFrameMod,
+}
+const DECOR = {
+  drone: GRAPHICS_PROFILE.tier !== 'mobileLow',
+  wallPanels: GRAPHICS_PROFILE.tier !== 'mobileLow',
+  beacons: tierValue(4, 4, 2, 0),
+  panelHalos: GRAPHICS_PROFILE.tier !== 'mobileLow',
+  monitorHalos: GRAPHICS_PROFILE.tier !== 'mobileLow',
+  steam: GRAPHICS_PROFILE.tier === 'desktop' || GRAPHICS_PROFILE.tier === 'mobileHigh',
+  coreMotes: tierValue(12, 4, 2, 0),
+  networkMotes: tierValue(3, 1, 0, 0),
+  animatedWobble: !GRAPHICS_PROFILE.coarsePointer && GRAPHICS_PROFILE.tier !== 'mobileLow',
+}
+const animatedObjects = []
+const sceneResources = new Set()
+const textureResources = new Set()
+function registerAnimated(target, update, { decorative = false, every = 1 } = {}) {
+  animatedObjects.push({ target, update, decorative, every: Math.max(1, every | 0), frame: 0 })
+  return target
+}
+function trackResource(resource) {
+  if (resource) sceneResources.add(resource)
+  return resource
+}
+function matBasic(options) { return trackResource(new THREE.MeshBasicMaterial(options)) }
+function matStandard(options) { return trackResource(new THREE.MeshStandardMaterial(options)) }
+function matPhysical(options) { return trackResource(new THREE.MeshPhysicalMaterial(options)) }
+function geometry(resource) { return trackResource(resource) }
+function disposeMaterial(material) {
+  if (!material) return
+  if (Array.isArray(material)) { material.forEach(disposeMaterial); return }
+  for (const value of Object.values(material)) {
+    if (value?.isTexture) value.dispose()
+  }
+  material.dispose?.()
+}
+function disposeObject3D(object) {
+  object.traverse(o => {
+    o.geometry?.dispose?.()
+    disposeMaterial(o.material)
+  })
+}
+function disposeSceneResources() {
+  sceneResources.forEach(resource => resource.dispose?.())
+  sceneResources.clear()
+  textureResources.forEach(texture => texture.dispose?.())
+  textureResources.clear()
+}
+function profileTextureSize(w, h, min = 192) {
+  const scale = GRAPHICS_PROFILE.textureScale || 1
+  const nextEven = (v) => Math.max(min, Math.round(v * scale / 2) * 2)
+  return [nextEven(w), nextEven(h)]
+}
+function cylGeo(top, bottom, height, radial = SCENE_BUDGET.cylinderMedium, heightSegments = 1, openEnded = false) {
+  return geometry(new THREE.CylinderGeometry(top, bottom, height, radial, heightSegments, openEnded))
+}
+function torusGeo(radius, tube, radial = SCENE_BUDGET.torusRadial, tubular = SCENE_BUDGET.torusTubular) {
+  return geometry(new THREE.TorusGeometry(radius, tube, radial, tubular))
+}
+function sphereGeo(radius, width = SCENE_BUDGET.sphereSegments, height = width) {
+  return geometry(new THREE.SphereGeometry(radius, width, height))
+}
+function icoGeo(radius, detail = SCENE_BUDGET.icoDetail) {
+  return geometry(new THREE.IcosahedronGeometry(radius, detail))
+}
+function circleGeo(radius, segments = SCENE_BUDGET.circleSegments) {
+  return geometry(new THREE.CircleGeometry(radius, segments))
+}
+function ringGeo(inner, outer, segments = SCENE_BUDGET.ringSegments) {
+  return geometry(new THREE.RingGeometry(inner, outer, segments))
+}
 function rr(ctx, x, y, w, h, r) {
   ctx.beginPath(); ctx.moveTo(x + r, y)
   ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r)
@@ -184,7 +476,9 @@ function ctex(c) {
   const t = new THREE.CanvasTexture(c)
   t.colorSpace = THREE.SRGBColorSpace
   t.anisotropy = IS_MOBILE ? 1 : renderer.capabilities.getMaxAnisotropy()
-  t.needsUpdate = true; return t
+  t.needsUpdate = true
+  textureResources.add(t)
+  return t
 }
 
 /* ─── Theme-aware canvas colors ───────────────────────────────────── */
@@ -210,32 +504,37 @@ const panelRepainters = []
 
 /* ─── Procedural panel art ────────────────────────────────────────── */
 function panelArt(kind, title, accent) {
-  const c = mc(1024, 640), ctx = c.getContext('2d'), tex = ctex(c)
+  const [tw, th] = profileTextureSize(1024, 640, IS_MOBILE ? 256 : 512)
+  const c = mc(tw, th), ctx = c.getContext('2d'), tex = ctex(c)
+  const pc = { width: 1024, height: 640 }
   function repaint() {
     const col = getCanvasColors()
     ctx.clearRect(0, 0, c.width, c.height)
-    const grad = ctx.createLinearGradient(0, 0, c.width, c.height)
+    ctx.save()
+    ctx.scale(c.width / pc.width, c.height / pc.height)
+    const grad = ctx.createLinearGradient(0, 0, pc.width, pc.height)
     if (col.isLight) {
       grad.addColorStop(0, col.bg); grad.addColorStop(0.55, col.bg2); grad.addColorStop(1, col.bg)
     } else {
       grad.addColorStop(0, '#06121f'); grad.addColorStop(0.55, '#070d18'); grad.addColorStop(1, '#0c0a1f')
     }
-    ctx.fillStyle = grad; ctx.fillRect(0, 0, c.width, c.height)
+    ctx.fillStyle = grad; ctx.fillRect(0, 0, pc.width, pc.height)
     ctx.strokeStyle = col.grid; ctx.lineWidth = 1
-    for (let x = 0; x < c.width; x += 32) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, c.height); ctx.stroke() }
-    for (let y = 0; y < c.height; y += 32) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(c.width, y); ctx.stroke() }
-    ctx.fillStyle = col.row; rr(ctx, 24, 24, c.width - 48, 56, 14); ctx.fill()
+    for (let x = 0; x < pc.width; x += 32) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, pc.height); ctx.stroke() }
+    for (let y = 0; y < pc.height; y += 32) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(pc.width, y); ctx.stroke() }
+    ctx.fillStyle = col.row; rr(ctx, 24, 24, pc.width - 48, 56, 14); ctx.fill()
     ctx.fillStyle = accent; ctx.font = '700 22px Inter, Arial, sans-serif'
     ctx.fillText(title.toUpperCase(), 44, 60)
     ctx.fillStyle = col.muted; ctx.font = '500 16px JetBrains Mono, monospace'
-    ctx.fillText('NODE / LIVE / v2.7', c.width - 240, 60)
+    ctx.fillText('NODE / LIVE / v2.7', pc.width - 240, 60)
     ctx.strokeStyle = accent; ctx.globalAlpha = 0.75; ctx.lineWidth = 2
-    rr(ctx, 14, 14, c.width - 28, c.height - 28, 22); ctx.stroke(); ctx.globalAlpha = 1
-    if (kind === 'core') drawCore(ctx, c, accent, col)
-    else if (kind === 'ir') drawIR(ctx, c, col)
-    else if (kind === 'cloud') drawCloud(ctx, c, accent, col)
-    else if (kind === 'ai') drawAI(ctx, c, accent, col)
-    else drawWriteups(ctx, c, accent, col)
+    rr(ctx, 14, 14, pc.width - 28, pc.height - 28, 22); ctx.stroke(); ctx.globalAlpha = 1
+    if (kind === 'core') drawCore(ctx, pc, accent, col)
+    else if (kind === 'ir') drawIR(ctx, pc, col)
+    else if (kind === 'cloud') drawCloud(ctx, pc, accent, col)
+    else if (kind === 'ai') drawAI(ctx, pc, accent, col)
+    else drawWriteups(ctx, pc, accent, col)
+    ctx.restore()
     tex.needsUpdate = true
   }
   repaint()
@@ -350,7 +649,8 @@ function drawWriteups(ctx, c, accent, col) {
 
 /* ─── Animated ticker ─────────────────────────────────────────────── */
 function tickerScreen(label, accent, handle = '', stat = '') {
-  const c = mc(512, 320), ctx = c.getContext('2d'), tex = ctex(c)
+  const [tw, th] = profileTextureSize(512, 320, IS_MOBILE ? 160 : 256)
+  const c = mc(tw, th), ctx = c.getContext('2d'), tex = ctex(c)
   const pk = label.toLowerCase()
   let frame = 0
 
@@ -408,16 +708,16 @@ function tickerScreen(label, accent, handle = '', stat = '') {
       frame++
       const col = getCanvasColors()
       ctx.fillStyle = col.bg; ctx.fillRect(0, 0, c.width, c.height)
-      ctx.fillStyle = accent; ctx.font = '700 14px JetBrains Mono, monospace'
+      ctx.fillStyle = accent; ctx.font = `700 ${Math.max(10, c.width * 0.027)}px JetBrains Mono, monospace`
       ctx.textAlign = 'left'; ctx.fillText(label.toUpperCase(), 14, 22)
-      ctx.fillStyle = col.muted; ctx.font = '500 10px JetBrains Mono, monospace'
+      ctx.fillStyle = col.muted; ctx.font = `500 ${Math.max(8, c.width * 0.02)}px JetBrains Mono, monospace`
       ctx.textAlign = 'right'; ctx.fillText(String(frame).padStart(6, '0'), c.width - 14, 22)
       ctx.textAlign = 'left'
-      drawLogo(c.width / 2, 118, 80)
-      ctx.fillStyle = col.ink; ctx.font = '600 15px Inter, Arial, sans-serif'
-      ctx.textAlign = 'center'; ctx.fillText(handle, c.width / 2, 198)
-      ctx.fillStyle = accent; ctx.font = '500 11px JetBrains Mono, monospace'
-      ctx.fillText(stat, c.width / 2, 215)
+      drawLogo(c.width / 2, c.height * 0.37, Math.min(80, c.width * 0.16))
+      ctx.fillStyle = col.ink; ctx.font = `600 ${Math.max(10, c.width * 0.029)}px Inter, Arial, sans-serif`
+      ctx.textAlign = 'center'; ctx.fillText(handle, c.width / 2, c.height * 0.62)
+      ctx.fillStyle = accent; ctx.font = `500 ${Math.max(8, c.width * 0.021)}px JetBrains Mono, monospace`
+      ctx.fillText(stat, c.width / 2, c.height * 0.67)
       ctx.textAlign = 'left'
       ctx.strokeStyle = accent; ctx.globalAlpha = 0.2; ctx.lineWidth = 1
       ctx.beginPath(); ctx.moveTo(14, 230); ctx.lineTo(c.width - 14, 230); ctx.stroke()
@@ -450,16 +750,18 @@ function plinth() {
   const inset = new THREE.Mesh(new THREE.CylinderGeometry(6.8, 6.8, 0.02, 64),
     new THREE.MeshStandardMaterial({ color: 0x06121f, roughness: 0.85, metalness: 0.18 }))
   inset.position.y = -1.0; inset.receiveShadow = true; g.add(inset)
-  const gc = mc(1024, 1024), x = gc.getContext('2d')
-  x.fillStyle = '#06121f'; x.fillRect(0, 0, 1024, 1024)
+  const [gw, gh] = profileTextureSize(1024, 1024, IS_MOBILE ? 256 : 512)
+  const gc = mc(gw, gh), x = gc.getContext('2d')
+  const gs = gc.width
+  x.fillStyle = '#06121f'; x.fillRect(0, 0, gs, gs)
   x.strokeStyle = 'rgba(110,231,255,0.30)'; x.lineWidth = 2
   for (let i = 0; i <= 32; i++) {
-    const v = (i / 32) * 1024
-    x.beginPath(); x.moveTo(v, 0); x.lineTo(v, 1024); x.stroke()
-    x.beginPath(); x.moveTo(0, v); x.lineTo(1024, v); x.stroke()
+    const v = (i / 32) * gs
+    x.beginPath(); x.moveTo(v, 0); x.lineTo(v, gs); x.stroke()
+    x.beginPath(); x.moveTo(0, v); x.lineTo(gs, v); x.stroke()
   }
   x.strokeStyle = 'rgba(167,139,250,0.55)'; x.lineWidth = 4
-  for (const r of [220, 360, 480]) { x.beginPath(); x.arc(512, 512, r, 0, Math.PI * 2); x.stroke() }
+  for (const r of [0.215, 0.352, 0.469]) { x.beginPath(); x.arc(gs / 2, gs / 2, gs * r, 0, Math.PI * 2); x.stroke() }
   const gm = new THREE.Mesh(new THREE.CircleGeometry(6.6, 96),
     new THREE.MeshBasicMaterial({ map: ctex(gc), transparent: true, opacity: 0.85 }))
   gm.rotation.x = -Math.PI / 2; gm.position.y = -0.985; g.add(gm)
@@ -479,14 +781,15 @@ function securityCore() {
   ped.position.y = -1.05; ped.castShadow = true; g.add(ped)
   const pr = new THREE.Mesh(new THREE.TorusGeometry(0.92, 0.03, 10, 64), M.cyan)
   pr.rotation.x = -Math.PI / 2; pr.position.y = -0.86; g.add(pr)
-  const inner = new THREE.Mesh(new THREE.IcosahedronGeometry(0.78, IS_MOBILE ? 0 : 1),
+  const lowGeo = GRAPHICS_PROFILE.tier === 'mobileLow' || GRAPHICS_PROFILE.tier === 'mobileMedium'
+  const inner = new THREE.Mesh(new THREE.IcosahedronGeometry(0.78, lowGeo ? 0 : 1),
     new THREE.MeshStandardMaterial({ color: 0xc4f5ff, emissive: 0x22d3ee, emissiveIntensity: 1.4, roughness: 0.18, metalness: 0.32 }))
   g.add(inner)
-  const shell = new THREE.Mesh(new THREE.IcosahedronGeometry(1.45, IS_MOBILE ? 0 : 1),
+  const shell = new THREE.Mesh(new THREE.IcosahedronGeometry(1.45, lowGeo ? 0 : 1),
     new THREE.MeshBasicMaterial({ color: 0x6ee7ff, wireframe: true, transparent: true, opacity: 0.55 }))
   g.add(shell)
   // MeshPhysicalMaterial with transmission requires an extra render pass — skip on mobile
-  const dome = new THREE.Mesh(new THREE.IcosahedronGeometry(2.0, IS_MOBILE ? 0 : 2),
+  const dome = new THREE.Mesh(new THREE.IcosahedronGeometry(2.0, lowGeo ? 0 : 2),
     IS_MOBILE
       ? new THREE.MeshBasicMaterial({ color: 0x5fc3ff, transparent: true, opacity: 0.06, side: THREE.DoubleSide, depthWrite: false })
       : new THREE.MeshPhysicalMaterial({ color: 0x5fc3ff, transparent: true, opacity: 0.10, transmission: 0.6,
@@ -499,7 +802,8 @@ function securityCore() {
     r.rotation.x = (i + 1) * 0.7; r.rotation.y = i * 0.5; g.add(r); rings.push(r)
   }
   const motes = []
-  for (let i = 0; i < (IS_MOBILE ? 4 : 12); i++) {
+  const moteCount = GRAPHICS_PROFILE.tier === 'mobileLow' ? 2 : IS_MOBILE ? 4 : 12
+  for (let i = 0; i < moteCount; i++) {
     const m = new THREE.Mesh(new THREE.SphereGeometry(0.05, IS_MOBILE ? 6 : 12, IS_MOBILE ? 6 : 12),
       new THREE.MeshBasicMaterial({ color: i % 3 === 0 ? 0xfb7185 : 0x6ee7ff }))
     m.userData = { theta: Math.random() * Math.PI * 2, r: 1.7 + Math.random() * 0.45, speed: 0.4 + Math.random() * 0.7 }
@@ -515,12 +819,13 @@ function securityCore() {
   }
   interactive.push(inner)
   g.userData.animate = (t) => {
-    inner.rotation.y = t * 0.4; inner.rotation.x = Math.sin(t * 0.6) * 0.3
+    const q = GRAPHICS_PROFILE.animationIntensity * decorativeAnimationScale
+    inner.rotation.y = t * 0.4 * q; inner.rotation.x = Math.sin(t * 0.6) * 0.3 * q
     inner.material.emissiveIntensity = 1.2 + Math.sin(t * 2.2) * 0.3
     shell.rotation.y = -t * 0.22; shell.rotation.z = t * 0.12
-    rings.forEach((r, i) => { r.rotation.x += 0.002 * (i + 1); r.rotation.y += 0.003 * (i + 1) })
+    rings.forEach((r, i) => { r.rotation.x += 0.002 * (i + 1) * q; r.rotation.y += 0.003 * (i + 1) * q })
     motes.forEach((m, i) => {
-      m.userData.theta += 0.01 * m.userData.speed
+      m.userData.theta += 0.01 * m.userData.speed * q
       m.position.set(Math.cos(m.userData.theta) * m.userData.r,
         Math.sin(t * m.userData.speed + i) * 0.5,
         Math.sin(m.userData.theta) * m.userData.r)
@@ -619,10 +924,12 @@ function workstation() {
     tkFrame++
     // On mobile: only push ticker textures to GPU every 4th frame (~15fps) to save GPU bandwidth.
     // On desktop: every frame for smooth animated waveform.
-    if (!IS_MOBILE || tkFrame % 4 === 0) tickers.forEach(tk => tk.paint())
-    steam.material.opacity = 0.04 + Math.sin(t * 1.2) * 0.025
-    steam.position.y = 0.95 + Math.sin(t * 0.8) * 0.04
+    if (!PREFERS_REDUCED_MOTION && (!IS_MOBILE || tkFrame % GRAPHICS_PROFILE.tickerFrameMod === 0)) tickers.forEach(tk => tk.paint())
+    const q = GRAPHICS_PROFILE.animationIntensity * decorativeAnimationScale
+    steam.material.opacity = (0.04 + Math.sin(t * 1.2) * 0.025) * q
+    steam.position.y = 0.95 + Math.sin(t * 0.8) * 0.04 * q
   }
+  tickers.forEach(tk => tk.paint())
   root.add(g)
 }
 
@@ -673,9 +980,10 @@ function holoPanel({ key, title, subtitle, position, rotation, accent, kind }) {
   }
   g.userData.halo = halo; g.userData.trim = trim; g.userData.trimFront = trimFront; g.userData.key = key
   g.userData.animate = (t) => {
-    g.position.y = position.y + Math.sin(t * 1.0 + position.x) * 0.04
-    halo.material.opacity = 0.08 + Math.sin(t * 1.4 + position.x) * 0.025
-    trimFront.opacity = 0.45 + Math.sin(t * 1.8 + position.z) * 0.10
+    const q = GRAPHICS_PROFILE.animationIntensity * decorativeAnimationScale
+    g.position.y = position.y + Math.sin(t * 1.0 + position.x) * 0.04 * q
+    halo.material.opacity = 0.08 + Math.sin(t * 1.4 + position.x) * 0.025 * q
+    trimFront.opacity = 0.45 + Math.sin(t * 1.8 + position.z) * 0.10 * q
   }
   routeTargets.set(key, position.clone()); root.add(g)
 }
@@ -693,8 +1001,9 @@ function beacon(x, z, color) {
     new THREE.MeshBasicMaterial({ color: new THREE.Color(color) }))
   ring.rotation.x = -Math.PI / 2; ring.position.y = 0.07; g.add(ring)
   g.userData.animate = (t) => {
-    orb.material.emissiveIntensity = 1.0 + Math.sin(t * 2.4 + x) * 0.4
-    g.position.y = -0.95 + Math.sin(t * 1.6 + z) * 0.02
+    const q = GRAPHICS_PROFILE.animationIntensity * decorativeAnimationScale
+    orb.material.emissiveIntensity = 1.0 + Math.sin(t * 2.4 + x) * 0.4 * q
+    g.position.y = -0.95 + Math.sin(t * 1.6 + z) * 0.02 * q
   }
   root.add(g)
 }
@@ -746,7 +1055,8 @@ function networkBusBuild(panels) {
     const pts = curve.getPoints(40)
     const geo = new THREE.BufferGeometry().setFromPoints(pts)
     root.add(new THREE.Line(geo, new THREE.LineBasicMaterial({ color: 0x6ee7ff, transparent: true, opacity: 0.22 })))
-    for (let i = 0; i < (IS_MOBILE ? 1 : 3); i++) {
+    const busMotes = GRAPHICS_PROFILE.tier === 'mobileLow' ? 0 : IS_MOBILE ? 1 : 3
+    for (let i = 0; i < busMotes; i++) {
       const m = new THREE.Mesh(new THREE.SphereGeometry(0.05, IS_MOBILE ? 6 : 12, IS_MOBILE ? 6 : 12), new THREE.MeshBasicMaterial({ color: 0xa78bfa }))
       m.userData = { curve, t: (i / 3) + Math.random() * 0.05, speed: 0.18 + Math.random() * 0.18 }
       root.add(m); motes.push(m)
@@ -763,7 +1073,7 @@ function networkBusBuild(panels) {
 
 /* ─── Particles ───────────────────────────────────────────────────── */
 function particles() {
-  const n = IS_MOBILE ? 220 : 1100
+  const n = GRAPHICS_PROFILE.particleCount
   const pos = new Float32Array(n * 3), col = new Float32Array(n * 3)
   for (let i = 0; i < n; i++) {
     const i3 = i * 3, r = 8 + Math.random() * 18, a = Math.random() * Math.PI * 2
@@ -777,7 +1087,11 @@ function particles() {
   g.setAttribute('color', new THREE.BufferAttribute(col, 3))
   const pts = new THREE.Points(g, new THREE.PointsMaterial({ size: 0.04, vertexColors: true, transparent: true,
     opacity: 0.85, blending: THREE.AdditiveBlending, depthWrite: false }))
-  pts.userData.animate = (t) => { pts.rotation.y = t * 0.012; pts.rotation.x = Math.sin(t * 0.1) * 0.014 }
+  pts.userData.animate = (t) => {
+    const q = GRAPHICS_PROFILE.animationIntensity * decorativeAnimationScale
+    pts.rotation.y = t * 0.012 * q
+    pts.rotation.x = Math.sin(t * 0.1) * 0.014 * q
+  }
   scene.add(pts)
 }
 
@@ -787,8 +1101,9 @@ function lights() {
   const k = new THREE.PointLight(0x6ee7ff, 6.2, 50); k.position.set(-7, 9, 6); scene.add(k); sceneL.key = k
   const r = new THREE.PointLight(0xa78bfa, 5.0, 42); r.position.set(8, 6, -8); scene.add(r); sceneL.fill = r
   const rd = new THREE.PointLight(0xfb7185, 2.6, 30); rd.position.set(-4, 2, 6); scene.add(rd); sceneL.rose = rd
-  const d = new THREE.DirectionalLight(0xffffff, 1.0); d.position.set(2, 12, 5); d.castShadow = true
-  d.shadow.mapSize.set(1024, 1024); d.shadow.camera.near = 1; d.shadow.camera.far = 40
+  const d = new THREE.DirectionalLight(0xffffff, 1.0); d.position.set(2, 12, 5); d.castShadow = GRAPHICS_PROFILE.shadows
+  const shadowSize = GRAPHICS_PROFILE.tier === 'desktop' ? 1024 : 512
+  d.shadow.mapSize.set(shadowSize, shadowSize); d.shadow.camera.near = 1; d.shadow.camera.far = 40
   d.shadow.camera.left = -12; d.shadow.camera.right = 12; d.shadow.camera.top = 12; d.shadow.camera.bottom = -12
   scene.add(d); sceneL.sun = d
   const u = new THREE.PointLight(0x22d3ee, 1.6, 12); u.position.set(0, -0.6, 0); scene.add(u); sceneL.under = u
@@ -1333,7 +1648,7 @@ backBtn.addEventListener('click', returnToCommandCentre)
 
 /* ─── Hover + click interaction ──────────────────────────────────── */
 const pointer = new THREE.Vector2(), raycaster = new THREE.Raycaster()
-let hovered = null, isDragging = false, lastX = 0, lastY = 0
+let hovered = null, isDragging = false, didDrag = false, lastX = 0, lastY = 0, lastHoverRaycastAt = 0
 let parX = 0, parY = 0, tparX = 0, tparY = 0
 
 function setHover(hit) {
@@ -1365,31 +1680,75 @@ function setHover(hit) {
   }
 }
 
-canvas.addEventListener('pointermove', (e) => {
+function updatePointerFromEvent(e) {
   const r = canvas.getBoundingClientRect()
   pointer.x = ((e.clientX - r.left) / r.width) * 2 - 1
   pointer.y = -((e.clientY - r.top) / r.height) * 2 + 1
+}
+
+function runRaycastHover(now = performance.now(), force = false) {
+  if (state.isTransitioning || (IS_MOBILE && !force)) return
+  if (!GRAPHICS_PROFILE.hoverRaycast && !force) return
+  if (GRAPHICS_PROFILE.coarsePointer && !force) return
+  if (!force && now - lastHoverRaycastAt < 80) return
+  lastHoverRaycastAt = now
+  raycaster.setFromCamera(pointer, camera)
+  const hits = raycaster.intersectObjects(interactive, false)
+  setHover(hits.length ? hits[0].object : null)
+}
+
+canvas.addEventListener('pointermove', (e) => {
+  updatePointerFromEvent(e)
   if (isDragging) {
-    tparY += (e.clientX - lastX) * 0.0028
-    tparX += (e.clientY - lastY) * 0.0014
+    const dx = e.clientX - lastX
+    const dy = e.clientY - lastY
+    if (Math.abs(dx) + Math.abs(dy) > 6) didDrag = true
+    tparY += dx * 0.0028
+    tparX += dy * 0.0014
     tparX = THREE.MathUtils.clamp(tparX, -0.22, 0.22)
     lastX = e.clientX; lastY = e.clientY
   } else {
-    tparY = ((e.clientX / window.innerWidth) - 0.5) * 0.18
-    tparX = ((e.clientY / window.innerHeight) - 0.5) * 0.10
+    const { width, height } = getDisplaySize()
+    tparY = ((e.clientX / width) - 0.5) * 0.18
+    tparX = ((e.clientY / height) - 0.5) * 0.10
   }
-  if (!state.isTransitioning) {
-    raycaster.setFromCamera(pointer, camera)
-    const hits = raycaster.intersectObjects(interactive, false)
-    setHover(hits.length ? hits[0].object : null)
+  runRaycastHover(e.timeStamp)
+}, { passive: true })
+
+canvas.addEventListener('pointerdown', (e) => {
+  isDragging = true
+  didDrag = false
+  lastX = e.clientX; lastY = e.clientY
+  updatePointerFromEvent(e)
+  if (canvas.setPointerCapture) {
+    try { canvas.setPointerCapture(e.pointerId) } catch {}
   }
 }, { passive: true })
 
-canvas.addEventListener('pointerdown', (e) => { isDragging = true; lastX = e.clientX; lastY = e.clientY })
-window.addEventListener('pointerup', () => { isDragging = false })
+function endPointer(e) {
+  if (canvas.releasePointerCapture && canvas.hasPointerCapture?.(e.pointerId)) {
+    try { canvas.releasePointerCapture(e.pointerId) } catch {}
+  }
+  isDragging = false
+}
+canvas.addEventListener('pointerup', endPointer, { passive: true })
+canvas.addEventListener('pointercancel', (e) => {
+  endPointer(e)
+  didDrag = false
+  setHover(null)
+}, { passive: true })
 
-canvas.addEventListener('click', () => {
+canvas.addEventListener('click', (e) => {
   if (state.isTransitioning) return
+  if (didDrag) {
+    didDrag = false
+    e.preventDefault()
+    return
+  }
+  if (IS_MOBILE || GRAPHICS_PROFILE.coarsePointer) {
+    updatePointerFromEvent(e)
+    runRaycastHover(performance.now(), true)
+  }
   if (hovered?.userData?.key) {
     const keyMap = { core: 'about', ai: 'resume' }
     const key = keyMap[hovered.userData.key] || hovered.userData.key
@@ -1405,7 +1764,7 @@ window.addEventListener('scroll', () => {
     state.heroDismissed = true
     document.body.classList.add('hero-dismissed')
   }
-  const max = document.body.scrollHeight - window.innerHeight
+  const max = document.body.scrollHeight - getDisplaySize().height
   const progress = max > 0 ? window.scrollY / max : 0
   const order = ['core', 'ir', 'cloud', 'ai', 'writeups', 'core']
   const seg = progress * (order.length - 1)
@@ -1436,13 +1795,9 @@ document.addEventListener('keydown', (e) => {
 })
 
 /* ─── Resize ──────────────────────────────────────────────────────── */
-window.addEventListener('resize', () => {
-  renderer.setSize(window.innerWidth, window.innerHeight)
-  camera.aspect = window.innerWidth / window.innerHeight
-  camera.updateProjectionMatrix()
-  const nowMobile = window.innerWidth < 1024 && navigator.maxTouchPoints > 1
-  renderer.setPixelRatio(nowMobile ? Math.min(window.devicePixelRatio, 1.0) : Math.min(window.devicePixelRatio, 2))
-})
+window.addEventListener('resize', () => scheduleResize(), { passive: true })
+window.addEventListener('orientationchange', () => scheduleResize(true), { passive: true })
+window.visualViewport?.addEventListener('resize', () => scheduleResize(), { passive: true })
 
 /* ─── Tweaks ──────────────────────────────────────────────────────── */
 const LENS_MODES = { diorama: { fov: 28 }, cinematic: { fov: 40 }, immersive: { fov: 62 } }
@@ -1471,18 +1826,70 @@ window.applyLens = function (mode) {
 /* ─── Render loop ─────────────────────────────────────────────────── */
 const clock = new THREE.Clock()
 let last = 0, vt = 0
-// Mobile 30fps cap: skip frames that arrive faster than ~33ms apart
-const MOBILE_FRAME_MS = IS_MOBILE ? 1000 / 30 : 0
-let mobileLastFrameTs = 0
+const FRAME_MS = 1000 / GRAPHICS_PROFILE.targetFps
+let lastFrameTs = 0
+const adaptiveQuality = {
+  ema: FRAME_MS,
+  overBudgetSince: 0,
+  stableSince: 0,
+  lastChange: 0,
+  dprCap: GRAPHICS_PROFILE.dprCap,
+}
+
+function setAdaptiveDpr(nextCap, reason) {
+  const cap = THREE.MathUtils.clamp(nextCap, GRAPHICS_PROFILE.dprFloor, GRAPHICS_PROFILE.dprCap)
+  const nextDpr = getEffectiveDpr(GRAPHICS_PROFILE, cap)
+  if (Math.abs(nextDpr - currentDpr) < 0.01) return
+  adaptiveQuality.dprCap = cap
+  currentDpr = nextDpr
+  resizingForDpr = true
+  renderer.setPixelRatio(currentDpr)
+  resizeRendererToDisplaySize(true)
+  resizingForDpr = false
+  if (isDevelopmentHost()) console.info(`[cyberfolio] DPR ${currentDpr.toFixed(2)} (${reason})`)
+}
+
+function updateAdaptiveQuality(now, frameMs) {
+  if (!IS_MOBILE || contextLost || resizingForDpr) return
+  adaptiveQuality.ema = adaptiveQuality.ema * 0.92 + frameMs * 0.08
+  const budget = GRAPHICS_PROFILE.frameMs
+  const tooSlow = adaptiveQuality.ema > budget * 1.22
+  const stable = adaptiveQuality.ema < budget * 0.86
+  if (tooSlow) {
+    if (!adaptiveQuality.overBudgetSince) adaptiveQuality.overBudgetSince = now
+    adaptiveQuality.stableSince = 0
+    if (now - adaptiveQuality.overBudgetSince > 1800 && now - adaptiveQuality.lastChange > 2500) {
+      decorativeAnimationScale = Math.max(0.35, decorativeAnimationScale - 0.2)
+      setAdaptiveDpr(adaptiveQuality.dprCap - 0.15, 'sustained frame budget pressure')
+      adaptiveQuality.lastChange = now
+      adaptiveQuality.overBudgetSince = 0
+    }
+  } else if (stable) {
+    if (!adaptiveQuality.stableSince) adaptiveQuality.stableSince = now
+    adaptiveQuality.overBudgetSince = 0
+    if (now - adaptiveQuality.stableSince > 18000 && now - adaptiveQuality.lastChange > 12000 && adaptiveQuality.dprCap < GRAPHICS_PROFILE.dprCap) {
+      decorativeAnimationScale = Math.min(1, decorativeAnimationScale + 0.1)
+      setAdaptiveDpr(adaptiveQuality.dprCap + 0.1, 'long stable frame budget')
+      adaptiveQuality.lastChange = now
+      adaptiveQuality.stableSince = 0
+    }
+  } else {
+    adaptiveQuality.overBudgetSince = 0
+    adaptiveQuality.stableSince = 0
+  }
+}
 
 function animate(now = 0) {
   animFrameId = requestAnimationFrame(animate)
-  // Throttle to 30fps on mobile to spare GPU
-  if (IS_MOBILE && now - mobileLastFrameTs < MOBILE_FRAME_MS) return
-  if (IS_MOBILE) mobileLastFrameTs = now
+  if (contextLost) return
+  if (now - lastFrameTs < FRAME_MS) return
+  const frameDeltaMs = lastFrameTs ? now - lastFrameTs : FRAME_MS
+  lastFrameTs = now
+  updateAdaptiveQuality(now, frameDeltaMs)
+  resizeRendererToDisplaySize()
   const t = clock.getElapsedTime(), dt = t - last; last = t
   const speed = window.TWEAKS ? (0.05 + (window.TWEAKS.motionSpeed / 100) * 1.9) : 1.0
-  vt += dt * speed
+  vt += dt * speed * GRAPHICS_PROFILE.animationIntensity
   parX = THREE.MathUtils.lerp(parX, tparX, 0.06)
   parY = THREE.MathUtils.lerp(parY, tparY, 0.06)
   const camTarget = desiredCam.clone()
@@ -1491,12 +1898,12 @@ function animate(now = 0) {
   targetLook.lerp(desiredTgt, 0.08)
   camera.lookAt(targetLook)
   scene.traverse(o => { if (o.userData?.animate) o.userData.animate(vt) })
-  if (networkBus) networkBus.update(Math.min(dt * speed, 0.05))
+  if (networkBus && GRAPHICS_PROFILE.animationIntensity > 0) networkBus.update(Math.min(dt * speed * decorativeAnimationScale, 0.05))
   for (const obj of interactive) {
     const g = obj.userData.group
     if (!g || g === hovered?.userData?.group) continue
     if (!g.userData._wob) g.userData._wob = Math.random() * Math.PI * 2
-    if (!state.focused) g.scale.setScalar(1 + Math.sin(vt * 1.6 + g.userData._wob) * 0.005)
+    if (!state.focused) g.scale.setScalar(1 + Math.sin(vt * 1.6 + g.userData._wob) * 0.005 * decorativeAnimationScale)
   }
   renderer.render(scene, camera)
 }
@@ -1524,6 +1931,7 @@ try {
   updateHUD('core')
   animFrameId = requestAnimationFrame(animate)
   applyTheme(activeTheme)
+  setTimeout(() => sessionStorage.removeItem('cf-context-reload-attempted'), 2500)
   if (window.TWEAKS) {
     window.applyEnergy(window.TWEAKS.sceneEnergy)
     window.applyLens(window.TWEAKS.lensMode)
