@@ -58,24 +58,6 @@ const THEMES = {
     lights:{key:{color:0x2a90e0,intensity:3.8},fill:{color:0x8888d8,intensity:2.8},rose:{color:0xc04060,intensity:1.4},under:{color:0x4090c0,intensity:1.2},sun:{color:0xe0f2ff,intensity:2.0}},
     mat:{hull:{color:0xb8d4ec},panel:{color:0xcce4f6},trim:{color:0xa0c8e4},rubber:{color:0x708090},steel:{color:0x7a90a8},cyan:{color:0x0e6aad,emissive:0x093a70,emissiveIntensity:0.55},violet:{color:0x4a3490,emissive:0x2e1f6a,emissiveIntensity:0.50},rose:{color:0xb02040,emissive:0x801030,emissiveIntensity:0.45}}
   },
-  'digital-sky': {
-    fog:0xd0e8f8, fogDensity:0.012, exposure:1.08,
-    ambient:{color:0xffffff,intensity:1.8},
-    lights:{key:{color:0x60a8d8,intensity:3.2},fill:{color:0xa0a8e0,intensity:2.4},rose:{color:0xd06080,intensity:1.2},under:{color:0x60a8c8,intensity:1.0},sun:{color:0xf0f8ff,intensity:2.2}},
-    mat:{hull:{color:0xc8dcea},panel:{color:0xdae8f2},trim:{color:0xb0c8dc},rubber:{color:0x8090a0},steel:{color:0x90a0b0},cyan:{color:0x2878b0,emissive:0x1050a0,emissiveIntensity:0.45},violet:{color:0x6858a8,emissive:0x402878,emissiveIntensity:0.40},rose:{color:0xc06070,emissive:0x904050,emissiveIntensity:0.38}}
-  },
-  'cyber-ice': {
-    fog:0xe0f6ff, fogDensity:0.010, exposure:1.12,
-    ambient:{color:0xffffff,intensity:2.0},
-    lights:{key:{color:0x80d8ff,intensity:4.0},fill:{color:0xa0b8ff,intensity:2.8},rose:{color:0xff8096,intensity:1.0},under:{color:0x60e8ff,intensity:1.4},sun:{color:0xffffff,intensity:2.5}},
-    mat:{hull:{color:0xd8eef8},panel:{color:0xe8f6ff},trim:{color:0xc0e0f4},rubber:{color:0x90a8b8},steel:{color:0xa8c0d0},cyan:{color:0x0090c8,emissive:0x0060a0,emissiveIntensity:0.60},violet:{color:0x4040c0,emissive:0x2020a0,emissiveIntensity:0.55},rose:{color:0xc02050,emissive:0x901030,emissiveIntensity:0.50}}
-  },
-  'neon-cyberpunk': {
-    fog:0x000510, fogDensity:0.025, exposure:1.35,
-    ambient:{color:0x100020,intensity:0.40},
-    lights:{key:{color:0x00ffff,intensity:8.0},fill:{color:0xff00ff,intensity:6.0},rose:{color:0xff0066,intensity:3.5},under:{color:0x00ff88,intensity:2.0},sun:{color:0xffffff,intensity:0.6}},
-    mat:{hull:{color:0x040408},panel:{color:0x060810},trim:{color:0x0a0820},rubber:{color:0x020204},steel:{color:0x202840},cyan:{color:0x00ffff,emissive:0x00cccc,emissiveIntensity:2.0},violet:{color:0xff00ff,emissive:0xcc00cc,emissiveIntensity:1.8},rose:{color:0xff0066,emissive:0xcc0044,emissiveIntensity:1.6}}
-  },
   'quantum-blue': {
     fog:0x020a28, fogDensity:0.020, exposure:1.25,
     ambient:{color:0x102060,intensity:0.65},
@@ -93,18 +75,6 @@ const THEMES = {
     ambient:{color:0x002200,intensity:0.45},
     lights:{key:{color:0x00ff41,intensity:6.0},fill:{color:0xffb000,intensity:3.0},rose:{color:0xff4400,intensity:1.8},under:{color:0x00cc33,intensity:1.4},sun:{color:0x80ff80,intensity:0.7}},
     mat:{hull:{color:0x010801},panel:{color:0x020c02},trim:{color:0x041404},rubber:{color:0x010201},steel:{color:0x182818},cyan:{color:0x00ff41,emissive:0x00cc33,emissiveIntensity:1.80},violet:{color:0xffb000,emissive:0xcc8800,emissiveIntensity:1.50},rose:{color:0xff4400,emissive:0xcc2800,emissiveIntensity:1.30}}
-  },
-  'aurora-tech': {
-    fog:0x030d1a, fogDensity:0.020, exposure:1.22,
-    ambient:{color:0x0a1535,intensity:0.50},
-    lights:{key:{color:0x00d4ff,intensity:6.5},fill:{color:0x9d4eff,intensity:5.0},rose:{color:0x00ff9d,intensity:2.5},under:{color:0x00b896,intensity:1.8},sun:{color:0xb0e0ff,intensity:0.9}},
-    mat:{hull:{color:0x060e20},panel:{color:0x081428},trim:{color:0x0c1c38},rubber:{color:0x040810},steel:{color:0x284060},cyan:{color:0x00d4ff,emissive:0x0090d0,emissiveIntensity:1.60},violet:{color:0x9d4eff,emissive:0x7030e0,emissiveIntensity:1.40},rose:{color:0x00ff9d,emissive:0x00cc80,emissiveIntensity:1.20}}
-  },
-  'arctic-network': {
-    fog:0xd4eef8, fogDensity:0.013, exposure:1.06,
-    ambient:{color:0xffffff,intensity:1.75},
-    lights:{key:{color:0x60b8e0,intensity:3.5},fill:{color:0x9898e0,intensity:2.5},rose:{color:0xe06080,intensity:1.2},under:{color:0x50c0e0,intensity:1.2},sun:{color:0xf0faff,intensity:2.3}},
-    mat:{hull:{color:0xbcd4e8},panel:{color:0xcce4f0},trim:{color:0xa8ccde},rubber:{color:0x788898},steel:{color:0x8898a8},cyan:{color:0x1888c0,emissive:0x0a5890,emissiveIntensity:0.58},violet:{color:0x5048a0,emissive:0x342878,emissiveIntensity:0.52},rose:{color:0xc03060,emissive:0x901040,emissiveIntensity:0.48}}
   }
 }
 
@@ -201,7 +171,7 @@ function ctex(c) {
 }
 
 /* ─── Theme-aware canvas colors ───────────────────────────────────── */
-const LIGHT_THEMES = new Set(['azure-glass', 'digital-sky', 'cyber-ice', 'cloud-minimal', 'arctic-network'])
+const LIGHT_THEMES = new Set(['azure-glass', 'cloud-minimal'])
 function getCanvasColors() {
   const s = getComputedStyle(document.documentElement)
   const g = v => s.getPropertyValue(v).trim()
