@@ -39,6 +39,10 @@ function finishLoader() {
 }
 function showError(err) {
   console.error('[cyberfolio]', err)
+  if (typeof window.showStaticFallback === 'function') {
+    window.showStaticFallback(err)
+    return
+  }
   document.body.classList.add('webgl-fallback')
   appEl.hidden = true; loaderEl.classList.add('is-hidden')
   errorScreen.hidden = false
@@ -57,6 +61,11 @@ function getDisplaySize() {
   return { width, height }
 }
 
+const DEBUG_GRAPHICS = new URLSearchParams(location.search).get('debugGraphics') === '1'
+
+// Mobile Safari and small GPUs fail by pressure, not feature absence alone. This profile
+// tiers the scene before renderer creation; do not loosen DPR, shadows, or particle counts
+// without testing iPhone Safari portrait and landscape plus desktop Chrome.
 function buildGraphicsProfile() {
   const ua = navigator.userAgent || ''
   const nav = navigator
@@ -165,6 +174,8 @@ const GRAPHICS_PROFILE = buildGraphicsProfile()
 const IS_MOBILE = GRAPHICS_PROFILE.isMobileTier
 const PREFERS_REDUCED_MOTION = GRAPHICS_PROFILE.reducedMotion
 let currentDpr = 1
+let currentDprCap = GRAPHICS_PROFILE.dprCap
+let frameStats = { ema: GRAPHICS_PROFILE.targetFps ? 1000 / GRAPHICS_PROFILE.targetFps : 0 }
 let decorativeAnimationScale = GRAPHICS_PROFILE.decorativeEffects ? 1 : 0.55
 
 function updateQualityClasses(profile) {
@@ -188,7 +199,7 @@ if (GRAPHICS_PROFILE.tier === 'fallback') {
   showError(e)
   throw e
 }
-if (isDevelopmentHost()) console.info('[cyberfolio] graphics profile', GRAPHICS_PROFILE)
+if (isDevelopmentHost() || DEBUG_GRAPHICS) console.info('[cyberfolio] graphics profile', GRAPHICS_PROFILE)
 
 /* ─── Theme config ────────────────────────────────────────────────── */
 const THEMES = {
@@ -261,6 +272,9 @@ function applyTheme(name) {
 }
 
 /* ─── Renderer / scene / camera ──────────────────────────────────── */
+// Renderer options are intentionally conservative for mobile WebGL stability. Keep alpha
+// and failIfMajorPerformanceCaveat behavior unless the fallback path and ?debugGraphics=1
+// have been checked on local desktop, Cloudflare Pages, and real iOS Safari.
 let renderer
 try {
   renderer = new THREE.WebGLRenderer({
@@ -285,7 +299,85 @@ renderer.toneMappingExposure = 1.18
 renderer.shadowMap.enabled = GRAPHICS_PROFILE.shadows
 if (GRAPHICS_PROFILE.shadows) renderer.shadowMap.type = THREE.PCFSoftShadowMap
 
+function getWebglRendererInfo() {
+  if (!renderer) return 'unavailable'
+  const gl = renderer.getContext()
+  const debugInfo = gl.getExtension('WEBGL_debug_renderer_info')
+  if (!debugInfo) return 'extension unavailable'
+  const vendor = gl.getParameter(debugInfo.UNMASKED_VENDOR_WEBGL) || 'unknown vendor'
+  const rendererName = gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL) || 'unknown renderer'
+  return `${vendor} / ${rendererName}`
+}
+
+function getEnabledMobileReductions(profile) {
+  const reductions = []
+  if (!profile.antialias) reductions.push('antialias off')
+  if (!profile.shadows) reductions.push('shadows off')
+  if (!profile.decorativeEffects) reductions.push('decorative effects reduced')
+  if (!profile.hoverRaycast) reductions.push('hover raycast throttled')
+  if (profile.particleCount < 1100) reductions.push(`particles ${profile.particleCount}`)
+  if (profile.textureScale < 1) reductions.push(`texture scale ${profile.textureScale}`)
+  if (profile.tickerFrameMod > 1) reductions.push(`ticker frame mod ${profile.tickerFrameMod}`)
+  if (profile.animationIntensity < 1) reductions.push(`animation intensity ${profile.animationIntensity}`)
+  return reductions.length ? reductions.join(', ') : 'none'
+}
+
+const diagnostics = {
+  panel: null,
+  body: null,
+  lastUpdate: 0,
+  contextLossCount: 0,
+  rendererInfo: getWebglRendererInfo(),
+}
+
+function ensureDiagnosticsPanel() {
+  if (!DEBUG_GRAPHICS || diagnostics.panel) return
+  const panel = document.createElement('aside')
+  panel.className = 'diagnostics-panel'
+  panel.setAttribute('aria-label', 'Graphics diagnostics')
+  panel.innerHTML = '<h2>Graphics diagnostics</h2><dl></dl>'
+  document.body.appendChild(panel)
+  diagnostics.panel = panel
+  diagnostics.body = panel.querySelector('dl')
+}
+
+function setDiagnosticsRow(label, value) {
+  const dt = document.createElement('dt')
+  const dd = document.createElement('dd')
+  dt.textContent = label
+  dd.textContent = value
+  diagnostics.body.append(dt, dd)
+}
+
+function updateDiagnosticsPanel(now = performance.now()) {
+  if (!DEBUG_GRAPHICS) return
+  ensureDiagnosticsPanel()
+  if (!diagnostics.body || now - diagnostics.lastUpdate < 500) return
+  diagnostics.lastUpdate = now
+  const viewport = getDisplaySize()
+  const gl = renderer?.getContext()
+  const buffer = gl ? `${gl.drawingBufferWidth} x ${gl.drawingBufferHeight}` : 'unavailable'
+  const frameMs = frameStats.ema || FRAME_MS
+  diagnostics.body.replaceChildren()
+  setDiagnosticsRow('Graphics tier', GRAPHICS_PROFILE.tier)
+  setDiagnosticsRow('WebGL version', GRAPHICS_PROFILE.webgl2 ? 'WebGL 2' : GRAPHICS_PROFILE.webgl1 ? 'WebGL 1' : 'unavailable')
+  setDiagnosticsRow('DPR cap', currentDprCap.toFixed(2))
+  setDiagnosticsRow('Current DPR', currentDpr.toFixed(2))
+  setDiagnosticsRow('Drawing buffer', buffer)
+  setDiagnosticsRow('Viewport', `${viewport.width} x ${viewport.height}`)
+  setDiagnosticsRow('Frame avg', `${frameMs.toFixed(1)} ms`)
+  setDiagnosticsRow('Estimated fps', `${Math.round(1000 / Math.max(frameMs, 1))}`)
+  setDiagnosticsRow('Context losses', String(diagnostics.contextLossCount))
+  setDiagnosticsRow('Renderer', diagnostics.rendererInfo)
+  setDiagnosticsRow('Mobile reductions', getEnabledMobileReductions(GRAPHICS_PROFILE))
+}
+
+ensureDiagnosticsPanel()
+
 /* ─── Context loss + visibility recovery ──────────────────────── */
+// Context loss is common on memory-constrained mobile browsers. This path pauses the loop
+// and performs one guarded reload to rebuild GPU resources; test by using WebGL context
+// loss tooling or browser devtools, then confirm the static fallback still works.
 let animFrameId = null
 let contextLost = false
 let attemptedContextReload = sessionStorage.getItem('cf-context-reload-attempted') === '1'
@@ -303,6 +395,8 @@ canvas.addEventListener('webglcontextcreationerror', e => {
 canvas.addEventListener('webglcontextlost', e => {
   e.preventDefault()
   contextLost = true
+  diagnostics.contextLossCount += 1
+  updateDiagnosticsPanel(performance.now() + 501)
   if (animFrameId) { cancelAnimationFrame(animFrameId); animFrameId = null }
   setLoaderStatus('Graphics context paused. Restoring...')
 }, false)
@@ -353,6 +447,9 @@ let lastRenderHeight = 0
 let resizeRaf = 0
 let resizingForDpr = false
 function resizeRendererToDisplaySize(force = false) {
+  // visualViewport avoids stale dimensions during iOS address-bar and rotation changes.
+  // Do not replace this with direct window.innerWidth sizing without retesting Safari
+  // rotation, pinch/address-bar collapse, and ?debugGraphics=1 drawing buffer values.
   if (!renderer || contextLost) return false
   const { width, height } = getDisplaySize()
   if (!force && width === lastRenderWidth && height === lastRenderHeight) return false
@@ -1613,7 +1710,6 @@ function renderScreenContent(key) {
 /* ─── Focus / unfocus ─────────────────────────────────────────────── */
 window.focusSection = function focusSection(key) {
   if (state.isTransitioning) return
-  if (GRAPHICS_PROFILE.tier === 'mobileLow' && !force) return
   if (key === 'core') { returnToCommandCentre(); return }
   if (!SECTION_CONTENT[key]) return
 
@@ -1865,6 +1961,9 @@ const clock = new THREE.Clock()
 let last = 0, vt = 0
 const FRAME_MS = 1000 / GRAPHICS_PROFILE.targetFps
 let lastFrameTs = 0
+// The adaptive scaler protects mobile GPUs after load, when thermal pressure or Safari UI
+// changes can make a safe initial DPR unsafe. Keep changes gradual; test by watching
+// ?debugGraphics=1 while rotating and scrolling on real mobile hardware.
 const adaptiveQuality = {
   ema: FRAME_MS,
   overBudgetSince: 0,
@@ -1878,6 +1977,7 @@ function setAdaptiveDpr(nextCap, reason) {
   const nextDpr = getEffectiveDpr(GRAPHICS_PROFILE, cap)
   if (Math.abs(nextDpr - currentDpr) < 0.01) return
   adaptiveQuality.dprCap = cap
+  currentDprCap = cap
   currentDpr = nextDpr
   resizingForDpr = true
   renderer.setPixelRatio(currentDpr)
@@ -1922,6 +2022,7 @@ function animate(now = 0) {
   if (now - lastFrameTs < FRAME_MS) return
   const frameDeltaMs = lastFrameTs ? now - lastFrameTs : FRAME_MS
   lastFrameTs = now
+  frameStats.ema = frameStats.ema * 0.9 + frameDeltaMs * 0.1
   updateAdaptiveQuality(now, frameDeltaMs)
   resizeRendererToDisplaySize()
   const t = clock.getElapsedTime(), dt = t - last; last = t
@@ -1948,6 +2049,7 @@ function animate(now = 0) {
     }
   }
   renderer.render(scene, camera)
+  updateDiagnosticsPanel(now)
 }
 
 /* ─── Clock + latency ─────────────────────────────────────────────── */

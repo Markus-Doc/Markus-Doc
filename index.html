@@ -43,9 +43,22 @@
 
   <noscript>
     <div class="noscript">
-      JavaScript is required to render the interactive portfolio interface.
-      You can still contact Markus Walker via email at <a href="mailto:markus@markuswalker.com">markus@markuswalker.com</a>
-      or connect on LinkedIn: <a href="https://www.linkedin.com/in/markus-walker-au/">https://www.linkedin.com/in/markus-walker-au/</a>
+      <div class="fallback-card">
+        <p class="fallback-kicker">Static portfolio</p>
+        <h1>Markus Walker</h1>
+        <p class="fallback-role">Security, AI and Cloud Engineer based in Brisbane, Australia.</p>
+        <p class="fallback-copy">Seven plus years across infrastructure, field engineering and dedicated service engineering in mining, energy and LNG environments, now focused on cloud security, incident response, security operations, offensive security practice and AI security.</p>
+        <p class="fallback-copy"><strong>Skills:</strong> AWS and OCI cloud, IAM, WAF, GuardDuty, CloudTrail, incident response, SIEM triage, Active Directory labs, web application testing, OWASP LLM Top 10 and secure AI notes.</p>
+        <nav class="fallback-nav" aria-label="Static portfolio links">
+          <a class="btn btn-primary" href="mailto:markus@markuswalker.com">Email Markus</a>
+          <a class="btn btn-secondary" href="./assets/docs/Markus_Walker_Resume.pdf">Resume PDF</a>
+          <a class="btn btn-secondary" href="./assets/docs/Markus_Walker_IRP_Portfolio.pdf">IR portfolio</a>
+          <a class="btn btn-secondary" href="./assets/docs/Markus_Walker_Cloud_Case_Study.pdf">Cloud case study</a>
+          <a class="btn btn-secondary" href="https://github.com/markus-doc">GitHub</a>
+          <a class="btn btn-secondary" href="https://www.linkedin.com/in/markus-walker-au/">LinkedIn</a>
+          <a class="btn btn-secondary" href="https://markus-doc.github.io/cybersecurity-writeups/articles/tryhackme/rtcc/1-Red_Team_Capstone_Crawl-Through">RTCC writeup</a>
+        </nav>
+      </div>
     </div>
   </noscript>
 
@@ -201,12 +214,18 @@
   </main>
 
   <div id="errorScreen" class="error-screen" hidden role="alert">
-    <div class="error-shell">
-      <p class="error-kicker">Render fallback</p>
-      <h2>The 3D scene could not initialise.</h2>
-      <p>Your browser may not support WebGL. The portfolio links below remain available as normal HTML.</p>
+    <div class="error-shell fallback-card">
+      <p class="error-kicker fallback-kicker">Render fallback</p>
+      <h2>Markus Walker</h2>
+      <p class="fallback-role">Security, AI and Cloud Engineer based in Brisbane, Australia.</p>
+      <p class="fallback-copy">The 3D scene could not initialise, but the portfolio remains available as normal static HTML.</p>
+      <p class="fallback-copy">Seven plus years across infrastructure, field engineering and dedicated service engineering in mining, energy and LNG environments. Portfolio focus: cloud security, incident response, security operations, offensive security practice, web application testing and AI security.</p>
+      <p class="fallback-copy"><strong>Skills:</strong> AWS and OCI cloud, IAM, WAF, GuardDuty, CloudTrail, incident response, SIEM triage, Active Directory labs, web application testing, OWASP LLM Top 10 and secure AI notes.</p>
       <nav class="fallback-nav" aria-label="Portfolio fallback navigation">
         <a class="btn btn-primary" href="mailto:markus@markuswalker.com">Email Markus</a>
+        <a class="btn btn-secondary" href="./assets/docs/Markus_Walker_Resume.pdf" target="_blank" rel="noopener noreferrer">Resume PDF</a>
+        <a class="btn btn-secondary" href="./assets/docs/Markus_Walker_IRP_Portfolio.pdf" target="_blank" rel="noopener noreferrer">IR portfolio</a>
+        <a class="btn btn-secondary" href="./assets/docs/Markus_Walker_Cloud_Case_Study.pdf" target="_blank" rel="noopener noreferrer">Cloud case study</a>
         <a class="btn btn-secondary" href="https://www.linkedin.com/in/markus-walker-au/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
         <a class="btn btn-secondary" href="https://github.com/markus-doc" target="_blank" rel="noopener noreferrer">GitHub</a>
         <a class="btn btn-secondary" href="https://tryhackme.com/p/Triage" target="_blank" rel="noopener noreferrer">TryHackMe</a>
@@ -256,6 +275,18 @@
   </div>
 
   <script>
+    window.showStaticFallback = function showStaticFallback(reason) {
+      document.body.classList.add('webgl-fallback');
+      var app = document.getElementById('app');
+      var loader = document.getElementById('loader');
+      var screen = document.getElementById('errorScreen');
+      var detail = document.getElementById('errorDetail');
+      if (app) app.hidden = true;
+      if (loader) loader.classList.add('is-hidden');
+      if (screen) screen.hidden = false;
+      if (detail && reason) detail.textContent = reason && (reason.stack || reason.message || String(reason));
+    };
+
     const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
       "sceneEnergy": 51,
       "lensMode": "cinematic",
@@ -347,6 +378,6 @@
     });
   </script>
 
-  <script type="module" src="./main.js?v=12"></script>
+  <script type="module" src="./main.js?v=13" onerror="window.showStaticFallback && window.showStaticFallback('The Three.js module could not be loaded.')"></script>
 </body>
 </html>
