@@ -123,7 +123,10 @@ function buildGraphicsProfile() {
   const constrained = maxTextureSize < 4096 || maxRenderbufferSize < 4096 || maxTextureImageUnits < 8
   let tier = 'desktop'
   if (touchHeavy || smallViewport || likelyMobileSafari) {
-    if (!webgl2 || constrained || reducedMotion || (smallViewport && likelyMobileSafari)) tier = 'mobileLow'
+    // mobileLow only for truly constrained GPUs or browsers without WebGL2 or reduced-motion.
+    // Removed (smallViewport && likelyMobileSafari) — that forced ALL iPhone Safari users to
+    // 1.0 DPR regardless of GPU capability, causing severe pixelation on modern iPhones.
+    if (!webgl2 || constrained || reducedMotion) tier = 'mobileLow'
     else if (maxTextureSize < 8192 || maxTextureImageUnits < 16 || display.width < 430) tier = 'mobileMedium'
     else tier = 'mobileHigh'
   }
@@ -135,7 +138,7 @@ function buildGraphicsProfile() {
       decorativeEffects: !reducedMotion, hoverRaycast: true, tickerFrameMod: 1, powerPreference: 'high-performance',
     },
     mobileHigh: {
-      dprCap: 1.5, dprFloor: 0.9, targetFps: 45, antialias: false, shadows: false,
+      dprCap: 2.0, dprFloor: 1.0, targetFps: 45, antialias: false, shadows: false,
       particleCount: 420, textureScale: 0.75, animationIntensity: reducedMotion ? 0 : 0.75,
       decorativeEffects: !reducedMotion, hoverRaycast: false, tickerFrameMod: 3, powerPreference: 'default',
     },
@@ -1713,41 +1716,49 @@ window.focusSection = function focusSection(key) {
   if (key === 'core') { returnToCommandCentre(); return }
   if (!SECTION_CONTENT[key]) return
 
-  state.activeSection = key
-  state.focused = true
-  state.isTransitioning = true
+  try {
+    state.activeSection = key
+    state.focused = true
+    state.isTransitioning = true
 
-  if (!state.heroDismissed) {
-    state.heroDismissed = true
-    document.body.classList.add('hero-dismissed')
-  }
+    if (!state.heroDismissed) {
+      state.heroDismissed = true
+      document.body.classList.add('hero-dismissed')
+    }
 
-  document.body.classList.add('is-focused')
-  document.body.dataset.section = key
+    document.body.classList.add('is-focused')
+    document.body.dataset.section = key
 
-  dockItems.forEach(d => {
-    d.classList.toggle('active', d.dataset.target === key)
-    d.setAttribute('aria-current', d.dataset.target === key ? 'true' : 'false')
-  })
-  updateHUD(key)
-  setStoryPanel(key)
-  setMonitorHighlight(key)
-  moveCameraTo(key)
-
-  // Show layer immediately, content after camera settles
-  screenLayer.hidden = false
-  screenPanel.innerHTML = ''
-  screenPanel.className = `screen-focus-panel screen-focus-panel--${key}`
-
-  setTimeout(() => {
-    renderScreenContent(key)
-    // Trigger transition on next frame
-    requestAnimationFrame(() => {
-      screenPanel.classList.add('is-visible')
-      setTimeout(() => screenPanel.classList.add('is-visible'), 32)
+    dockItems.forEach(d => {
+      d.classList.toggle('active', d.dataset.target === key)
+      d.setAttribute('aria-current', d.dataset.target === key ? 'true' : 'false')
     })
+    updateHUD(key)
+    setStoryPanel(key)
+    setMonitorHighlight(key)
+    moveCameraTo(key)
+
+    // Show layer immediately, content after camera settles
+    screenLayer.hidden = false
+    screenPanel.innerHTML = ''
+    screenPanel.className = `screen-focus-panel screen-focus-panel--${key}`
+
+    setTimeout(() => {
+      try {
+        renderScreenContent(key)
+        requestAnimationFrame(() => {
+          screenPanel.classList.add('is-visible')
+          setTimeout(() => screenPanel.classList.add('is-visible'), 32)
+        })
+      } catch (e) {
+        console.error('[cyberfolio] focusSection deferred error', e)
+      }
+      state.isTransitioning = false
+    }, 680)
+  } catch (e) {
+    console.error('[cyberfolio] focusSection error', e)
     state.isTransitioning = false
-  }, 680)
+  }
 }
 
 function returnToCommandCentre() {
@@ -1890,30 +1901,37 @@ canvas.addEventListener('click', (e) => {
 })
 
 /* ─── Scroll (browse mode only) ──────────────────────────────────── */
+let scrollRafPending = false
 window.addEventListener('scroll', () => {
   if (state.focused) return
-  // On mobile, dismiss the hero panel on first scroll so the 3D scene can breathe
-  if (IS_MOBILE && !state.heroDismissed && window.scrollY > 20) {
-    state.heroDismissed = true
-    document.body.classList.add('hero-dismissed')
-  }
-  const max = document.body.scrollHeight - getDisplaySize().height
-  const progress = max > 0 ? window.scrollY / max : 0
-  const order = ['core', 'ir', 'cloud', 'ai', 'writeups', 'core']
-  const seg = progress * (order.length - 1)
-  const i = Math.floor(seg), f = seg - i
-  const a = SCROLL_ZONES[order[i]], b = SCROLL_ZONES[order[Math.min(i + 1, order.length - 1)]]
-  desiredCam.lerpVectors(a.pos, b.pos, f)
-  desiredTgt.lerpVectors(a.look, b.look, f)
-  const dom = order[Math.round(seg)]
-  const smap = { core:'core', ir:'ir', cloud:'cloud', ai:'resume', writeups:'writeups' }
-  const activeKey = smap[dom] || 'core'
-  if (activeKey !== state.activeSection) {
-    state.activeSection = activeKey
-    dockItems.forEach(it => it.classList.toggle('active', it.dataset.target === activeKey))
-    setStoryPanel(dom)
-    updateHUD(activeKey)
-  }
+  if (scrollRafPending) return
+  scrollRafPending = true
+  requestAnimationFrame(() => {
+    scrollRafPending = false
+    // On mobile, dismiss the hero panel on first scroll so the 3D scene can breathe
+    if (IS_MOBILE && !state.heroDismissed && window.scrollY > 20) {
+      state.heroDismissed = true
+      document.body.classList.add('hero-dismissed')
+    }
+    const max = document.body.scrollHeight - getDisplaySize().height
+    const progress = max > 0 ? window.scrollY / max : 0
+    const order = ['core', 'ir', 'cloud', 'ai', 'writeups', 'core']
+    const seg = progress * (order.length - 1)
+    const i = Math.floor(seg), f = seg - i
+    const a = SCROLL_ZONES[order[i]], b = SCROLL_ZONES[order[Math.min(i + 1, order.length - 1)]]
+    if (!a || !b) return
+    desiredCam.lerpVectors(a.pos, b.pos, f)
+    desiredTgt.lerpVectors(a.look, b.look, f)
+    const dom = order[Math.round(seg)]
+    const smap = { core:'core', ir:'ir', cloud:'cloud', ai:'resume', writeups:'writeups' }
+    const activeKey = smap[dom] || 'core'
+    if (activeKey !== state.activeSection) {
+      state.activeSection = activeKey
+      dockItems.forEach(it => it.classList.toggle('active', it.dataset.target === activeKey))
+      setStoryPanel(dom)
+      updateHUD(activeKey)
+    }
+  })
 }, { passive: true })
 
 /* ─── Dock clicks ─────────────────────────────────────────────────── */
@@ -2083,5 +2101,7 @@ try {
   setTimeout(finishLoader, 1500)
 } catch (err) { showError(err) }
 
-window.addEventListener('error', (e) => showError(e.error || e))
-window.addEventListener('unhandledrejection', (e) => showError(e.reason))
+// Log uncaught errors to console only. Showing the WebGL fallback for any JS exception is
+// incorrect — the fallback is reserved for true WebGL init failure (the try/catch above).
+window.addEventListener('error', (e) => console.error('[cyberfolio] uncaught error', e.error || e))
+window.addEventListener('unhandledrejection', (e) => console.error('[cyberfolio] unhandled rejection', e.reason))
