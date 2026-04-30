@@ -1874,4 +1874,101 @@ body.hero-dismissed .hero {
   letter-spacing: 0.07em;
   text-transform: uppercase;
   margin: 0 0 5px;
-  opa
+  opacity: 0.8;
+}
+.sfp-wt-title {
+  font-size: 0.92rem;
+  color: var(--text);
+  font-weight: 600;
+  margin: 0 0 6px;
+}
+.sfp-wt-body {
+  font-size: 0.80rem;
+  color: var(--text-dim);
+  line-height: 1.5;
+  margin: 0 0 8px;
+}
+.sfp-wt-cta {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--accent);
+  margin: 0;
+  letter-spacing: 0.04em;
+}
+.sfp-writeup-card.placeholder {
+  opacity: 0.55;
+  border-style: dashed;
+  cursor: default;
+  pointer-events: none;
+}
+.sfp-muted {
+  font-size: 0.76rem;
+  color: var(--text-dim);
+  opacity: 0.6;
+  margin-top: 16px;
+  font-style: italic;
+}
+
+/* Contact card internals */
+.sfp-cc-label {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--accent);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin: 0 0 5px;
+}
+.sfp-cc-val {
+  font-size: 0.84rem;
+  color: var(--text);
+  font-weight: 500;
+  margin: 0 0 6px;
+  word-break: break-all;
+}
+.sfp-cc-cta {
+  font-size: 0.76rem;
+  color: var(--accent);
+  margin: 0;
+  font-family: var(--font-mono);
+  letter-spacing: 0.03em;
+}
+
+/* Download card (contact section) */
+.sfp-dl-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  border: 1px solid color-mix(in srgb, var(--accent) 28%, transparent);
+  border-radius: var(--radius-sm);
+  background: color-mix(in srgb, var(--accent) 5%, transparent);
+  text-decoration: none;
+  color: var(--ink);
+  transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+}
+.sfp-dl-card:hover {
+  border-color: color-mix(in srgb, var(--accent) 55%, transparent);
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+  box-shadow: 0 0 16px color-mix(in srgb, var(--accent) 22%, transparent);
+}
+.sfp-dl-label {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--accent);
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  flex-shrink: 0;
+  width: 100px;
+}
+.sfp-dl-name {
+  font-size: 0.78rem;
+  color: var(--text-dim);
+  flex: 1;
+  word-break: break-all;
+}
+.sfp-dl-icon {
+  font-size: 1rem;
+  color: var(--accent);
+  flex-shrink: 0;
+}
+
