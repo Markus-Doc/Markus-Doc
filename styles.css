@@ -663,8 +663,9 @@ body.quality-mobile-low .vignette {
   padding: 24px;
   background: #020610;
   color: var(--ink);
-  text-align: center;
+  text-align: left;
   z-index: 999;
+  overflow: auto;
 }
 
 .topbar {
@@ -1082,12 +1083,35 @@ h1 em {
 }
 
 .error-shell {
-  max-width: 520px;
+  max-width: 720px;
   padding: 30px;
   border-radius: var(--radius-lg);
   background: var(--glass-strong);
   border: 1px solid var(--line);
   text-align: left;
+}
+
+.fallback-card {
+  width: min(720px, 100%);
+  border-radius: var(--radius-lg);
+}
+
+.fallback-card h1,
+.fallback-card h2 {
+  margin: 0 0 8px;
+  color: var(--ink);
+}
+
+.fallback-role {
+  margin: 0 0 14px;
+  color: var(--cyan);
+  font-weight: 700;
+}
+
+.fallback-copy {
+  margin: 0 0 12px;
+  color: var(--ink-soft);
+  line-height: 1.6;
 }
 
 .fallback-nav {
@@ -1133,6 +1157,53 @@ h1 em {
   white-space: pre-wrap;
   max-height: 160px;
   overflow: auto;
+}
+
+.diagnostics-panel {
+  position: fixed;
+  z-index: 90;
+  right: max(12px, env(safe-area-inset-right));
+  bottom: max(12px, env(safe-area-inset-bottom));
+  width: min(420px, calc(100vw - 24px));
+  max-height: min(70vh, 560px);
+  overflow: auto;
+  padding: 14px 16px 16px;
+  border: 1px solid rgba(110, 231, 255, 0.32);
+  border-radius: 12px;
+  background: rgba(2, 6, 15, 0.88);
+  color: #edfaff;
+  box-shadow: 0 18px 60px rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  font-family: var(--mono);
+  pointer-events: none;
+}
+
+.diagnostics-panel h2 {
+  margin: 0 0 10px;
+  font-size: 0.74rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--cyan);
+}
+
+.diagnostics-panel dl {
+  display: grid;
+  grid-template-columns: minmax(116px, 0.9fr) minmax(0, 1.4fr);
+  gap: 6px 12px;
+  margin: 0;
+}
+
+.diagnostics-panel dt {
+  color: #8aa3b8;
+  font-size: 0.68rem;
+}
+
+.diagnostics-panel dd {
+  margin: 0;
+  color: #edfaff;
+  font-size: 0.68rem;
+  overflow-wrap: anywhere;
 }
 
 @media (max-width: 900px) {
@@ -1274,6 +1345,9 @@ h1 em {
 }
 
 /* ─── JS-detected mobile — belt-and-suspenders for any viewport width ─── */
+/* Mobile CSS tiers remove paint-heavy effects that trigger Safari compositing pressure.
+   Do not restore blur/shadows here casually; test iPhone Safari rotation, scrolling,
+   focused section panels, and ?debugGraphics=1 frame time after changing these rules. */
 body.is-mobile .hud { display: none }
 body.is-mobile .brand-sub { display: none }
 body.is-mobile .brand-name { white-space: nowrap }
