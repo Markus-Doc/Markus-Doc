@@ -10,6 +10,47 @@
   <meta property="og:title" content="Markus Walker - Security, Cloud and AI Security Portfolio">
   <meta property="og:description" content="Security, cloud security and AI security portfolio for recruiters, hiring managers and security teams.">
   <meta property="og:type" content="website">
+  <link rel="canonical" href="https://www.markuswalker.com/">
+  <script>
+    /* Device routing — runs before any other scripts */
+    (function () {
+      try {
+        var params = new URLSearchParams(window.location.search);
+        var view   = params.get('view');
+        var hash   = window.location.hash || '';
+
+        if (view === 'desktop') {
+          localStorage.setItem('preferredView', 'desktop');
+          return;
+        }
+        if (view === 'mobile') {
+          localStorage.setItem('preferredView', 'mobile');
+          window.location.replace('/Mobile/Markus-Doc/' + hash);
+          return;
+        }
+
+        var pref = localStorage.getItem('preferredView');
+        if (pref === 'desktop') return;
+        if (pref === 'mobile') {
+          window.location.replace('/Mobile/Markus-Doc/' + hash);
+          return;
+        }
+
+        /* Auto-detect mobile — conservative thresholds */
+        var ua             = navigator.userAgent;
+        var isMobileUA     = /iPhone|iPad|iPod|Android|Mobile/i.test(ua);
+        var coarse         = window.matchMedia('(pointer: coarse)').matches;
+        var isCoarseNarrow = coarse && window.innerWidth <= 900;
+        var isCoarseSmall  = coarse && Math.min(window.innerWidth, window.innerHeight) <= 600;
+        var isIOSSafari    = /iP(hone|od|ad)/.test(ua) && /WebKit/.test(ua) &&
+                             !/CriOS|FxiOS|OPiOS|mercury/.test(ua);
+
+        if (isMobileUA || isCoarseNarrow || isCoarseSmall || isIOSSafari) {
+          window.location.replace('/Mobile/Markus-Doc/' + hash);
+        }
+      } catch (e) { /* routing failure is non-fatal */ }
+    })();
+  </script>
   <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
   <link rel="stylesheet" href="./styles.css?v=11">
@@ -58,6 +99,7 @@
           <a class="btn btn-secondary" href="https://www.linkedin.com/in/markus-walker-au/">LinkedIn</a>
           <a class="btn btn-secondary" href="https://markus-doc.github.io/cybersecurity-writeups/articles/tryhackme/rtcc/1-Red_Team_Capstone_Crawl-Through">RTCC writeup</a>
         </nav>
+        <p style="margin-top:1rem;font-size:0.8rem;opacity:0.6"><a href="/Mobile/Markus-Doc/?view=mobile">Switch to mobile version</a></p>
       </div>
     </div>
   </noscript>
@@ -209,7 +251,7 @@
     </div>
 
     <footer class="legal">
-      <p>Built with Three.js &middot; Markus Walker MAISA &middot; Security, AI and Cloud Portfolio &middot; <a href="mailto:markus@markuswalker.com">markus@markuswalker.com</a> &middot; <a href="https://www.linkedin.com/in/markus-walker-au/" target="_blank" rel="noopener noreferrer">LinkedIn</a></p>
+      <p>Built with Three.js &middot; Markus Walker MAISA &middot; Security, AI and Cloud Portfolio &middot; <a href="mailto:markus@markuswalker.com">markus@markuswalker.com</a> &middot; <a href="https://www.linkedin.com/in/markus-walker-au/" target="_blank" rel="noopener noreferrer">LinkedIn</a> &middot; <a href="/Mobile/Markus-Doc/?view=mobile">Mobile version</a></p>
     </footer>
   </main>
 
@@ -231,6 +273,7 @@
         <a class="btn btn-secondary" href="https://tryhackme.com/p/Triage" target="_blank" rel="noopener noreferrer">TryHackMe</a>
         <a class="btn btn-secondary" href="https://markus-doc.github.io/cybersecurity-writeups/articles/tryhackme/rtcc/1-Red_Team_Capstone_Crawl-Through" target="_blank" rel="noopener noreferrer">RTCC Writeup</a>
       </nav>
+      <p style="margin-top:1rem;font-size:0.8rem;opacity:0.6"><a href="/Mobile/Markus-Doc/?view=mobile">Switch to mobile version</a></p>
       <pre id="errorDetail" class="error-detail"></pre>
     </div>
   </div>
