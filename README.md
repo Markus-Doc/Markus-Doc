@@ -1,5 +1,29 @@
 www.markuswalker.com
 
+## Desktop and Mobile Architecture
+
+This repository serves two separate site builds from the same static host.
+
+- The **root site** (`/`) is the desktop experience. It delivers the full Three.js WebGL command-centre scene and is the canonical desktop URL at `https://www.markuswalker.com/`.
+- The **mobile site** (`/Mobile/Markus-Doc/`) is the mobile experience. It has its own `index.html`, `main.js`, `styles.css`, and `assets/` directory under `Mobile/Markus-Doc/`. Its canonical URL is `https://www.markuswalker.com/Mobile/Markus-Doc/`.
+
+Device routing is handled entirely client-side with a small inline script in each `index.html`, running early in `<head>` before any stylesheets or modules load. No server-side redirects or Cloudflare Worker rules are required.
+
+Routing logic:
+
+1. URL query parameter `?view=desktop` — saves `desktop` to `localStorage.preferredView` and keeps the visitor on the desktop site.
+2. URL query parameter `?view=mobile` — saves `mobile` to `localStorage.preferredView` and redirects to `/Mobile/Markus-Doc/`.
+3. `localStorage.preferredView` persists across reloads. A saved preference overrides auto-detection.
+4. If no preference exists, the root site auto-detects mobile via user-agent, coarse pointer, and viewport size checks and redirects to `/Mobile/Markus-Doc/` if mobile is detected.
+5. The mobile site never auto-redirects back to desktop. Only an explicit `?view=desktop` link does so.
+
+Both sites include a visible version-switch link in their footers:
+
+- Desktop footer: `Mobile version` linking to `/Mobile/Markus-Doc/?view=mobile`
+- Mobile footer: `Desktop version` linking to `/?view=desktop`
+
+These links are static HTML, not JavaScript-injected.
+
 ## Site Overview
 
 This repository is a static portfolio site for Markus Walker. It runs directly from `index.html`, `styles.css`, `main.js`, and static files under `assets/`. There is no backend, build step, package manager, or server-side rendering path.

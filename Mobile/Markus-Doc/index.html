@@ -10,6 +10,30 @@
   <meta property="og:title" content="Markus Walker — Security, Cloud and AI Security Portfolio">
   <meta property="og:description" content="Evidence-backed security, cloud and AI security portfolio for recruiters, hiring managers and security teams.">
   <meta property="og:type" content="website">
+  <link rel="canonical" href="https://www.markuswalker.com/Mobile/Markus-Doc/">
+  <script>
+    /* Mobile site routing — runs before any other scripts */
+    (function () {
+      try {
+        var params = new URLSearchParams(window.location.search);
+        var view   = params.get('view');
+        var hash   = window.location.hash || '';
+
+        if (view === 'desktop') {
+          localStorage.setItem('preferredView', 'desktop');
+          window.location.replace('/' + hash);
+          return;
+        }
+        if (view === 'mobile') {
+          localStorage.setItem('preferredView', 'mobile');
+          /* stay on mobile site */
+          return;
+        }
+        /* No auto-redirect away from mobile — only an explicit view=desktop
+           choice sends the user back to the desktop site. */
+      } catch (e) { /* routing failure is non-fatal */ }
+    })();
+  </script>
   <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
   <link rel="stylesheet" href="./styles.css?v=14">
@@ -60,6 +84,7 @@
           <a class="btn btn-secondary" href="https://github.com/markus-doc" target="_blank" rel="noopener noreferrer">GitHub</a>
           <a class="btn btn-secondary" href="https://www.linkedin.com/in/markus-walker-au/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
         </nav>
+        <p style="margin-top:1rem;font-size:0.8rem;opacity:0.6"><a href="/?view=desktop">Switch to desktop version</a></p>
       </div>
     </div>
   </noscript>
@@ -528,7 +553,7 @@
     </nav>
 
     <footer class="legal" aria-label="Footer">
-      <p>Markus Walker MAISA &middot; Security, AI and Cloud Portfolio &middot; Brisbane AU &middot; Built with Three.js</p>
+      <p>Markus Walker MAISA &middot; Security, AI and Cloud Portfolio &middot; Brisbane AU &middot; Built with Three.js &middot; <a href="/?view=desktop">Desktop version</a></p>
     </footer>
 
   </main><!-- /app -->
@@ -550,6 +575,7 @@
         <a class="btn btn-secondary" href="https://www.linkedin.com/in/markus-walker-au/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
         <a class="btn btn-secondary" href="https://github.com/markus-doc" target="_blank" rel="noopener noreferrer">GitHub</a>
       </nav>
+      <p style="margin-top:1rem;font-size:0.8rem;opacity:0.6"><a href="/?view=desktop">Switch to desktop version</a></p>
       <pre id="errorDetail" class="error-detail" aria-label="Error details"></pre>
     </div>
   </div>
