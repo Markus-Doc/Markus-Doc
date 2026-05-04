@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en-AU" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#02060f" id="metaThemeColor">
+  <title>Markus Walker — Security, AI and Cloud Engineering Portfolio</title>
+  <meta name="description" content="Markus Walker is a Brisbane-based Security, AI and Cloud Engineer with 7+ years of infrastructure and field engineering experience across Australia's mining and energy sectors. Portfolio evidence spans incident response, AWS cloud security, offensive security labs, web application testing and AI security.">
+  <meta name="color-scheme" content="dark light">
+  <meta property="og:title" content="Markus Walker — Security, Cloud and AI Security Portfolio">
+  <meta property="og:description" content="Evidence-backed security, cloud and AI security portfolio for recruiters, hiring managers and security teams.">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="stylesheet" href="./styles.css?v=14">
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.181.2/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.181.2/examples/jsm/"
+      }
+    }
+  </script>
+</head>
+<body>
+
+  <!-- ─── Loader ─────────────────────────────────────────────────────────── -->
+  <div id="loader" class="loader" role="status" aria-live="polite">
+    <div class="loader-shell">
+      <svg class="loader-mark" viewBox="0 0 64 64" aria-hidden="true">
+        <defs>
+          <linearGradient id="lg" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#6ee7ff"/>
+            <stop offset="1" stop-color="#a78bfa"/>
+          </linearGradient>
+        </defs>
+        <path d="M32 4 L56 14 V32 C56 46 44 56 32 60 C20 56 8 46 8 32 V14 Z" fill="none" stroke="url(#lg)" stroke-width="2.4" stroke-linejoin="round"/>
+        <path d="M22 32 L29 39 L43 24" fill="none" stroke="#edfaff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <p class="loader-title">Initialising Security Operations Interface</p>
+      <div class="loader-bar"><span id="loaderBar"></span></div>
+      <p class="loader-step" id="loaderStep">Establishing telemetry</p>
+    </div>
+  </div>
+
+  <!-- ─── No-script fallback ─────────────────────────────────────────────── -->
+  <noscript>
+    <div class="fallback-wrap">
+      <div class="fallback-card">
+        <p class="fallback-kicker">Static portfolio</p>
+        <h1>Markus Walker</h1>
+        <p class="fallback-role">Security, AI and Cloud Engineer · Brisbane, Australia</p>
+        <p class="fallback-copy">Seven plus years across infrastructure, field engineering and dedicated service engineering in mining, energy and LNG environments, now focused on cloud security, incident response, security operations, offensive security practice and AI security.</p>
+        <p class="fallback-copy"><strong>Skills:</strong> AWS and OCI cloud, IAM, WAF, GuardDuty, CloudTrail, incident response, SIEM triage, Active Directory labs, web application testing, OWASP LLM Top 10 and secure AI notes.</p>
+        <nav class="fallback-nav" aria-label="Portfolio links">
+          <a class="btn btn-primary" href="mailto:markus@markuswalker.com">Email Markus</a>
+          <a class="btn btn-secondary" href="./assets/docs/Markus_Walker_Resume.pdf" target="_blank" rel="noopener noreferrer">Resume PDF</a>
+          <a class="btn btn-secondary" href="./assets/docs/Markus_Walker_IRP_Portfolio.pdf" target="_blank" rel="noopener noreferrer">IR Portfolio</a>
+          <a class="btn btn-secondary" href="./assets/docs/Markus_Walker_Cloud_Case_Study.pdf" target="_blank" rel="noopener noreferrer">Cloud Case Study</a>
+          <a class="btn btn-secondary" href="https://github.com/markus-doc" target="_blank" rel="noopener noreferrer">GitHub</a>
+          <a class="btn btn-secondary" href="https://www.linkedin.com/in/markus-walker-au/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        </nav>
+      </div>
+    </div>
+  </noscript>
+
+  <!-- ─── Main app ───────────────────────────────────────────────────────── -->
+  <main id="app" hidden>
+
+    <canvas id="scene" aria-label="Interactive 3D cyber network visualisation" data-engine="three.js r181"></canvas>
+
+    <div class="grain" aria-hidden="true"></div>
+    <div class="scanlines" aria-hidden="true"></div>
+    <div class="vignette" aria-hidden="true"></div>
+
+    <!-- Topbar -->
+    <header class="topbar" aria-label="Site header">
+      <div class="brand">
+        <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true">
+          <path d="M16 2 L28 7 V16 C28 23 22 28 16 30 C10 28 4 23 4 16 V7 Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+          <path d="M11 16 L14.5 19.5 L21 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div class="brand-text">
+          <p class="brand-name">MARKUS WALKER</p>
+          <p class="brand-sub">Security · AI · Cloud · Brisbane</p>
+        </div>
+      </div>
+      <div class="topbar-right">
+        <button class="theme-btn" id="themeBtn" type="button" aria-label="Toggle light/dark theme" title="Toggle theme">
+          <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/></svg>
+          <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+        </button>
+        <span class="status-pip" aria-hidden="true"></span>
+        <span class="topbar-clock" id="clock" aria-label="Current time">--:--</span>
+      </div>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero" id="heroView" aria-label="Introduction">
+      <p class="hero-kicker">Security · AI · Cloud Engineering Portfolio</p>
+      <h1 class="hero-title">Security, AI<br><em>and Cloud Engineering</em></h1>
+      <p class="hero-intro">Brisbane-based Security, AI and Cloud Engineer with 7+ years of infrastructure and field engineering across Australia's mining and energy sectors.</p>
+      <p class="hero-chips">AWS SAA &middot; 3&times; OCI &middot; AISA MAISA &middot; Brisbane AU</p>
+      <div class="hero-actions">
+        <button class="btn btn-primary" type="button" data-open="contact">
+          Get in touch
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <button class="btn btn-secondary" type="button" data-open="resume">View resume</button>
+      </div>
+    </section>
+
+    <!-- ─── Panel layer ───────────────────────────────────────────────────── -->
+    <div id="panelLayer" aria-live="polite">
+
+      <!-- About -->
+      <section id="panel-about" class="panel" role="region" aria-label="About Markus Walker">
+        <div class="panel-topbar">
+          <button class="panel-back" type="button" data-close aria-label="Close panel and return to overview">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M12 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Back
+          </button>
+          <span class="panel-label">01 / ABOUT</span>
+        </div>
+        <div class="panel-scroll">
+          <header class="sfp-header">
+            <h2 class="sfp-title">Security, AI and Cloud Engineer.</h2>
+          </header>
+          <p class="sfp-lede">Brisbane-based Security, AI and Cloud Engineer with 7+ years of infrastructure and field engineering across Australia's mining and energy sectors.</p>
+          <p class="sfp-body">Most recently embedded as a Tata Consultancy Services Dedicated Service Engineer supporting Shell QGC and QCLNG upstream and midstream operations across remote Queensland energy and gas environments. Hands-on across network, endpoint, connectivity and field operations at twenty plus FIFO remote sites.</p>
+          <p class="sfp-body">Current focus is evidence-backed across security operations, offensive security labs, cloud architecture, incident response planning, web application testing and AI security research.</p>
+          <h3 class="sfp-h3">Positioning</h3>
+          <ul class="sfp-bullets">
+            <li>Security, AI and Cloud Engineer with deep infrastructure and field engineering grounding</li>
+            <li>Cloud security across AWS and Oracle Cloud Infrastructure, with applied case study evidence</li>
+            <li>Active offensive security practice through home lab and TryHackMe under the handle Triage</li>
+            <li>AI security aligned to OWASP LLM Top 10 and MITRE ATLAS, with structured study and applied notes</li>
+            <li>Strong written communication for stakeholders, auditors and technical teams</li>
+          </ul>
+          <div class="sfp-chip-grid">
+            <span class="sfp-chip">7+ years</span>
+            <span class="sfp-chip">Brisbane AU</span>
+            <span class="sfp-chip">AWS SAA</span>
+            <span class="sfp-chip">3× OCI</span>
+            <span class="sfp-chip">AISA MAISA</span>
+            <span class="sfp-chip">AI Security</span>
+            <span class="sfp-chip">NIST / MITRE</span>
+            <span class="sfp-chip">Essential Eight</span>
+          </div>
+          <div class="sfp-actions">
+            <button class="btn btn-primary" type="button" data-open="resume">View resume</button>
+            <button class="btn btn-secondary" type="button" data-open="contact">Get in touch</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Skills -->
+      <section id="panel-skills" class="panel" role="region" aria-label="Skills and capabilities">
+        <div class="panel-topbar">
+          <button class="panel-back" type="button" data-close aria-label="Close panel">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M12 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Back
+          </button>
+          <span class="panel-label">02 / SKILLS</span>
+        </div>
+        <div class="panel-scroll">
+          <header class="sfp-header">
+            <h2 class="sfp-title">Capability map, by domain.</h2>
+          </header>
+          <p class="sfp-lede">Practical capability across security operations, offensive security, cloud, AI security, identity, endpoint, network and automation.</p>
+          <div class="sfp-skill-grid">
+            <div class="sfp-skill-card">
+              <h3 class="sfp-skill-head">Security Operations and Detection</h3>
+              <p class="sfp-skill-body">Splunk Enterprise, SIEM operations, log analysis and ingestion, Windows host and network monitoring, alert triage, anomaly detection, incident response lifecycle, evidence preservation, chain of custody, SOC, CSIRT and SOAR concepts.</p>
+            </div>
+            <div class="sfp-skill-card">
+              <h3 class="sfp-skill-head">Offensive Security and Red Team</h3>
+              <p class="sfp-skill-body">Kali Linux, Metasploit, Meterpreter, msfvenom, Impacket, Rubeus, mimikatz, evil-winrm, chisel, hashcat, Nmap, Rustscan, Wireshark, Burp Suite, Nikto, ffuf. Active Directory tradecraft including Kerberoast, Golden Ticket and DCSync.</p>
+            </div>
+            <div class="sfp-skill-card">
+              <h3 class="sfp-skill-head">Cloud and Cloud Security</h3>
+              <p class="sfp-skill-body">AWS VPC, EC2, RDS Multi-AZ, ALB, Auto Scaling, Route 53, WAF, Shield, CloudTrail, GuardDuty, Security Hub, Inspector, Macie, Config, IAM Identity Center, Cognito, Secrets Manager, KMS, Systems Manager. OCI, Azure, Microsoft 365, Intune, Entra ID.</p>
+            </div>
+            <div class="sfp-skill-card">
+              <h3 class="sfp-skill-head">AI Security and Governance</h3>
+              <p class="sfp-skill-body">Prompt injection and defence, jailbreaking, LLM security, AI threat modelling, AI supply chain security, RAG security, data poisoning, sensitive information disclosure, AI forensics, secure AI system design.</p>
+            </div>
+            <div class="sfp-skill-card">
+              <h3 class="sfp-skill-head">Identity, Endpoint and Network</h3>
+              <p class="sfp-skill-body">IAM, RBAC, MFA, conditional access, Active Directory security, vulnerability management, NGFW, IDS and IPS, EDR and XDR concepts, segmentation and VLAN design, PKI, TLS, VPN, Cisco, Aruba, Cel-Fi, Starlink, Motorola TETRA.</p>
+            </div>
+            <div class="sfp-skill-card">
+              <h3 class="sfp-skill-head">Frameworks and Standards</h3>
+              <p class="sfp-skill-body">NIST CSF, NIST SP 800-61, MITRE ATT&amp;CK, MITRE ATLAS, Essential Eight, CIS Controls, OWASP Top 10, OWASP LLM Top 10, ISO 27001, PCI DSS, ISM, PSPF, Privacy Act 1988, APPs, Notifiable Data Breaches, GDPR, CDR, SOCI Act 2018.</p>
+            </div>
+            <div class="sfp-skill-card">
+              <h3 class="sfp-skill-head">Scripting and Automation</h3>
+              <p class="sfp-skill-body">Python, PowerShell, shell scripting, defensive coding, CSV processing, cross-platform Windows and Linux automation, system audit tooling, ServiceNow, Maximo, Power BI, technical documentation in Obsidian.</p>
+            </div>
+            <div class="sfp-skill-card">
+              <h3 class="sfp-skill-head">Certifications</h3>
+              <p class="sfp-skill-body">AWS Solutions Architect Associate. OCI 2025 Architect Associate. OCI 2025 Foundations Associate. OCI 2025 Generative AI Professional. Certificate IV in Cyber Security. ISC2 CC and CompTIA Security Plus scheduled.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Incident Response -->
+      <section id="panel-ir" class="panel" role="region" aria-label="Incident response portfolio">
+        <div class="panel-topbar">
+          <button class="panel-back" type="button" data-close aria-label="Close panel">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M12 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Back
+          </button>
+          <span class="panel-label">03 / INCIDENT RESPONSE</span>
+        </div>
+        <div class="panel-scroll">
+          <header class="sfp-header">
+            <h2 class="sfp-title">Enterprise IRP design, sanitised.</h2>
+          </header>
+          <p class="sfp-lede">Enterprise Incident Response Program design portfolio piece, structured around NIST SP 800-61 and sanitised from a planning engagement.</p>
+          <div class="sfp-meta-row">
+            <div class="sfp-meta-item"><span class="sfp-meta-label">Document</span><span class="sfp-meta-val">28 page IRP portfolio</span></div>
+            <div class="sfp-meta-item"><span class="sfp-meta-label">Framework</span><span class="sfp-meta-val">NIST SP 800-61, MITRE ATT&amp;CK</span></div>
+            <div class="sfp-meta-item"><span class="sfp-meta-label">Mode</span><span class="sfp-meta-val">Governance, operations and response planning</span></div>
+          </div>
+          <div class="sfp-ir-phases">
+            <div class="sfp-phase sfp-phase--red">
+              <span class="sfp-phase-label">Prepare</span>
+              <span class="sfp-phase-body">Response planning, roles, communications, evidence handling and escalation paths</span>
+            </div>
+            <div class="sfp-phase sfp-phase--yellow">
+              <span class="sfp-phase-label">Detect</span>
+              <span class="sfp-phase-body">SIEM monitoring, log ingestion, triage, severity classification and anomaly review</span>
+            </div>
+            <div class="sfp-phase sfp-phase--cyan">
+              <span class="sfp-phase-label">Contain</span>
+              <span class="sfp-phase-body">Isolation, account control, segmentation, validation, hardening and restoration planning</span>
+            </div>
+            <div class="sfp-phase sfp-phase--purple">
+              <span class="sfp-phase-label">Learn</span>
+              <span class="sfp-phase-body">Lessons learned, reporting, playbook updates and continuous improvement</span>
+            </div>
+          </div>
+          <h3 class="sfp-h3">What it covers</h3>
+          <ul class="sfp-bullets">
+            <li>Project Charter with scope, objectives, methodology, milestones, deliverables and budget</li>
+            <li>Project Team Briefing covering composition, roles, responsibilities and red, blue and purple team activities</li>
+            <li>Communications Plan covering stakeholder cadence, channels and escalation</li>
+            <li>Incident Response Plan covering detect, analyse, contain, eradicate, recover and learn</li>
+            <li>Performance metrics, post-incident review structure and documentation handoff</li>
+          </ul>
+          <h3 class="sfp-h3">What it proves</h3>
+          <ul class="sfp-bullets">
+            <li>Cybersecurity planning and IRP development at program level</li>
+            <li>Ability to turn frameworks into usable operating procedures</li>
+            <li>Stakeholder communication clear enough for executives, auditors and technical staff</li>
+            <li>Calm structure under pressure, written down before the incident</li>
+          </ul>
+          <div class="sfp-actions">
+            <a class="btn btn-primary" href="./assets/docs/Markus_Walker_IRP_Portfolio.pdf" target="_blank" rel="noopener noreferrer" download>
+              Download IRP PDF
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v12m0 0 5-5m-5 5-5-5M4 20h16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+            <a class="btn btn-secondary" href="./assets/docs/Markus_Walker_IRP_Portfolio.pdf" target="_blank" rel="noopener noreferrer">Open in browser</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Cloud Security -->
+      <section id="panel-cloud" class="panel" role="region" aria-label="Cloud security case study">
+        <div class="panel-topbar">
+          <button class="panel-back" type="button" data-close aria-label="Close panel">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M12 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Back
+          </button>
+          <span class="panel-label">04 / CLOUD SECURITY</span>
+        </div>
+        <div class="panel-scroll">
+          <header class="sfp-header">
+            <h2 class="sfp-title">AWS uplift case study, blast radius respected.</h2>
+          </header>
+          <p class="sfp-lede">AWS cloud security upgrade and migration plan for the Rossco's Coffee fictional case study. Architecture treated as a security control, with blast radius and resilience designed deliberately.</p>
+          <div class="sfp-meta-row">
+            <div class="sfp-meta-item"><span class="sfp-meta-label">Document</span><span class="sfp-meta-val">36 page case study</span></div>
+            <div class="sfp-meta-item"><span class="sfp-meta-label">Provider</span><span class="sfp-meta-val">AWS, multi-AZ resilience</span></div>
+            <div class="sfp-meta-item"><span class="sfp-meta-label">Strategy</span><span class="sfp-meta-val">Blue / green deployment</span></div>
+          </div>
+          <div class="sfp-cloud-status">
+            <div class="sfp-cloud-item">
+              <span class="sfp-status-dot sfp-status-ok"></span>
+              <div>
+                <strong>WAF + Shield</strong>
+                <span>Edge protection, HTTPS, OWASP rules</span>
+              </div>
+              <span class="sfp-badge sfp-badge-ok">Active</span>
+            </div>
+            <div class="sfp-cloud-item">
+              <span class="sfp-status-dot sfp-status-ok"></span>
+              <div>
+                <strong>Multi-AZ ALB</strong>
+                <span>Auto Scaling, RDS Multi-AZ</span>
+              </div>
+              <span class="sfp-badge sfp-badge-ok">Resilient</span>
+            </div>
+            <div class="sfp-cloud-item">
+              <span class="sfp-status-dot sfp-status-ok"></span>
+              <div>
+                <strong>IAM + KMS</strong>
+                <span>Identity Center, Secrets Manager</span>
+              </div>
+              <span class="sfp-badge sfp-badge-ok">Hardened</span>
+            </div>
+            <div class="sfp-cloud-item">
+              <span class="sfp-status-dot sfp-status-ok"></span>
+              <div>
+                <strong>CloudTrail + GuardDuty</strong>
+                <span>Logging, monitoring, threat detection</span>
+              </div>
+              <span class="sfp-badge sfp-badge-ok">Observable</span>
+            </div>
+          </div>
+          <h3 class="sfp-h3">Security controls covered</h3>
+          <div class="sfp-ctrl-grid">
+            <span class="sfp-ctrl-chip">CASB</span><span class="sfp-ctrl-chip">WAF</span>
+            <span class="sfp-ctrl-chip">ADC</span><span class="sfp-ctrl-chip">DLP</span>
+            <span class="sfp-ctrl-chip">NAC</span><span class="sfp-ctrl-chip">DNSSEC</span>
+            <span class="sfp-ctrl-chip">DDoS protection</span><span class="sfp-ctrl-chip">KMS</span>
+            <span class="sfp-ctrl-chip">Data classification</span><span class="sfp-ctrl-chip">Network segmentation</span>
+            <span class="sfp-ctrl-chip">IAM and RBAC</span><span class="sfp-ctrl-chip">Logging and SIEM</span>
+          </div>
+          <h3 class="sfp-h3">Plan structure</h3>
+          <ul class="sfp-bullets">
+            <li>Cloud environment upgrade plan with services, access control and security controls</li>
+            <li>Testing and migration plan covering vulnerability, penetration, performance, usability and DR</li>
+            <li>Blue and green deployment strategy with migration comparison and decision</li>
+            <li>Monitoring and maintenance plan, log scrubbing strategy and lifecycle management</li>
+            <li>Cloud incident response plan with predictable incidents and disaster recovery solutions</li>
+          </ul>
+          <div class="sfp-actions">
+            <a class="btn btn-primary" href="./assets/docs/Markus_Walker_Cloud_Case_Study.pdf" target="_blank" rel="noopener noreferrer" download>
+              Download Case Study PDF
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v12m0 0 5-5m-5 5-5-5M4 20h16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+            <a class="btn btn-secondary" href="./assets/docs/Markus_Walker_Cloud_Case_Study.pdf" target="_blank" rel="noopener noreferrer">Open in browser</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Resume -->
+      <section id="panel-resume" class="panel" role="region" aria-label="Resume">
+        <div class="panel-topbar">
+          <button class="panel-back" type="button" data-close aria-label="Close panel">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M12 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Back
+          </button>
+          <span class="panel-label">05 / RESUME</span>
+        </div>
+        <div class="panel-scroll">
+          <header class="sfp-header">
+            <h2 class="sfp-title">Recruiter-friendly summary.</h2>
+          </header>
+          <p class="sfp-lede">Seven plus years of infrastructure and field engineering across Australia's mining and energy sectors, now focused on security, cloud and AI.</p>
+          <div class="sfp-meta-row">
+            <div class="sfp-meta-item"><span class="sfp-meta-label">Name</span><span class="sfp-meta-val">Markus Walker</span></div>
+            <div class="sfp-meta-item"><span class="sfp-meta-label">Location</span><span class="sfp-meta-val">Brisbane, Queensland</span></div>
+            <div class="sfp-meta-item"><span class="sfp-meta-label">Email</span><span class="sfp-meta-val">markus@markuswalker.com</span></div>
+          </div>
+          <h3 class="sfp-h3">Experience</h3>
+          <div class="sfp-role">
+            <p class="sfp-role-head">Independent Cyber Security Practitioner &mdash; Aug 2025 to Present</p>
+            <p class="sfp-role-body">Dedicated upskilling and portfolio period focused on cyber security, cloud security, offensive security and AI security. Completed Certificate IV in Cyber Security and four cloud certifications. Built active offensive security practice through home lab and TryHackMe. Published the Red Team Capstone Crawl-Through writeup. ISC2 CC and CompTIA Security Plus exams scheduled.</p>
+          </div>
+          <div class="sfp-role">
+            <p class="sfp-role-head">IT Field Engineer, Tata Consultancy Services &mdash; May 2019 to Aug 2025</p>
+            <p class="sfp-role-body">Embedded contractor supporting Shell QGC and QCLNG upstream and midstream operations across remote Queensland energy and gas infrastructure. Field engineering across twenty plus remote sites under a FIFO model. Network transformation including over three hundred Cisco to Aruba access point replacements. Connectivity uplift across over six hundred field vehicles. Endpoint lifecycle across six annual refresh cycles. Entra ID identity and access management across a dispersed workforce.</p>
+          </div>
+          <h3 class="sfp-h3">Certifications</h3>
+          <ul class="sfp-bullets">
+            <li>AWS Certified Solutions Architect Associate</li>
+            <li>Oracle Cloud Infrastructure 2025 Architect Associate</li>
+            <li>Oracle Cloud Infrastructure 2025 Foundations Associate</li>
+            <li>Oracle Cloud Infrastructure 2025 Generative AI Professional</li>
+            <li>Certificate IV in Cyber Security</li>
+            <li>ISC2 Certified in Cybersecurity and CompTIA Security Plus scheduled</li>
+          </ul>
+          <div class="sfp-actions">
+            <a class="btn btn-primary" href="./assets/docs/Markus_Walker_Resume.pdf" target="_blank" rel="noopener noreferrer" download>
+              Download Resume PDF
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v12m0 0 5-5m-5 5-5-5M4 20h16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+            <a class="btn btn-secondary" href="https://www.linkedin.com/in/markus-walker-au/" target="_blank" rel="noopener noreferrer">View on LinkedIn ↗</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Writeups -->
+      <section id="panel-writeups" class="panel" role="region" aria-label="Security writeups">
+        <div class="panel-topbar">
+          <button class="panel-back" type="button" data-close aria-label="Close panel">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M12 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Back
+          </button>
+          <span class="panel-label">06 / WRITEUPS</span>
+        </div>
+        <div class="panel-scroll">
+          <header class="sfp-header">
+            <h2 class="sfp-title">Hands on, written down.</h2>
+          </header>
+          <p class="sfp-lede">Active practice through home lab and TryHackMe under the handle Triage. Evidence of structured, methodical offensive security work.</p>
+          <div class="sfp-writeup-list">
+            <a class="sfp-writeup-card sfp-writeup-card--live" href="https://markus-doc.github.io/cybersecurity-writeups/articles/tryhackme/rtcc/1-Red_Team_Capstone_Crawl-Through" target="_blank" rel="noopener noreferrer">
+              <p class="sfp-wt-tag">TRYHACKME · ACTIVE DIRECTORY · PUBLISHED</p>
+              <h3 class="sfp-wt-title">Red Team Capstone Crawl-Through</h3>
+              <p class="sfp-wt-body">Full Active Directory red team capstone walkthrough. Kerberos abuse, credential harvesting, tunnelling, pivoting and GPU-accelerated cracking. Published to GitHub Pages portfolio site.</p>
+              <p class="sfp-wt-cta">Open full writeup ↗</p>
+            </a>
+            <div class="sfp-writeup-card sfp-writeup-card--pending">
+              <p class="sfp-wt-tag">PIPELINE · IN PREPARATION</p>
+              <h3 class="sfp-wt-title">Active Directory Tradecraft Series</h3>
+              <p class="sfp-wt-body">Kerberoast, AS-REP roasting, Golden Ticket, Silver Ticket and DCSync covered through structured lab notes.</p>
+              <p class="sfp-wt-cta">Coming soon</p>
+            </div>
+            <div class="sfp-writeup-card sfp-writeup-card--pending">
+              <p class="sfp-wt-tag">PIPELINE · IN PREPARATION</p>
+              <h3 class="sfp-wt-title">AI Security Notes — OWASP LLM Top 10 and MITRE ATLAS</h3>
+              <p class="sfp-wt-body">Applied notes on prompt injection, jailbreaking, RAG security, data poisoning and AI threat modelling.</p>
+              <p class="sfp-wt-cta">Coming soon</p>
+            </div>
+          </div>
+          <p class="sfp-muted">Growing continuously. Check back for new writeups, lab walkthroughs and tooling notes.</p>
+          <div class="sfp-actions">
+            <a class="btn btn-primary" href="https://github.com/markus-doc" target="_blank" rel="noopener noreferrer">Open GitHub ↗</a>
+            <a class="btn btn-secondary" href="https://tryhackme.com/p/Triage" target="_blank" rel="noopener noreferrer">TryHackMe ↗</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Contact -->
+      <section id="panel-contact" class="panel" role="region" aria-label="Contact information">
+        <div class="panel-topbar">
+          <button class="panel-back" type="button" data-close aria-label="Close panel">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M12 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Back
+          </button>
+          <span class="panel-label">07 / CONTACT</span>
+        </div>
+        <div class="panel-scroll">
+          <header class="sfp-header">
+            <h2 class="sfp-title">Open the channel.</h2>
+          </header>
+          <p class="sfp-lede">Open to cybersecurity, cloud security and AI security roles across Brisbane, remote Australia and selected national opportunities.</p>
+          <div class="sfp-contact-grid">
+            <a class="sfp-contact-card" href="mailto:markus@markuswalker.com">
+              <p class="sfp-cc-label">EMAIL</p>
+              <p class="sfp-cc-val">markus@markuswalker.com</p>
+              <p class="sfp-cc-cta">Open mail client ↗</p>
+            </a>
+            <a class="sfp-contact-card" href="https://www.linkedin.com/in/markus-walker-au/" target="_blank" rel="noopener noreferrer">
+              <p class="sfp-cc-label">LINKEDIN</p>
+              <p class="sfp-cc-val">markus-walker-au</p>
+              <p class="sfp-cc-cta">Open profile ↗</p>
+            </a>
+            <div class="sfp-contact-card sfp-contact-card--info">
+              <p class="sfp-cc-label">LOCATION</p>
+              <p class="sfp-cc-val">Brisbane, Queensland</p>
+              <p class="sfp-cc-cta">Australia</p>
+            </div>
+            <div class="sfp-contact-card sfp-contact-card--info">
+              <p class="sfp-cc-label">AVAILABILITY</p>
+              <p class="sfp-cc-val">Open to roles</p>
+              <p class="sfp-cc-cta">Brisbane &amp; remote</p>
+            </div>
+          </div>
+          <h3 class="sfp-h3">Document downloads</h3>
+          <div class="sfp-dl-grid">
+            <a class="sfp-dl-card" href="./assets/docs/Markus_Walker_Resume.pdf" target="_blank" rel="noopener noreferrer" download>
+              <span class="sfp-dl-label">RESUME</span>
+              <span class="sfp-dl-name">Markus_Walker_Resume.pdf</span>
+              <span class="sfp-dl-icon" aria-hidden="true">↓</span>
+            </a>
+            <a class="sfp-dl-card" href="./assets/docs/Markus_Walker_IRP_Portfolio.pdf" target="_blank" rel="noopener noreferrer" download>
+              <span class="sfp-dl-label">IR PROGRAM</span>
+              <span class="sfp-dl-name">Markus_Walker_IRP_Portfolio.pdf</span>
+              <span class="sfp-dl-icon" aria-hidden="true">↓</span>
+            </a>
+            <a class="sfp-dl-card" href="./assets/docs/Markus_Walker_Cloud_Case_Study.pdf" target="_blank" rel="noopener noreferrer" download>
+              <span class="sfp-dl-label">CLOUD CASE STUDY</span>
+              <span class="sfp-dl-name">Markus_Walker_Cloud_Case_Study.pdf</span>
+              <span class="sfp-dl-icon" aria-hidden="true">↓</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+    </div><!-- /panelLayer -->
+
+    <!-- Dock navigation -->
+    <nav class="dock" aria-label="Portfolio sections">
+      <button class="dock-item" data-open="about" type="button">
+        <svg class="dock-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l8.5 4.5V13c0 5.25-3.5 9-8.5 10-5-1-8.5-4.75-8.5-10V6.5z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><circle cx="12" cy="10" r="2.5" fill="currentColor"/></svg>
+        <span class="dock-label">About</span>
+      </button>
+      <button class="dock-item" data-open="skills" type="button">
+        <svg class="dock-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="dock-label">Skills</span>
+      </button>
+      <button class="dock-item" data-open="ir" type="button">
+        <svg class="dock-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><line x1="12" y1="9" x2="12" y2="13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><line x1="12" y1="17" x2="12.01" y2="17" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>
+        <span class="dock-label">IR</span>
+      </button>
+      <button class="dock-item" data-open="cloud" type="button">
+        <svg class="dock-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 10h-1.26A8 8 0 109 20h9a5 5 0 000-10z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="dock-label">Cloud</span>
+      </button>
+      <button class="dock-item" data-open="resume" type="button">
+        <svg class="dock-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><polyline points="14 2 14 8 20 8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><line x1="8" y1="13" x2="16" y2="13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><line x1="8" y1="17" x2="13" y2="17" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="dock-label">Resume</span>
+      </button>
+      <button class="dock-item" data-open="writeups" type="button">
+        <svg class="dock-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h9M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="dock-label">Writeups</span>
+      </button>
+      <button class="dock-item" data-open="contact" type="button">
+        <svg class="dock-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><polyline points="22,6 12,13 2,6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="dock-label">Contact</span>
+      </button>
+    </nav>
+
+    <footer class="legal" aria-label="Footer">
+      <p>Markus Walker MAISA &middot; Security, AI and Cloud Portfolio &middot; Brisbane AU &middot; Built with Three.js</p>
+    </footer>
+
+  </main><!-- /app -->
+
+  <!-- ─── WebGL error fallback ───────────────────────────────────────────── -->
+  <div id="errorScreen" class="fallback-wrap" hidden role="alert" aria-live="assertive">
+    <div class="fallback-card">
+      <p class="fallback-kicker">Portfolio available</p>
+      <h2>Markus Walker</h2>
+      <p class="fallback-role">Security, AI and Cloud Engineer · Brisbane, Australia</p>
+      <p class="fallback-copy">The 3D scene could not initialise, but the full portfolio is available below.</p>
+      <p class="fallback-copy">Seven plus years across infrastructure, field engineering and dedicated service engineering in mining, energy and LNG environments. Portfolio focus: cloud security, incident response, security operations, offensive security practice, web application testing and AI security.</p>
+      <p class="fallback-copy"><strong>Skills:</strong> AWS and OCI cloud, IAM, WAF, GuardDuty, CloudTrail, incident response, SIEM triage, Active Directory labs, web application testing, OWASP LLM Top 10 and secure AI notes.</p>
+      <nav class="fallback-nav" aria-label="Portfolio links">
+        <a class="btn btn-primary" href="mailto:markus@markuswalker.com">Email Markus</a>
+        <a class="btn btn-secondary" href="./assets/docs/Markus_Walker_Resume.pdf" target="_blank" rel="noopener noreferrer">Resume PDF</a>
+        <a class="btn btn-secondary" href="./assets/docs/Markus_Walker_IRP_Portfolio.pdf" target="_blank" rel="noopener noreferrer">IR Portfolio</a>
+        <a class="btn btn-secondary" href="./assets/docs/Markus_Walker_Cloud_Case_Study.pdf" target="_blank" rel="noopener noreferrer">Cloud Case Study</a>
+        <a class="btn btn-secondary" href="https://www.linkedin.com/in/markus-walker-au/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        <a class="btn btn-secondary" href="https://github.com/markus-doc" target="_blank" rel="noopener noreferrer">GitHub</a>
+      </nav>
+      <pre id="errorDetail" class="error-detail" aria-label="Error details"></pre>
+    </div>
+  </div>
+
+  <!-- ─── Inline scripts ─────────────────────────────────────────────────── -->
+  <script>
+    window.showStaticFallback = function(reason) {
+      document.body.classList.add('webgl-fallback');
+      var app = document.getElementById('app');
+      var loader = document.getElementById('loader');
+      var screen = document.getElementById('errorScreen');
+      var detail = document.getElementById('errorDetail');
+      if (app) app.hidden = true;
+      if (loader) loader.classList.add('loader--hidden');
+      if (screen) screen.hidden = false;
+      if (detail && reason) detail.textContent = reason && (reason.stack || reason.message || String(reason));
+    };
+  </script>
+
+  <script type="module" src="./main.js?v=14" onerror="window.showStaticFallback && window.showStaticFallback('The Three.js module could not be loaded.')"></script>
+
+</body>
+</html>

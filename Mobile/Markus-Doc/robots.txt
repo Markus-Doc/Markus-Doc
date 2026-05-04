@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# Enumerate responsibly
+# Logs are watching 👀
