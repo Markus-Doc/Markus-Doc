@@ -1,0 +1,10 @@
+{
+  "bundle": "sentinel-assets-light.zip",
+  "global_style": "pleasant light cybersecurity mission-control UI aesthetic, warm off-white #f7f9fb, mist-blue #eaf4ff, cyan #00aeea, mint #22c78a, pale slate #253140, hairline geometry, frosted-glass subtlety, faint paper grain, restrained premium polish",
+  "assets": [
+    {"path":"01_brand/logo-mark.png","size":"1024x1024","transparent":true,"prompt":"Abstract sentinel/shield mark, single continuous geometric line, hexagonal sigil, half radar-grid half shield, cyan-to-mint gradient 2px stroke, negative-space center with single dot, minimal and optimistic."},
+    {"path":"01_brand/wordmark.png","size":"1600x400","transparent":true,"prompt":"Word SENTINEL in heavy geometric mono style, subtle cut/glitch on T, cyan-to-mint horizontal gradient, below a 1px tracking line and tagline INTERVIEW PREP // MISSION CONTROL at 35% pale slate opacity."},
+    {"path":"01_brand/favicon.png","size":"512x512","transparent":false,"prompt":"Rounded square warm off-white #f7f9fb, centered hex sentinel mark in cyan #00aeea with very soft outer glow, no text."},
+    {"path":"01_brand/og-card.png","size":"1200x630","transparent":false,"prompt":"Social share card with off-white background, subtle 40px cyan grid fading from top-right, left side large SENTINEL wordmark + tagline, right side floating isometric HUD panels with radar sweep signal bars redacted doc silhouette."}
+  ]
+}
