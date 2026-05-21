@@ -1651,9 +1651,9 @@ const SECTION_CONTENT = {
         <span class="sfp-dl-name">Markus_Walker_Cloud_Case_Study.pdf</span>
         <span class="sfp-dl-icon">↓</span>
       </a>
-      <a class="sfp-dl-card" href="./assets/docs/Markus_Walker_MCP_Governance_Platform.md" target="_blank" rel="noopener noreferrer" download>
+      <a class="sfp-dl-card" href="./assets/docs/Markus_Walker_MCP_Governance_Platform.pdf" target="_blank" rel="noopener noreferrer" download>
         <span class="sfp-dl-label">MCP GOVERNANCE</span>
-        <span class="sfp-dl-name">Markus_Walker_MCP_Governance_Platform.md</span>
+        <span class="sfp-dl-name">Markus_Walker_MCP_Governance_Platform.pdf</span>
         <span class="sfp-dl-icon">↓</span>
       </a>
     </div>`,
@@ -1708,38 +1708,74 @@ const SECTION_CONTENT = {
 
   mcp: () => `
     <div class="sfp-header">
-      <p class="sfp-eyebrow">05 / MCP GOVERNANCE</p>
-      <h2 class="sfp-title">AI governance PoC, workflow evidence attached.</h2>
+      <p class="sfp-eyebrow">05 / MCP GOVERNANCE · WORKING PoC</p>
+      <h2 class="sfp-title">AI and MCP Access Governance Platform.</h2>
     </div>
-    <p class="sfp-lede">Working governance proof of concept for AI agent and MCP access review. Structured intake, automated risk classification, human-reviewed approval and durable audit evidence — implemented as a runnable n8n workflow.</p>
+    <img class="sfp-hero-img" src="./assets/images/mcp-governance/02_mcp_governance_hero_banner.png" alt="AI and MCP Access Governance Platform" loading="lazy">
+    <p class="sfp-lede">A working governance proof of concept that solves a real emerging problem: organisations have no repeatable intake, classification, review and audit process for AI agent integrations and MCP-connected tools. This builds one.</p>
     <div class="sfp-meta">
       <span><strong>Stack</strong> n8n · Asana · Notion · GitHub</span>
       <span><strong>Controls</strong> 8 governance control objectives</span>
-      <span><strong>Status</strong> Working PoC</span>
+      <span><strong>Badge</strong> Working governance PoC</span>
     </div>
-    <h3 class="sfp-h3">What it covers</h3>
+    <h3 class="sfp-h3">Governance control loop</h3>
+    <div class="sfp-flow-pills">
+      <span class="sfp-flow-pill">Request</span>
+      <span class="sfp-flow-pill">Validate</span>
+      <span class="sfp-flow-pill">Classify</span>
+      <span class="sfp-flow-pill">Route</span>
+      <span class="sfp-flow-pill">Human review</span>
+      <span class="sfp-flow-pill">Evidence</span>
+    </div>
     <ul class="sfp-bullets">
       <li>Governance-first control for AI tools, MCP servers, workflow integrations and API connections</li>
-      <li>Request, classify, policy check, approval, execute, log and review</li>
-      <li>Human-in-the-loop control for all medium and high-risk AI operations</li>
-      <li>Identity, least privilege, human approval, audit evidence and continuous review</li>
-      <li>n8n workflow orchestration with Asana review tasks and Notion evidence records</li>
-      <li>Framework alignment: ISO 27001, ISO 42001, OWASP LLM Top 10, MAESTRO</li>
+      <li>Human-reviewed control for all medium and high-risk AI operations — not just automated gates</li>
+      <li>Identity, least privilege, time-bound access, audit evidence and continuous review</li>
+      <li>Every terminal decision — approved, conditional or denied — produces a structured JSON evidence record</li>
+      <li>n8n workflow orchestration with Asana review queue and Notion decision records</li>
     </ul>
+    <h3 class="sfp-h3">n8n workflow — live evidence</h3>
+    <img class="sfp-evidence-img" src="./assets/images/mcp-governance/MCP-Gov_N8N-Workflow.png" alt="MCP Governance n8n workflow — full governance control loop from intake through evidence record" loading="lazy">
+    <span class="sfp-img-caption">Live n8n workflow export · intake → validate → classify → route → human review → evidence record</span>
+    <h3 class="sfp-h3">Governance controls</h3>
+    <table class="sfp-ctrl-table">
+      <thead><tr><th>Ref</th><th>Control objective</th></tr></thead>
+      <tbody>
+        <tr><td>GOV-01</td><td>Structured intake — every request captured with required fields</td></tr>
+        <tr><td>GOV-02</td><td>Risk classification — Low · Medium · High · Prohibited</td></tr>
+        <tr><td>GOV-03</td><td>Human accountability — material risk routes to a named security reviewer</td></tr>
+        <tr><td>GOV-04</td><td>Audit evidence — structured JSON record for every terminal decision</td></tr>
+        <tr><td>GOV-05</td><td>Least privilege — approved access is time-bound and purpose-bound</td></tr>
+        <tr><td>GOV-06</td><td>Safe automation boundary — no provisioning without explicit approval</td></tr>
+      </tbody>
+    </table>
     <h3 class="sfp-h3">What it proves</h3>
     <ul class="sfp-bullets">
       <li>Security engineering applied to an emerging AI governance problem</li>
-      <li>Deterministic rule-based security linter with 42 passing tests</li>
-      <li>Governance translated to testable, auditable, working code</li>
-      <li>Evidence-oriented design with audit chain across every decision path</li>
+      <li>Governance translated to testable, auditable, working code with 42-rule security linter</li>
+      <li>Evidence-oriented design with complete audit chain across every decision path</li>
+      <li>Framework alignment: ISO 27001 · ISO 42001 · OWASP LLM Top 10 · MAESTRO</li>
     </ul>
     <p class="sfp-muted">Portfolio-safe proof of concept. Fictional vendors, mock intake data and demo values throughout. Not a production deployment, certification or attestation.</p>
     <div class="sfp-actions">
-      <a class="btn btn-primary" href="./assets/docs/Markus_Walker_MCP_Governance_Platform.md" target="_blank" rel="noopener noreferrer" download>
-        Portfolio Document (Markdown)
+      <a class="btn btn-primary" href="./assets/docs/Markus_Walker_MCP_Governance_Platform.pdf" target="_blank" rel="noopener noreferrer" download>
+        Download Portfolio PDF
         <svg viewBox="0 0 24 24" aria-hidden="true" style="width:16px;height:16px"><path d="M12 4v12m0 0 5-5m-5 5-5-5M4 20h16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
       </a>
-      <a class="btn btn-secondary" href="https://github.com/Markus-Doc/MCP_Governance_Platform" target="_blank" rel="noopener noreferrer">View on GitHub ↗</a>
+      <a class="btn btn-secondary" href="https://github.com/markus-doc/MCP_Governance_Platform" target="_blank" rel="noopener noreferrer">View on GitHub ↗</a>
+    </div>
+    <div class="sfp-n8n-import">
+      <div class="sfp-n8n-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="8" height="8" rx="1.5"/><rect x="14" y="3" width="8" height="8" rx="1.5"/><rect x="8" y="13" width="8" height="8" rx="1.5"/><path d="M6 11v2M18 11v2M12 11v2"/></svg>
+      </div>
+      <div class="sfp-n8n-body">
+        <p class="sfp-n8n-label">n8n Workflow Import</p>
+        <p class="sfp-n8n-desc">Download the workflow JSON and import directly into any n8n Cloud or self-hosted instance to run the full governance control loop yourself.</p>
+        <a class="sfp-n8n-btn" href="./assets/docs/N8N-MCP_Access_Governance_Platform-v2.json" download="N8N-MCP_Access_Governance_Platform-v2.json">
+          Download workflow JSON
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v12m0 0 5-5m-5 5-5-5M4 20h16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+        </a>
+      </div>
     </div>`
 }
 
