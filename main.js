@@ -1651,9 +1651,9 @@ const SECTION_CONTENT = {
         <span class="sfp-dl-name">Markus_Walker_Cloud_Case_Study.pdf</span>
         <span class="sfp-dl-icon">↓</span>
       </a>
-      <a class="sfp-dl-card" href="./assets/docs/Markus_Walker_MCP_Governance_Platform.pdf" target="_blank" rel="noopener noreferrer" download>
+      <a class="sfp-dl-card" href="./assets/docs/Markus_Walker_MCP_Governance_Platform_v2.pdf" target="_blank" rel="noopener noreferrer" download>
         <span class="sfp-dl-label">MCP GOVERNANCE</span>
-        <span class="sfp-dl-name">Markus_Walker_MCP_Governance_Platform.pdf</span>
+        <span class="sfp-dl-name">Markus_Walker_MCP_Governance_Platform_v2.pdf</span>
         <span class="sfp-dl-icon">↓</span>
       </a>
     </div>`,
@@ -1758,7 +1758,7 @@ const SECTION_CONTENT = {
     </ul>
     <p class="sfp-muted">Portfolio-safe proof of concept. Fictional vendors, mock intake data and demo values throughout. Not a production deployment, certification or attestation.</p>
     <div class="sfp-actions">
-      <a class="btn btn-primary" href="./assets/docs/Markus_Walker_MCP_Governance_Platform.pdf" target="_blank" rel="noopener noreferrer" download>
+      <a class="btn btn-primary" href="./assets/docs/Markus_Walker_MCP_Governance_Platform_v2.pdf" target="_blank" rel="noopener noreferrer" download>
         Download Portfolio PDF
         <svg viewBox="0 0 24 24" aria-hidden="true" style="width:16px;height:16px"><path d="M12 4v12m0 0 5-5m-5 5-5-5M4 20h16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
       </a>
