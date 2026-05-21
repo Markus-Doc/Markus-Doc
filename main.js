@@ -1292,6 +1292,8 @@ const FOCUS_ZONES = {
   resume:   { pos: new THREE.Vector3(1.6, 3.6, -1.0),   look: new THREE.Vector3(4.4, 1.6, 3.2) },
   // Writeups: mirror of resume
   writeups: { pos: new THREE.Vector3(-1.6, 3.6, -1.0),  look: new THREE.Vector3(-4.4, 1.6, 3.2) },
+  // MCP Governance: centred overview position
+  mcp:      { pos: new THREE.Vector3(0, 3.6, 2.4),      look: new THREE.Vector3(0, 2.0, -5.0) },
   // Contact: pull back for wide view
   contact:   { pos: new THREE.Vector3(0, 4.2, 10.8),    look: new THREE.Vector3(0, 1.8, 1.0) },
   // Workstation monitors face +Z; camera sits at larger Z looking toward them
@@ -1304,7 +1306,7 @@ const FOCUS_ZONES = {
 const HUD_TITLES = {
   core: 'Command Layer', about: 'Profile', skills: 'Capability Map',
   ir: 'Incident Response Program', cloud: 'AWS Cloud Security Uplift',
-  resume: 'Resume Snapshot', writeups: 'Cyber Writeups', contact: 'Contact',
+  mcp: 'MCP Governance', resume: 'Resume Snapshot', writeups: 'Cyber Writeups', contact: 'Contact',
   linkedin: 'LinkedIn', github: 'GitHub', tryhackme: 'TryHackMe'
 }
 const HUD_BODIES = {
@@ -1313,6 +1315,7 @@ const HUD_BODIES = {
   skills:   'Practical capability map across security operations, offensive security, cloud security, AI security, identity, endpoint, network and automation.',
   ir:       'Enterprise Incident Response Program design portfolio aligned to NIST SP 800-61 and MITRE ATT&CK.',
   cloud:    "Rossco's Coffee AWS security uplift case study. Architecture treated as a security control, with blast radius and resilience designed deliberately.",
+  mcp:      'Working governance proof of concept for AI agent and MCP access review. Structured intake, automated risk classification, human-reviewed approval and durable audit evidence.',
   resume:   'Recruiter-friendly snapshot. Seven plus years of infrastructure and field engineering, now focused on security, cloud and AI.',
   writeups: 'Hands-on offensive security labs and applied analysis. Red Team Capstone Crawl-Through is published.',
   contact:   'Email, LinkedIn, location and portfolio document downloads. Open to security, cloud and AI security roles.',
@@ -1320,14 +1323,15 @@ const HUD_BODIES = {
   github:    'Published writeups, portfolio projects and tooling notes. Home of the Red Team Capstone Crawl-Through.',
   tryhackme: 'Active offensive security practice through structured labs under the handle Triage. Red team, Active Directory and web application focus.'
 }
-const HUD_BADGES  = { core:'PROFILE', about:'PROFILE', skills:'CAPABILITY', ir:'PORTFOLIO', cloud:'CASE STUDY', resume:'PDF', writeups:'PUBLIC', contact:'CONTACT', linkedin:'LINKEDIN', github:'GITHUB', tryhackme:'THM' }
+const HUD_BADGES  = { core:'PROFILE', about:'PROFILE', skills:'CAPABILITY', ir:'PORTFOLIO', cloud:'CASE STUDY', mcp:'GOV POC', resume:'PDF', writeups:'PUBLIC', contact:'CONTACT', linkedin:'LINKEDIN', github:'GITHUB', tryhackme:'THM' }
 const HUD_BADGE_K = { ir: 'warn' }
 const HUD_STATS   = {
-  core:     [['Sections','7'],['Certified','True'],['Region','QLD AU']],
+  core:     [['Sections','8'],['Certified','True'],['Region','QLD AU']],
   about:    [['Role','Sec · AI · Cloud'],['Region','BNE AU'],['Certs','4']],
   skills:   [['Domains','8'],['Certs','4'],['Status','Current']],
   ir:       [['Pages','28'],['Frameworks','2'],['Status','Portfolio']],
   cloud:    [['Pages','36'],['Controls','12+'],['Strategy','B/G']],
+  mcp:      [['Stack','n8n · Asana'],['Controls','8'],['Status','Working PoC']],
   resume:   [['Years','7+'],['Sites','20+'],['Certs','4']],
   writeups: [['Published','1'],['Pipeline','2'],['Focus','AD/AI']],
   contact:   [['Email','Open'],['LinkedIn','Active'],['Status','Open']],
@@ -1337,9 +1341,9 @@ const HUD_STATS   = {
 }
 
 /* Story panel zone mapping */
-const STORY_ZONE = { core:'core', about:'core', skills:'core', ir:'ir', cloud:'cloud', resume:'ai', writeups:'writeups', contact:'core', linkedin:'core', github:'writeups', tryhackme:'writeups' }
+const STORY_ZONE = { core:'core', about:'core', skills:'core', ir:'ir', cloud:'cloud', mcp:'mcp', resume:'ai', writeups:'writeups', contact:'core', linkedin:'core', github:'writeups', tryhackme:'writeups' }
 /* Section → object key mapping for highlighting */
-const SECTION_OBJ_KEY = { about:'core', skills:'core', ir:'ir', cloud:'cloud', resume:'ai', writeups:'writeups', contact:'core', linkedin:'core', github:'core', tryhackme:'core' }
+const SECTION_OBJ_KEY = { about:'core', skills:'core', ir:'ir', cloud:'cloud', mcp:'core', resume:'ai', writeups:'writeups', contact:'core', linkedin:'core', github:'core', tryhackme:'core' }
 
 /* ─── Update HUD ─────────────────────────────────────────────────── */
 function updateHUD(key) {
@@ -1647,6 +1651,11 @@ const SECTION_CONTENT = {
         <span class="sfp-dl-name">Markus_Walker_Cloud_Case_Study.pdf</span>
         <span class="sfp-dl-icon">↓</span>
       </a>
+      <a class="sfp-dl-card" href="./assets/docs/Markus_Walker_MCP_Governance_Platform.md" target="_blank" rel="noopener noreferrer" download>
+        <span class="sfp-dl-label">MCP GOVERNANCE</span>
+        <span class="sfp-dl-name">Markus_Walker_MCP_Governance_Platform.md</span>
+        <span class="sfp-dl-icon">↓</span>
+      </a>
     </div>`,
 
   linkedin: () => `
@@ -1695,6 +1704,42 @@ const SECTION_CONTENT = {
     <div class="sfp-actions">
       <a class="btn btn-primary" href="https://tryhackme.com/p/Triage" target="_blank" rel="noopener noreferrer">Open TryHackMe ↗</a>
       <button class="btn btn-secondary" type="button" data-focus="writeups">View writeups</button>
+    </div>`,
+
+  mcp: () => `
+    <div class="sfp-header">
+      <p class="sfp-eyebrow">05 / MCP GOVERNANCE</p>
+      <h2 class="sfp-title">AI governance PoC, workflow evidence attached.</h2>
+    </div>
+    <p class="sfp-lede">Working governance proof of concept for AI agent and MCP access review. Structured intake, automated risk classification, human-reviewed approval and durable audit evidence — implemented as a runnable n8n workflow.</p>
+    <div class="sfp-meta">
+      <span><strong>Stack</strong> n8n · Asana · Notion · GitHub</span>
+      <span><strong>Controls</strong> 8 governance control objectives</span>
+      <span><strong>Status</strong> Working PoC</span>
+    </div>
+    <h3 class="sfp-h3">What it covers</h3>
+    <ul class="sfp-bullets">
+      <li>Governance-first control for AI tools, MCP servers, workflow integrations and API connections</li>
+      <li>Request, classify, policy check, approval, execute, log and review</li>
+      <li>Human-in-the-loop control for all medium and high-risk AI operations</li>
+      <li>Identity, least privilege, human approval, audit evidence and continuous review</li>
+      <li>n8n workflow orchestration with Asana review tasks and Notion evidence records</li>
+      <li>Framework alignment: ISO 27001, ISO 42001, OWASP LLM Top 10, MAESTRO</li>
+    </ul>
+    <h3 class="sfp-h3">What it proves</h3>
+    <ul class="sfp-bullets">
+      <li>Security engineering applied to an emerging AI governance problem</li>
+      <li>Deterministic rule-based security linter with 42 passing tests</li>
+      <li>Governance translated to testable, auditable, working code</li>
+      <li>Evidence-oriented design with audit chain across every decision path</li>
+    </ul>
+    <p class="sfp-muted">Portfolio-safe proof of concept. Fictional vendors, mock intake data and demo values throughout. Not a production deployment, certification or attestation.</p>
+    <div class="sfp-actions">
+      <a class="btn btn-primary" href="./assets/docs/Markus_Walker_MCP_Governance_Platform.md" target="_blank" rel="noopener noreferrer" download>
+        Download Portfolio Document
+        <svg viewBox="0 0 24 24" aria-hidden="true" style="width:16px;height:16px"><path d="M12 4v12m0 0 5-5m-5 5-5-5M4 20h16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+      </a>
+      <a class="btn btn-secondary" href="https://github.com/markus-doc/MCP_Governance_Platform" target="_blank" rel="noopener noreferrer">View on GitHub ↗</a>
     </div>`
 }
 
