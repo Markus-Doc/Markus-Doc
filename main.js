@@ -1543,7 +1543,7 @@ const SECTION_CONTENT = {
 
   resume: () => `
     <div class="sfp-header">
-      <p class="sfp-eyebrow">05 / RESUME</p>
+      <p class="sfp-eyebrow">06 / RESUME</p>
       <h2 class="sfp-title">Recruiter-friendly summary.</h2>
     </div>
     <p class="sfp-lede">Seven plus years of infrastructure and field engineering across Australia's mining and energy sectors, now focused on security, cloud and AI.</p>
@@ -1580,7 +1580,7 @@ const SECTION_CONTENT = {
 
   writeups: () => `
     <div class="sfp-header">
-      <p class="sfp-eyebrow">06 / WRITEUPS</p>
+      <p class="sfp-eyebrow">07 / WRITEUPS</p>
       <h2 class="sfp-title">Hands on, written down.</h2>
     </div>
     <p class="sfp-lede">Active practice through home lab and TryHackMe under the handle Triage. Evidence of structured, methodical offensive security work.</p>
@@ -1608,7 +1608,7 @@ const SECTION_CONTENT = {
 
   contact: () => `
     <div class="sfp-header">
-      <p class="sfp-eyebrow">07 / CONTACT</p>
+      <p class="sfp-eyebrow">08 / CONTACT</p>
       <h2 class="sfp-title">Open the channel.</h2>
     </div>
     <p class="sfp-lede">Open to cybersecurity, cloud security and AI security roles across Brisbane, remote Australia and selected national opportunities.</p>
@@ -1736,10 +1736,10 @@ const SECTION_CONTENT = {
     <p class="sfp-muted">Portfolio-safe proof of concept. Fictional vendors, mock intake data and demo values throughout. Not a production deployment, certification or attestation.</p>
     <div class="sfp-actions">
       <a class="btn btn-primary" href="./assets/docs/Markus_Walker_MCP_Governance_Platform.md" target="_blank" rel="noopener noreferrer" download>
-        Download Portfolio Document
+        Portfolio Document (Markdown)
         <svg viewBox="0 0 24 24" aria-hidden="true" style="width:16px;height:16px"><path d="M12 4v12m0 0 5-5m-5 5-5-5M4 20h16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
       </a>
-      <a class="btn btn-secondary" href="https://github.com/markus-doc/MCP_Governance_Platform" target="_blank" rel="noopener noreferrer">View on GitHub ↗</a>
+      <a class="btn btn-secondary" href="https://github.com/Markus-Doc/MCP_Governance_Platform" target="_blank" rel="noopener noreferrer">View on GitHub ↗</a>
     </div>`
 }
 
