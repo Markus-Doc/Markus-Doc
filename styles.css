@@ -1549,11 +1549,22 @@ body.quality-reduced-motion .scanlines {
 }
 
 /* ─── Image lightbox ─────────────────────────────────────────────── */
+
+/* Suppress the WebGL canvas and its CSS overlay layers when the lightbox
+   is open. The canvas is GPU-composited and punches through z-index
+   regardless of stacking order, so we hide the layers directly. */
+body.lightbox-open #scene,
+body.lightbox-open .grain,
+body.lightbox-open .scanlines,
+body.lightbox-open .vignette {
+  visibility: hidden;
+}
+
 .img-lightbox {
   position: fixed;
   inset: 0;
-  z-index: 9999;
-  background: rgba(0, 0, 0, 0.88);
+  z-index: 2147483647;
+  background: rgba(0, 0, 0, 0.92);
   display: flex;
   align-items: center;
   justify-content: center;

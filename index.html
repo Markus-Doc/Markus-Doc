@@ -458,14 +458,14 @@
         lbImg.src = src;
         lbImg.alt = alt || '';
         lb.hidden = false;
-        document.body.style.overflow = 'hidden';
+        document.body.classList.add('lightbox-open');
         lbClose.focus();
       }
 
       function closeLightbox() {
         lb.hidden = true;
         lbImg.src = '';
-        document.body.style.overflow = '';
+        document.body.classList.remove('lightbox-open');
       }
 
       // Open on any .sfp-evidence-img click (delegated — works for dynamically injected content)
