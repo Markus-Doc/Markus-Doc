@@ -1557,21 +1557,21 @@ body.lightbox-open #scene,
 body.lightbox-open .grain,
 body.lightbox-open .scanlines,
 body.lightbox-open .vignette {
-  visibility: hidden;
+  visibility: hidden !important;
 }
 
 .img-lightbox {
-  position: fixed;
-  inset: 0;
-  z-index: 2147483647;
-  background: rgba(0, 0, 0, 0.92);
-  display: flex;
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 2147483647 !important;
+  background: rgba(0, 0, 0, 0.92) !important;
+  display: flex !important;
   align-items: center;
   justify-content: center;
   cursor: zoom-out;
   animation: lbFadeIn 0.18s ease;
 }
-.img-lightbox[hidden] { display: none; }
+.img-lightbox[hidden] { display: none !important; }
 @keyframes lbFadeIn {
   from { opacity: 0; }
   to   { opacity: 1; }

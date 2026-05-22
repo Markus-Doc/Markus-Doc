@@ -53,7 +53,7 @@
   </script>
   <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
-  <link rel="stylesheet" href="./styles.css?v=13">
+  <link rel="stylesheet" href="./styles.css?v=14">
   <script type="importmap">
     {
       "imports": {
@@ -453,19 +453,49 @@
       var lb    = document.getElementById('imgLightbox');
       var lbImg = document.getElementById('imgLightboxImg');
       var lbClose = document.getElementById('imgLightboxClose');
+      var suppressedLayers = Array.prototype.slice.call(
+        document.querySelectorAll('#scene, .grain, .scanlines, .vignette')
+      );
+
+      function suppressSceneLayers(suppress) {
+        suppressedLayers.forEach(function (el) {
+          if (suppress) {
+            el.dataset.lightboxPreviousVisibility = el.style.visibility || '';
+            el.style.visibility = 'hidden';
+          } else {
+            el.style.visibility = el.dataset.lightboxPreviousVisibility || '';
+            delete el.dataset.lightboxPreviousVisibility;
+          }
+        });
+      }
+
+      function applyOverlayStyle() {
+        lb.style.position = 'fixed';
+        lb.style.inset = '0';
+        lb.style.zIndex = '2147483647';
+        lb.style.display = 'flex';
+        lb.style.alignItems = 'center';
+        lb.style.justifyContent = 'center';
+        lb.style.background = 'rgba(0, 0, 0, 0.92)';
+        lb.style.cursor = 'zoom-out';
+      }
 
       function openLightbox(src, alt) {
         lbImg.src = src;
         lbImg.alt = alt || '';
+        applyOverlayStyle();
         lb.hidden = false;
         document.body.classList.add('lightbox-open');
+        suppressSceneLayers(true);
         lbClose.focus();
       }
 
       function closeLightbox() {
         lb.hidden = true;
         lbImg.src = '';
+        lb.removeAttribute('style');
         document.body.classList.remove('lightbox-open');
+        suppressSceneLayers(false);
       }
 
       // Open on any .sfp-evidence-img click (delegated — works for dynamically injected content)
