@@ -298,6 +298,12 @@
     </div>
   </div>
 
+  <!-- Image lightbox -->
+  <div id="imgLightbox" class="img-lightbox" hidden role="dialog" aria-modal="true" aria-label="Full-size image">
+    <button class="img-lightbox-close" id="imgLightboxClose" type="button" aria-label="Close image">✕</button>
+    <img class="img-lightbox-img" id="imgLightboxImg" src="" alt="">
+  </div>
+
   <!-- Tweaks panel -->
   <div id="tweaksPanel" class="tweaks-panel" hidden aria-label="Design tweaks">
     <header class="tweaks-hd" id="tweaksDrag">
@@ -439,6 +445,45 @@
       var key = el.dataset.focus;
       if (key && window.focusSection) window.focusSection(key);
     });
+  </script>
+
+  <!-- Image lightbox -->
+  <script>
+    (function () {
+      var lb    = document.getElementById('imgLightbox');
+      var lbImg = document.getElementById('imgLightboxImg');
+      var lbClose = document.getElementById('imgLightboxClose');
+
+      function openLightbox(src, alt) {
+        lbImg.src = src;
+        lbImg.alt = alt || '';
+        lb.hidden = false;
+        document.body.style.overflow = 'hidden';
+        lbClose.focus();
+      }
+
+      function closeLightbox() {
+        lb.hidden = true;
+        lbImg.src = '';
+        document.body.style.overflow = '';
+      }
+
+      // Open on any .sfp-evidence-img click (delegated — works for dynamically injected content)
+      document.addEventListener('click', function (e) {
+        var img = e.target.closest('.sfp-evidence-img');
+        if (img) { openLightbox(img.src, img.alt); return; }
+
+        // Close when clicking the backdrop or the close button
+        if (!lb.hidden && (e.target === lb || e.target === lbClose)) {
+          closeLightbox();
+        }
+      });
+
+      // Close on Escape
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && !lb.hidden) closeLightbox();
+      });
+    })();
   </script>
 
   <script type="module" src="./main.js?v=15" onerror="window.showStaticFallback && window.showStaticFallback('The Three.js module could not be loaded.')"></script>
