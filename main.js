@@ -16,10 +16,7 @@ const screenPanel = $('#screenFocusPanel')
 const backBtn = $('#backBtn')
 
 /* ─── Loader ──────────────────────────────────────────────────────── */
-const loaderSteps = [
-  [12, 'Establishing telemetry'], [28, 'Mounting threat intelligence'], [46, 'Loading security controls'],
-  [64, 'Validating sensor array'], [80, 'Configuring SIEM connectors'], [96, 'Hardening perimeter']
-]
+const loaderSteps = [[12, 'Loading portfolio'], [28, 'Loading portfolio'], [46, 'Loading portfolio'], [64, 'Loading portfolio'], [80, 'Loading portfolio'], [96, 'Loading portfolio']]
 let li = 0
 const tick = setInterval(() => {
   if (li >= loaderSteps.length) return
@@ -28,7 +25,7 @@ const tick = setInterval(() => {
 }, 220)
 function finishLoader() {
   clearInterval(tick)
-  loaderBar.style.width = '100%'; loaderStep.textContent = 'Online'
+  loaderBar.style.width = '100%'; loaderStep.textContent = 'Ready'
   appEl.hidden = false
   setTimeout(() => {
     loaderEl.classList.add('is-hidden')
@@ -665,7 +662,7 @@ function drawCore(ctx, c, accent, col) {
   ctx.lineTo(cx, cy + 110); ctx.lineTo(cx - 64, cy + 38); ctx.lineTo(cx - 78, cy - 70); ctx.closePath(); ctx.fill()
   ctx.globalAlpha = 1; ctx.strokeStyle = col.ink; ctx.lineWidth = 5
   ctx.beginPath(); ctx.moveTo(cx - 38, cy); ctx.lineTo(cx - 8, cy + 30); ctx.lineTo(cx + 42, cy - 24); ctx.stroke()
-  const labels = ['Posture', 'Threat', 'Coverage', 'Latency'], vals = ['98%', 'Low', '92%', '12ms'], ws = [254, 60, 232, 80]
+  const labels = ['Focus', 'Practice', 'Background', 'Location'], vals = ['Enterprise AI', 'Secure AI', 'IT and OT', 'Brisbane'], ws = [0, 0, 0, 0]
   for (let i = 0; i < 4; i++) {
     const y = 200 + i * 86
     ctx.fillStyle = col.row; rr(ctx, 460, y - 42, 520, 64, 12); ctx.fill()
@@ -678,7 +675,7 @@ function drawCore(ctx, c, accent, col) {
 
 function drawIR(ctx, c, col) {
   ctx.fillStyle = col.muted; ctx.font = '600 16px JetBrains Mono, monospace'
-  ctx.fillText('INCIDENT TIMELINE / SEV2 / CONTAINED', 36, 120)
+  ctx.fillText('ILLUSTRATIVE RESPONSE SEQUENCE', 36, 120)
   const evs = [
     ['08:14', 'Detect: anomalous IAM call sequence', '#fb7185'],
     ['08:15', 'Triage: scoping to staging account', '#fde68a'],
@@ -698,7 +695,7 @@ function drawIR(ctx, c, col) {
 
 function drawCloud(ctx, c, accent, col) {
   ctx.fillStyle = col.muted; ctx.font = '600 16px JetBrains Mono, monospace'
-  ctx.fillText('LANDING ZONES / 3 REGIONS / ALL HEALTHY', 36, 120)
+  ctx.fillText('ILLUSTRATIVE CLOUD REGIONS', 36, 120)
   ctx.fillStyle = col.isLight ? 'rgba(0,80,160,0.07)' : 'rgba(110,231,255,0.08)'
   ctx.beginPath(); ctx.ellipse(c.width / 2, 360, 460, 200, 0, 0, Math.PI * 2); ctx.fill()
   ctx.strokeStyle = col.isLight ? 'rgba(0,80,160,0.18)' : 'rgba(110,231,255,0.18)'; ctx.lineWidth = 1
@@ -720,14 +717,14 @@ function drawCloud(ctx, c, accent, col) {
 
 function drawAI(ctx, c, accent, col) {
   ctx.fillStyle = col.muted; ctx.font = '600 16px JetBrains Mono, monospace'
-  ctx.fillText('CAREER TIMELINE / FIELD  →  CYBER / 7Y', 36, 120)
+  ctx.fillText('CAREER / IT AND OT TO ENTERPRISE AI', 36, 120)
   const timeline = [
-    ['2019', 'DEPLOY', 'TCS embedded: Shell QGC / QCLNG ops',       '#38bdf8'],
-    ['2022', 'OPS',    '600+ vehicles · 20+ FIFO remote sites',      '#a78bfa'],
-    ['2024', 'CERT',   'AWS SAA · OCI AA · OCI FA · OCI GenAI',      '#22d3ee'],
-    ['2025', 'CERT',   'Certificate IV in Cyber Security',            '#a7f3d0'],
-    ['2025', 'LABS',   'Home lab · TryHackMe Triage · RTCC published','#fb7185'],
-    ['2026', 'SCHED',  'ISC2 CC · CompTIA Sec+ exams queued',        '#fde68a'],
+    ['2019', 'DATA#3', 'Junior Network Engineer: January to May', '#38bdf8'],
+    ['2019', 'TCS', 'IT and OT field engineering: 2019 to 2025', '#a78bfa'],
+    ['2025', 'AI', 'Independent AI practice: Aug 2025 to Jun 2026', '#22d3ee'],
+    ['2026', 'STUDY', 'Certificate IV in Cyber Security: March', '#a7f3d0'],
+    ['2026', 'CCX', 'Senior Engineer, Secure AI: June to present', '#fb7185'],
+    ['NOW', 'FOCUS', 'Enterprise AI development and consulting', '#fde68a']
   ]
   timeline.forEach((e, i) => {
     const y = 170 + i * 62
@@ -741,12 +738,12 @@ function drawAI(ctx, c, accent, col) {
 
 function drawWriteups(ctx, c, accent, col) {
   ctx.fillStyle = col.muted; ctx.font = '600 16px JetBrains Mono, monospace'
-  ctx.fillText('OFFENSIVE OPS / THM + HOME LAB / ACTIVE', 36, 120)
+  ctx.fillText('SECURITY WRITEUPS / CONTROLLED LABS', 36, 120)
   const ops = [
     ['PUB',  'Red Team Capstone Crawl-Through', 'Full AD kill chain · Kerberos · pivot · GPU crack', '#a7f3d0'],
     ['LAB',  'Active Directory Tradecraft',     'Kerberoast · AS-REP · Golden Ticket · DCSync',     '#fb7185'],
     ['LAB',  'Tunnelling + Pivoting',           'Chisel · SSH forward · lateral movement chain',    '#a78bfa'],
-    ['NOTE', 'AI Security — OWASP LLM Top 10',  'Prompt injection · RAG risk · MITRE ATLAS map',   '#fde68a'],
+    ['NOTE', 'Enterprise AI guidance',  'Deployment choices · access boundaries · controls',   '#fde68a'],
   ]
   ops.forEach((op, i) => {
     const y = 185 + i * 96
@@ -1250,11 +1247,11 @@ function buildScene() {
   const beaconDefs = [[-3.6, 1.2, 0xa78bfa], [3.6, 1.2, 0x38bdf8], [-3.0, 3.4, 0xfb7185], [3.0, 3.4, 0x22d3ee]]
   beaconDefs.slice(0, DECOR.beacons).forEach(b => beacon(...b))
   const panels = [
-    { key: 'core',     title: 'About',                   subtitle: 'Markus Walker, Brisbane-based cyber engineer.',          position: new THREE.Vector3(0, 2.6, -4.6),   rotation: new THREE.Euler(0, 0, 0),              accent: '#6ee7ff', kind: 'core'     },
+    { key: 'core',     title: 'About',                   subtitle: 'Enterprise AI development and Secure AI consulting.',          position: new THREE.Vector3(0, 2.6, -4.6),   rotation: new THREE.Euler(0, 0, 0),              accent: '#6ee7ff', kind: 'core'     },
     { key: 'ir',       title: 'Incident Response Program',subtitle: 'NIST SP 800-61. 28 page IRP portfolio.',                position: new THREE.Vector3(-5.2, 2.0, -1.0), rotation: new THREE.Euler(0, Math.PI / 3.4, 0), accent: '#a78bfa', kind: 'ir'       },
     { key: 'cloud',    title: 'AWS Cloud Security Uplift', subtitle: "Rossco's Coffee, 36 page case study.",                 position: new THREE.Vector3(5.2, 2.0, -1.0),  rotation: new THREE.Euler(0, -Math.PI / 3.4, 0),accent: '#38bdf8', kind: 'cloud'    },
-    { key: 'writeups', title: 'Cyber Writeups',            subtitle: 'RTCC published. Active TryHackMe practice.',           position: new THREE.Vector3(-4.4, 1.6, 3.2),  rotation: new THREE.Euler(0, Math.PI - Math.PI / 5.2, 0), accent: '#fb7185', kind: 'writeups' },
-    { key: 'ai',       title: 'Resume',                    subtitle: 'AWS SAA, three OCI certs, Cert IV in Cyber.',          position: new THREE.Vector3(4.4, 1.6, 3.2),   rotation: new THREE.Euler(0, Math.PI + Math.PI / 5.2, 0), accent: '#22d3ee', kind: 'ai'       }
+    { key: 'writeups', title: 'Cyber Writeups',            subtitle: 'Technical guidance, research and public lab work.',           position: new THREE.Vector3(-4.4, 1.6, 3.2),  rotation: new THREE.Euler(0, Math.PI - Math.PI / 5.2, 0), accent: '#fb7185', kind: 'writeups' },
+    { key: 'ai',       title: 'Resume',                    subtitle: 'Senior Engineer, Secure AI. IT and OT background.',          position: new THREE.Vector3(4.4, 1.6, 3.2),   rotation: new THREE.Euler(0, Math.PI + Math.PI / 5.2, 0), accent: '#22d3ee', kind: 'ai'       }
   ]
   panels.forEach(holoPanel)
   if (DECOR.drone) drone()
@@ -1310,30 +1307,30 @@ const HUD_TITLES = {
   linkedin: 'LinkedIn', github: 'GitHub', tryhackme: 'TryHackMe'
 }
 const HUD_BODIES = {
-  core:     'Markus Walker, Brisbane-based Security, AI and Cloud Engineer. Select a monitor or dock zone to inspect evidence across cloud security, incident response, security operations, offensive lab work, web security, and AI security.',
-  about:    'Profile summary and positioning. Infrastructure and field engineering grounding with evidence-backed cyber, cloud and AI security work.',
-  skills:   'Practical capability map across security operations, offensive security, cloud security, AI security, identity, endpoint, network and automation.',
+  core:     "Enterprise AI development and Secure AI consulting, grounded in more than seven years across IT and OT.",
+  about:    "Enterprise AI development and Secure AI consulting, grounded in more than seven years across IT and OT.",
+  skills:   "AI engineering, knowledge systems, consulting, cloud and operational delivery.",
   ir:       'Enterprise Incident Response Program design portfolio aligned to NIST SP 800-61 and MITRE ATT&CK.',
   cloud:    "Rossco's Coffee AWS security uplift case study. Architecture treated as a security control, with blast radius and resilience designed deliberately.",
   mcp:      'Working governance proof of concept for AI agent and MCP access review. Structured intake, automated risk classification, human-reviewed approval and durable audit evidence.',
-  resume:   'Recruiter-friendly snapshot. Seven plus years of infrastructure and field engineering, now focused on security, cloud and AI.',
-  writeups: 'Hands-on offensive security labs and applied analysis. Red Team Capstone Crawl-Through is published.',
-  contact:   'Email, LinkedIn, location and portfolio document downloads. Open to security, cloud and AI security roles.',
-  linkedin:  'Professional profile. Open to security, cloud and AI security roles across Brisbane, remote Australia and selected national opportunities.',
-  github:    'Published writeups, portfolio projects and tooling notes. Home of the Red Team Capstone Crawl-Through.',
-  tryhackme: 'Active offensive security practice through structured labs under the handle Triage. Red team, Active Directory and web application focus.'
+  resume:   "Senior Engineer, Secure AI at CyberCX, part of Accenture. Earlier delivery across Queensland energy operations.",
+  writeups: "SOC research, enterprise AI guidance and a published security lab walkthrough.",
+  contact:   "Open to enterprise AI engineering, solutions engineering and Secure AI opportunities.",
+  linkedin:  "Open to enterprise AI engineering, solutions engineering and Secure AI opportunities.",
+  github:    "Public repositories and security lab writeups.",
+  tryhackme: "Controlled security labs under the handle Triage."
 }
-const HUD_BADGES  = { core:'PROFILE', about:'PROFILE', skills:'CAPABILITY', ir:'PORTFOLIO', cloud:'CASE STUDY', mcp:'GOV POC', resume:'PDF', writeups:'PUBLIC', contact:'CONTACT', linkedin:'LINKEDIN', github:'GITHUB', tryhackme:'THM' }
+const HUD_BADGES  = { core:'PROFILE', about:'PROFILE', skills:'CAPABILITY', ir:'PORTFOLIO', cloud:'CASE STUDY', mcp:'GOV POC', resume:'PDF', writeups:'WRITING', contact:'CONTACT', linkedin:'LINKEDIN', github:'GITHUB', tryhackme:'THM' }
 const HUD_BADGE_K = { ir: 'warn' }
 const HUD_STATS   = {
-  core:     [['Sections','8'],['Certified','True'],['Region','QLD AU']],
-  about:    [['Role','Sec · AI · Cloud'],['Region','BNE AU'],['Certs','4']],
-  skills:   [['Domains','8'],['Certs','4'],['Status','Current']],
+  core:     [['Sections','8'],['Focus','AI'],['Region','QLD AU']],
+  about:    [['Focus','Enterprise AI'],['Region','BNE AU'],['Practice','Secure AI']],
+  skills:   [['Domains','8'],['Code','Python'],['Focus','AI delivery']],
   ir:       [['Pages','28'],['Frameworks','2'],['Status','Portfolio']],
   cloud:    [['Pages','36'],['Controls','12+'],['Strategy','B/G']],
   mcp:      [['Stack','n8n · Asana'],['Controls','8'],['Status','Working PoC']],
-  resume:   [['Years','7+'],['Sites','20+'],['Certs','4']],
-  writeups: [['Published','1'],['Pipeline','2'],['Focus','AD/AI']],
+  resume:   [['IT / OT','7+ years'],['Role','Secure AI'],['Clearance','Baseline']],
+  writeups: [['Research','SOC'],['Guidance','AI'],['Public','Lab writeup']],
   contact:   [['Email','Open'],['LinkedIn','Active'],['Status','Open']],
   linkedin:  [['Handle','markus-walker-au'],['Status','Active'],['Open','To Roles']],
   github:    [['Handle','markus-doc'],['Published','1'],['Status','Active']],
@@ -1396,33 +1393,17 @@ const SECTION_CONTENT = {
   about: () => `
     <div class="sfp-header">
       <p class="sfp-eyebrow">01 / ABOUT</p>
-      <h2 class="sfp-title">Security, AI and Cloud Engineer.</h2>
+      <h2 class="sfp-title">AI delivery grounded in operational experience.</h2>
     </div>
-    <p class="sfp-lede">Brisbane-based Security, AI and Cloud Engineer with 7+ years of infrastructure and field engineering across Australia's mining and energy sectors.</p>
+    <p class="sfp-lede">I am a Brisbane-based engineer working across enterprise AI development and Secure AI consulting. At CyberCX, part of Accenture, I build reusable AI workflows and knowledge tools, contribute to client workshops, and write technical guidance for enterprise AI adoption.</p>
     <div class="sfp-about-grid">
       <div class="sfp-col">
-        <p style="margin:0 0 14px;color:var(--ink-soft);font-size:0.92rem;line-height:1.65">Most recently embedded as a Tata Consultancy Services Dedicated Service Engineer supporting Shell QGC and QCLNG upstream and midstream operations across remote Queensland energy and gas environments. Hands-on across network, endpoint, connectivity and field operations at twenty plus FIFO remote sites.</p>
-        <p style="margin:0 0 14px;color:var(--ink-soft);font-size:0.92rem;line-height:1.65">Current focus is evidence-backed across security operations, offensive security labs, cloud architecture, incident response planning, web application testing and AI security research. Portfolio, not just a keyword list.</p>
-        <h3 class="sfp-h3">Positioning</h3>
-        <ul class="sfp-bullets">
-          <li>Security, AI and Cloud Engineer with deep infrastructure and field engineering grounding</li>
-          <li>Cloud security across AWS and Oracle Cloud Infrastructure, with applied case study evidence</li>
-          <li>Active offensive security practice through home lab and TryHackMe under the handle Triage</li>
-          <li>AI security aligned to OWASP LLM Top 10 and MITRE ATLAS, with structured study and applied notes</li>
-          <li>Strong written communication for stakeholders, auditors and technical teams</li>
-        </ul>
+        <p class="sfp-body">My work includes pre-sales consulting and technical assets for account engagements. I assess AI use cases, architecture and security controls, then explain the recommendations to the people responsible for implementation.</p>
+        <p class="sfp-body">Before moving into Secure AI, I supported Shell QGC and QCLNG operations as an IT Field Engineer with Tata Consultancy Services. That work covered more than twenty remote sites in Queensland, where connectivity, access and service continuity directly affected day-to-day operations.</p>
+        <h3 class="sfp-h3">What I bring</h3><ul class="sfp-bullets"><li>Hands-on AI development using Claude, Codex and ChatGPT, with custom plugins and reusable agentic workflows.</li><li>Knowledge engineering that turns organisational information into structured, traceable context for people and AI agents.</li><li>Secure AI consulting, client workshops and pre-sales support informed by practical infrastructure experience.</li><li>Technical guidance and research writing that explain controls, implementation choices and their limits.</li></ul>
       </div>
       <div class="sfp-chips-col">
-        <div class="sfp-chip-grid">
-          <span class="sfp-chip">7+ years</span>
-          <span class="sfp-chip">Brisbane AU</span>
-          <span class="sfp-chip">AWS SAA</span>
-          <span class="sfp-chip">3× OCI</span>
-          <span class="sfp-chip">AISA MAISA</span>
-          <span class="sfp-chip">AI Security</span>
-          <span class="sfp-chip">NIST / MITRE</span>
-          <span class="sfp-chip">Essential Eight</span>
-        </div>
+        <div class="sfp-chip-grid"><span class="sfp-chip">7+ years IT and OT</span><span class="sfp-chip">Brisbane AU</span><span class="sfp-chip">Python</span><span class="sfp-chip">Secure AI</span><span class="sfp-chip">Knowledge engineering</span><span class="sfp-chip">AWS</span><span class="sfp-chip">OCI</span><span class="sfp-chip">AI agents</span></div>
       </div>
     </div>
     <div class="sfp-actions">
@@ -1433,42 +1414,18 @@ const SECTION_CONTENT = {
   skills: () => `
     <div class="sfp-header">
       <p class="sfp-eyebrow">02 / SKILLS</p>
-      <h2 class="sfp-title">Capability map, by domain.</h2>
+      <h2 class="sfp-title">AI engineering, consulting and technical delivery.</h2>
     </div>
-    <p class="sfp-lede">Practical capability across security operations, offensive security, cloud, AI security, identity, endpoint, network and automation.</p>
+    <p class="sfp-lede">My current AI work draws on a background in enterprise infrastructure, cloud architecture and cyber security.</p>
     <div class="sfp-skill-grid">
-      <div class="sfp-skill-card">
-        <p class="sfp-skill-head">Security Operations and Detection</p>
-        <p class="sfp-skill-body">Splunk Enterprise, SIEM operations, log analysis and ingestion, Windows host and network monitoring, alert triage, anomaly detection, incident response lifecycle, evidence preservation, chain of custody, SOC, CSIRT and SOAR concepts.</p>
-      </div>
-      <div class="sfp-skill-card">
-        <p class="sfp-skill-head">Offensive Security and Red Team</p>
-        <p class="sfp-skill-body">Kali Linux, Metasploit, Meterpreter, msfvenom, Impacket, Rubeus, mimikatz, evil-winrm, chisel, hashcat, Nmap, Rustscan, Wireshark, Burp Suite, Nikto, ffuf. Active Directory tradecraft including Kerberoast, Golden Ticket and DCSync.</p>
-      </div>
-      <div class="sfp-skill-card">
-        <p class="sfp-skill-head">Cloud and Cloud Security</p>
-        <p class="sfp-skill-body">AWS VPC, EC2, RDS Multi-AZ, ALB, Auto Scaling, Route 53, WAF, Shield, CloudTrail, GuardDuty, Security Hub, Inspector, Macie, Config, IAM Identity Center, Cognito, Secrets Manager, KMS, Systems Manager. OCI, Azure, Microsoft 365, Intune, Entra ID.</p>
-      </div>
-      <div class="sfp-skill-card">
-        <p class="sfp-skill-head">AI Security and Governance</p>
-        <p class="sfp-skill-body">Prompt injection and defence, jailbreaking, LLM security, AI threat modelling, AI supply chain security, RAG security, data poisoning, sensitive information disclosure, AI forensics, secure AI system design.</p>
-      </div>
-      <div class="sfp-skill-card">
-        <p class="sfp-skill-head">Identity, Endpoint and Network</p>
-        <p class="sfp-skill-body">IAM, RBAC, MFA, conditional access, Active Directory security, vulnerability management, NGFW, IDS and IPS, EDR and XDR concepts, segmentation and VLAN design, PKI, TLS, VPN, Cisco, Aruba, Cel-Fi, Starlink, Motorola TETRA.</p>
-      </div>
-      <div class="sfp-skill-card">
-        <p class="sfp-skill-head">Frameworks and Standards</p>
-        <p class="sfp-skill-body">NIST CSF, NIST SP 800-61, MITRE ATT&amp;CK, MITRE ATLAS, Essential Eight, CIS Controls, OWASP Top 10, OWASP LLM Top 10, ISO 27001, PCI DSS, ISM, PSPF, Privacy Act 1988, APPs, Notifiable Data Breaches, GDPR, CDR, SOCI Act 2018.</p>
-      </div>
-      <div class="sfp-skill-card">
-        <p class="sfp-skill-head">Scripting and Automation</p>
-        <p class="sfp-skill-body">Python, PowerShell, shell scripting, defensive coding, CSV processing, cross-platform Windows and Linux automation, system audit tooling, ServiceNow, Maximo, Power BI, technical documentation in Obsidian.</p>
-      </div>
-      <div class="sfp-skill-card">
-        <p class="sfp-skill-head">Certifications</p>
-        <p class="sfp-skill-body">AWS Solutions Architect Associate. OCI 2025 Architect Associate. OCI 2025 Foundations Associate. OCI 2025 Generative AI Professional. Certificate IV in Cyber Security. ISC2 CC and CompTIA Security Plus scheduled.</p>
-      </div>
+      <div class="sfp-skill-card"><p class="sfp-skill-head">AI Engineering and Automation</p><p class="sfp-skill-body">Generative AI, large language models, AI agents and agentic workflows. Practical work with Claude, Codex and ChatGPT, supported by Python, PowerShell, prompt engineering, Model Context Protocol (MCP), custom plugins and n8n.</p></div>
+      <div class="sfp-skill-card"><p class="sfp-skill-head">Knowledge Engineering</p><p class="sfp-skill-body">Enterprise knowledge bases, ontology design and structured content. Ingestion and retrieval tooling with source provenance, citation checks, validation and machine-readable catalogues.</p></div>
+      <div class="sfp-skill-card"><p class="sfp-skill-head">Secure AI</p><p class="sfp-skill-body">AI threat modelling, secure software development lifecycle (SDLC), MCP governance and security control assessment. Technical guidance covering deployment options, administrative controls, access boundaries and security configuration.</p></div>
+      <div class="sfp-skill-card"><p class="sfp-skill-head">Consulting and Pre-sales</p><p class="sfp-skill-body">AI use-case and solution architecture assessment, client workshops, pre-sales consulting and technical assets for account engagements. Technical guidance, white papers, stakeholder communication and operational handover.</p></div>
+      <div class="sfp-skill-card"><p class="sfp-skill-head">Cloud, Identity and Enterprise Platforms</p><p class="sfp-skill-body">AWS architecture and Oracle Cloud Infrastructure. Microsoft 365, Entra ID, Intune, Windows Autopilot, SCCM and GitHub Enterprise, with experience in identity, device compliance and endpoint modernisation.</p></div>
+      <div class="sfp-skill-card"><p class="sfp-skill-head">IT and OT Delivery</p><p class="sfp-skill-body">Field engineering, enterprise networking and remote connectivity. Device lifecycle management, control-room support, site commissioning and change control across distributed operational environments.</p></div>
+      <div class="sfp-skill-card"><p class="sfp-skill-head">Security Practice</p><p class="sfp-skill-body">Practical projects in AWS security architecture and incident response planning. Splunk log ingestion and reporting, alongside controlled Active Directory and web application security labs.</p></div>
+      <div class="sfp-skill-card"><p class="sfp-skill-head">Education and Certifications</p><ul class="sfp-bullets"><li>Certificate IV in Cyber Security (22603VIC) | TAFE Queensland | March 2026</li><li>Claude Certified Associate: Foundations | Anthropic</li><li>AWS Certified Solutions Architect, Associate | Amazon Web Services | 2025</li><li>Oracle Cloud Infrastructure 2025 Certified Generative AI Professional | Oracle | September 2025</li><li>Oracle Cloud Infrastructure 2025 Certified Architect Associate | Oracle | September 2025</li><li>Oracle Cloud Infrastructure 2025 Certified Foundations Associate | Oracle | September 2025</li></ul><p class="sfp-muted">Professional development: Preparing for Claude Certified Architect: Foundations.</p></div>
     </div>`,
 
   ir: () => `
@@ -1544,32 +1501,20 @@ const SECTION_CONTENT = {
   resume: () => `
     <div class="sfp-header">
       <p class="sfp-eyebrow">06 / RESUME</p>
-      <h2 class="sfp-title">Recruiter-friendly summary.</h2>
+      <h2 class="sfp-title">Experience in AI and operational delivery.</h2>
     </div>
-    <p class="sfp-lede">Seven plus years of infrastructure and field engineering across Australia's mining and energy sectors, now focused on security, cloud and AI.</p>
+    <p class="sfp-lede">Current enterprise AI work, supported by more than seven years of technical delivery across IT and OT. Download the resume for the full career record.</p>
     <div class="sfp-meta">
       <span><strong>Name</strong> Markus Walker</span>
       <span><strong>Location</strong> Brisbane, Queensland</span>
       <span><strong>Email</strong> markus@markuswalker.com</span>
     </div>
-    <h3 class="sfp-h3">Experience</h3>
-    <div class="sfp-role">
-      <p class="sfp-role-head">Independent Cyber Security Practitioner &mdash; Aug 2025 to Present</p>
-      <p class="sfp-role-body">Dedicated upskilling and portfolio period focused on cyber security, cloud security, offensive security and AI security. Completed Certificate IV in Cyber Security and four cloud certifications. Built active offensive security practice through home lab and TryHackMe. Published the Red Team Capstone Crawl-Through writeup. ISC2 CC and CompTIA Security Plus exams scheduled.</p>
-    </div>
-    <div class="sfp-role">
-      <p class="sfp-role-head">IT Field Engineer, Tata Consultancy Services &mdash; May 2019 to Aug 2025</p>
-      <p class="sfp-role-body">Embedded contractor supporting Shell QGC and QCLNG upstream and midstream operations across remote Queensland energy and gas infrastructure. Field engineering across twenty plus remote sites under a FIFO model. Network transformation including over three hundred Cisco to Aruba access point replacements. Connectivity uplift across over six hundred field vehicles using Cisco IR829 and Cel-Fi, extended with Starlink. Endpoint lifecycle across six annual refresh cycles. Entra ID identity and access management across a dispersed workforce.</p>
-    </div>
-    <h3 class="sfp-h3">Certifications</h3>
-    <ul class="sfp-bullets">
-      <li>AWS Certified Solutions Architect Associate</li>
-      <li>Oracle Cloud Infrastructure 2025 Architect Associate</li>
-      <li>Oracle Cloud Infrastructure 2025 Foundations Associate</li>
-      <li>Oracle Cloud Infrastructure 2025 Generative AI Professional</li>
-      <li>Certificate IV in Cyber Security</li>
-      <li>ISC2 Certified in Cybersecurity and CompTIA Security Plus scheduled</li>
-    </ul>
+    <p class="sfp-role-body">Security clearance: Current AGSVA Baseline; eligible for NV1 and NV2.</p><h3 class="sfp-h3">Experience</h3><div class="sfp-role"><p class="sfp-role-head">Senior Engineer, Secure AI<br>CyberCX, part of Accenture | June 2026 to present</p><p class="sfp-role-body">My role combines hands-on AI development with Secure AI consulting and technical enablement.</p><ul class="sfp-bullets"><li>Developed custom AI plugins and reusable agentic workflows, with versioned packaging and distribution through a GitHub Enterprise marketplace.</li><li>Contributed across Secure AI consulting engagements and client workshops, assessing AI use cases, solution architecture, MCP governance and security controls. Presented secure SDLC guidance and recommendations to support implementation planning.</li><li>Supported pre-sales consulting and account engagements with technical assets.</li><li>Authored and maintained technical guidance for enterprise AI adoption, covering deployment options, administrative controls, access boundaries and security configuration.</li><li>Authored Distinguishing AI-Driven Attacks from Human and Automated Activity, published by CyberCX, translating research into practical SOC guidance while addressing false positives and the limits of AI attribution.</li><li>Built an organisational knowledge base as a wiki for people and AI agents, combining ontology design, structured content, ingestion and retrieval with source provenance and validation.</li><li>Built AI-assisted document-generation workflows and a web presentation tool to support technical delivery and stakeholder communication.</li></ul></div>
+<div class="sfp-role"><p class="sfp-role-head">Independent AI Practice and Professional Development<br>August 2025 to June 2026</p><p class="sfp-role-body">Focused on hands-on independent AI practice and AI security research between TCS and CyberCX, alongside the Certificate IV in Cyber Security and cloud and generative AI certification preparation. Practical projects covered AWS security architecture, incident response, Splunk log ingestion and reporting, and controlled Active Directory and web application security labs. Independent practice and professional development continue alongside my current role.</p></div>
+<div class="sfp-role"><p class="sfp-role-head">IT Field Engineer<br>Tata Consultancy Services | May 2019 to August 2025</p><p class="sfp-role-body">Embedded contractor supporting IT and OT across Shell QGC and QCLNG upstream and midstream operations in Queensland.</p><ul class="sfp-bullets"><li>Delivered field engineering across more than twenty remote sites, including camps, plants and drilling environments, with planned delivery, escalations and after-hours support.</li><li>Delivered network transformation and wireless upgrades, including more than 300 Cisco to Aruba access point replacements, live cutovers and stabilisation.</li><li>Contributed to Starlink connectivity from project development through deployment. Supported fleet connectivity upgrades using Cisco rugged mobility routers and Cel-Fi.</li><li>Managed client asset refresh projects across six annual cycles, deploying and validating enterprise devices under change control.</li><li>Administered Entra ID identity and access management, and supported the transition from SCCM-managed endpoints to Intune, Windows Autopilot and Azure AD Join.</li><li>Supported business-critical Microsoft 365, networking and telecom platforms, coordinating vendors and site teams on workplace technology rollouts.</li></ul></div>
+<div class="sfp-role"><p class="sfp-role-head">Junior Network Engineer<br>Data#3 | January 2019 to May 2019</p><p class="sfp-role-body">Supported the Shell QGC Enterprise Network Transformation project through field engineering and cutover coordination. Work covered switching, routing, cabling, Cisco to Aruba standardisation and vehicle connectivity upgrades across remote sites.</p></div>
+<div class="sfp-role"><p class="sfp-role-head">QGC Contractor, Rotating Site Roles<br>MSS, ECM and Protech | 2012 to 2019</p><p class="sfp-role-body">Worked across site security, operational support, administration, trades assistance, plant construction, commissioning and handover.</p></div>
+<div class="sfp-role"><p class="sfp-role-head">Audio Engineer and Systems Technician<br>Airco Audio, USA | 2005 to 2012</p><p class="sfp-role-body">Worked in live production environments involving networked control systems, cabling and real-time technical operations.</p></div><h3 class="sfp-h3">Education and certifications</h3><ul class="sfp-bullets"><li>Certificate IV in Cyber Security (22603VIC) | TAFE Queensland | March 2026</li><li>Claude Certified Associate: Foundations | Anthropic</li><li>AWS Certified Solutions Architect, Associate | Amazon Web Services | 2025</li><li>Oracle Cloud Infrastructure 2025 Certified Generative AI Professional | Oracle | September 2025</li><li>Oracle Cloud Infrastructure 2025 Certified Architect Associate | Oracle | September 2025</li><li>Oracle Cloud Infrastructure 2025 Certified Foundations Associate | Oracle | September 2025</li></ul><p class="sfp-muted">Professional development: Preparing for Claude Certified Architect: Foundations.</p>
     <div class="sfp-actions">
       <a class="btn btn-primary" href="./assets/docs/Markus_Walker_Resume.pdf?v=20260914" target="_blank" rel="noopener noreferrer" download>
         Download Resume PDF
@@ -1581,9 +1526,9 @@ const SECTION_CONTENT = {
   writeups: () => `
     <div class="sfp-header">
       <p class="sfp-eyebrow">07 / WRITEUPS</p>
-      <h2 class="sfp-title">Hands on, written down.</h2>
+      <h2 class="sfp-title">Technical guidance and security research.</h2>
     </div>
-    <p class="sfp-lede">Active practice through home lab and TryHackMe under the handle Triage. Evidence of structured, methodical offensive security work.</p>
+    <p class="sfp-lede">My writing includes enterprise AI adoption guidance and the CyberCX white paper Distinguishing AI-Driven Attacks from Human and Automated Activity. The public lab writeups below document controlled security practice.</p>
     <div class="sfp-writeup-list">
       <a class="sfp-writeup-card" href="https://markus-doc.github.io/cybersecurity-writeups/articles/tryhackme/rtcc/1-Red_Team_Capstone_Crawl-Through" target="_blank" rel="noopener noreferrer">
         <p class="sfp-wt-tag">TRYHACKME · ACTIVE DIRECTORY · PUBLISHED</p>
@@ -1604,14 +1549,14 @@ const SECTION_CONTENT = {
         <p class="sfp-wt-cta">Coming soon</p>
       </div>
     </div>
-    <p class="sfp-muted">This site and its contents are growing continuously. Check back for new writeups, lab walkthroughs and tooling notes.</p>`,
+    <p class="sfp-muted">Published lab work complements my Secure AI consulting, research and technical guidance.</p>`,
 
   contact: () => `
     <div class="sfp-header">
       <p class="sfp-eyebrow">08 / CONTACT</p>
-      <h2 class="sfp-title">Open the channel.</h2>
+      <h2 class="sfp-title">Let's talk about AI delivery.</h2>
     </div>
-    <p class="sfp-lede">Open to cybersecurity, cloud security and AI security roles across Brisbane, remote Australia and selected national opportunities.</p>
+    <p class="sfp-lede">I am interested in enterprise AI engineering, solutions engineering, forward deployed engineering and Secure AI consulting opportunities. Based in Brisbane, I prefer remote work with Australian employers and am open to discussing suitable Brisbane hybrid roles.</p>
     <div class="sfp-contact-grid">
       <a class="sfp-contact-card" href="mailto:markus@markuswalker.com">
         <p class="sfp-cc-label">EMAIL</p>
@@ -1631,7 +1576,7 @@ const SECTION_CONTENT = {
       <div class="sfp-contact-card" style="cursor:default">
         <p class="sfp-cc-label">AVAILABILITY</p>
         <p class="sfp-cc-val">Open to roles</p>
-        <p class="sfp-cc-cta">Brisbane &amp; remote</p>
+        <p class="sfp-cc-cta">Remote Australia | Brisbane hybrid</p>
       </div>
     </div>
     <h3 class="sfp-h3">Document downloads</h3>
@@ -1663,7 +1608,7 @@ const SECTION_CONTENT = {
       <p class="sfp-eyebrow">PLATFORM / LINKEDIN</p>
       <h2 class="sfp-title">Connect on LinkedIn.</h2>
     </div>
-    <p class="sfp-lede">Open to cybersecurity, cloud security and AI security roles across Brisbane, remote Australia and selected national opportunities.</p>
+    <p class="sfp-lede">I am interested in enterprise AI engineering, solutions engineering, forward deployed engineering and Secure AI consulting opportunities. Based in Brisbane, I prefer remote work with Australian employers and am open to discussing suitable Brisbane hybrid roles.</p>
     <div class="sfp-meta">
       <span><strong>Handle</strong> markus-walker-au</span>
       <span><strong>Status</strong> Active · Open to roles</span>
