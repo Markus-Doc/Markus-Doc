@@ -1571,7 +1571,7 @@ const SECTION_CONTENT = {
       <li>ISC2 Certified in Cybersecurity and CompTIA Security Plus scheduled</li>
     </ul>
     <div class="sfp-actions">
-      <a class="btn btn-primary" href="./assets/docs/Markus_Walker_Resume.pdf" target="_blank" rel="noopener noreferrer" download>
+      <a class="btn btn-primary" href="./assets/docs/Markus_Walker_Resume.pdf?v=20260914" target="_blank" rel="noopener noreferrer" download>
         Download Resume PDF
         <svg viewBox="0 0 24 24" aria-hidden="true" style="width:16px;height:16px"><path d="M12 4v12m0 0 5-5m-5 5-5-5M4 20h16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
       </a>
@@ -1636,7 +1636,7 @@ const SECTION_CONTENT = {
     </div>
     <h3 class="sfp-h3">Document downloads</h3>
     <div class="sfp-dl-grid">
-      <a class="sfp-dl-card" href="./assets/docs/Markus_Walker_Resume.pdf" target="_blank" rel="noopener noreferrer" download>
+      <a class="sfp-dl-card" href="./assets/docs/Markus_Walker_Resume.pdf?v=20260914" target="_blank" rel="noopener noreferrer" download>
         <span class="sfp-dl-label">RESUME</span>
         <span class="sfp-dl-name">Markus_Walker_Resume.pdf</span>
         <span class="sfp-dl-icon">↓</span>
