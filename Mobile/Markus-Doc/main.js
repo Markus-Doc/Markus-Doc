@@ -5,14 +5,7 @@
 import * as THREE from 'three'
 
 /* ─── Loader steps ───────────────────────────────────────────────────────── */
-const LOADER_STEPS = [
-  'Establishing telemetry',
-  'Loading threat intelligence',
-  'Activating security controls',
-  'Calibrating sensor array',
-  'Connecting SIEM',
-  'Systems online'
-]
+const LOADER_STEPS = ['Loading portfolio', 'Loading portfolio', 'Loading portfolio', 'Loading portfolio', 'Loading portfolio', 'Ready']
 
 /* ─── Theme scene colours ────────────────────────────────────────────────── */
 const SCENE_COLOURS = {
