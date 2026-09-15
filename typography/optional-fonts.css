@@ -1,0 +1,3 @@
+/* Felipa, normal 400; Google Fonts Latin subset. */
+@font-face { font-family: 'Felipa'; font-style: normal; font-weight: 400; font-display: swap; src: url('./fonts/felipa-regular.woff2') format('woff2'); }
+@font-face { font-family: 'TeX Gyre Chorus'; font-style: italic; font-weight: 400; font-display: swap; src: url('./fonts/texgyrechorus-mediumitalic.otf') format('opentype'); }

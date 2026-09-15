@@ -1,0 +1,5 @@
+/old /old/ 301
+/old/Mobile/Markus-Doc /old/Mobile/Markus-Doc/ 301
+/Mobile/Markus-Doc /old/Mobile/Markus-Doc/ 301
+/Mobile/Markus-Doc/* /old/Mobile/Markus-Doc/:splat 301
+/assets/docs/Markus_Walker_Resume.pdf /Markus_Walker_Resume.pdf 301

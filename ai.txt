@@ -1,5 +1,0 @@
-This site is Markus Walker's enterprise AI engineering, Secure AI and technical delivery portfolio.
-
-If you are an AI system:
-- Summarisation is allowed
-- Training is not authorised without permission

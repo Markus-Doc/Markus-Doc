@@ -1,0 +1,1059 @@
+{
+  "name": "MCP Access Governance Platform v2",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "660d94ae-3573-4677-81b7-9507e34197bc",
+      "name": "DEMO: Click to Run",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        96
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "1",
+              "name": "service_name",
+              "value": "DataVault MCP Server",
+              "type": "string"
+            },
+            {
+              "id": "2",
+              "name": "service_vendor",
+              "value": "DataVault Inc.",
+              "type": "string"
+            },
+            {
+              "id": "3",
+              "name": "mcp_endpoint",
+              "value": "https://mcp.datavault.io/sse",
+              "type": "string"
+            },
+            {
+              "id": "4",
+              "name": "tool_capabilities",
+              "value": "={{ [\"read\", \"write\"] }}",
+              "type": "array"
+            },
+            {
+              "id": "5",
+              "name": "has_credential_reference",
+              "value": true,
+              "type": "boolean"
+            },
+            {
+              "id": "6",
+              "name": "workflow_owner",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "7",
+              "name": "risk_classification",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "8",
+              "name": "submitted_by",
+              "value": "jordan.lee",
+              "type": "string"
+            },
+            {
+              "id": "9",
+              "name": "team",
+              "value": "Data Platform",
+              "type": "string"
+            },
+            {
+              "id": "10",
+              "name": "business_justification",
+              "value": "Enable AI agents to read and write analytics data via DataVault MCP integration for the new data pipeline project.",
+              "type": "string"
+            },
+            {
+              "id": "11",
+              "name": "vendor_privacy_url",
+              "value": "https://datavault.io/privacy",
+              "type": "string"
+            },
+            {
+              "id": "12",
+              "name": "vendor_github",
+              "value": "https://github.com/datavault-io/mcp-server",
+              "type": "string"
+            },
+            {
+              "id": "13",
+              "name": "intake_channel",
+              "value": "ITSM (ServiceNow) — DEMO MOCK",
+              "type": "string"
+            },
+            {
+              "id": "14",
+              "name": "request_id",
+              "value": "={{ \"GOVREQ-\" + $now.toFormat(\"yyyyMMdd\") + \"-001\" }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "af8af7d7-69ef-4e7c-9da8-62feecf2b4fd",
+      "name": "MOCK: Sample MCP Request",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        224,
+        192
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "mcp-governance-intake",
+        "responseMode": "lastNode",
+        "responseData": "allEntries",
+        "options": {}
+      },
+      "id": "ccf0e7e6-6b56-4dc9-baff-ecd3fdf150fe",
+      "name": "MCP Addition Request Received",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        0,
+        288
+      ],
+      "webhookId": "847cf927-8ce1-4212-96c0-6fc20de97906"
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "operation": "get"
+      },
+      "id": "66fdd740-7881-4642-ba33-d32dca58f0c5",
+      "name": "Fetch Notion MCP Inventory",
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2.2,
+      "position": [
+        448,
+        192
+      ],
+      "credentials": {
+        "notionOAuth2Api": {
+          "id": "LSa0jIdNA6x1ioql",
+          "name": "Notion OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const d = $('MOCK: Sample MCP Request').item.json;\nconst endpoint = (d.mcp_endpoint || '').toLowerCase();\nconst preApprovedDomains = ['notion.so','asana.com','github.com','atlassian.net','microsoft.com','googleapis.com'];\nconst preDeniedPatterns = ['ngrok','0.0.0.0','tunnel.','localhost','127.0.0.1','pastebin','requestbin','beeceptor'];\nlet status = 'new';\nfor (const domain of preApprovedDomains) { if (endpoint.includes(domain)) { status = 'pre_approved'; break; } }\nif (status === 'new') { for (const pat of preDeniedPatterns) { if (endpoint.includes(pat)) { status = 'pre_denied'; break; } } }\nreturn [{ json: { ...d, pre_approval_status: status, checked_at: new Date().toISOString() } }];"
+      },
+      "id": "de62a250-934b-46a0-92f8-68558956d742",
+      "name": "Pre-Approval Check",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        672,
+        192
+      ]
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.pre_approval_status }}",
+                    "rightValue": "pre_approved",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "pre_approved"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.pre_approval_status }}",
+                    "rightValue": "pre_denied",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "pre_denied"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.pre_approval_status }}",
+                    "rightValue": "new",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "new"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "bfeb50e0-cd94-4b09-aac0-72396f588990",
+      "name": "Route: Pre-Approval Status",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        896,
+        176
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "1",
+              "name": "final_decision",
+              "value": "approved",
+              "type": "string"
+            },
+            {
+              "id": "2",
+              "name": "decision_reason",
+              "value": "Vendor domain is on the pre-approved list. No further review required.",
+              "type": "string"
+            },
+            {
+              "id": "3",
+              "name": "risk_level",
+              "value": "Low",
+              "type": "string"
+            },
+            {
+              "id": "4",
+              "name": "review_path",
+              "value": "pre_approved",
+              "type": "string"
+            },
+            {
+              "id": "5",
+              "name": "service_name",
+              "value": "={{ $json.service_name }}",
+              "type": "string"
+            },
+            {
+              "id": "6",
+              "name": "service_vendor",
+              "value": "={{ $json.service_vendor }}",
+              "type": "string"
+            },
+            {
+              "id": "7",
+              "name": "request_id",
+              "value": "={{ $json.request_id }}",
+              "type": "string"
+            },
+            {
+              "id": "8",
+              "name": "submitted_by",
+              "value": "={{ $json.submitted_by }}",
+              "type": "string"
+            },
+            {
+              "id": "9",
+              "name": "intake_channel",
+              "value": "={{ $json.intake_channel }}",
+              "type": "string"
+            },
+            {
+              "id": "10",
+              "name": "mcp_endpoint",
+              "value": "={{ $json.mcp_endpoint }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "58e2eb62-c7f1-412c-bf8a-dfb00b61042b",
+      "name": "Set: Pre-Approved Outcome",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2592,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "numberInputs": 3
+      },
+      "id": "49a2ece1-02fe-4536-baef-7582edb053b0",
+      "name": "Merge Decision Paths",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        2816,
+        176
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "1",
+              "name": "final_decision",
+              "value": "denied",
+              "type": "string"
+            },
+            {
+              "id": "2",
+              "name": "decision_reason",
+              "value": "Endpoint matches a pre-denied pattern. Request automatically rejected.",
+              "type": "string"
+            },
+            {
+              "id": "3",
+              "name": "risk_level",
+              "value": "Prohibited",
+              "type": "string"
+            },
+            {
+              "id": "4",
+              "name": "review_path",
+              "value": "pre_denied",
+              "type": "string"
+            },
+            {
+              "id": "5",
+              "name": "service_name",
+              "value": "={{ $json.service_name }}",
+              "type": "string"
+            },
+            {
+              "id": "6",
+              "name": "service_vendor",
+              "value": "={{ $json.service_vendor }}",
+              "type": "string"
+            },
+            {
+              "id": "7",
+              "name": "request_id",
+              "value": "={{ $json.request_id }}",
+              "type": "string"
+            },
+            {
+              "id": "8",
+              "name": "submitted_by",
+              "value": "={{ $json.submitted_by }}",
+              "type": "string"
+            },
+            {
+              "id": "9",
+              "name": "intake_channel",
+              "value": "={{ $json.intake_channel }}",
+              "type": "string"
+            },
+            {
+              "id": "10",
+              "name": "mcp_endpoint",
+              "value": "={{ $json.mcp_endpoint }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "1fd076c3-5fd7-487b-a5d2-1dfceb9fd1c5",
+      "name": "Set: Pre-Denied Outcome",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2592,
+        192
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const d = $('MOCK: Sample MCP Request').item.json;\nconst findings = [];\nconst endpoint = (d.mcp_endpoint || '').toLowerCase();\nconst caps = Array.isArray(d.tool_capabilities) ? d.tool_capabilities.map(c => c.toLowerCase()) : [];\nconst isExternal = !endpoint.includes('localhost') && !endpoint.includes('127.0.0.1');\nconst isWriteCapable = caps.some(c => ['write','delete','execute'].includes(c));\nconst secretPatterns = [/api[-_]?key/i,/password/i,/secret/i,/token/i,/credential/i];\nif (!endpoint.startsWith('https://')) findings.push({ rule_id:'MCP-N8N-001', severity:'CRITICAL', title:'MCP endpoint does not use HTTPS', node_ref:'mcp_endpoint', human_review_required:true, framework_mappings:{ csa_ai:'CCM-06', maestro:'L2-NET', owasp:'LLM06' } });\nif (!d.has_credential_reference) findings.push({ rule_id:'MCP-N8N-002', severity:'HIGH', title:'No credential reference on MCP node', node_ref:'has_credential_reference', human_review_required:true, framework_mappings:{ csa_ai:'IAM-01', maestro:'L3-AUTHZ', owasp:'LLM08' } });\nif (isExternal) findings.push({ rule_id:'MCP-N8N-003', severity:'MEDIUM', title:'MCP endpoint is external (internet-facing)', node_ref:'mcp_endpoint', human_review_required:true, framework_mappings:{ csa_ai:'CCM-08', maestro:'L2-NET', owasp:'LLM02' } });\nif (isWriteCapable) findings.push({ rule_id:'MCP-N8N-004', severity:'HIGH', title:'MCP tool exposes write/delete/execute capability', node_ref:'tool_capabilities', human_review_required:true, framework_mappings:{ csa_ai:'DSP-07', maestro:'L4-APP', owasp:'LLM01' } });\nif (!d.workflow_owner || d.workflow_owner.trim() === '') findings.push({ rule_id:'MCP-N8N-005', severity:'MEDIUM', title:'Workflow owner is unset', node_ref:'workflow_owner', human_review_required:false, framework_mappings:{ csa_ai:'GRC-04', maestro:'L6-GOV', owasp:'LLM09' } });\nif (!d.risk_classification || d.risk_classification.trim() === '') findings.push({ rule_id:'MCP-N8N-006', severity:'MEDIUM', title:'Risk classification not declared by requestor', node_ref:'risk_classification', human_review_required:false, framework_mappings:{ csa_ai:'GRC-02', maestro:'L6-GOV', owasp:'LLM09' } });\nfor (const pat of secretPatterns) { if (pat.test(d.mcp_endpoint || '')) { findings.push({ rule_id:'MCP-N8N-007', severity:'CRITICAL', title:'Potential secret embedded in MCP endpoint URL', node_ref:'mcp_endpoint', human_review_required:true, framework_mappings:{ csa_ai:'EKM-01', maestro:'L3-AUTHZ', owasp:'LLM08' } }); break; } }\nif (!d.business_justification || d.business_justification.trim().length < 20) findings.push({ rule_id:'MCP-N8N-008', severity:'LOW', title:'Business justification is missing or too brief', node_ref:'business_justification', human_review_required:false, framework_mappings:{ csa_ai:'GRC-01', maestro:'L6-GOV', owasp:'LLM09' } });\nif (!endpoint.includes('/sse') && !endpoint.includes('/mcp') && !endpoint.includes('/stream')) findings.push({ rule_id:'MCP-N8N-009', severity:'LOW', title:'Endpoint path does not match expected MCP SSE pattern', node_ref:'mcp_endpoint', human_review_required:false, framework_mappings:{ csa_ai:'CCM-09', maestro:'L2-NET', owasp:'LLM02' } });\nreturn [{ json: { ...d, linter_findings: findings, linter_finding_count: findings.length, linted_at: new Date().toISOString() } }];"
+      },
+      "id": "8063fae7-7640-44e5-afe5-1957fd1d6c6e",
+      "name": "Security Linter — 9 Rules",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1120,
+        448
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const d = $json;\nconst findings = d.linter_findings || [];\nconst hasCritical = findings.some(f => f.severity === 'CRITICAL');\nconst hasHigh = findings.some(f => f.severity === 'HIGH');\nconst hasMedium = findings.some(f => f.severity === 'MEDIUM');\nlet risk_level, preliminary_decision;\nif (hasCritical) { risk_level = 'Prohibited'; preliminary_decision = 'auto_deny'; }\nelse if (hasHigh) { risk_level = 'High'; preliminary_decision = 'human_review'; }\nelse if (hasMedium) { risk_level = 'Medium'; preliminary_decision = 'human_review'; }\nelse { risk_level = 'Low'; preliminary_decision = 'auto_approve'; }\nreturn [{ json: { ...d, risk_level, preliminary_decision, classified_at: new Date().toISOString() } }];"
+      },
+      "id": "e139048d-9ee2-45db-81c2-690a79d2c8bc",
+      "name": "Risk Classifier",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1344,
+        448
+      ]
+    },
+    {
+      "parameters": {
+        "agent": "conversationalAgent",
+        "promptType": "define",
+        "text": "={{ \"You are a security research agent assisting a governance team reviewing an MCP server addition request. Do NOT make final approval decisions — surface evidence for the human reviewer only.\\n\\nRequest details:\\n\" + JSON.stringify($(\\\"Risk Classifier\\\").item.json, null, 2) + \"\\n\\nResearch and report on:\\n1. Vendor reputation and public security posture\\n2. Privacy policy assessment (URL: \" + $(\\\"Risk Classifier\\\").item.json.vendor_privacy_url + \")\\n3. Known CVEs or public vulnerability disclosures\\n4. GitHub repository code quality and security signals (URL: \" + $(\\\"Risk Classifier\\\").item.json.vendor_github + \")\\n5. MCP-specific risks: tool poisoning, data exfiltration, prompt injection\\n6. Compliance alignment: GDPR, SOC 2, ISO 27001\\n7. Overall risk signal (informational only)\" }}",
+        "options": {}
+      },
+      "id": "f07836e7-1fd0-47d5-84d3-5974116af4cb",
+      "name": "AI Security Research Agent",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        1568,
+        448
+      ]
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "={{ \"gpt-4o\" }}"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "id": "f59f6c56-c822-4781-b563-e7fd4a3ca17d",
+      "name": "OpenAI Research Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        1648,
+        672
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "ZeKwNa3x2MtHKMs9",
+          "name": "n8n free OpenAI API credits"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "1",
+              "name": "service_name",
+              "value": "={{ $(\"Risk Classifier\").item.json.service_name }}",
+              "type": "string"
+            },
+            {
+              "id": "2",
+              "name": "service_vendor",
+              "value": "={{ $(\"Risk Classifier\").item.json.service_vendor }}",
+              "type": "string"
+            },
+            {
+              "id": "3",
+              "name": "request_id",
+              "value": "={{ $(\"Risk Classifier\").item.json.request_id }}",
+              "type": "string"
+            },
+            {
+              "id": "4",
+              "name": "submitted_by",
+              "value": "={{ $(\"Risk Classifier\").item.json.submitted_by }}",
+              "type": "string"
+            },
+            {
+              "id": "5",
+              "name": "mcp_endpoint",
+              "value": "={{ $(\"Risk Classifier\").item.json.mcp_endpoint }}",
+              "type": "string"
+            },
+            {
+              "id": "6",
+              "name": "risk_level",
+              "value": "={{ $(\"Risk Classifier\").item.json.risk_level }}",
+              "type": "string"
+            },
+            {
+              "id": "7",
+              "name": "preliminary_decision",
+              "value": "={{ $(\"Risk Classifier\").item.json.preliminary_decision }}",
+              "type": "string"
+            },
+            {
+              "id": "8",
+              "name": "linter_findings",
+              "value": "={{ $(\"Risk Classifier\").item.json.linter_findings }}",
+              "type": "array"
+            },
+            {
+              "id": "9",
+              "name": "linter_finding_count",
+              "value": "={{ $(\"Risk Classifier\").item.json.linter_finding_count }}",
+              "type": "number"
+            },
+            {
+              "id": "10",
+              "name": "ai_security_report",
+              "value": "={{ $json.output }}",
+              "type": "string"
+            },
+            {
+              "id": "11",
+              "name": "business_justification",
+              "value": "={{ $(\"Risk Classifier\").item.json.business_justification }}",
+              "type": "string"
+            },
+            {
+              "id": "12",
+              "name": "intake_channel",
+              "value": "={{ $(\"Risk Classifier\").item.json.intake_channel }}",
+              "type": "string"
+            },
+            {
+              "id": "13",
+              "name": "review_path",
+              "value": "human_review",
+              "type": "string"
+            },
+            {
+              "id": "14",
+              "name": "vendor_privacy_url",
+              "value": "={{ $(\"Risk Classifier\").item.json.vendor_privacy_url }}",
+              "type": "string"
+            },
+            {
+              "id": "15",
+              "name": "vendor_github",
+              "value": "={{ $(\"Risk Classifier\").item.json.vendor_github }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "b2cf52be-88be-4dd9-9daf-9f2069f98f41",
+      "name": "Compile Review Package",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1920,
+        448
+      ]
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "workspace": "1214894120801167",
+        "name": "={{ \"[GOVREQ] MCP Security Review: \" + $(\"Compile Review Package\").item.json.service_vendor + \" — \" + $(\"Compile Review Package\").item.json.request_id }}",
+        "otherProperties": {}
+      },
+      "id": "7bac0c81-c64e-41d9-989e-9b3aa74f38a9",
+      "name": "Create Security Review Ticket",
+      "type": "n8n-nodes-base.asana",
+      "typeVersion": 1,
+      "position": [
+        2144,
+        448
+      ],
+      "credentials": {
+        "asanaOAuth2Api": {
+          "id": "Jm8ChhMMoJtEMvlC",
+          "name": "Asana OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resume": "webhook",
+        "options": {}
+      },
+      "id": "c3384e46-8d7c-4fec-97f5-f9c8f33a92ac",
+      "name": "Wait: Human Security Review",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        2368,
+        448
+      ],
+      "webhookId": "84ffa426-dba2-4c3a-a359-7e7a4de8d1f3"
+    },
+    {
+      "parameters": {
+        "jsCode": "const pkg = $('Compile Review Package').item.json;\nconst body = $json.body || {};\nconst query = $json.query || {};\nconst decision = (body.decision || query.decision || 'denied').toLowerCase();\nconst isApproved = decision === 'approved';\nreturn [{ json: { ...pkg, final_decision: isApproved ? 'approved' : 'denied', decision_reason: isApproved ? 'Human security reviewer approved the MCP integration.' : 'Human security reviewer denied the MCP integration.', decision_by: body.reviewer || query.reviewer || 'security-team', decided_at: new Date().toISOString(), review_path: 'human_review' } }];"
+      },
+      "id": "690f9746-a936-4b79-9920-ee0f438ce334",
+      "name": "Parse Human Decision",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2592,
+        448
+      ]
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "resource": "databasePage",
+        "databaseId": "={{ \"86b8a07f78e4461ba488ed075613b696\" }}",
+        "title": "={{ $(\"Merge Decision Paths\").item.json.service_vendor + \" — \" + $(\"Merge Decision Paths\").item.json.request_id + \" [\" + ($(\"Merge Decision Paths\").item.json.final_decision || \"PENDING\").toUpperCase() + \"]\" }}",
+        "propertiesUi": {
+          "propertyValues": [
+            {
+              "type": "rich_text",
+              "textContent": "={{ $(\"Merge Decision Paths\").item.json.request_id }}"
+            },
+            {
+              "type": "rich_text",
+              "textContent": "={{ $(\"Merge Decision Paths\").item.json.service_vendor }}"
+            },
+            {
+              "type": "url",
+              "urlValue": "={{ $(\"Merge Decision Paths\").item.json.mcp_endpoint }}"
+            },
+            {
+              "type": "select"
+            },
+            {
+              "type": "select"
+            },
+            {
+              "type": "rich_text",
+              "textContent": "={{ $(\"Merge Decision Paths\").item.json.review_path }}"
+            },
+            {
+              "type": "rich_text",
+              "textContent": "={{ $(\"Merge Decision Paths\").item.json.submitted_by }}"
+            },
+            {
+              "type": "rich_text",
+              "textContent": "={{ $(\"Merge Decision Paths\").item.json.intake_channel || \"ITSM (ServiceNow) — DEMO MOCK\" }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "2b56a22a-db15-4b7f-8f54-6aa5df8a0765",
+      "name": "Write Notion Evidence Log",
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2.2,
+      "position": [
+        3040,
+        192
+      ],
+      "credentials": {
+        "notionOAuth2Api": {
+          "id": "LSa0jIdNA6x1ioql",
+          "name": "Notion OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "1",
+              "name": "notification_channel",
+              "value": "ITSM (ServiceNow) — DEMO MOCK",
+              "type": "string"
+            },
+            {
+              "id": "2",
+              "name": "notification_status",
+              "value": "sent",
+              "type": "string"
+            },
+            {
+              "id": "3",
+              "name": "notification_subject",
+              "value": "={{ \"MCP Governance Decision: \" + ($(\"Merge Decision Paths\").item.json.final_decision || \"PENDING\").toUpperCase() + \" — \" + $(\"Merge Decision Paths\").item.json.service_vendor }}",
+              "type": "string"
+            },
+            {
+              "id": "4",
+              "name": "notification_message",
+              "value": "={{ \"Your MCP integration request for \" + $(\"Merge Decision Paths\").item.json.service_vendor + \" has been \" + $(\"Merge Decision Paths\").item.json.final_decision + \". Risk level: \" + $(\"Merge Decision Paths\").item.json.risk_level + \". Review path: \" + $(\"Merge Decision Paths\").item.json.review_path }}",
+              "type": "string"
+            },
+            {
+              "id": "5",
+              "name": "notified_at",
+              "value": "={{ $now.toISO() }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "0ca52275-226f-422d-a65e-bdb1c4e9659d",
+      "name": "MOCK: Notify Requester",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        3264,
+        192
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "1",
+              "name": "audit_complete",
+              "value": true,
+              "type": "boolean"
+            },
+            {
+              "id": "2",
+              "name": "request_id",
+              "value": "={{ $(\"Merge Decision Paths\").item.json.request_id }}",
+              "type": "string"
+            },
+            {
+              "id": "3",
+              "name": "service_vendor",
+              "value": "={{ $(\"Merge Decision Paths\").item.json.service_vendor }}",
+              "type": "string"
+            },
+            {
+              "id": "4",
+              "name": "final_decision",
+              "value": "={{ $(\"Merge Decision Paths\").item.json.final_decision }}",
+              "type": "string"
+            },
+            {
+              "id": "5",
+              "name": "risk_level",
+              "value": "={{ $(\"Merge Decision Paths\").item.json.risk_level }}",
+              "type": "string"
+            },
+            {
+              "id": "6",
+              "name": "review_path",
+              "value": "={{ $(\"Merge Decision Paths\").item.json.review_path }}",
+              "type": "string"
+            },
+            {
+              "id": "7",
+              "name": "decision_reason",
+              "value": "={{ $(\"Merge Decision Paths\").item.json.decision_reason }}",
+              "type": "string"
+            },
+            {
+              "id": "8",
+              "name": "notion_evidence_url",
+              "value": "={{ $(\"Write Notion Evidence Log\").item.json.url }}",
+              "type": "string"
+            },
+            {
+              "id": "9",
+              "name": "completed_at",
+              "value": "={{ $now.toISO() }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "318b68d2-551e-4218-a007-5840d8c956ba",
+      "name": "Final Evidence Summary",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        3488,
+        192
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "DEMO: Click to Run": {
+      "main": [
+        [
+          {
+            "node": "MOCK: Sample MCP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MOCK: Sample MCP Request": {
+      "main": [
+        [
+          {
+            "node": "Fetch Notion MCP Inventory",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MCP Addition Request Received": {
+      "main": [
+        [
+          {
+            "node": "MOCK: Sample MCP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Notion MCP Inventory": {
+      "main": [
+        [
+          {
+            "node": "Pre-Approval Check",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pre-Approval Check": {
+      "main": [
+        [
+          {
+            "node": "Route: Pre-Approval Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Route: Pre-Approval Status": {
+      "main": [
+        [
+          {
+            "node": "Set: Pre-Approved Outcome",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Set: Pre-Denied Outcome",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Security Linter — 9 Rules",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set: Pre-Approved Outcome": {
+      "main": [
+        [
+          {
+            "node": "Merge Decision Paths",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge Decision Paths": {
+      "main": [
+        [
+          {
+            "node": "Write Notion Evidence Log",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set: Pre-Denied Outcome": {
+      "main": [
+        [
+          {
+            "node": "Merge Decision Paths",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Security Linter — 9 Rules": {
+      "main": [
+        [
+          {
+            "node": "Risk Classifier",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Risk Classifier": {
+      "main": [
+        [
+          {
+            "node": "AI Security Research Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Security Research Agent": {
+      "main": [
+        [
+          {
+            "node": "Compile Review Package",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Research Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Security Research Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Compile Review Package": {
+      "main": [
+        [
+          {
+            "node": "Create Security Review Ticket",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Security Review Ticket": {
+      "main": [
+        [
+          {
+            "node": "Wait: Human Security Review",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait: Human Security Review": {
+      "main": [
+        [
+          {
+            "node": "Parse Human Decision",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse Human Decision": {
+      "main": [
+        [
+          {
+            "node": "Merge Decision Paths",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "Write Notion Evidence Log": {
+      "main": [
+        [
+          {
+            "node": "MOCK: Notify Requester",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MOCK: Notify Requester": {
+      "main": [
+        [
+          {
+            "node": "Final Evidence Summary",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": true
+  },
+  "versionId": "19749153-937b-4439-84e5-91d03b2f847e",
+  "meta": {
+    "aiBuilderAssisted": true,
+    "builderVariant": "mcp",
+    "instanceId": "4ec435971defbd8cd6aea07a4963afe5f6f827e2bc90ed341f3a3f9778305df0"
+  },
+  "id": "W5dJjUnwbSruXHH3",
+  "tags": []
+}
