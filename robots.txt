@@ -1,5 +1,3 @@
 User-agent: *
 Allow: /
-
-# Enumerate responsibly
-# Logs are watching 👀
+Sitemap: https://www.markuswalker.com/sitemap.xml
