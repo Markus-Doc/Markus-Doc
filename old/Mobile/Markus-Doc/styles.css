@@ -1010,3 +1010,8 @@ a.sfp-contact-card:hover {
   .dock-label { display: none; }
   .dock-item { padding: 6px 4px; min-height: 44px; }
 }
+
+/* Archive compatibility: keep the desktop-version link tappable above the
+   legacy hero/canvas while leaving the surrounding footer non-interactive. */
+.legal { z-index: 25; }
+.legal a { pointer-events: auto; }
