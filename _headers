@@ -11,9 +11,6 @@
 /index.html
   Cache-Control: no-cache
 
-/old/*
-  X-Robots-Tag: noindex, follow
-
 /assets/docs/*
   Cache-Control: public, max-age=0, must-revalidate
 

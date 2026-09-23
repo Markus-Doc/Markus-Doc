@@ -1,9 +1,9 @@
-/old /old/ 301
-/old/Mobile/Markus-Doc /old/Mobile/Markus-Doc/ 301
-/Mobile/Markus-Doc /old/Mobile/Markus-Doc/ 301
-/Mobile/Markus-Doc/* /old/Mobile/Markus-Doc/:splat 301
+/old / 301
+/old/* / 301
+/Mobile/Markus-Doc / 301
+/Mobile/Markus-Doc/* / 301
 /assets/docs/Markus_Walker_Resume.pdf /Markus_Walker_Resume.pdf 301
-/main.js /old/main.js 301
-/styles.css /old/styles.css 301
-/assets/favicon.svg /old/assets/favicon.svg 301
-/assets/images/* /old/assets/images/:splat 301
+/main.js / 301
+/styles.css / 301
+/assets/favicon.svg /favicon.svg 301
+/assets/images/* / 301
