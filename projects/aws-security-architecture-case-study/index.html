@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#F3ECDE" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#141C19" media="(prefers-color-scheme: dark)">
+  <title>AWS security architecture case study | Markus Walker</title>
+  <meta name="description" content="A fictional AWS security architecture and migration plan for Rossco's Coffee: access control, encryption, network segmentation, testing, migration, monitoring and cloud incident response.">
+  <link rel="canonical" href="https://www.markuswalker.com/projects/aws-security-architecture-case-study/">
+  <meta name="author" content="Markus Walker">
+  <meta property="og:site_name" content="Markus Walker">
+  <meta property="og:title" content="AWS security architecture case study | Markus Walker">
+  <meta property="og:description" content="A fictional AWS security architecture and migration plan for Rossco's Coffee: access control, encryption, network segmentation, testing, migration, monitoring and cloud incident response.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://www.markuswalker.com/projects/aws-security-architecture-case-study/">
+  <meta property="og:locale" content="en_AU">
+  <meta property="og:image" content="https://www.markuswalker.com/art/og-image.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Report",
+      "@id": "https://www.markuswalker.com/projects/aws-security-architecture-case-study/#work",
+      "name": "AWS security architecture case study",
+      "headline": "AWS security architecture case study",
+      "description": "A fictional AWS security architecture and migration plan for Rossco's Coffee: access control, encryption, network segmentation, testing, migration, monitoring and cloud incident response.",
+      "url": "https://www.markuswalker.com/projects/aws-security-architecture-case-study/",
+      "author": {
+        "@id": "https://www.markuswalker.com/#person"
+      },
+      "dateModified": "2026-04-27",
+      "inLanguage": "en-AU",
+      "isPartOf": {
+        "@id": "https://www.markuswalker.com/#website"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://www.markuswalker.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Projects",
+          "item": "https://www.markuswalker.com/projects/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "AWS security architecture case study",
+          "item": "https://www.markuswalker.com/projects/aws-security-architecture-case-study/"
+        }
+      ]
+    }
+  ]
+}
+  </script>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="preload" href="/fonts/schibsted-grotesk-var.woff2" as="font" type="font/woff2" crossorigin>
+  <script>
+    // Apply the saved or OS theme before first paint so the page never flashes.
+    (function () {
+      var t;
+      try { t = localStorage.getItem('mw-theme'); } catch (e) {}
+      if (t !== 'light' && t !== 'dark') t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      document.documentElement.dataset.theme = t;
+    })();
+  </script>
+  <link rel="stylesheet" href="/site/styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="monogram" href="/" aria-label="Markus Walker, home">MW<span class="ink-period">.</span></a>
+      <nav class="site-nav" aria-label="Main navigation">
+        <a href="/#/experience">Experience</a>
+        <a href="/projects/" aria-current="page">Projects</a>
+        <a href="/#/writing">Writing</a>
+        <a href="/#/capabilities">Capabilities</a>
+        <a href="/#/approach">Approach</a>
+        <a href="/#/contact">Contact</a>
+      </nav>
+      <button class="theme-toggle" type="button" aria-label="Switch to dark theme" title="Toggle light and dark theme">
+        <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z"/></svg>
+        <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg>
+      </button>
+    </div>
+  </header>
+  <main id="main" tabindex="-1">
+    <article class="section project-page">
+      <img class="sketch" src="/site/art/folio-orrery.webp" alt="" aria-hidden="true">
+      <div class="wrap">
+        <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> <span aria-hidden="true">/</span> <a href="/projects/">Projects</a> <span aria-hidden="true">/</span> <span aria-current="page">AWS security architecture case study</span></nav>
+        <p class="eyebrow">Fictional case study</p>
+        <h1 class="page-title">AWS security architecture case study</h1>
+        <p class="project-date"><strong>April 2026.</strong></p>
+        <p class="lede narrow">A fictional case study for Rossco's Coffee, covering security architecture and migration planning on AWS.</p>
+        <ul class="links links-row"><li><a class="button" href="/assets/docs/Markus_Walker_Cloud_Case_Study.pdf" target="_blank" rel="noopener">Open case study PDF <span aria-hidden="true">↗</span></a></li></ul>
+        <div class="page-body">
+          <p>The plan starts from an evaluation of the current environment and a vulnerability and risk assessment, then sets out the target architecture, how to test and migrate to it, and how to run it afterwards.</p>
+          <h2>What it covers</h2>
+          <ul class="reading-list">
+            <li>Evaluation of the current cloud architecture, access control and security controls</li>
+            <li>Cloud and service models, security and sovereignty, and designs for high demand and infrastructure failure</li>
+            <li>Access control, data storage and encryption, classification, network segmentation, and privilege, authentication and authorisation</li>
+            <li>Testing environments, QA, disaster recovery, blue-green deployment and the migration strategy</li>
+            <li>Log scrubbing, remote log monitoring, maintenance and lifecycle management</li>
+            <li>A cloud incident response plan with disaster recovery and reporting</li>
+          </ul>
+          <p class="small-note">A 36-page planning case study. The architecture is proposed rather than presented as a live production system, and AWS services and guidance change often.</p>
+        </div>
+        <h2 class="subhead">More projects</h2>
+        <ul class="more-projects">
+          <li><a href="/projects/claude-cowork-controls-cheat-sheet/">Claude Cowork controls cheat sheet</a> <span>Practitioner reference, Version 1.4</span></li>
+          <li><a href="/projects/distinguishing-ai-driven-attacks/">Distinguishing AI-driven attacks from human and automated activity</a> <span>SOC advisory white paper, Version 5</span></li>
+          <li><a href="/projects/mcp-access-governance/">AI and MCP access governance</a> <span>Portfolio proof of concept, May to July 2026</span></li>
+          <li><a href="/projects/resynth/">RESYNTH research pipeline</a> <span>Open-source tool, First released June 2026</span></li>
+          <li><a href="/projects/incident-response-planning/">Incident response planning portfolio</a> <span>Planning portfolio, April 2026</span></li>
+        </ul>
+      </div>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-inner">
+      <p>© 2026 Markus Walker</p>
+      <a class="text-link" href="/">markuswalker.com <span aria-hidden="true">→</span></a>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var root = document.documentElement;
+      var btn = document.querySelector('.theme-toggle');
+      function sync() {
+        var dark = root.dataset.theme === 'dark';
+        btn.setAttribute('aria-label', dark ? 'Switch to light theme' : 'Switch to dark theme');
+      }
+      btn.addEventListener('click', function () {
+        root.dataset.theme = root.dataset.theme === 'dark' ? 'light' : 'dark';
+        try { localStorage.setItem('mw-theme', root.dataset.theme); } catch (e) {}
+        sync();
+      });
+      sync();
+    })();
+  </script>
+</body>
+</html>

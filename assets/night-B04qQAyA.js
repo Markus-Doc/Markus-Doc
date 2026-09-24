@@ -1,17 +1,23 @@
-function e(e){let t=parseInt(e.slice(1),16);return[(t>>16&255)/255,(t>>8&255)/255,(t&255)/255]}var t=(e,t,n)=>[e[0]+(t[0]-e[0])*n,e[1]+(t[1]-e[1])*n,e[2]+(t[2]-e[2])*n],n=(e,t)=>[e[0]*t,e[1]*t,e[2]*t],r=e=>.2126*e[0]+.7152*e[1]+.0722*e[2],i=(e,n)=>t(e,[r(e),r(e),r(e)],n);function a(e,t=0){let n=e*374761393+t*668265263|0;return n=Math.imul(n^n>>>13,1274126177),((n^n>>>16)>>>0)/4294967295}function o(e){return{uTime:{value:0},uPx:{value:800},uDpr:{value:1},uFocus:{value:12},uNearK:{value:10},uFarK:{value:2},uCam:{value:new e.Vector3}}}var s=`
+function e(e){let t=parseInt(e.slice(1),16);return[(t>>16&255)/255,(t>>8&255)/255,(t&255)/255]}var t=(e,t,n)=>[e[0]+(t[0]-e[0])*n,e[1]+(t[1]-e[1])*n,e[2]+(t[2]-e[2])*n],n=(e,t)=>[e[0]*t,e[1]*t,e[2]*t],r=e=>.2126*e[0]+.7152*e[1]+.0722*e[2],i=(e,n)=>t(e,[r(e),r(e),r(e)],n);function a(e,t=0){let n=e*374761393+t*668265263|0;return n=Math.imul(n^n>>>13,1274126177),((n^n>>>16)>>>0)/4294967295}function o(e){return{uTime:{value:0},uPx:{value:800},uDpr:{value:1},uFocus:{value:12},uNearK:{value:10},uFarK:{value:2},uCam:{value:new e.Vector3},uBand:{value:0},uBandW:{value:8},uBandK:{value:60}}}var s=`
 uniform float uTime;
 uniform float uPx;
 uniform float uDpr;
 uniform float uFocus;
 uniform float uNearK;
 uniform float uFarK;
+uniform float uBand;
+uniform float uBandW;
+uniform float uBandK;
 // Near blur measures from a capped focal distance, so a far resting focus
 // (the nucleus sits 25 to 40 units out) does not turn the whole middle
 // distance into soap bubbles. Only things close to the lens open up.
+// From outside the brain a focus band takes over: sharp through the middle of
+// the brain, soft in front of it and behind it, like reference 1.
 float cocPx(float d) {
   float fn = min(uFocus, 8.0);
-  if (d < fn) return uNearK * (fn / max(d, 0.05) - 1.0);
-  return d > uFocus ? uFarK * (1.0 - uFocus / d) : 0.0;
+  float c = d < fn ? uNearK * (fn / max(d, 0.05) - 1.0) : (d > uFocus ? uFarK * (1.0 - uFocus / d) : 0.0);
+  float band = uBandK * max(abs(d - uFocus) - uBandW, 0.0) / max(uFocus, 1.0);
+  return max(c, band * uBand);
 }
 float h11(float n) { return fract(sin(n * 127.1) * 43758.5453); }
 `,c=`float sstep(float a, float b, float x) { float t = clamp((x - a) / (b - a), 0.0, 1.0); return t * t * (3.0 - 2.0 * t); }
@@ -77,8 +83,9 @@ void main() {
         vec3 S = cross(T, toCam);
         S = length(S) < 1e-5 ? vec3(1.0, 0.0, 0.0) : normalize(S);
         float ppu = uPx / max(d, 0.02);
-        float core = max(0.012 * ppu, 0.75 * uDpr);          // half width, px
-        float coc = clamp(cocPx(d), 0.0, 36.0 * uDpr);
+        // half width, px, capped so a wire running past the lens stays a line, not a beam
+        float core = min(max(0.012 * ppu, 0.75 * uDpr), 2.6 * uDpr);
+        float coc = clamp(cocPx(d), 0.0, 14.0 * uDpr);
         float sigma = core + coc * 0.22;   // near wires stay crisp enough to read
         float halfPx = sigma * 2.2 + 0.5 * uDpr;
         P += S * position.y * halfPx / ppu;
@@ -87,7 +94,9 @@ void main() {
         vAcross = position.y * halfPx / sigma;
         // energy spreads as the strip blurs; fade near the lens and into the distance
         float energy = min(core / sigma, 1.0);
-        float nearF = smoothstep(0.35, 2.2, d);
+        // at rest a wire running past the lens fades out well before it reaches it (the approach
+        // wire would otherwise read as a beam); while riding the route mesh carries the wire
+        float nearF = mix(smoothstep(0.6, 4.5, d), smoothstep(2.5, 9.0, d), uAttnAmt);
         float farF = exp(-max(d - 10.0, 0.0) / 19.0);
         // at rest the resting node's own neighbourhood stays lit however far it sits
         float fdist = distance(P, uAttnPos);
@@ -95,7 +104,10 @@ void main() {
         farF = mix(farF, max(farF, 0.8), uAttnAmt * hood);
         vI = uGain * energy * nearF * farF * (0.25 + 0.75 * min(1.0, 1.4 * uDpr / core));
         // at rest, wiring far from the resting node and far from the lens goes quiet
-        vI *= mix(1.4, 1.0, smoothstep(5.0, 14.0, d));   // near wires carry the structure: at least 3:1
+        vI *= mix(1.4, 1.0, smoothstep(5.0, 14.0, d));
+        // at rest a wire pointing almost straight at the lens foreshortens into a bright beam: dim it
+        float align = abs(dot(normalize(T), toCam / max(d, 1e-4)));
+        vI *= 1.0 - uAttnAmt * 0.85 * smoothstep(0.82, 0.97, align);   // near wires carry the structure: at least 3:1
         vI *= 1.0 - uAttnAmt * (1.0 - mix(0.3, 1.0, smoothstep(uAttnR0 + 14.0, uAttnR0, fdist)) * mix(1.0, exp(-max(d - uAttnD, 0.0) / 9.0), 0.85 * (1.0 - hood))) * smoothstep(12.0, 20.0, d);
       }
     `,fragmentShader:`
@@ -464,4 +476,4 @@ void main() {
     `,fragmentShader:`
       varying vec3 vC; varying float vI;
       void main() { vec2 q = gl_PointCoord - 0.5; float p = exp(-dot(q, q) * 18.0); gl_FragColor = vec4(vC * p * vI, 1.0); }
-    `,transparent:!0,depthWrite:!1,depthTest:!1,blending:n.CustomBlending,blendSrc:n.OneFactor,blendDst:n.OneFactor,blendEquation:n.AddEquation}),O=new n.Points(E,D);O.frustumCulled=!1,O.renderOrder=-50;let k=new n.Vector3,A=new n.Vector3,j=new n.Vector3,M=!1;return{objects:[O,v],update(e,t){M&&e>1e-4&&(j.subVectors(t.position,A).divideScalar(e),(j.length()>200||!(t.speed>.01))&&j.set(0,0,0),k.lerp(j,1-Math.exp(-e*12))),A.copy(t.position),M=!0,_.uniforms.uVel.value.copy(k),_.uniforms.uWarp.value=t.warp||0},dispose(){l.dispose(),_.dispose(),E.dispose(),D.dispose()}}}function C({THREE:e,scene:t,camera:n,renderer:r,network:i,tokens:a,quality:s}){t.background=new e.Color(a.sceneBg),t.fog=null;let c=o(e);c.uPulseS={value:-1},c.uRouteA={value:0},c.uFocusId={value:-1},c.uFocusAmt={value:0},c.uAttnPos={value:new e.Vector3},c.uAttnAmt={value:0},c.uAttnR0={value:12},c.uAttnD={value:40};let l={THREE:e,renderer:r,network:i,tokens:a,shared:c,quality:s,camera:n},u=m(l),d=h(l),f=v(l),p=y(l),g=b(l),_=x(l),C=S(l),w=new e.Group;w.add(u.object,d.object,...f.objects,p.object,g.object,_.object,...C.objects),t.add(w);let T=new Map(i.nodes.map((e,t)=>[e.id,t])),E=-1,D=0,O=0,k=12,A=new e.Vector2,j=new e.Vector3;return{setRoute(e){if(!e||e.length<2){g.clear();return}f.setRouteS(g.set(e))},setFocus(e){let t=e==null?-1:T.get(e)??-1;t!==E&&(E=t,D=0),c.uFocusId.value=t},update(e,t,a){r.getDrawingBufferSize(A),c.uTime.value=e,c.uDpr.value=r.getPixelRatio(),c.uPx.value=n.projectionMatrix.elements[5]*A.y/2,c.uNearK.value=.018*A.y,c.uFarK.value=1.6*c.uDpr.value,c.uCam.value.copy(a.position);let o=7.5;E>=0&&!a.travelling?o=j.fromArray(i.nodes[E].pos).distanceTo(a.position):E>=0&&a.travelling&&a.progress>.7&&(o=Math.max(7.5,j.fromArray(i.nodes[E].pos).distanceTo(a.position))),k+=(o-k)*(1-Math.exp(-t*4)),c.uFocus.value=k;let s=+(!a.travelling&&E>=0);if(c.uAttnAmt.value+=(s-c.uAttnAmt.value)*(1-Math.exp(-t*(s?1.6:5))),E>=0){c.uAttnPos.value.fromArray(i.nodes[E].pos);let e=c.uAttnPos.value.distanceTo(a.position);c.uAttnR0.value=Math.max(8,e*.3),c.uAttnD.value=e+3}D+=((a.travelling?.35:1)-D)*(1-Math.exp(-t*2.5)),c.uFocusAmt.value=D;let l=E>=0&&i.nodes[E].id===p.id;O+=((l?D:0)-O)*(1-Math.exp(-t*3)),p.setLift(O),u.update(a,A);let d=g.update(t,a);_.update(t,d),C.update(t,a)},dispose(){t.remove(w);for(let e of[u,d,f,p,g,_,C])e.dispose()}}}export{C as createSkin};
+    `,transparent:!0,depthWrite:!1,depthTest:!1,blending:n.CustomBlending,blendSrc:n.OneFactor,blendDst:n.OneFactor,blendEquation:n.AddEquation}),O=new n.Points(E,D);O.frustumCulled=!1,O.renderOrder=-50;let k=new n.Vector3,A=new n.Vector3,j=new n.Vector3,M=!1;return{objects:[O,v],update(e,t){M&&e>1e-4&&(j.subVectors(t.position,A).divideScalar(e),(j.length()>200||!(t.speed>.01))&&j.set(0,0,0),k.lerp(j,1-Math.exp(-e*12))),A.copy(t.position),M=!0,_.uniforms.uVel.value.copy(k),_.uniforms.uWarp.value=t.warp||0},dispose(){l.dispose(),_.dispose(),E.dispose(),D.dispose()}}}function C({THREE:e,scene:t,camera:n,renderer:r,network:i,tokens:a,quality:s}){let c=new e.Vector3;t.background=new e.Color(a.sceneBg),t.fog=null;let l=o(e);l.uPulseS={value:-1},l.uRouteA={value:0},l.uFocusId={value:-1},l.uFocusAmt={value:0},l.uAttnPos={value:new e.Vector3},l.uAttnAmt={value:0},l.uAttnR0={value:12},l.uAttnD={value:40};let u={THREE:e,renderer:r,network:i,tokens:a,shared:l,quality:s,camera:n},d=m(u),f=h(u),p=v(u),g=y(u),_=b(u),C=x(u),w=S(u),T=new e.Group;T.add(d.object,f.object,...p.objects,g.object,_.object,C.object,...w.objects),t.add(T);let E=new Map(i.nodes.map((e,t)=>[e.id,t])),D=-1,O=0,k=0,A=12,j=new e.Vector3;for(let e of i.nodes)j.add(c.fromArray(e.pos));j.divideScalar(i.nodes.length);let M=new e.Vector2,N=new e.Vector3;return{setRoute(e){if(!e||e.length<2){_.clear();return}p.setRouteS(_.set(e))},setFocus(e){let t=e==null?-1:E.get(e)??-1;t!==D&&(D=t,O=0),l.uFocusId.value=t},update(e,t,a){r.getDrawingBufferSize(M),l.uTime.value=e,l.uDpr.value=r.getPixelRatio(),l.uPx.value=n.projectionMatrix.elements[5]*M.y/2,l.uNearK.value=.018*M.y,l.uFarK.value=1.6*l.uDpr.value,l.uCam.value.copy(a.position);let o=7.5;D>=0&&!a.travelling?o=N.fromArray(i.nodes[D].pos).distanceTo(a.position):a.glide?o=a.targetDist:D>=0&&a.travelling&&a.progress>.7&&(o=Math.max(7.5,N.fromArray(i.nodes[D].pos).distanceTo(a.position)));let s=a.position.distanceTo(j),c=Math.min(Math.max((s-80)/35,0),1);l.uBand.value+=(c-l.uBand.value)*(1-Math.exp(-t*3)),A+=(o-A)*(1-Math.exp(-t*4)),l.uFocus.value=A+(s-A)*l.uBand.value;let u=+(!a.travelling&&D>=0);if(l.uAttnAmt.value+=(u-l.uAttnAmt.value)*(1-Math.exp(-t*(u?1.6:5))),D>=0){l.uAttnPos.value.fromArray(i.nodes[D].pos);let e=l.uAttnPos.value.distanceTo(a.position);l.uAttnR0.value=Math.max(8,e*.3),l.uAttnD.value=e+3}O+=((a.travelling?.35:1)-O)*(1-Math.exp(-t*2.5)),l.uFocusAmt.value=O;let f=D>=0&&i.nodes[D].id===g.id;k+=((f?O:0)-k)*(1-Math.exp(-t*3)),g.setLift(k),d.update(a,M);let p=_.update(t,a);C.update(t,p),w.update(t,a)},dispose(){t.remove(T);for(let e of[d,f,p,g,_,C,w])e.dispose()}}}export{C as createSkin};

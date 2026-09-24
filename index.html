@@ -27,14 +27,15 @@
       // ?theme=light|dark overrides for this visit only (for comparing looks); it is not saved
       var m = location.search.match(/[?&]theme=(light|dark)/); if (m) t = m[1];
       document.documentElement.dataset.theme = t;
-      // the network opening is the default (D-33); the orrery film is parked behind ?opening=orrery
-      if (location.search.indexOf('opening=orrery') === -1) document.documentElement.classList.add('opening-network');
+      // the orrery is the gateway (D-34); ?opening=network is the runnable alternative, a zoom into the whole brain
+      if (location.search.indexOf('opening=network') !== -1) document.documentElement.classList.add('opening-network');
       var lm = /[?&]layer=([^&]*)/.exec(location.search);
-      if (lm) decodeURIComponent(lm[1]).split(',').forEach(function (n) { if (/^[\w-]+$/.test(n)) document.documentElement.classList.add('layer-' + n); });
+      var layers = lm ? decodeURIComponent(lm[1]) : (location.search.indexOf('look=line') !== -1 ? '' : 'manuscript-world,armillary');
+      if (layers !== 'none') layers.split(',').forEach(function (n) { if (/^[\w-]+$/.test(n)) document.documentElement.classList.add('layer-' + n); });
     })();
   </script>
-  <script type="module" crossorigin src="/assets/index-CDrjj3lq.js"></script>
-  <link rel="stylesheet" crossorigin href="/assets/index-Cs0y_Ive.css">
+  <script type="module" crossorigin src="/assets/index-D6FOjZ2k.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-BnGfWOHY.css">
 </head>
 <body>
   <a class="skip-link" href="#reader">Skip to content</a>
@@ -65,7 +66,7 @@
         <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6"/><path d="M16 16l4 4"/></svg>
         <span class="sr-only">Index: find any page</span>
       </button>
-      <a class="button button-small resume-link" href="https://www.markuswalker.com/Markus_Walker_Resume.pdf" download>Resume PDF</a>
+      <a class="button button-small resume-link" href="/Markus_Walker_Resume.pdf" download>Resume PDF</a>
       <button id="motion-toggle" class="icon-button" type="button" aria-pressed="false" title="Reduce motion">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h4l3-7 4 14 3-7h4"/></svg>
         <span class="sr-only">Reduce motion</span>
@@ -134,7 +135,7 @@
       <p class="intro-lede">I architect and deliver AI solutions from start to finish, with security built in at each stage. Senior Engineer, Secure AI, looking for fully remote forward deployed and AI engineering roles.</p>
       <div class="actions">
         <button class="button" type="button" data-action="enter">Enter the network</button>
-        <a class="button button-quiet" href="https://www.markuswalker.com/Markus_Walker_Resume.pdf" download>Resume PDF <span aria-hidden="true">↓</span></a>
+        <a class="button button-quiet" href="/Markus_Walker_Resume.pdf" download>Resume PDF <span aria-hidden="true">↓</span></a>
       </div>
       <p class="intro-shortcuts">Or go straight to
         <a href="#/experience" data-enter-to="experience">experience</a>,
