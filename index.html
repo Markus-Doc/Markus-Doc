@@ -28,9 +28,11 @@
       var m = location.search.match(/[?&]theme=(light|dark)/); if (m) t = m[1];
       document.documentElement.dataset.theme = t;
       if (location.search.indexOf('opening=network') !== -1) document.documentElement.classList.add('opening-network');
+      var lm = /[?&]layer=([^&]*)/.exec(location.search);
+      if (lm) decodeURIComponent(lm[1]).split(',').forEach(function (n) { if (/^[\w-]+$/.test(n)) document.documentElement.classList.add('layer-' + n); });
     })();
   </script>
-  <script type="module" crossorigin src="/assets/index-VZhGmXe2.js"></script>
+  <script type="module" crossorigin src="/assets/index-QCfo0-oM.js"></script>
   <link rel="stylesheet" crossorigin href="/assets/index-C5aC-FEI.css">
 </head>
 <body>
