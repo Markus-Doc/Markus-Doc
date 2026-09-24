@@ -1,8 +1,8 @@
 # Markus Walker
 
 Forward deployed AI engineer. I take agentic AI from project commencement to full
-deliverables, with a Secure AI approach at every layer. Brisbane, Australia, open to
-remote, hybrid and relocation.
+deliverables, with a Secure AI approach at every layer. Based in Brisbane, looking for
+fully remote roles. Hybrid or relocation considered for an exceptional opportunity.
 
 I build agentic AI systems that stay grounded in an organisation's own knowledge, and
 the controls that make them safe to put in front of a business. The work runs end to
