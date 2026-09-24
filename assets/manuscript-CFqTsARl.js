@@ -61,14 +61,21 @@ vec4 ribbonClip(vec3 p, vec3 dir, float halfPx, float side, out float z) {
         float z = max(-(modelViewMatrix * vec4(P, 1.0)).z, 0.02);
         // pressure: slow wobble along the stroke, never below 0.55
         float pr = 0.78 + 0.22 * sin(aW.y + seg.x * (2.0 + mod(aW.y, 3.0)));
+        // Near wires (within about 12 units) are drawn with a nib of at least 2.4 px and
+        // a solid core, so their rendered pixels reach 3:1 on the parchment (a thinner
+        // antialiased stroke never reaches its token contrast at any pixel). Pressure
+        // then varies their width, not their ink, and near blur is held back. Further
+        // out the strokes thin and fade as before, as the depth cue.
+        float near = 1.0 - smoothstep(10.0, 16.0, z);
         float nib = uDpr * aW.x * mix(1.7, 0.75, smoothstep(1.5, 34.0, z)) * mix(0.8, 1.1, pr);
-        float coc = cocPx(z) * 0.55;
+        nib = max(nib, near * uDpr * mix(2.4, 3.0, pr - 0.56));
+        float coc = cocPx(z) * 0.55 * (1.0 - 0.8 * near);
         float w = nib + coc;
         float halfPx = w * 0.5 + 1.0;
         float zz;
         gl_Position = ribbonClip(P, normalize(aB - aA), halfPx, seg.y, zz);
         float fog = fogAmt(z);
-        vAlpha = pr * pow(nib / w, 1.3) * (1.0 - fog * 0.94) * nearFade(z, 0.25, 1.1);
+        vAlpha = mix(pr, 1.0, near) * pow(nib / w, 1.3) * (1.0 - fog * 0.94) * nearFade(z, 0.25, 1.1);
         vRib = vec3(seg.y * halfPx, halfPx, 1.0) * gl_Position.w;
       }`,fragmentShader:i+`
       uniform vec3 uInk; uniform float uAlpha;
@@ -267,8 +274,9 @@ float pulseAt(float s) {
         float pv = pulseAt(aS) * smoothstep(3.0, 9.0, z);  // no swelling right under the lens
         // core half width: a real wire in world units, never thinner than a bold
         // pen stroke and never a blob under the lens. The signal swells it a little.
+        // the glow stays close round the wire, so a clear band of parchment frames it
         float corePx = clamp(0.034 * uPxK / z, 2.3 * uDpr, 0.026 * min(uRes.x, uRes.y)) * (1.0 + 0.45 * pv);
-        float haloPx = min(corePx * 3.4, corePx + 24.0 * uDpr) * (1.0 + 0.6 * pv);
+        float haloPx = min(corePx * 3.4, corePx + 16.0 * uDpr) * (1.0 + 0.6 * pv);
         float halfPx = haloPx + 1.5;
         float zz;
         gl_Position = ribbonClip(position, aTan, halfPx, aSide, zz);
@@ -310,7 +318,9 @@ float pulseAt(float s) {
         // ink itself in from the start, with a soft wet tip
         a *= 1.0 - smoothstep(uReveal - 1.5, uReveal, vS);
         // the stretch already ridden reads as spent, a little quieter
-        a *= mix(0.7, 1.0, smoothstep(uCamS - 6.0, uCamS - 0.5, vS));
+        // (no dimming of the stretch already ridden: the rider now arcs off the wire
+        // round intermediate thoughts, so "behind" is not reliable, and the route
+        // must keep its full contrast wherever it is on screen)
         a *= 1.0 - fogAmt(vZ) * 0.45;
         a *= smoothstep(0.08, 0.35, vZ);
         acc *= a;
@@ -402,4 +412,4 @@ float pulseAt(float s) {
         if (a < 0.003) discard;
         vec3 c = vK > 0.9 ? uCopper : uInk;
         gl_FragColor = vec4(c * a, a);
-      }`}),f=new t.Mesh(c,d);return f.frustumCulled=!1,f.renderOrder=7,f.visible=!1,{object:f,update(e,t,n){f.visible=(n.warp||0)>.01,d.uniforms.uFlow.value+=t*(n.speed||0)*1.6},dispose(){c.dispose(),d.dispose()}}}var h=6.5;function g({THREE:e,scene:t,camera:n,renderer:i,network:a,tokens:c,quality:u}){t.background=new e.Color(c.sceneBg),t.fog=null;let g=r(e),_={THREE:e,network:a,tokens:c,quality:u,shared:g},v=new e.Group;v.name=`manuscript-skin`;let y=o(_),b=s(_),x=l(_),S=d(_),C=f({..._,nodes:x}),w=p(_),T=m(_);for(let e of[y,b,x,S,C,w,T])v.add(e.object);t.add(v),S.set([new e.Vector3(0,0,-900),new e.Vector3(0,.1,-900)],0),T.object.visible=!0,i.compile(t,n),S.reset(),T.object.visible=!1;let E=new Map(a.nodes.map((e,t)=>[e.id,t])),D=new e.Vector2,O=new e.Vector3,k=-1,A=0;function j(e){if(!e){x.setRouteNodes(null);return}let t=new Set;a.nodes.forEach((n,r)=>{O.fromArray(n.pos);for(let n=0;n<e.length;n+=2)if(e[n].distanceToSquared(O)<1.44){t.add(r);break}}),x.setRouteNodes(t)}return{setRoute(e){S.set(e,A),e&&e.length>1&&j(e)},setFocus(e){k=e!=null&&E.has(e)?E.get(e):-1,x.uniforms.uFocusIdx.value=k,x.uniforms.uFocusT.value=0},update(e,t,r){A=e,n.updateMatrixWorld(),i.getDrawingBufferSize(D);let o=g;o.uTime.value=e,o.uRes.value.copy(D),o.uDpr.value=i.getPixelRatio(),o.uPxK.value=D.y/2/Math.tan(n.fov*Math.PI/360),o.uWarp.value=r.warp||0,o.uSpeed.value=r.speed||0;let s=h;!r.travelling&&k>=0&&(s=O.fromArray(a.nodes[k].pos).distanceTo(n.position)),o.uFocus.value+=(s-o.uFocus.value)*(1-Math.exp(-t*4)),o.uAperture.value+=((r.travelling?4.5:3.2)-o.uAperture.value)*(1-Math.exp(-t*3));let c=x.uniforms;c.uFocusT.value=Math.min(1,c.uFocusT.value+t*(r.travelling?.5:1.6)),c.uRouteT.value=S.active?Math.min(1,c.uRouteT.value+t*3):Math.max(0,c.uRouteT.value-t*1.5),y.update(n),S.update(e,t,r),C.update(e,t,r,n),w.update(e,t,r,n),T.update(e,t,r,n)},dispose(){t.remove(v);for(let e of[y,b,x,S,C,w,T])e.dispose();t.background=null}}}export{g as createSkin};
+      }`}),f=new t.Mesh(c,d);return f.frustumCulled=!1,f.renderOrder=7,f.visible=!1,{object:f,update(e,t,n){f.visible=(n.warp||0)>.01,d.uniforms.uFlow.value+=t*(n.speed||0)*1.6},dispose(){c.dispose(),d.dispose()}}}var h=6.5;function g({THREE:e,scene:t,camera:n,renderer:i,network:a,tokens:c,quality:u}){t.background=new e.Color(c.sceneBg),t.fog=null;let g=r(e),_={THREE:e,network:a,tokens:c,quality:u,shared:g},v=new e.Group;v.name=`manuscript-skin`;let y=o(_),b=s(_),x=l(_),S=d(_),C=f({..._,nodes:x}),w=p(_),T=m(_);for(let e of[y,b,x,S,C,w,T])v.add(e.object);t.add(v),S.set([new e.Vector3(0,0,-900),new e.Vector3(0,.1,-900)],0),T.object.visible=!0,i.compile(t,n),S.reset(),T.object.visible=!1;let E=new Map(a.nodes.map((e,t)=>[e.id,t])),D=new e.Vector2,O=new e.Vector3,k=-1,A=0;function j(e){if(!e){x.setRouteNodes(null);return}let t=new Set;a.nodes.forEach((n,r)=>{O.fromArray(n.pos);for(let n=0;n<e.length;n+=2)if(e[n].distanceToSquared(O)<1.44){t.add(r);break}}),x.setRouteNodes(t)}return{setRoute(e){S.set(e,A),e&&e.length>1&&j(e)},setFocus(e){k=e!=null&&E.has(e)?E.get(e):-1,x.uniforms.uFocusIdx.value=k,x.uniforms.uFocusT.value=0},update(e,t,r){A=e,n.updateMatrixWorld(),i.getDrawingBufferSize(D);let o=g;o.uTime.value=e,o.uRes.value.copy(D),o.uDpr.value=i.getPixelRatio(),o.uPxK.value=D.y/2/Math.tan(n.fov*Math.PI/360),o.uWarp.value=r.warp||0,o.uSpeed.value=r.speed||0;let s=h;!r.travelling&&k>=0&&(s=O.fromArray(a.nodes[k].pos).distanceTo(n.position)),o.uFocus.value+=(s-o.uFocus.value)*(1-Math.exp(-t*4)),o.uAperture.value+=((r.travelling?4.5:3.2)-o.uAperture.value)*(1-Math.exp(-t*3));let c=Math.max(o.uFocus.value-35,0);o.uFogNear.value=16+c*.9,o.uFogFar.value=80+c*1.4;let l=x.uniforms;l.uFocusT.value=Math.min(1,l.uFocusT.value+t*(r.travelling?.5:1.6)),l.uRouteT.value=S.active?Math.min(1,l.uRouteT.value+t*3):Math.max(0,l.uRouteT.value-t*1.5),y.update(n),S.update(e,t,r),C.update(e,t,r,n),w.update(e,t,r,n),T.update(e,t,r,n)},dispose(){t.remove(v);for(let e of[y,b,x,S,C,w,T])e.dispose();t.background=null}}}export{g as createSkin};

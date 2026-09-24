@@ -24,18 +24,23 @@
     (function () {
       var t; try { t = localStorage.getItem('mw-theme'); } catch (e) {}
       if (t !== 'light' && t !== 'dark') t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      // ?theme=light|dark overrides for this visit only (for comparing looks); it is not saved
+      var m = location.search.match(/[?&]theme=(light|dark)/); if (m) t = m[1];
       document.documentElement.dataset.theme = t;
+      if (location.search.indexOf('opening=network') !== -1) document.documentElement.classList.add('opening-network');
     })();
   </script>
-  <script type="module" crossorigin src="/assets/index-DPNpaJJ6.js"></script>
-  <link rel="stylesheet" crossorigin href="/assets/index-C_ogk99I.css">
+  <script type="module" crossorigin src="/assets/index-C_2X9CDu.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-Cw3caTPG.css">
 </head>
 <body>
   <a class="skip-link" href="#reader">Skip to content</a>
 
-  <canvas id="scene" aria-hidden="true"></canvas>
+  <canvas id="scene" tabindex="0" role="img" aria-label="Map of the network. Drag or use the arrow keys to look around, plus and minus to zoom, N to step through the pages in view and Enter to go there, O for the whole network, Escape to return to the page." aria-describedby="map-help"></canvas>
+  <p id="map-help" class="sr-only">Every page on the map is also in the main navigation, the reader's Connected links and the Index.</p>
   <div id="veil" aria-hidden="true"></div>
-  <div id="labels" aria-hidden="true"></div>
+  <div id="ghost" aria-hidden="true"></div>
+  <div id="labels" role="group" aria-label="Map of the network"></div>
 
   <header class="topbar">
     <a class="brand" href="#/markus" data-node="markus" aria-label="Markus Walker, home">
@@ -53,6 +58,10 @@
       </ul>
     </nav>
     <div class="tools">
+      <button id="index-toggle" class="icon-button" type="button" aria-haspopup="dialog" title="Index: find any page (/)">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6"/><path d="M16 16l4 4"/></svg>
+        <span class="sr-only">Index: find any page</span>
+      </button>
       <a class="button button-small resume-link" href="https://www.markuswalker.com/Markus_Walker_Resume.pdf" download>Resume PDF</a>
       <button id="motion-toggle" class="icon-button" type="button" aria-pressed="false" title="Reduce motion">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h4l3-7 4 14 3-7h4"/></svg>
@@ -80,6 +89,24 @@
       <nav id="connected" class="connected" aria-label="Connected"></nav>
     </div>
   </main>
+
+  <div class="explore-controls" id="explore-controls" role="group" aria-label="Map controls">
+    <button id="zoom-in" class="icon-button" type="button" title="Zoom in"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg><span class="sr-only">Zoom in</span></button>
+    <button id="zoom-out" class="icon-button" type="button" title="Zoom out"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/></svg><span class="sr-only">Zoom out</span></button>
+    <button id="overview" class="button button-quiet button-small" type="button">Whole network</button>
+    <button id="back-to-page" class="button button-small" type="button" hidden>Back to page</button>
+  </div>
+
+  <dialog id="index-dialog" aria-labelledby="index-title">
+    <form method="dialog" class="index-head">
+      <h2 id="index-title">Index</h2>
+      <button class="icon-button" value="close" aria-label="Close the index"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    </form>
+    <label class="sr-only" for="index-search">Search pages</label>
+    <input id="index-search" type="search" placeholder="Search pages, projects, roles" autocomplete="off">
+    <p id="index-count" class="sr-only" role="status" aria-live="polite"></p>
+    <div id="index-list"></div>
+  </dialog>
 
   <div class="travel" id="travel" hidden>
     <button id="arrive-now" class="button button-quiet button-small" type="button">Arrive now</button>
