@@ -1,7 +1,8 @@
 # Markus Walker
 
-Enterprise AI engineering and delivery, with a security practice underneath it.
-Brisbane, Australia.
+Forward deployed AI engineer. I take agentic AI from project commencement to full
+deliverables, with a Secure AI approach at every layer. Brisbane, Australia, open to
+remote, hybrid and relocation.
 
 I build agentic AI systems that stay grounded in an organisation's own knowledge, and
 the controls that make them safe to put in front of a business. The work runs end to
@@ -16,8 +17,8 @@ Two convictions shape most of what is in this account.
 **Build what frontier AI will not replace.** Models keep getting better, so anything a
 future model will do natively is throwaway work. The durable investment is what stays
 personal and owned, starting with an organisation's own knowledge base. That is why
-the repositories here tend to be knowledge substrates and governance around them
-rather than wrappers over a model.
+the work here leans towards harnesses and governance around a model rather than
+wrappers over one.
 
 **Keep the engine swappable.** Nobody knows which tools last. Claude, Codex, ChatGPT,
 Kimi, Grok, Cursor or something not yet released could win, so the engine has to be a
@@ -48,21 +49,23 @@ twenty remote sites.
 
 ## Selected work
 
-| Where | What it is |
-|---|---|
-| [Cybersecurity portfolio](https://markus-doc.github.io/cybersecurity-portfolio/) | Capability design kept separate from technical execution, with supporting artefacts as downloadable deliverables. |
-| [Write-ups](https://markus-doc.github.io/cybersecurity-writeups/) | Articles, research notes, CTF write-ups and lab walkthroughs. |
-| [MCP_Governance_Platform](https://github.com/Markus-Doc/MCP_Governance_Platform) | A working proof of concept and enterprise design pattern for governing AI agent and MCP-connected integrations. |
-| [SubstrateOS](https://github.com/Markus-Doc/SubstrateOS) | A thin, local-first AI orchestration harness. Not a platform. |
-| [resynth](https://github.com/Markus-Doc/resynth) | Consolidates several AI deep research reports into one verified master document. A gated systematic review pipeline with no runtime AI dependency. |
+| Where | What it is | Status |
+|---|---|---|
+| [Cybersecurity portfolio](https://markus-doc.github.io/cybersecurity-portfolio/) | Capability design kept separate from technical execution, with supporting artefacts as downloadable deliverables. | Live. Started April 2026. |
+| [Write-ups](https://markus-doc.github.io/cybersecurity-writeups/) | Articles, research notes, CTF write-ups and lab walkthroughs. | Live. Written early 2026. |
+| [MCP_Governance_Platform](https://github.com/Markus-Doc/MCP_Governance_Platform) | A working proof of concept and enterprise design pattern for governing AI agent and MCP-connected integrations. | Proof of concept. May 2026. |
+| [SubstrateOS](https://github.com/Markus-Doc/SubstrateOS) | A thin, local-first AI orchestration harness. Not a platform. | Working. Started June 2026. |
+| [resynth](https://github.com/Markus-Doc/resynth) | Consolidates several AI deep research reports into one verified master document. A gated systematic review pipeline with no runtime AI dependency. | Working, v0.2.4. Started June 2026. |
 
-## Writing
+## In progress
 
-*Distinguishing AI-Driven Attacks from Human and Automated Activity*, published by
-CyberCX. A security operations centre is unlikely to prove an attack was AI-driven
-from logs alone. The paper argues for confidence-based assessment instead, and sets
-out where the observable difference actually shows up: tempo, adaptation, sequencing
-and breadth across telemetry, rather than novel tradecraft.
+- **AI SOC white paper.** An independent piece on telling AI-driven attacks apart from
+  human and automated activity, with practical guidance for SOC teams. Coming soon.
+- **AWS-native AI security mapping.** Working through native observability and identity
+  controls, then the gaps and the options for filling them. Kept in a private
+  workspace for now and paused between sessions.
+- **Governed knowledge for agents.** The layer I am digging into most at the moment,
+  one part of the end-to-end picture rather than the whole of it.
 
 ## Credentials
 
