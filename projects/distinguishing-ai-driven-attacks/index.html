@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="index,follow,max-image-preview:large">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#F3ECDE" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#141C19" media="(prefers-color-scheme: dark)">
+  <title>Distinguishing AI-driven attacks from human and automated activity | Markus Walker</title>
+  <meta name="description" content="A SOC advisory white paper on telling AI-driven attack activity apart from human and automated activity, and what that means for detection and response.">
+  <link rel="canonical" href="https://www.markuswalker.com/projects/distinguishing-ai-driven-attacks/">
+  <meta name="author" content="Markus Walker">
+  <meta property="og:site_name" content="Markus Walker">
+  <meta property="og:title" content="Distinguishing AI-driven attacks from human and automated activity | Markus Walker">
+  <meta property="og:description" content="A SOC advisory white paper on telling AI-driven attack activity apart from human and automated activity, and what that means for detection and response.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://www.markuswalker.com/projects/distinguishing-ai-driven-attacks/">
+  <meta property="og:locale" content="en_AU">
+  <meta property="og:image" content="https://www.markuswalker.com/art/og-image.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "TechArticle",
+      "@id": "https://www.markuswalker.com/projects/distinguishing-ai-driven-attacks/#work",
+      "name": "Distinguishing AI-driven attacks from human and automated activity",
+      "headline": "Distinguishing AI-driven attacks from human and automated activity",
+      "description": "A SOC advisory white paper on telling AI-driven attack activity apart from human and automated activity, and what that means for detection and response.",
+      "url": "https://www.markuswalker.com/projects/distinguishing-ai-driven-attacks/",
+      "author": {
+        "@id": "https://www.markuswalker.com/#person"
+      },
+      "dateModified": "2026-09-23",
+      "inLanguage": "en-AU",
+      "isPartOf": {
+        "@id": "https://www.markuswalker.com/#website"
+      },
+      "encoding": [
+        {
+          "@type": "MediaObject",
+          "contentUrl": "https://www.markuswalker.com/assets/docs/Markus_Walker_AI_Driven_Attacks_White_Paper_v5.html",
+          "encodingFormat": "text/html"
+        },
+        {
+          "@type": "MediaObject",
+          "contentUrl": "https://www.markuswalker.com/assets/docs/Markus_Walker_AI_Driven_Attacks_White_Paper_v5.pdf",
+          "encodingFormat": "application/pdf"
+        }
+      ]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://www.markuswalker.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Projects",
+          "item": "https://www.markuswalker.com/projects/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Distinguishing AI-driven attacks from human and automated activity",
+          "item": "https://www.markuswalker.com/projects/distinguishing-ai-driven-attacks/"
+        }
+      ]
+    }
+  ]
+}
+  </script>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="preload" href="/fonts/schibsted-grotesk-var.woff2" as="font" type="font/woff2" crossorigin>
+  <script>
+    // Apply the saved or OS theme before first paint so the page never flashes.
+    (function () {
+      var t;
+      try { t = localStorage.getItem('mw-theme'); } catch (e) {}
+      if (t !== 'light' && t !== 'dark') t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      document.documentElement.dataset.theme = t;
+    })();
+  </script>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="monogram" href="/" aria-label="Markus Walker, home">MW<span class="ink-period">.</span></a>
+      <nav class="site-nav" aria-label="Main navigation">
+        <a href="/#experience">Experience</a>
+        <a href="/projects/" aria-current="page">Projects</a>
+        <a href="/#writing">Writing</a>
+        <a href="/#capabilities">Capabilities</a>
+        <a href="/#approach">Approach</a>
+        <a href="/#contact">Contact</a>
+      </nav>
+      <button class="theme-toggle" type="button" aria-label="Switch to dark theme" title="Toggle light and dark theme">
+        <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z"/></svg>
+        <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg>
+      </button>
+    </div>
+  </header>
+  <main id="main" tabindex="-1">
+    <article class="section project-page">
+      <img class="sketch" src="/art/folio-polyhedron.webp" alt="" aria-hidden="true">
+      <div class="wrap">
+        <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> <span aria-hidden="true">/</span> <a href="/projects/">Projects</a> <span aria-hidden="true">/</span> <span aria-current="page">Distinguishing AI-driven attacks</span></nav>
+        <p class="eyebrow">SOC advisory white paper</p>
+        <h1 class="page-title">Distinguishing AI-driven attacks from human and automated activity</h1>
+        <p class="project-date"><strong>Version 5, evidence cut 23 September 2026.</strong></p>
+        <p class="lede narrow">A SOC advisory paper on telling AI-driven attack activity apart from human and automated activity, and what that means for detection and response.</p>
+        <ul class="links links-row"><li><a class="button" href="/assets/docs/Markus_Walker_AI_Driven_Attacks_White_Paper_v5.html" target="_blank" rel="noopener">Read online <span aria-hidden="true">↗</span></a></li><li><a class="button button-quiet" href="/assets/docs/Markus_Walker_AI_Driven_Attacks_White_Paper_v5.pdf" target="_blank" rel="noopener">Download PDF <span aria-hidden="true">↗</span></a></li></ul>
+        <div class="page-body">
+          <p>From logs alone, a security operations centre is unlikely to prove an attack is AI-driven. The evidence supports confidence-based assessment, not definitive attribution. AI-driven activity usually reuses familiar tactics, techniques and procedures. The observable difference is more often tempo, adaptation, sequencing and breadth across telemetry.</p>
+          <p>Rewritten in my own voice and updated with evidence to 23 September 2026.</p>
+          <h2>The stronger indicators</h2>
+          <ul class="reading-list">
+            <li>Compressed kill-chain timing</li>
+            <li>Rapid troubleshooting</li>
+            <li>Environment-specific payloads</li>
+            <li>High command variation</li>
+            <li>Cross-domain progression</li>
+          </ul>
+          <h2>What it covers</h2>
+          <ul class="reading-list">
+            <li>What changes for a SOC and what does not</li>
+            <li>Observable indicators, and whether AI-driven attacks are noisier</li>
+            <li>Emerging methods, including defensive prompt injection, command lexical fingerprinting, canary tripping rates and semantic diversity measurement</li>
+            <li>Detection principles and a confidence score in place of attribution</li>
+            <li>Response implications, and the limits of the evidence</li>
+          </ul>
+          <p class="small-note">19 references, with confidence language throughout. Where a source was not read in full, the reference says so.</p>
+        </div>
+        <h2 class="subhead">More projects</h2>
+        <ul class="more-projects">
+          <li><a href="/projects/claude-cowork-controls-cheat-sheet/">Claude Cowork controls cheat sheet</a> <span>Practitioner reference, Version 1.4</span></li>
+          <li><a href="/projects/mcp-access-governance/">AI and MCP access governance</a> <span>Portfolio proof of concept, May to July 2026</span></li>
+          <li><a href="/projects/resynth/">RESYNTH research pipeline</a> <span>Open-source tool, First released June 2026</span></li>
+          <li><a href="/projects/aws-security-architecture-case-study/">AWS security architecture case study</a> <span>Fictional case study, April 2026</span></li>
+          <li><a href="/projects/incident-response-planning/">Incident response planning portfolio</a> <span>Planning portfolio, April 2026</span></li>
+        </ul>
+      </div>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-inner">
+      <p>© 2026 Markus Walker</p>
+      <a class="text-link" href="/">markuswalker.com <span aria-hidden="true">→</span></a>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var root = document.documentElement;
+      var btn = document.querySelector('.theme-toggle');
+      function sync() {
+        var dark = root.dataset.theme === 'dark';
+        btn.setAttribute('aria-label', dark ? 'Switch to light theme' : 'Switch to dark theme');
+      }
+      btn.addEventListener('click', function () {
+        root.dataset.theme = root.dataset.theme === 'dark' ? 'light' : 'dark';
+        try { localStorage.setItem('mw-theme', root.dataset.theme); } catch (e) {}
+        sync();
+      });
+      sync();
+    })();
+  </script>
+</body>
+</html>

@@ -275,6 +275,22 @@ main:focus { outline: none; }
 .role-list { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: .5rem; }
 .role-list li { padding: .4rem .85rem; border: 1px solid var(--sage-ink); border-radius: 999px; background: color-mix(in srgb, var(--paper) 70%, transparent); font-weight: 500; font-size: .95rem; }
 
+/* Project pages */
+.project-page { min-height: 60vh; }
+.breadcrumb { font-size: .875rem; color: var(--quiet); margin-bottom: 1.75rem; }
+.breadcrumb a { color: var(--quiet); text-decoration-color: var(--rule); text-underline-offset: .2em; }
+.breadcrumb a:hover { color: var(--ink); }
+.page-title { font-size: clamp(2.2rem, 5vw, 3.4rem); letter-spacing: -.03em; max-width: 22ch; margin-bottom: .4em; }
+.page-body { max-width: 46rem; margin-top: 2.25rem; }
+.page-body h2 { font-size: 1.4rem; margin-top: 2rem; }
+.more-projects { list-style: none; padding: 0; margin: 1rem 0 0; border-top: 1px solid var(--rule); max-width: 46rem; }
+.more-projects li { padding: .8rem 0; border-bottom: 1px solid var(--rule); display: flex; flex-wrap: wrap; gap: .25rem 1rem; justify-content: space-between; }
+.more-projects a { font-weight: 600; text-decoration-color: var(--accent); text-underline-offset: .22em; }
+.more-projects span { color: var(--quiet); font-size: .9rem; }
+.project-name { font-size: 1.55rem; margin: 0; }
+.project h3 a, .project-name a { text-decoration: none; }
+.project h3 a:hover, .project-name a:hover { text-decoration: underline; text-decoration-color: var(--accent); text-underline-offset: .2em; }
+
 /* Footer */
 .site-footer { border-top: 1px solid var(--rule); padding: 1.5rem 0; font-size: .875rem; color: var(--quiet); }
 .footer-inner { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .5rem 1.5rem; }
