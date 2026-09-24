@@ -184,7 +184,8 @@ main:focus { outline: none; }
 :root[data-theme='dark'] .ink-network { opacity: .4; }
 @media (max-width: 960px) {
   .ink-network { width: 100%; opacity: .22; -webkit-mask-image: none; mask-image: none; }
-  .sec-no { color: var(--accent); margin-right: .6em; }
+}
+.sec-no { color: var(--accent); margin-right: .6em; }
 
 /* Faint ink sketches from the approved cutouts, used as parchment marginalia */
 .hero, .section { position: relative; overflow: hidden; isolation: isolate; }
