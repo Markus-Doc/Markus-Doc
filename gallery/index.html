@@ -17,7 +17,7 @@ button.quiet{background:transparent;color:var(--ink);border-color:var(--soft)}
 table{width:100%;border-collapse:collapse;background:var(--panel);border:1px solid var(--edge);border-radius:6px;margin:16px 0 28px}
 th,td{text-align:left;vertical-align:top;padding:10px 12px;border-top:1px solid var(--edge)}thead th{border-top:0;color:var(--soft);font-size:14px}
 .call{display:inline-block;padding:2px 8px;border-radius:3px;border:1.5px solid currentColor;font-weight:600;font-size:14px}
-.call-keep{color:var(--keep)}.call-kill{color:var(--kill)}.call-merge{color:var(--merge)}
+.call-keep{color:var(--keep)}.call-kill{color:var(--kill)}.call-merge{color:var(--merge)}.call-park{color:var(--soft)}
 .card{background:var(--panel);border:1px solid var(--edge);border-radius:8px;padding:20px;margin:0 0 24px}
 .card h2{font:600 24px/1.2 Georgia,serif;margin:4px 0}.card h3{font-size:16px;margin:18px 0 6px}
 .tag{display:inline-block;margin:0;padding:2px 8px;border-radius:3px;font-size:13px;font-weight:700;border:1.5px solid currentColor}
@@ -33,29 +33,29 @@ code{font-size:.92em}
 </head>
 <body><div class="wrap">
 <div class="top"><h1>Preview gallery</h1><div><button class="quiet" id="theme" type="button">Switch theme</button> <button id="copy" type="button">Copy my answers</button></div></div>
-<p class="lede">Every live preview of the interactive site, updated 2026-09-24. Candidates carry the Renaissance layer (orrery gateway, parchment and ink, engraved instruments, your approved art) with the network inside it; explorations may go wild. Mark each keep, kill or merge, then copy your answers back to me.</p>
+<p class="lede">Every live preview of the interactive site, updated 2026-09-24 (your first answers recorded). Candidates carry the Renaissance layer (orrery gateway, parchment and ink, engraved instruments, your approved art) with the network inside it; explorations may go wild. Mark each keep, kill or merge, then copy your answers back to me.</p>
 <p id="copied" role="status" aria-live="polite" class="lede"></p>
 <h2 style="font:600 22px/1.2 Georgia,serif;margin:18px 0 0">Verdicts</h2>
-<table><thead><tr><th scope="col">Preview</th><th scope="col">My call</th><th scope="col">Advisor (Fable)</th><th scope="col">Why</th></tr></thead><tbody><tr><th scope="row"><a href="#classic">Classic: orrery gateway, manuscript and night</a></th><td data-label="My call"><span class="call call-keep">Keep</span></td><td data-label="Advisor (Fable)">Keep: the baseline candidate; it needs placed art to meet the Renaissance requirement fully.</td><td data-label="Why">The orrery gateway, manuscript skin and brass already carry the Renaissance layer; the night skin keeps your one-toggle rule. Missing: your art placed in the scene.</td></tr><tr><th scope="row"><a href="#network-opening">Network opening</a></th><td data-label="My call"><span class="call call-merge">Merge</span></td><td data-label="Advisor (Fable)">Keep as exploration, do not develop alone; worth merging as a glimpse through the nucleus.</td><td data-label="Why">The orrery is now the required gateway. The turning brain could show through the orrery's nucleus before the dive, so the gateway shows what it opens onto.</td></tr><tr><th scope="row"><a href="#line">Line look (references 3 and 4)</a></th><td data-label="My call"><span class="call call-merge">Merge</span></td><td data-label="Advisor (Fable)">Merge into candidate C (codex pages).</td><td data-label="Why">Its ink line, hatching and thread chambers are a strong drawing language, but alone it has no parchment, instruments or art. Candidate C puts it on codex pages.</td></tr><tr><th scope="row"><a href="#line-mono">Line look, pure mono</a></th><td data-label="My call"><span class="call call-kill">Kill</span></td><td data-label="Advisor (Fable)">Drop (decision D-27).</td><td data-label="Why">Without colour the route differs from the wiring by weight only, which is harder to follow for your eyes.</td></tr><tr><th scope="row"><a href="#galaxy">Spiral galaxy opening</a></th><td data-label="My call"><span class="call call-kill">Kill</span></td><td data-label="Advisor (Fable)">Dropped (decision D-25).</td><td data-label="Why">A misreading of 'galaxy'; already disabled.</td></tr></tbody></table>
+<table><thead><tr><th scope="col">Preview</th><th scope="col">My call</th><th scope="col">Your answer</th><th scope="col">Advisor (Fable)</th><th scope="col">Why</th></tr></thead><tbody><tr><th scope="row"><a href="#classic">Classic: manuscript and night, network opening</a></th><td data-label="My call"><span class="call call-keep">Keep</span></td><td data-label="Your answer">Keep. Lose the orrery; keep an opening zoom in, probably onto the flowing mesh look.</td><td data-label="Advisor (Fable)">Keep: the baseline candidate; it needs placed art to meet the Renaissance requirement fully.</td><td data-label="Why">The orrery gateway, manuscript skin and brass already carry the Renaissance layer; the night skin keeps your one-toggle rule. Missing: your art placed in the scene.</td></tr><tr><th scope="row"><a href="#orrery-opening">Orrery opening (parked)</a></th><td data-label="My call"><span class="call call-merge">Merge</span></td><td data-label="Your answer">Merge. Worth a light pass; a maybe merge.</td><td data-label="Advisor (Fable)">Merged: the network opening is now the default.</td><td data-label="Why">You chose the network opening with a zoom in. The orrery film stays reachable at ?opening=orrery.</td></tr><tr><th scope="row"><a href="#line">Line look (references 3 and 4)</a></th><td data-label="My call"><span class="call call-merge">Merge</span></td><td data-label="Your answer">Merge. It has potential.</td><td data-label="Advisor (Fable)">Merge into candidate C (codex pages).</td><td data-label="Why">Its ink line, hatching and thread chambers are a strong drawing language, but alone it has no parchment, instruments or art. Candidate C puts it on codex pages.</td></tr><tr><th scope="row"><a href="#line-mono">Line look, pure mono</a></th><td data-label="My call"><span class="call call-park">Park</span></td><td data-label="Your answer">Park it (not kill).</td><td data-label="Advisor (Fable)">Drop (decision D-27).</td><td data-label="Why">Without colour the route differs from the wiring by weight only, which is harder to follow for your eyes.</td></tr><tr><th scope="row"><a href="#galaxy">Spiral galaxy opening</a></th><td data-label="My call"><span class="call call-kill">Kill</span></td><td data-label="Your answer">Not answered yet</td><td data-label="Advisor (Fable)">Dropped (decision D-25).</td><td data-label="Why">A misreading of 'galaxy'; already disabled.</td></tr></tbody></table>
 
   <article class="card" id="classic" aria-labelledby="t-classic">
     <header>
       <p class="tag tag-candidate">Candidate</p>
-      <h2 id="t-classic">Classic: orrery gateway, manuscript and night</h2>
-      <p class="status">Candidate, art placement pending</p>
+      <h2 id="t-classic">Classic: manuscript and night, network opening</h2>
+      <p class="status">Kept (D-33). The orrery is gone; the opening zooms into the network.</p>
     </header>
-    <div class="shots"><a href="shots/classic-light-landing.jpg" target="_blank" rel="noopener"><img src="shots/classic-light-landing.jpg" alt="Classic: orrery gateway, manuscript and night, light theme, landing" loading="lazy" width="640" height="400"></a><a href="shots/classic-light-arrival.jpg" target="_blank" rel="noopener"><img src="shots/classic-light-arrival.jpg" alt="Classic: orrery gateway, manuscript and night, light theme, arrival at a project" loading="lazy" width="640" height="400"></a><a href="shots/classic-dark-landing.jpg" target="_blank" rel="noopener"><img src="shots/classic-dark-landing.jpg" alt="Classic: orrery gateway, manuscript and night, dark theme, landing" loading="lazy" width="640" height="400"></a><a href="shots/classic-dark-arrival.jpg" target="_blank" rel="noopener"><img src="shots/classic-dark-arrival.jpg" alt="Classic: orrery gateway, manuscript and night, dark theme, arrival at a project" loading="lazy" width="640" height="400"></a></div>
+    <div class="shots"><a href="shots/classic-light-landing.jpg" target="_blank" rel="noopener"><img src="shots/classic-light-landing.jpg" alt="Classic: manuscript and night, network opening, light theme, landing" loading="lazy" width="640" height="400"></a><a href="shots/classic-light-arrival.jpg" target="_blank" rel="noopener"><img src="shots/classic-light-arrival.jpg" alt="Classic: manuscript and night, network opening, light theme, arrival at a project" loading="lazy" width="640" height="400"></a><a href="shots/classic-dark-landing.jpg" target="_blank" rel="noopener"><img src="shots/classic-dark-landing.jpg" alt="Classic: manuscript and night, network opening, dark theme, landing" loading="lazy" width="640" height="400"></a><a href="shots/classic-dark-arrival.jpg" target="_blank" rel="noopener"><img src="shots/classic-dark-arrival.jpg" alt="Classic: manuscript and night, network opening, dark theme, arrival at a project" loading="lazy" width="640" height="400"></a></div>
     <dl class="facts">
       <div><dt>Preview</dt><dd><a href="/">/</a> (add <code>&amp;theme=dark</code> or <code>&amp;theme=light</code>)</dd></div>
       <div><dt>Lane or branch</dt><dd>Core with skin A (manuscript) and skin B (night), <code>dev/vision-pass</code></dd></div>
-      <div><dt>Explores</dt><dd>The shipped direction: the orrery opens onto the brain-shaped network, drawn as ink and brass on parchment in light and as glass and amber light in dark.</dd></div>
+      <div><dt>Explores</dt><dd>The shipped direction: the page opens by zooming into the brain-shaped network, drawn as ink and brass on parchment in light and as glass and amber light in dark.</dd></div>
     </dl>
     <h3>How the Renaissance layer and the network meet</h3>
-    <dl class="meets"><div><dt>Gateway</dt><dd>Orrery film, zoom into the nucleus, dive into the network</dd></div><div><dt>Ground</dt><dd>Parchment (light), night (dark)</dd></div><div><dt>Instruments</dt><dd>Brass rings on content nodes, ticked rings on hubs</dd></div><div><dt>Art</dt><dd>None placed yet (the orrery film only)</dd></div><div><dt>Type</dt><dd>Fraunces headings, boxed call-out tags</dd></div></dl>
+    <dl class="meets"><div><dt>Gateway</dt><dd>Opening zoom into the whole brain (no orrery)</dd></div><div><dt>Ground</dt><dd>Parchment (light), night (dark)</dd></div><div><dt>Instruments</dt><dd>Brass rings on content nodes, ticked rings on hubs</dd></div><div><dt>Art</dt><dd>None placed yet (the orrery film only)</dd></div><div><dt>Type</dt><dd>Fraunces headings, boxed call-out tags</dd></div></dl>
     <div class="ask">
-      <p class="question"><strong>Question:</strong> Dark carries the Renaissance layer through brass and the orrery gateway, since the ink cutouts only work on light parchment. Is that enough, or should dark get engraved plates too?</p>
+      <p class="question"><strong>Question:</strong> The opening now zooms in and holds on the whole brain turning slowly (your flowing mesh reference). Is the hold distance and the zoom speed right?</p>
       <fieldset><legend>Your call</legend>
-        <label><input type="radio" name="call-classic" value="keep"> Keep</label><label><input type="radio" name="call-classic" value="kill"> Kill</label><label><input type="radio" name="call-classic" value="merge"> Merge</label>
+        <label><input type="radio" name="call-classic" value="keep"> Keep</label><label><input type="radio" name="call-classic" value="kill"> Kill</label><label><input type="radio" name="call-classic" value="merge"> Merge</label><label><input type="radio" name="call-classic" value="park"> Park</label>
         <label class="note">Note <input type="text" name="note-classic" autocomplete="off"></label>
       </fieldset>
     </div>
@@ -73,11 +73,11 @@ code{font-size:.92em}
       <div><dt>Explores</dt><dd>The network drawn into a worked parchment folio, with your approved ink studies placed as marginal drawings around the brain. Dark shows them on lit parchment plates.</dd></div>
     </dl>
     <h3>How the Renaissance layer and the network meet</h3>
-    <dl class="meets"><div><dt>Gateway</dt><dd>Orrery dive into the folio</dd></div><div><dt>Ground</dt><dd>Worked parchment (light), lamp-lit plates in the dark</dd></div><div><dt>Instruments</dt><dd>Brass rings on nodes (as classic)</dd></div><div><dt>Art</dt><dd>3 to 6 approved ink cutouts, parchment backgrounds</dd></div><div><dt>Type</dt><dd>As classic</dd></div></dl>
+    <dl class="meets"><div><dt>Gateway</dt><dd>Opening zoom into the network</dd></div><div><dt>Ground</dt><dd>Worked parchment (light), lamp-lit plates in the dark</dd></div><div><dt>Instruments</dt><dd>Brass rings on nodes (as classic)</dd></div><div><dt>Art</dt><dd>3 to 6 approved ink cutouts, parchment backgrounds</dd></div><div><dt>Type</dt><dd>As classic</dd></div></dl>
     <div class="ask">
       <p class="question"><strong>Question:</strong> Answered once the preview is up.</p>
       <fieldset><legend>Your call</legend>
-        <label><input type="radio" name="call-ren-a" value="keep"> Keep</label><label><input type="radio" name="call-ren-a" value="kill"> Kill</label><label><input type="radio" name="call-ren-a" value="merge"> Merge</label>
+        <label><input type="radio" name="call-ren-a" value="keep"> Keep</label><label><input type="radio" name="call-ren-a" value="kill"> Kill</label><label><input type="radio" name="call-ren-a" value="merge"> Merge</label><label><input type="radio" name="call-ren-a" value="park"> Park</label>
         <label class="note">Note <input type="text" name="note-ren-a" autocomplete="off"></label>
       </fieldset>
     </div>
@@ -85,21 +85,21 @@ code{font-size:.92em}
   <article class="card" id="ren-b" aria-labelledby="t-ren-b">
     <header>
       <p class="tag tag-exploration">Exploration</p>
-      <h2 id="t-ren-b">Exploration B: the network inside the instrument</h2>
+      <h2 id="t-ren-b">Exploration B: engraved instruments</h2>
       <p class="status">In progress, preview coming</p>
     </header>
     <div class="shots"></div>
     <dl class="facts">
       
       <div><dt>Lane or branch</dt><dd>Renaissance lane B, <code>lane/ren-b</code></dd></div>
-      <div><dt>Explores</dt><dd>The brain is the orrery nucleus: after the dive, modelled brass armillary rings with engraved scales stay around the network. It tests the standing rule that the orrery does not recur inside, so it is an exploration; a restrained variant keeps engraved scales and small instruments without the cage.</dd></div>
+      <div><dt>Explores</dt><dd>With the orrery gone, B no longer puts you inside it. It tries engraved instruments that are not the orrery: graduated arcs and scales framing the brain, small brass instruments at the section hubs.</dd></div>
     </dl>
     <h3>How the Renaissance layer and the network meet</h3>
-    <dl class="meets"><div><dt>Gateway</dt><dd>Orrery dive; the cage stays around you</dd></div><div><dt>Ground</dt><dd>As classic</dd></div><div><dt>Instruments</dt><dd>Modelled armillary rings, meridians, engraved ticks</dd></div><div><dt>Art</dt><dd>Matches the orrery studies</dd></div><div><dt>Type</dt><dd>As classic</dd></div></dl>
+    <dl class="meets"><div><dt>Gateway</dt><dd>Opening zoom into the network</dd></div><div><dt>Ground</dt><dd>As classic</dd></div><div><dt>Instruments</dt><dd>Engraved scales and arcs, small brass instruments at hubs</dd></div><div><dt>Art</dt><dd>Modelled, matched to your instrument studies</dd></div><div><dt>Type</dt><dd>As classic</dd></div></dl>
     <div class="ask">
-      <p class="question"><strong>Question:</strong> Answered once the preview is up: keep the rule that the orrery never recurs inside, or let engraved instruments recur?</p>
+      <p class="question"><strong>Question:</strong> Answered once the preview is up.</p>
       <fieldset><legend>Your call</legend>
-        <label><input type="radio" name="call-ren-b" value="keep"> Keep</label><label><input type="radio" name="call-ren-b" value="kill"> Kill</label><label><input type="radio" name="call-ren-b" value="merge"> Merge</label>
+        <label><input type="radio" name="call-ren-b" value="keep"> Keep</label><label><input type="radio" name="call-ren-b" value="kill"> Kill</label><label><input type="radio" name="call-ren-b" value="merge"> Merge</label><label><input type="radio" name="call-ren-b" value="park"> Park</label>
         <label class="note">Note <input type="text" name="note-ren-b" autocomplete="off"></label>
       </fieldset>
     </div>
@@ -117,34 +117,34 @@ code{font-size:.92em}
       <div><dt>Explores</dt><dd>The line look drawn on the leaves of a Leonardo-style notebook: parchment, ruled margins, marginalia; a dark codex with brass rules at night.</dd></div>
     </dl>
     <h3>How the Renaissance layer and the network meet</h3>
-    <dl class="meets"><div><dt>Gateway</dt><dd>Orrery dive onto the leaf</dd></div><div><dt>Ground</dt><dd>Parchment leaves (light), dark codex boards (dark)</dd></div><div><dt>Instruments</dt><dd>Brass or gilt rules and ticked scales</dd></div><div><dt>Art</dt><dd>2 to 4 ink cutouts as marginalia, parchment backgrounds</dd></div><div><dt>Type</dt><dd>Rubricated running heads</dd></div></dl>
+    <dl class="meets"><div><dt>Gateway</dt><dd>Opening zoom into the network</dd></div><div><dt>Ground</dt><dd>Parchment leaves (light), dark codex boards (dark)</dd></div><div><dt>Instruments</dt><dd>Brass or gilt rules and ticked scales</dd></div><div><dt>Art</dt><dd>2 to 4 ink cutouts as marginalia, parchment backgrounds</dd></div><div><dt>Type</dt><dd>Rubricated running heads</dd></div></dl>
     <div class="ask">
       <p class="question"><strong>Question:</strong> Answered once the preview is up.</p>
       <fieldset><legend>Your call</legend>
-        <label><input type="radio" name="call-ren-c" value="keep"> Keep</label><label><input type="radio" name="call-ren-c" value="kill"> Kill</label><label><input type="radio" name="call-ren-c" value="merge"> Merge</label>
+        <label><input type="radio" name="call-ren-c" value="keep"> Keep</label><label><input type="radio" name="call-ren-c" value="kill"> Kill</label><label><input type="radio" name="call-ren-c" value="merge"> Merge</label><label><input type="radio" name="call-ren-c" value="park"> Park</label>
         <label class="note">Note <input type="text" name="note-ren-c" autocomplete="off"></label>
       </fieldset>
     </div>
   </article>
-  <article class="card" id="network-opening" aria-labelledby="t-network-opening">
+  <article class="card" id="orrery-opening" aria-labelledby="t-orrery-opening">
     <header>
       <p class="tag tag-exploration">Exploration</p>
-      <h2 id="t-network-opening">Network opening</h2>
-      <p class="status">Exploration</p>
+      <h2 id="t-orrery-opening">Orrery opening (parked)</h2>
+      <p class="status">Parked (D-33). Still reachable for comparison.</p>
     </header>
-    <div class="shots"><a href="shots/network-opening-light-landing.jpg" target="_blank" rel="noopener"><img src="shots/network-opening-light-landing.jpg" alt="Network opening, light theme, landing" loading="lazy" width="640" height="400"></a><a href="shots/network-opening-light-arrival.jpg" target="_blank" rel="noopener"><img src="shots/network-opening-light-arrival.jpg" alt="Network opening, light theme, arrival at a project" loading="lazy" width="640" height="400"></a><a href="shots/network-opening-dark-landing.jpg" target="_blank" rel="noopener"><img src="shots/network-opening-dark-landing.jpg" alt="Network opening, dark theme, landing" loading="lazy" width="640" height="400"></a><a href="shots/network-opening-dark-arrival.jpg" target="_blank" rel="noopener"><img src="shots/network-opening-dark-arrival.jpg" alt="Network opening, dark theme, arrival at a project" loading="lazy" width="640" height="400"></a></div>
+    <div class="shots"><a href="shots/orrery-opening-light-landing.jpg" target="_blank" rel="noopener"><img src="shots/orrery-opening-light-landing.jpg" alt="Orrery opening (parked), light theme, landing" loading="lazy" width="640" height="400"></a><a href="shots/orrery-opening-light-arrival.jpg" target="_blank" rel="noopener"><img src="shots/orrery-opening-light-arrival.jpg" alt="Orrery opening (parked), light theme, arrival at a project" loading="lazy" width="640" height="400"></a><a href="shots/orrery-opening-dark-landing.jpg" target="_blank" rel="noopener"><img src="shots/orrery-opening-dark-landing.jpg" alt="Orrery opening (parked), dark theme, landing" loading="lazy" width="640" height="400"></a><a href="shots/orrery-opening-dark-arrival.jpg" target="_blank" rel="noopener"><img src="shots/orrery-opening-dark-arrival.jpg" alt="Orrery opening (parked), dark theme, arrival at a project" loading="lazy" width="640" height="400"></a></div>
     <dl class="facts">
-      <div><dt>Preview</dt><dd><a href="/?opening=network">/?opening=network</a> (add <code>&amp;theme=dark</code> or <code>&amp;theme=light</code>)</dd></div>
+      <div><dt>Preview</dt><dd><a href="/?opening=orrery">/?opening=orrery</a> (add <code>&amp;theme=dark</code> or <code>&amp;theme=light</code>)</dd></div>
       <div><dt>Lane or branch</dt><dd>Core, <code>dev/vision-pass</code></dd></div>
-      <div><dt>Explores</dt><dd>Opening straight onto the whole brain, turning slowly, instead of the orrery.</dd></div>
+      <div><dt>Explores</dt><dd>The earlier gateway: the orrery film, zooming into its nucleus, then the dive into the network.</dd></div>
     </dl>
     <h3>How the Renaissance layer and the network meet</h3>
-    <dl class="meets"><div><dt>Gateway</dt><dd>None: no orrery</dd></div><div><dt>Ground</dt><dd>As classic</dd></div><div><dt>Instruments</dt><dd>As classic</dd></div><div><dt>Art</dt><dd>None</dd></div><div><dt>Type</dt><dd>As classic</dd></div></dl>
+    <dl class="meets"><div><dt>Gateway</dt><dd>Orrery film and dive</dd></div><div><dt>Ground</dt><dd>As classic</dd></div><div><dt>Instruments</dt><dd>The orrery itself</dd></div><div><dt>Art</dt><dd>The orrery film</dd></div><div><dt>Type</dt><dd>As classic</dd></div></dl>
     <div class="ask">
-      <p class="question"><strong>Question:</strong> Keep the turning brain only as a glimpse through the orrery's nucleus before the dive, or drop it?</p>
+      <p class="question"><strong>Question:</strong> Parked. Nothing to decide unless you want it back.</p>
       <fieldset><legend>Your call</legend>
-        <label><input type="radio" name="call-network-opening" value="keep"> Keep</label><label><input type="radio" name="call-network-opening" value="kill"> Kill</label><label><input type="radio" name="call-network-opening" value="merge"> Merge</label>
-        <label class="note">Note <input type="text" name="note-network-opening" autocomplete="off"></label>
+        <label><input type="radio" name="call-orrery-opening" value="keep"> Keep</label><label><input type="radio" name="call-orrery-opening" value="kill"> Kill</label><label><input type="radio" name="call-orrery-opening" value="merge"> Merge</label><label><input type="radio" name="call-orrery-opening" value="park"> Park</label>
+        <label class="note">Note <input type="text" name="note-orrery-opening" autocomplete="off"></label>
       </fieldset>
     </div>
   </article>
@@ -152,7 +152,7 @@ code{font-size:.92em}
     <header>
       <p class="tag tag-exploration">Exploration</p>
       <h2 id="t-line">Line look (references 3 and 4)</h2>
-      <p class="status">Exploration</p>
+      <p class="status">Merging into candidate C (codex pages)</p>
     </header>
     <div class="shots"><a href="shots/line-light-landing.jpg" target="_blank" rel="noopener"><img src="shots/line-light-landing.jpg" alt="Line look (references 3 and 4), light theme, landing" loading="lazy" width="640" height="400"></a><a href="shots/line-light-arrival.jpg" target="_blank" rel="noopener"><img src="shots/line-light-arrival.jpg" alt="Line look (references 3 and 4), light theme, arrival at a project" loading="lazy" width="640" height="400"></a><a href="shots/line-dark-landing.jpg" target="_blank" rel="noopener"><img src="shots/line-dark-landing.jpg" alt="Line look (references 3 and 4), dark theme, landing" loading="lazy" width="640" height="400"></a><a href="shots/line-dark-arrival.jpg" target="_blank" rel="noopener"><img src="shots/line-dark-arrival.jpg" alt="Line look (references 3 and 4), dark theme, arrival at a project" loading="lazy" width="640" height="400"></a></div>
     <dl class="facts">
@@ -165,7 +165,7 @@ code{font-size:.92em}
     <div class="ask">
       <p class="question"><strong>Question:</strong> Merge this line and thread-chamber language into the codex candidate (C), or keep it separate?</p>
       <fieldset><legend>Your call</legend>
-        <label><input type="radio" name="call-line" value="keep"> Keep</label><label><input type="radio" name="call-line" value="kill"> Kill</label><label><input type="radio" name="call-line" value="merge"> Merge</label>
+        <label><input type="radio" name="call-line" value="keep"> Keep</label><label><input type="radio" name="call-line" value="kill"> Kill</label><label><input type="radio" name="call-line" value="merge"> Merge</label><label><input type="radio" name="call-line" value="park"> Park</label>
         <label class="note">Note <input type="text" name="note-line" autocomplete="off"></label>
       </fieldset>
     </div>
@@ -174,7 +174,7 @@ code{font-size:.92em}
     <header>
       <p class="tag tag-exploration">Exploration</p>
       <h2 id="t-line-mono">Line look, pure mono</h2>
-      <p class="status">Exploration</p>
+      <p class="status">Parked</p>
     </header>
     <div class="shots"><a href="shots/line-mono-light-landing.jpg" target="_blank" rel="noopener"><img src="shots/line-mono-light-landing.jpg" alt="Line look, pure mono, light theme, landing" loading="lazy" width="640" height="400"></a><a href="shots/line-mono-light-arrival.jpg" target="_blank" rel="noopener"><img src="shots/line-mono-light-arrival.jpg" alt="Line look, pure mono, light theme, arrival at a project" loading="lazy" width="640" height="400"></a><a href="shots/line-mono-dark-landing.jpg" target="_blank" rel="noopener"><img src="shots/line-mono-dark-landing.jpg" alt="Line look, pure mono, dark theme, landing" loading="lazy" width="640" height="400"></a><a href="shots/line-mono-dark-arrival.jpg" target="_blank" rel="noopener"><img src="shots/line-mono-dark-arrival.jpg" alt="Line look, pure mono, dark theme, arrival at a project" loading="lazy" width="640" height="400"></a></div>
     <dl class="facts">
@@ -185,9 +185,9 @@ code{font-size:.92em}
     <h3>How the Renaissance layer and the network meet</h3>
     <dl class="meets"><div><dt>Gateway</dt><dd>Orrery</dd></div><div><dt>Ground</dt><dd>White paper (light), black (dark)</dd></div><div><dt>Instruments</dt><dd>None</dd></div><div><dt>Art</dt><dd>None</dd></div><div><dt>Type</dt><dd>As classic</dd></div></dl>
     <div class="ask">
-      <p class="question"><strong>Question:</strong> Drop pure mono?</p>
+      <p class="question"><strong>Question:</strong> Parked. Nothing to decide now.</p>
       <fieldset><legend>Your call</legend>
-        <label><input type="radio" name="call-line-mono" value="keep"> Keep</label><label><input type="radio" name="call-line-mono" value="kill"> Kill</label><label><input type="radio" name="call-line-mono" value="merge"> Merge</label>
+        <label><input type="radio" name="call-line-mono" value="keep"> Keep</label><label><input type="radio" name="call-line-mono" value="kill"> Kill</label><label><input type="radio" name="call-line-mono" value="merge"> Merge</label><label><input type="radio" name="call-line-mono" value="park"> Park</label>
         <label class="note">Note <input type="text" name="note-line-mono" autocomplete="off"></label>
       </fieldset>
     </div>
@@ -209,7 +209,7 @@ code{font-size:.92em}
     <div class="ask">
       <p class="question"><strong>Question:</strong> Confirm it stays dropped.</p>
       <fieldset><legend>Your call</legend>
-        <label><input type="radio" name="call-galaxy" value="keep"> Keep</label><label><input type="radio" name="call-galaxy" value="kill"> Kill</label><label><input type="radio" name="call-galaxy" value="merge"> Merge</label>
+        <label><input type="radio" name="call-galaxy" value="keep"> Keep</label><label><input type="radio" name="call-galaxy" value="kill"> Kill</label><label><input type="radio" name="call-galaxy" value="merge"> Merge</label><label><input type="radio" name="call-galaxy" value="park"> Park</label>
         <label class="note">Note <input type="text" name="note-galaxy" autocomplete="off"></label>
       </fieldset>
     </div>

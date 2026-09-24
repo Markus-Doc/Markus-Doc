@@ -27,12 +27,13 @@
       // ?theme=light|dark overrides for this visit only (for comparing looks); it is not saved
       var m = location.search.match(/[?&]theme=(light|dark)/); if (m) t = m[1];
       document.documentElement.dataset.theme = t;
-      if (location.search.indexOf('opening=network') !== -1) document.documentElement.classList.add('opening-network');
+      // the network opening is the default (D-33); the orrery film is parked behind ?opening=orrery
+      if (location.search.indexOf('opening=orrery') === -1) document.documentElement.classList.add('opening-network');
       var lm = /[?&]layer=([^&]*)/.exec(location.search);
       if (lm) decodeURIComponent(lm[1]).split(',').forEach(function (n) { if (/^[\w-]+$/.test(n)) document.documentElement.classList.add('layer-' + n); });
     })();
   </script>
-  <script type="module" crossorigin src="/assets/index-D093GKMO.js"></script>
+  <script type="module" crossorigin src="/assets/index-CDrjj3lq.js"></script>
   <link rel="stylesheet" crossorigin href="/assets/index-Cs0y_Ive.css">
 </head>
 <body>
@@ -124,9 +125,7 @@
 
   <section id="intro" class="intro" aria-labelledby="intro-title">
     <div class="intro-orrery" aria-hidden="true">
-      <video id="orrery-film" muted playsinline loop autoplay preload="auto" poster="/art/opening/orrery-motion-parchment-v2.webp">
-        <source src="/art/opening/orrery-motion-parchment-v2.mp4" type="video/mp4">
-      </video>
+      <video id="orrery-film" muted playsinline loop preload="none" data-poster="/art/opening/orrery-motion-parchment-v2.webp" data-src="/art/opening/orrery-motion-parchment-v2.mp4"></video>
     </div>
     <div class="intro-copy">
       <p class="kicker">Brisbane, Australia</p>
