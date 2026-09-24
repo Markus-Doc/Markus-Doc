@@ -224,6 +224,8 @@ main:focus { outline: none; }
 @media (min-width: 860px) { .project { grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); } }
 .project-kind { font: 600 .72rem/1.4 var(--font-body); letter-spacing: .14em; text-transform: uppercase; color: var(--quiet); margin-bottom: .5rem; }
 .project h3 { font-size: 1.55rem; margin: 0; }
+.project-date { font-size: .875rem; line-height: 1.5; color: var(--quiet); margin-bottom: .75rem; }
+.project-date strong { color: var(--ink); font-weight: 600; }
 
 .section .subhead { margin-top: 3.5rem; font-size: 1.5rem; }
 .prep-grid { display: grid; gap: 1.25rem; margin-top: 1rem; }
