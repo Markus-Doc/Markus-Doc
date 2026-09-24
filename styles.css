@@ -268,6 +268,13 @@ main:focus { outline: none; }
 .evidence figcaption a { font-weight: 600; text-decoration-color: var(--accent); text-underline-offset: .2em; }
 :root[data-theme='dark'] .evidence img { filter: brightness(.9); }
 
+/* Contact: roles and location */
+.seeking { display: grid; gap: 1.5rem 3rem; margin-top: 1.5rem; }
+@media (min-width: 760px) { .seeking { grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); } }
+.seeking h3 { font-size: .8rem; letter-spacing: .12em; text-transform: uppercase; color: var(--quiet); margin: 0 0 .75rem; }
+.role-list { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: .5rem; }
+.role-list li { padding: .4rem .85rem; border: 1px solid var(--sage-ink); border-radius: 999px; background: color-mix(in srgb, var(--paper) 70%, transparent); font-weight: 500; font-size: .95rem; }
+
 /* Footer */
 .site-footer { border-top: 1px solid var(--rule); padding: 1.5rem 0; font-size: .875rem; color: var(--quiet); }
 .footer-inner { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .5rem 1.5rem; }
