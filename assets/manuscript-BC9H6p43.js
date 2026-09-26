@@ -373,10 +373,11 @@ vec4 ribbonClip(vec3 p, vec3 dir, float halfPx, float side, out float z) {
           over(ringCol, ringAt(d, r * 1.0, max(0.9 * px, r * 0.05)) * 0.85);
           float dash = step(0.45, fract(a / 6.2831853 * 30.0 + uTime * 0.004));
           over(ringCol, ringAt(d, r * 1.4, max(0.9 * px, r * 0.05)) * dash * 0.8);
-          // volume pass: a bright ring of light round the bead (the reference's lit hubs)
+          // volume pass: a warm ring round the bead, lit at its edge (restrained on 26 September:
+          // the wide gold wash was 0.35 and the lit ring 0.95 and wider, six bright lamps)
           float vk = min(uVolGlow, 1.3) * uVolOn;
-          over(uGold, ring(abs(d - r * 0.72), max(5.0 * px, r * 0.5)) * 0.35 * vk * fk);
-          over(mix(uGoldLit, vec3(1.0), 0.25), ring(abs(d - r * 0.62), max(2.2 * px, r * 0.16)) * 0.95 * vk * fk);
+          over(uGold, ring(abs(d - r * 0.72), max(3.0 * px, r * 0.3)) * 0.1 * vk * fk);
+          over(mix(uGoldLit, uGold, 0.35), ring(abs(d - r * 0.62), max(1.4 * px, r * 0.09)) * 0.6 * vk * fk);
           over(uHalo, ringAt(d, r * 1.85, max(0.9 * px, r * 0.04)) * 0.35);
         } else if (vKind < 3.5) {
           vec2 p = vUv / r;
@@ -820,7 +821,7 @@ float pulseAt(float s) {
         // (the floor mist takes the paler smoke light, not the warm candle light)
         vec3 light = (uLight * (vol * uVolHaze + shaft * uVolRays) + uHazeC * (haze + mist) * uVolHaze) * k;
         gl_FragColor = vec4(light, dim);
-      }`}),d=new e.Mesh(l,u);d.frustumCulled=!1,d.renderOrder=-50,s.add(d);let f=[],p=n(5150),m=n(90210),h=t.nodes.map(()=>m());t.nodes.forEach((e,t)=>{e.kind===`junction`&&h[t]>=.1&&h[t]<.18&&f.push([...e.pos,2.4,.55,2,p()])});for(let e of t.nodes)if(e.kind===`core`)f.push([...e.pos,11,1,0,0]);else if(e.kind===`hub`)f.push([...e.pos,6.5,.85,1,p()]);else if(e.kind===`leaf`||e.kind===`soon`)f.push([...e.pos,3.4,.6,2,p()]);else{let t=p();t<.22?f.push([...e.pos,1.3,.8,3,p()]):t<.28&&f.push([...e.pos,1.1,.5,4,p()])}let g=c?60:150;for(let e=0;e<g;e++){let e=p()*Math.PI*2,t=p()*2-1,n=Math.sqrt(1-t*t),r=20+p()**.6*75;f.push([Math.cos(e)*n*r,t*r*.8,Math.sin(e)*n*r,.35+p()*.5,.35+p()*.4,5,p()])}let _=[],v=t=>{let n=new e.InstancedBufferGeometry;n.index=l.index,n.setAttribute(`position`,l.getAttribute(`position`));let r=new Float32Array(t.length*3),i=new Float32Array(t.length*4);return t.forEach(([e,t,n,a,o,s,c],l)=>{r.set([e,t,n],l*3),i.set([a,o,s,c],l*4)}),n.setAttribute(`aPos`,new e.InstancedBufferAttribute(r,3)),n.setAttribute(`aInfo`,new e.InstancedBufferAttribute(i,4)),n.instanceCount=t.length,_.push(n),n},y=new e.ShaderMaterial({transparent:!0,depthTest:!1,depthWrite:!1,blending:e.CustomBlending,blendEquation:e.AddEquation,blendSrc:e.OneFactor,blendDst:e.OneFactor,blendSrcAlpha:e.ZeroFactor,blendDstAlpha:e.OneFactor,uniforms:{...r,uCoreC:{value:new e.Vector3(1,.86,.58)},uGoldC:{value:new e.Vector3(1,.74,.36)},uPaleC:{value:new e.Vector3(.9,1,.97)},uWhiteC:{value:new e.Vector3(1,.97,.9)}},vertexShader:i+`
+      }`}),d=new e.Mesh(l,u);d.frustumCulled=!1,d.renderOrder=-50,s.add(d);let f=[],p=n(5150),m=n(90210),h=t.nodes.map(()=>m());t.nodes.forEach((e,t)=>{e.kind===`junction`&&h[t]>=.1&&h[t]<.18&&f.push([...e.pos,2.4,.55,2,p()])});for(let e of t.nodes)if(e.kind===`core`)f.push([...e.pos,11,1,0,0]);else if(e.kind===`hub`)f.push([...e.pos,4.2,.28,1,p()]);else if(e.kind===`leaf`||e.kind===`soon`)f.push([...e.pos,3.4,.6,2,p()]);else{let t=p();t<.22?f.push([...e.pos,1.3,.8,3,p()]):t<.28&&f.push([...e.pos,1.1,.5,4,p()])}let g=c?60:150;for(let e=0;e<g;e++){let e=p()*Math.PI*2,t=p()*2-1,n=Math.sqrt(1-t*t),r=20+p()**.6*75;f.push([Math.cos(e)*n*r,t*r*.8,Math.sin(e)*n*r,.35+p()*.5,.35+p()*.4,5,p()])}let _=[],v=t=>{let n=new e.InstancedBufferGeometry;n.index=l.index,n.setAttribute(`position`,l.getAttribute(`position`));let r=new Float32Array(t.length*3),i=new Float32Array(t.length*4);return t.forEach(([e,t,n,a,o,s,c],l)=>{r.set([e,t,n],l*3),i.set([a,o,s,c],l*4)}),n.setAttribute(`aPos`,new e.InstancedBufferAttribute(r,3)),n.setAttribute(`aInfo`,new e.InstancedBufferAttribute(i,4)),n.instanceCount=t.length,_.push(n),n},y=new e.ShaderMaterial({transparent:!0,depthTest:!1,depthWrite:!1,blending:e.CustomBlending,blendEquation:e.AddEquation,blendSrc:e.OneFactor,blendDst:e.OneFactor,blendSrcAlpha:e.ZeroFactor,blendDstAlpha:e.OneFactor,uniforms:{...r,uCoreC:{value:new e.Vector3(1,.86,.58)},uGoldC:{value:new e.Vector3(1,.74,.36)},uPaleC:{value:new e.Vector3(.9,1,.97)},uWhiteC:{value:new e.Vector3(1,.97,.9)}},vertexShader:i+`
       attribute vec3 aPos; attribute vec4 aInfo;
       varying vec2 vQ; varying float vA, vType, vSeed;
       void main() {
