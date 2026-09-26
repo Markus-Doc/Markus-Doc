@@ -1,0 +1,734 @@
+<!doctype html>
+<html lang="en-AU">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Human, Script or AI? Spotting AI-Driven Attacks in the SOC | M. Walker</title>
+<meta name="description" content="A SOC advisory white paper on telling AI-driven attack activity apart from human and automated activity, and what detection and response should look like. Version 5, evidence cut 23 September 2026.">
+<meta name="author" content="M. Walker">
+<link rel="canonical" href="https://www.markuswalker.com/assets/docs/Markus_Walker_AI_Driven_Attacks_White_Paper_v5">
+<meta property="og:title" content="Human, Script or AI? Spotting AI-Driven Attacks in the SOC | M. Walker">
+<meta property="og:description" content="A SOC advisory white paper on telling AI-driven attack activity apart from human and automated activity, and what detection and response should look like. Version 5, evidence cut 23 September 2026.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://www.markuswalker.com/assets/docs/Markus_Walker_AI_Driven_Attacks_White_Paper_v5">
+<meta property="og:image" content="https://www.markuswalker.com/art/og-image.jpg">
+<link rel="up" href="https://www.markuswalker.com/projects/distinguishing-ai-driven-attacks/">
+<style>
+  :root {
+    color-scheme: light;
+    --paper:#FCFCFB; --surface:#F2F4F3; --raised:#FFFFFF;
+    --ink:#121A1C; --body:#25322F; --muted:#5A6669;
+    --rule:#DFE3E1; --rule-strong:#C3CBC8;
+    --accent:#0E5B57; --accent-soft:#E4EFEC;
+    --signal:#8C4A12; --signal-soft:#F6EDE2;
+    --sans:'IBM Plex Sans',system-ui,-apple-system,'Segoe UI',sans-serif;
+    --serif:'Source Serif 4',Georgia,'Times New Roman',serif;
+    --mono:'IBM Plex Mono',ui-monospace,'SF Mono',Menlo,monospace;
+  }
+  * { box-sizing:border-box; }
+  body {
+    background:var(--paper); color:var(--body);
+    font-family:var(--serif); font-size:16.5px; line-height:1.62;
+    margin:0; -webkit-font-smoothing:antialiased;
+  }
+  .shell { max-width:1180px; margin:0 auto; padding-inline:20px; padding-block:0 72px; }
+
+  /* masthead */
+  header.mast { padding-block:52px 34px; border-bottom:1px solid var(--rule-strong); }
+  .kicker {
+    font-family:var(--sans); font-size:11px; font-weight:600; letter-spacing:.14em;
+    text-transform:uppercase; color:var(--accent); margin:0 0 18px;
+  }
+  h1 {
+    font-family:var(--sans); font-weight:600; font-size:clamp(28px,4.6vw,44px);
+    line-height:1.14; letter-spacing:-.021em; color:var(--ink);
+    margin:0 0 12px; max-width:19ch; text-wrap:balance;
+  }
+  .standfirst { font-size:19px; color:var(--muted); margin:0 0 28px; max-width:52ch; }
+  .byline {
+    font-family:var(--sans); font-size:13.5px; color:var(--ink); font-weight:500;
+    margin:0 0 26px;
+  }
+  .byline span { color:var(--muted); font-weight:400; }
+
+  /* provenance strip: the paper's own discipline, made visible */
+  .prov {
+    display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+    gap:1px; background:var(--rule); border:1px solid var(--rule);
+    border-radius:3px; overflow:hidden;
+  }
+  .prov div { background:var(--raised); padding:13px 15px; }
+  .prov dt {
+    font-family:var(--sans); font-size:10px; font-weight:600; letter-spacing:.11em;
+    text-transform:uppercase; color:var(--muted); margin:0 0 5px;
+  }
+  .prov dd { font-family:var(--mono); font-size:14px; color:var(--ink); margin:0; font-weight:500; }
+
+  /* layout */
+  .cols { display:grid; grid-template-columns:1fr; gap:0; }
+  nav.rail { display:none; padding-top:38px; }
+  @media (min-width:1000px) {
+    .cols { grid-template-columns:196px minmax(0,1fr); gap:56px; align-items:start; }
+    nav.rail { position:sticky; top:calc(env(safe-area-inset-top,0px) + 28px); display:block; }
+  }
+  nav.rail a {
+    display:flex; gap:9px; font-family:var(--sans); font-size:12.5px; color:var(--muted);
+    text-decoration:none; padding:5px 0; line-height:1.4;
+  }
+  nav.rail a:hover { color:var(--accent); }
+  .nnum { font-family:var(--mono); font-size:11px; color:var(--rule-strong); min-width:13px; }
+
+  main { min-width:0; padding-top:38px; }
+  section { margin-bottom:46px; scroll-margin-top:24px; }
+  h2 {
+    font-family:var(--sans); font-weight:600; font-size:23px; letter-spacing:-.012em;
+    color:var(--ink); margin:0 0 18px; padding-bottom:11px;
+    border-bottom:1px solid var(--rule); display:flex; gap:13px; align-items:baseline;
+    text-wrap:balance;
+  }
+  .num { font-family:var(--mono); font-size:15px; color:var(--accent); font-weight:500; }
+  h3 {
+    font-family:var(--sans); font-weight:600; font-size:16px; color:var(--ink);
+    margin:30px 0 11px; letter-spacing:-.005em;
+  }
+  p { margin:0 0 15px; max-width:68ch; }
+  ul { margin:0 0 16px; padding-left:0; list-style:none; max-width:68ch; }
+  ul li { position:relative; padding-left:19px; margin-bottom:13px; }
+  ul li::before {
+    content:''; position:absolute; left:2px; top:.72em; width:5px; height:5px;
+    background:var(--accent); border-radius:50%;
+  }
+  blockquote {
+    margin:18px 0; padding:15px 19px; background:var(--surface);
+    border-left:2.5px solid var(--accent); border-radius:0 3px 3px 0;
+    font-family:var(--mono); font-size:13.5px; line-height:1.6; color:var(--ink);
+    max-width:68ch;
+  }
+
+  /* citations */
+  sup.cites { font-size:.66em; line-height:0; white-space:nowrap; }
+  a.cite {
+    color:var(--accent); text-decoration:none; font-family:var(--mono);
+    font-weight:500; padding:0 .5px;
+  }
+  a.cite:hover { text-decoration:underline; }
+
+  /* tables */
+  .tw { overflow-x:auto; margin:0 0 22px; border:1px solid var(--rule); border-radius:3px; }
+  table { border-collapse:collapse; width:100%; min-width:620px; background:var(--raised); }
+  th {
+    font-family:var(--sans); font-size:11px; font-weight:600; letter-spacing:.07em;
+    text-transform:uppercase; color:var(--muted); text-align:left;
+    padding:11px 14px; background:var(--surface); border-bottom:1px solid var(--rule-strong);
+    vertical-align:bottom;
+  }
+  td {
+    padding:13px 14px; font-size:14.5px; line-height:1.55;
+    border-bottom:1px solid var(--rule); vertical-align:top;
+  }
+  tbody tr:last-child td { border-bottom:none; }
+  td:first-child { font-family:var(--sans); font-weight:500; color:var(--ink); font-size:14px; }
+
+  /* references */
+  .ref {
+    display:grid; grid-template-columns:34px minmax(0,1fr); gap:11px;
+    padding:13px 0; border-bottom:1px solid var(--rule); scroll-margin-top:24px;
+  }
+  .ref:target { background:var(--accent-soft); border-radius:3px; padding-inline:11px; }
+  .refnum {
+    font-family:var(--mono); font-size:13px; font-weight:600; color:var(--accent);
+    padding-top:2px;
+  }
+  .refbody p { margin:0; font-size:14.5px; line-height:1.55; max-width:none; }
+  .refbody a { font-family:var(--mono); font-size:12.5px; color:var(--accent);
+    word-break:break-all; text-decoration:none; }
+  .refbody a:hover { text-decoration:underline; }
+  .refnote { color:var(--muted); font-size:13.5px !important; margin-top:5px !important; font-style:italic; }
+
+  /* change record */
+  .changerec {
+    background:var(--signal-soft); border:1px solid #E8D9C4; border-radius:4px;
+    padding:24px 24px 8px; margin-top:52px;
+  }
+  .changerec h2 { border-bottom-color:#E1CDB2; font-size:19px; }
+  .changerec .tw { border-color:#E1CDB2; }
+  .changerec table { background:#FFFDFA; min-width:560px; }
+  .changerec th { background:#F1E5D5; border-bottom-color:#E1CDB2; color:#7A4310; }
+  .changerec td { border-bottom-color:#EFE2D0; }
+  .changerec td:first-child { font-family:var(--mono); color:var(--signal); }
+
+  footer {
+    margin-top:46px; padding-top:22px; border-top:1px solid var(--rule-strong);
+    font-family:var(--sans); font-size:12.5px; color:var(--muted); line-height:1.7;
+  }
+  a:focus-visible, .cite:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+  @media (prefers-reduced-motion:reduce) { * { scroll-behavior:auto !important; } }
+  html { scroll-behavior:smooth; }
+</style>
+<style>
+:root {
+  --paper: #f3ecde;
+  --surface: #faf7ee;
+  --raised: #faf7ee;
+  --ink: #203e43;
+  --body: #344a40;
+  --muted: #53665d;
+  --rule: #a4b0a04d;
+  --rule-strong: #627b5c80;
+  --accent: #197e88;
+  --accent-soft: #dce9e5;
+  --signal: #a34c39;
+  --signal-soft: #efe3d3;
+  --sans: "Atlas Sans", Arial, sans-serif;
+  --serif: "Atlas Serif", Georgia, serif;
+  --mono: Consolas, "SFMono-Regular", monospace;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  color: var(--body);
+  background:
+    radial-gradient(ellipse at 8% 9%, #e0e8d8 0, transparent 37%),
+    radial-gradient(ellipse at 93% 27%, #e7dfd3 0, transparent 35%),
+    var(--paper);
+  font: 400 17px/1.65 var(--sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+.shell {
+  max-width: 1380px;
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: 0 clamp(24px, 5vw, 76px) 90px;
+  background: linear-gradient(115deg, #fbf8f0 0%, #f8f4e9 67%, #f2eddf 100%);
+  border-inline: 1px solid #627b5c25;
+  box-shadow: 0 18px 60px #263d3510;
+}
+
+header.mast {
+  padding: clamp(46px, 6vw, 82px) 0 33px;
+  border-bottom: 1px solid var(--rule-strong);
+}
+
+.kicker {
+  margin: 0 0 19px;
+  color: var(--signal);
+  font: 600 11px/1.5 var(--sans);
+  letter-spacing: .16em;
+  text-transform: uppercase;
+}
+
+h1 {
+  max-width: 26ch;
+  margin: 0 0 18px;
+  color: var(--ink);
+  font: 400 clamp(39px, 4.8vw, 66px)/1.08 var(--serif);
+  letter-spacing: -.038em;
+  text-wrap: balance;
+}
+
+.standfirst {
+  max-width: 69ch;
+  margin: 0 0 24px;
+  color: #496369;
+  font: 400 clamp(18px, 2vw, 22px)/1.48 var(--sans);
+}
+
+.byline {
+  margin: 0 0 26px;
+  color: var(--ink);
+  font: 600 15px/1.4 var(--sans);
+}
+
+.byline span { color: var(--muted); font-weight: 400; }
+
+.prov {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px 0;
+  overflow: visible;
+  padding: 13px 0 0;
+  border: 0;
+  border-top: 1px solid var(--rule);
+  border-radius: 0;
+  background: transparent;
+}
+
+.prov div {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 0 21px 0 0;
+  margin: 0 19px 0 0;
+  border-right: 1px solid var(--rule-strong);
+  background: transparent;
+}
+
+.prov div:last-child { border-right: 0; }
+.prov dt { margin: 0; color: var(--muted); font: 600 10px/1.5 var(--sans); letter-spacing: .08em; text-transform: uppercase; }
+.prov dd { margin: 0; color: var(--ink); font: 600 13px/1.5 var(--sans); }
+
+.cols {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0;
+}
+
+nav.rail { display: none; }
+
+@media (min-width: 1080px) {
+  .cols { grid-template-columns: minmax(190px, 235px) minmax(0, 1fr); gap: clamp(38px, 5vw, 74px); }
+  nav.rail {
+    position: sticky;
+    top: 24px;
+    display: block;
+    align-self: start;
+    max-height: calc(100vh - 48px);
+    overflow: auto;
+    padding: 33px 13px 24px 0;
+    scrollbar-width: thin;
+    border-right: 1px solid var(--rule);
+  }
+}
+
+nav.rail a {
+  display: grid;
+  grid-template-columns: 26px minmax(0, 1fr);
+  gap: 7px;
+  padding: 7px 10px 7px 0;
+  color: #496369;
+  font: 400 14px/1.34 var(--sans);
+  text-decoration: none;
+}
+
+nav.rail a.sub { padding-left: 14px; font-size: 13px; }
+nav.rail a:hover, nav.rail a:focus-visible { color: #126c75; }
+nav.rail .nnum { min-width: 0; color: var(--signal); font: 600 11px/1.7 var(--sans); }
+
+main { min-width: 0; padding-top: 34px; }
+main > section { margin: 0 0 54px; scroll-margin-top: 24px; }
+main > section:has(> section) { margin: 0; }
+main > section > section { margin: 0 0 54px; scroll-margin-top: 24px; }
+
+h2 {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  width: 100%;
+  margin: 0 0 20px;
+  padding: 0 0 12px;
+  border-bottom: 1px solid var(--rule-strong);
+  color: var(--ink);
+  font: 400 clamp(27px, 2.5vw, 36px)/1.18 var(--serif);
+  letter-spacing: -.025em;
+  text-wrap: balance;
+}
+
+h2 .num { flex: none; color: var(--signal); font: italic 400 .62em/1.2 var(--serif); }
+
+h3 {
+  margin: 30px 0 12px;
+  color: #244b50;
+  font: 600 20px/1.25 var(--sans);
+  letter-spacing: -.015em;
+  scroll-margin-top: 24px;
+}
+
+h4 { margin: 25px 0 10px; color: var(--ink); font: 600 17px/1.3 var(--sans); }
+p { max-width: 75ch; margin: 0 0 16px; }
+
+ul, ol { max-width: 76ch; margin: 0 0 22px; padding-left: 25px; }
+ul { list-style: disc; }
+ul li { position: static; padding: 0; margin: 0 0 11px; }
+ul li::before { content: none; }
+li::marker { color: var(--signal); }
+main > section > ul:has(> li:only-child) { margin-bottom: 13px; }
+
+blockquote {
+  max-width: 74ch;
+  margin: 22px 0;
+  padding: 7px 0 7px 19px;
+  border: 0;
+  border-left: 2px solid var(--signal);
+  border-radius: 0;
+  background: none;
+  color: var(--ink);
+  font: 400 16px/1.6 var(--serif);
+}
+
+sup.cites { font-size: .72em; line-height: 0; white-space: normal; }
+sup.cites, sup.cites a, a.cite { color: #176873; font: 600 .9em/1 var(--sans); text-decoration: none; }
+sup.cites a:hover, a.cite:hover { text-decoration: underline; }
+
+.tw { max-width: 100%; overflow-x: auto; margin: 19px 0 25px; border: 0; border-top: 2px solid #31555c73; border-radius: 0; }
+table { width: 100%; min-width: 620px; border-collapse: collapse; background: transparent; }
+th {
+  padding: 11px 13px;
+  border-bottom: 1px solid var(--rule-strong);
+  background: #dce2d34d;
+  color: #31555c;
+  font: 600 12px/1.35 var(--sans);
+  letter-spacing: .025em;
+  text-align: left;
+  text-transform: none;
+  vertical-align: bottom;
+}
+
+td { padding: 12px 13px; border-bottom: 1px solid var(--rule); color: var(--body); font: 400 15px/1.5 var(--sans); vertical-align: top; }
+tbody tr:last-child td { border-bottom: 1px solid var(--rule); }
+td:first-child { color: var(--ink); font: 600 14px/1.5 var(--sans); }
+
+.ref { scroll-margin-top: 24px; }
+div.ref {
+  display: grid;
+  grid-template-columns: 32px minmax(0, 1fr);
+  gap: 10px;
+  max-width: 86ch;
+  margin: 0;
+  padding: 11px 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+p.ref {
+  display: block;
+  max-width: 86ch;
+  margin: 0;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--rule);
+  font: 400 14px/1.5 var(--sans);
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+
+.ref:target { padding-inline: 9px; border-radius: 0; background: var(--accent-soft); }
+.refnum, .ref .rn { color: var(--signal); font: 600 13px/1.5 var(--sans); }
+.refbody p { max-width: none; margin: 0; font: 400 14px/1.5 var(--sans); }
+.refbody p + p { margin-top: 5px; }
+.refbody a, .ref a { color: #176873; font: inherit; overflow-wrap: anywhere; word-break: normal; text-decoration-thickness: 1px; text-underline-offset: 2px; }
+.refnote { color: var(--muted); font-style: italic; }
+
+.changerec {
+  margin-top: 62px;
+  padding: 0;
+  border: 0;
+  border-top: 2px solid #a34c3973;
+  border-radius: 0;
+  background: none;
+}
+
+.changerec h2 { margin-top: 20px; font-size: clamp(25px, 2vw, 32px); }
+.changerec .tw { border-color: #a34c3973; }
+.changerec table { background: none; }
+.changerec th { background: #efe3d360; color: #774433; }
+.changerec td, .changerec tbody tr:last-child td { border-color: #a34c3933; }
+.changerec td:first-child { color: var(--signal); font: 600 14px/1.5 var(--sans); }
+
+footer {
+  max-width: 86ch;
+  margin-top: 60px;
+  padding-top: 19px;
+  border-top: 1px solid var(--rule-strong);
+  color: var(--muted);
+  font: 400 13px/1.55 var(--sans);
+}
+
+a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+@media (max-width: 700px) {
+  .shell { padding-inline: 20px; box-shadow: none; }
+  header.mast { padding-top: 40px; }
+  h1 { font-size: clamp(35px, 9vw, 50px); }
+  .prov div { flex-basis: calc(50% - 20px); margin-right: 0; padding-right: 8px; border: 0; }
+  main { padding-top: 30px; }
+  h2 { font-size: 27px; }
+  table { min-width: 540px; }
+}
+
+@media print {
+  @page { size: A4; margin: 16mm; }
+  html { scroll-behavior: auto; }
+  body { background: #fff; font-size: 10pt; }
+  .shell { max-width: none; padding: 0; border: 0; background: #fff; box-shadow: none; }
+  header.mast { padding: 0 0 12pt; }
+  h1 { font-size: 24pt; }
+  .standfirst { font-size: 12pt; }
+  .cols { display: block; }
+  nav.rail { display: none; }
+  main { padding: 14pt 0 0; }
+  main > section { margin-bottom: 28pt; }
+  main > section > section { margin-bottom: 28pt; }
+  h2 { font-size: 17pt; break-after: avoid; }
+  h3, h4 { break-after: avoid; }
+  p, li, td, th { font-size: 9.5pt; }
+  .tw { overflow: visible; }
+  table { min-width: 0; }
+  tr, .ref { break-inside: avoid; }
+  footer { margin-top: 12pt; padding-top: 7pt; font-size: 8pt; line-height: 1.3; break-inside: avoid; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
+
+</style>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<meta name="theme-color" content="#F3ECDE">
+<style data-site-theme>
+@font-face { font-family: 'Schibsted Grotesk'; font-style: normal; font-weight: 400 900; font-display: swap; src: url('/fonts/schibsted-grotesk-var.woff2') format('woff2'); }
+@font-face { font-family: 'Fraunces'; font-weight: 400; font-display: swap; src: url('/fonts/fraunces-regular.woff2') format('woff2'); }
+@font-face { font-family: 'Fraunces'; font-weight: 600; font-display: swap; src: url('/fonts/fraunces-semibold.woff2') format('woff2'); }
+
+:root {
+  --paper: #F3ECDE; --surface: #F4EEE1; --raised: #FBF7EE;
+  --ink: #1F2B26; --body: #2B3731; --muted: #46534C;
+  --rule: #D9CDB4; --rule-strong: rgba(127, 96, 37, .42);
+  --accent: #274931; --accent-soft: #E9E6D3;
+  --signal: #60481C; --signal-soft: #F1E8D6;
+  --gilt: #7F6025; --deep-sage: #28402F;
+  --sans: 'Schibsted Grotesk', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --serif: 'Fraunces', Georgia, 'Times New Roman', serif;
+  --mono: ui-monospace, 'SF Mono', Consolas, monospace;
+}
+
+h1 { font-weight: 600; letter-spacing: -.012em; color: var(--ink); }
+h2 { font-weight: 600; letter-spacing: -.006em; }
+h3 { color: var(--deep-sage); }
+.standfirst { color: var(--muted); }
+nav.rail a { color: var(--muted); }
+nav.rail a:hover, nav.rail a:focus-visible { color: var(--accent); }
+sup.cites, sup.cites a, a.cite, .refbody a, .ref a { color: var(--accent); }
+li::marker { color: var(--gilt); }
+blockquote { border-left-color: var(--gilt); }
+.tw { border-top-color: rgba(127, 96, 37, .55); }
+th { background: rgba(217, 205, 180, .35); color: var(--deep-sage); }
+.changerec, .changerec .tw { border-color: rgba(127, 96, 37, .55); }
+.changerec th { background: rgba(241, 232, 214, .6); color: var(--signal); }
+.changerec td, .changerec tbody tr:last-child td { border-color: rgba(127, 96, 37, .2); }
+
+@media screen {
+  /* the notebook wall behind the leaf, as on the project pages */
+  body {
+    background-color: #ad9d82;
+    background-image:
+      radial-gradient(ellipse 80% 75% at 50% 40%, rgba(120, 92, 56, 0) 55%, rgba(92, 68, 38, .38) 100%),
+      linear-gradient(rgb(198, 198, 196), rgb(198, 198, 196)),
+      url('/art/library/m2-worked-parchment.webp');
+    background-size: auto, auto, 100% auto;
+    background-position: center, center, center top;
+    background-repeat: no-repeat, no-repeat, repeat-y;
+    background-blend-mode: multiply, multiply, normal;
+  }
+  /* the document as a cream folio leaf with an inner hairline */
+  .shell {
+    position: relative; isolation: isolate;
+    width: min(80rem, 100% - 4rem); max-width: none; min-height: 0;
+    margin: clamp(1.25rem, 4vw, 3rem) auto clamp(2rem, 5vw, 4rem);
+    border: 0;
+    background: url('/paper.svg') center / 180px 180px, var(--raised);
+    box-shadow: 0 1px 2px rgba(31, 43, 38, .08), 0 8px 28px rgba(31, 43, 38, .10);
+  }
+  .shell::after { content: ''; position: absolute; inset: 5px; z-index: -1; border: 1px solid rgba(140, 106, 42, .34); pointer-events: none; }
+  @media (max-width: 700px) { .shell { width: calc(100% - 1.25rem); } }
+
+  /* the site bar: the MW mark home, Projects, and the PDF */
+  .site-bar { background: color-mix(in srgb, var(--raised) 90%, transparent); border-bottom: 1px solid #7D7566; }
+  .site-bar .bar-inner { display: flex; align-items: center; gap: 1rem; width: min(80rem, 100% - 2rem); min-height: 4rem; margin-inline: auto; padding-top: env(safe-area-inset-top, 0px); }
+  .site-bar .home { display: inline-flex; align-items: center; min-height: 44px; }
+  .site-bar .home img { display: block; width: 44px; height: 44px; }
+  .site-bar nav { display: flex; margin-left: auto; }
+  .site-bar nav a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 .7rem; border-radius: 4px; color: var(--ink); font: 500 .95rem/1 var(--sans); text-decoration: none; }
+  .site-bar nav a:hover { background: rgba(31, 43, 38, .07); }
+  .site-bar .pdf { display: inline-flex; align-items: center; min-height: 44px; padding: 7px 12px; border: 1.5px solid #8A3A1E; border-radius: 4px; background: #8A3A1E; color: #FFFFFF; font: 600 14px/1.2 var(--sans); text-decoration: none; }
+  .site-bar .pdf:hover { filter: brightness(1.08); }
+  .site-bar a:focus-visible { outline: 2.5px solid var(--accent); outline-offset: 3px; }
+}
+
+@media print { .site-bar { display: none; } }
+</style>
+
+
+
+<header class="site-bar">
+  <div class="bar-inner">
+    <a class="home" href="/" aria-label="Markus Walker, home"><img src="/brand/mw-mark.svg" alt="" width="44" height="44"></a>
+    <nav aria-label="Main navigation"><a href="/projects/">Projects</a></nav>
+    <a class="pdf" href="/assets/docs/Markus_Walker_AI_Driven_Attacks_White_Paper_v5.pdf" download>Download PDF</a>
+  </div>
+</header>
+<div class="shell">
+  <header class="mast">
+    <p class="kicker">Security operations &middot; Advisory white paper</p>
+    <h1>Human, Script or AI? Spotting AI-Driven Attacks in the SOC</h1>
+    <p class="standfirst">Practical SOC principles for detection, triage, and response.</p>
+    <p class="byline">M. Walker <span>&middot; Independent advisory paper</span></p>
+    <dl class="prov">
+      <div><dt>Evidence cut</dt><dd>23 Sep 2026</dd></div>
+      <div><dt>Freshness scan</dt><dd>78 days</dd></div>
+      <div><dt>References</dt><dd>19</dd></div>
+      <div><dt>Status</dt><dd>Final</dd></div>
+    </dl>
+  </header>
+
+  <div class="cols">
+    <nav class="rail" aria-label="Sections">
+      <a href="#sec-1"><span class="nnum">1</span>Executive summary</a>
+<a href="#sec-2"><span class="nnum">2</span>What changes and what does not</a>
+<a href="#sec-3"><span class="nnum">3</span>SOC observable indicators</a>
+<a href="#sec-4"><span class="nnum">4</span>Are AI-driven attacks noisier?</a>
+<a href="#sec-5"><span class="nnum">5</span>Emerging methodologies for distinguishing AI-driven attacks</a>
+<a href="#sec-6"><span class="nnum">6</span>Detection principles</a>
+<a href="#sec-7"><span class="nnum">7</span>Response implications</a>
+<a href="#sec-8"><span class="nnum">8</span>Limitations</a>
+<a href="#sec-9"><span class="nnum">9</span>References</a>
+<a href="#change-record"><span class="nnum">•</span>Change record</a>
+    </nav>
+    <main>
+      <section>
+      <section id="sec-1">
+<h2><span class="num">1</span>Executive summary</h2>
+<ul><li>Where AI is in an intrusion, orchestration has largely displaced assistance. Anthropic reports that a majority of the operations described in its September 2026 threat assessment were enabled by AI through direct execution or orchestration rather than as analytical support, with multi-agent frameworks running for hours or days under limited human oversight.<sup class="cites"><a href="#ref-13" class="cite">13</a></sup> That is a statement about documented AI-misuse cases, not a measure of how common AI involvement is across all intrusions. The operational consequence is still real. Where a SOC judges AI to be in play, the working assumption should now be orchestration rather than a human operator with a good assistant.<sup class="cites"><a href="#ref-13" class="cite">13</a></sup></li></ul>
+<ul><li>A security operations centre (SOC) remains unlikely to prove from logs alone that an attack is driven by artificial intelligence (AI). Current evidence supports confidence-based assessment, not definitive attribution.<sup class="cites"><a href="#ref-1" class="cite">1</a>, <a href="#ref-2" class="cite">2</a>, <a href="#ref-3" class="cite">3</a>, <a href="#ref-6" class="cite">6</a></sup> That limitation matters less than it did. The more useful question is no longer whether AI is present but what changes if it is.</li></ul>
+<ul><li>AI-driven cyber activity usually reuses familiar tactics, techniques, and procedures (TTPs). The observable difference is more often tempo, adaptation, sequencing, and breadth across telemetry.<sup class="cites"><a href="#ref-1" class="cite">1</a>, <a href="#ref-2" class="cite">2</a>, <a href="#ref-3" class="cite">3</a>, <a href="#ref-7" class="cite">7</a>, <a href="#ref-12" class="cite">12</a></sup></li></ul>
+<ul><li>The stronger observable indicators are compressed kill-chain timing, rapid troubleshooting, environment-specific payloads, high command variation, and cross-domain progression.<sup class="cites"><a href="#ref-2" class="cite">2</a>, <a href="#ref-4" class="cite">4</a>, <a href="#ref-6" class="cite">6</a></sup> Two publicly disclosed incidents now give several of these indicators observed anchors rather than research-setting estimates.<sup class="cites"><a href="#ref-14" class="cite">14</a>, <a href="#ref-15" class="cite">15</a></sup> Emerging research methodologies, including defensive prompt injection, command lexical fingerprinting, canary tripping rates, and semantic diversity measurement, may add further signal as they mature. Section 5 summarises these.<sup class="cites"><a href="#ref-8" class="cite">8</a>, <a href="#ref-9" class="cite">9</a>, <a href="#ref-10" class="cite">10</a>, <a href="#ref-11" class="cite">11</a></sup></li></ul>
+<ul><li>Large language model (LLM) driven activity is not always noisier. Noise is useful context when agents fail, retry, or explore too broadly. It is not a reliable attribution method.<sup class="cites"><a href="#ref-3" class="cite">3</a>, <a href="#ref-4" class="cite">4</a>, <a href="#ref-6" class="cite">6</a>, <a href="#ref-12" class="cite">12</a></sup></li></ul>
+<ul><li>The practical ceiling today is a confidence score. A SOC can combine the metric indicators in this document with subjective binary factors, for example whether a payload mutated faster than a human plausibly could, into a weighted likelihood rating for suspected AI involvement. No single indicator supports a definitive determination.<sup class="cites"><a href="#ref-1" class="cite">1</a>, <a href="#ref-2" class="cite">2</a>, <a href="#ref-6" class="cite">6</a></sup></li></ul>
+<ul><li>Incident response fundamentals hold. Two distinct pressures now sit on them. The first is decision speed inside an incident, where stage compression puts weight on pre-approved containment, clear authority, and cross-domain correlation.<sup class="cites"><a href="#ref-5" class="cite">5</a></sup> The second is detection durability across incidents. Anthropic describes adversaries able to iterate past a newly deployed detection faster than defenders can build and ship the next one. That is a different problem from containment arriving late, and it is not solved by the same controls.<sup class="cites"><a href="#ref-13" class="cite">13</a></sup> AI and classical machine learning detection techniques are emerging that look promising, and vendor tooling built on these techniques is anticipated within 6 to 12 months.<sup class="cites"><a href="#ref-8" class="cite">8</a>, <a href="#ref-10" class="cite">10</a>, <a href="#ref-11" class="cite">11</a></sup> Teams can review the techniques in Section 5 now, and start planning for in-house AI expertise or vendor adoption as these options mature.</li></ul>
+</section>
+<section id="sec-2">
+<h2><span class="num">2</span>What changes and what does not</h2>
+<div class="tw"><table>
+<thead><tr>
+<th>Area</th>
+<th>What remains the same</th>
+<th>What AI may change</th>
+</tr></thead><tbody>
+<tr><td>TTPs</td><td>Activity still maps to MITRE ATT&amp;CK (Adversarial Tactics, Techniques, and Common Knowledge) across identity, endpoint, cloud, network, and applications.<sup class="cites"><a href="#ref-2" class="cite">2</a>, <a href="#ref-7" class="cite">7</a></sup></td><td>Familiar TTPs may be chained faster and with less human delay.<sup class="cites"><a href="#ref-1" class="cite">1</a>, <a href="#ref-3" class="cite">3</a>, <a href="#ref-4" class="cite">4</a>, <a href="#ref-12" class="cite">12</a></sup></td></tr>
+<tr><td>Timing</td><td>Reconnaissance, exploitation, foothold, privilege access, and lateral movement still occur.<sup class="cites"><a href="#ref-7" class="cite">7</a></sup></td><td>Time between stages may compress from hours to minutes. One disclosed case moved from a single stolen developer token to full administrative control in roughly three hours.<sup class="cites"><a href="#ref-4" class="cite">4</a>, <a href="#ref-13" class="cite">13</a></sup></td></tr>
+<tr><td>Payloads</td><td>Commands, hypertext transfer protocol (HTTP) parameters, scripts, and binaries remain observable.<sup class="cites"><a href="#ref-7" class="cite">7</a></sup></td><td>Payloads may mutate quickly and incorporate local hostnames, paths, routes, or error responses.<sup class="cites"><a href="#ref-2" class="cite">2</a>, <a href="#ref-6" class="cite">6</a></sup></td></tr>
+<tr><td>Troubleshooting</td><td>Humans, scripts, and tools all fail and retry.<sup class="cites"><a href="#ref-6" class="cite">6</a></sup></td><td>Agents may run short error-correction loops and switch tools quickly. In one observed case they moved from a failed login to a working fix in 31 seconds.<sup class="cites"><a href="#ref-4" class="cite">4</a>, <a href="#ref-6" class="cite">6</a>, <a href="#ref-15" class="cite">15</a></sup></td></tr>
+<tr><td>Network traffic interpretation</td><td>Scripts and analysts can parse responses and act on them.<sup class="cites"><a href="#ref-1" class="cite">1</a>, <a href="#ref-5" class="cite">5</a></sup></td><td>Subsequent actions may reflect decoded protocol, API (application programming interface), or error content within seconds.<sup class="cites"><a href="#ref-2" class="cite">2</a>, <a href="#ref-6" class="cite">6</a></sup></td></tr>
+<tr><td>Detection</td><td>Indicator of compromise (IOC) and rule-based detection still matter.<sup class="cites"><a href="#ref-5" class="cite">5</a>, <a href="#ref-7" class="cite">7</a></sup></td><td>Behavioural scoring and cross-domain correlation carry more weight. Individual atomic indicators are weaker against fast adaptive activity, and more of the signal sits in coherent sequences across telemetry.<sup class="cites"><a href="#ref-1" class="cite">1</a>, <a href="#ref-2" class="cite">2</a>, <a href="#ref-5" class="cite">5</a></sup></td></tr>
+<tr><td>Response</td><td>Containment, eradication, recovery, evidence handling, and escalation remain core.<sup class="cites"><a href="#ref-5" class="cite">5</a></sup></td><td>Decision speed and delegated authority matter more, because stage compression can outpace conventional approval chains. Detection durability is also affected, because an adversary may iterate past a new detection faster than the next one can be built.<sup class="cites"><a href="#ref-4" class="cite">4</a>, <a href="#ref-5" class="cite">5</a>, <a href="#ref-13" class="cite">13</a></sup></td></tr>
+</tbody></table></div>
+</section>
+<section id="sec-3">
+<h2><span class="num">3</span>SOC observable indicators</h2>
+<p>The indicators below are largely non-distinct and should be treated as lower-confidence signals. Each overlaps with legitimate automation, testing activity, and skilled human operators. None is sufficient on its own. They are presented as scoring inputs that may raise or lower suspicion when several appear together in one coherent sequence.<sup class="cites"><a href="#ref-1" class="cite">1</a>, <a href="#ref-3" class="cite">3</a>, <a href="#ref-6" class="cite">6</a></sup> The combination with speed matters most. High entropy or adaptive behaviour arriving at machine speed weakens both the human-operator explanation and the static-script explanation at once.</p>
+<div class="tw"><table>
+<thead><tr>
+<th>Indicator</th>
+<th>What the SOC may see</th>
+<th>Why it matters</th>
+<th>False positives or caveats</th>
+</tr></thead><tbody>
+<tr><td>Compressed kill-chain timing</td><td>Recon, exploit, foothold, and lateral movement in a short window.<sup class="cites"><a href="#ref-4" class="cite">4</a>, <a href="#ref-7" class="cite">7</a></sup></td><td>AI assistance may reduce human analysis time between stages.<sup class="cites"><a href="#ref-3" class="cite">3</a>, <a href="#ref-4" class="cite">4</a></sup></td><td>Red teams, automated pen-test tools, wormable malware, and scanners.</td></tr>
+<tr><td>Rapid recon to exploitation</td><td>New service discovery followed quickly by targeted exploit attempts.<sup class="cites"><a href="#ref-4" class="cite">4</a>, <a href="#ref-7" class="cite">7</a></sup></td><td>Shows fast interpretation of exposed surface and likely vulnerability context.<sup class="cites"><a href="#ref-2" class="cite">2</a>, <a href="#ref-4" class="cite">4</a></sup></td><td>Mature scan-to-exploit tooling can look similar.</td></tr>
+<tr><td>Fast foothold to lateral movement</td><td>Identity use, host discovery, privilege checks, and remote access soon after first access.<sup class="cites"><a href="#ref-2" class="cite">2</a>, <a href="#ref-7" class="cite">7</a></sup></td><td>Suggests automated decisioning or an operator using strong automation.<sup class="cites"><a href="#ref-1" class="cite">1</a>, <a href="#ref-2" class="cite">2</a></sup></td><td>Skilled human operators and scripted post-exploitation workflows.</td></tr>
+<tr><td>Environment-specific payloads</td><td>Payloads include recently observed paths, hostnames, routes, tenant names, cloud metadata, or user details.<sup class="cites"><a href="#ref-2" class="cite">2</a>, <a href="#ref-6" class="cite">6</a></sup></td><td>Context-aware generation is more suggestive than generic scanning.<sup class="cites"><a href="#ref-2" class="cite">2</a>, <a href="#ref-6" class="cite">6</a></sup></td><td>DevOps automation, configuration tools, response scripts, and red teams.</td></tr>
+<tr><td>High entropy or mutating commands</td><td>Many unique commands, parameters, payloads, or short-lived destinations in a narrow window.<sup class="cites"><a href="#ref-2" class="cite">2</a>, <a href="#ref-6" class="cite">6</a></sup></td><td>Supports anomaly detection where payloads are being generated or adapted rapidly.<sup class="cites"><a href="#ref-5" class="cite">5</a>, <a href="#ref-6" class="cite">6</a></sup></td><td>Fuzzers, WAF testing, polymorphic malware, CI (continuous integration) pipelines, and scanners.</td></tr>
+<tr><td>Repeated troubleshooting loops</td><td>Failed commands or blocked requests followed quickly by adjusted syntax, tools, or parameters.<sup class="cites"><a href="#ref-4" class="cite">4</a>, <a href="#ref-6" class="cite">6</a></sup></td><td>Agents may iterate on errors in seconds to minutes. In one disclosed case an agent moved from a failed login to a corrective payload in 31 seconds, and adapted its parser when a request returned XML where it expected JSON.<sup class="cites"><a href="#ref-4" class="cite">4</a>, <a href="#ref-6" class="cite">6</a>, <a href="#ref-15" class="cite">15</a></sup></td><td>Humans fixing mistakes and scripted retry logic, though neither usually turns a diagnosis around inside a minute.</td></tr>
+<tr><td>Network-traffic-decoding-dependent behaviour</td><td>A next request or command reflects API responses, protocol banners, headers, or error bodies just observed.<sup class="cites"><a href="#ref-2" class="cite">2</a>, <a href="#ref-6" class="cite">6</a></sup></td><td>Suggests automated parsing and action selection.<sup class="cites"><a href="#ref-2" class="cite">2</a>, <a href="#ref-6" class="cite">6</a></sup></td><td>SOAR (security orchestration, automation, and response) enrichment, scripted parsers, human analysts, and DLP (data loss prevention) testing.</td></tr>
+<tr><td>Adaptive command sequencing</td><td>Tool switching, changed flags, or adjusted command order after denial, timeout, or error.<sup class="cites"><a href="#ref-2" class="cite">2</a>, <a href="#ref-6" class="cite">6</a></sup></td><td>Indicates feedback-driven execution rather than static automation.<sup class="cites"><a href="#ref-2" class="cite">2</a>, <a href="#ref-6" class="cite">6</a></sup></td><td>Admin troubleshooting and well written automation.</td></tr>
+<tr><td>Cross-domain coordination</td><td>Endpoint, identity, WAF (web application firewall), proxy, cloud, SaaS (software as a service), and application events chain together faster than normal triage.<sup class="cites"><a href="#ref-1" class="cite">1</a>, <a href="#ref-2" class="cite">2</a>, <a href="#ref-5" class="cite">5</a></sup></td><td>Confidence rises when independent telemetry sources show one coherent sequence.<sup class="cites"><a href="#ref-1" class="cite">1</a>, <a href="#ref-2" class="cite">2</a>, <a href="#ref-5" class="cite">5</a></sup></td><td>EDR (endpoint detection and response) live response, SOAR playbooks, and authorised automation.</td></tr>
+<tr><td>Unusual breadth of exploration</td><td>Many hosts, accounts, APIs, repositories, or applications touched in a short period. One disclosed intrusion logged over 17,000 attacker actions across a single weekend, spread over a swarm of short-lived sandbox environments.<sup class="cites"><a href="#ref-2" class="cite">2</a>, <a href="#ref-4" class="cite">4</a>, <a href="#ref-14" class="cite">14</a></sup></td><td>AI-assisted workflows may explore broadly while searching for a path forward, and at volumes no human operator sustains.<sup class="cites"><a href="#ref-2" class="cite">2</a>, <a href="#ref-4" class="cite">4</a>, <a href="#ref-14" class="cite">14</a></sup></td><td>Vulnerability management, discovery jobs, and broad incident response sweeps, none of which produce a disposable sandbox swarm.</td></tr>
+</tbody></table></div>
+</section>
+<section id="sec-4">
+<h2><span class="num">4</span>Are AI-driven attacks noisier?</h2>
+<p>Public evidence does not support a universal rule that AI-driven attacks are always noisier than humans or standard automation.<sup class="cites"><a href="#ref-3" class="cite">3</a>, <a href="#ref-6" class="cite">6</a></sup> They can be noisy when agents fail, retry, produce malformed payloads, explore too broadly, or loop through troubleshooting.<sup class="cites"><a href="#ref-4" class="cite">4</a>, <a href="#ref-6" class="cite">6</a>, <a href="#ref-12" class="cite">12</a></sup> They may become quieter as tooling improves, when operators constrain the agent, or when the activity is mostly orchestration of existing tools.<sup class="cites"><a href="#ref-1" class="cite">1</a>, <a href="#ref-2" class="cite">2</a>, <a href="#ref-3" class="cite">3</a></sup> Treat noise as a contextual signal. It can increase suspicion when paired with speed, adaptation, and cross-domain sequencing. It is weaker as a standalone AI label.<sup class="cites"><a href="#ref-1" class="cite">1</a>, <a href="#ref-2" class="cite">2</a>, <a href="#ref-6" class="cite">6</a></sup></p>
+<p>Volume is worth separating from noise. The Hugging Face intrusion was not subtle, and the sheer count of logged actions was what made reconstruction possible at all. The same case shows that a high action count can coexist with an operation that ran for a weekend before it was stopped.<sup class="cites"><a href="#ref-14" class="cite">14</a></sup> Volume alone did not shorten the detection window.</p>
+</section>
+<section id="sec-5">
+<h2><span class="num">5</span>Emerging methodologies for distinguishing AI-driven attacks</h2>
+<p>Best practice methodologies for distinguishing LLM-driven attacks are not yet firmly established. Even so, numerous promising potential indicators of AI-driven attack are emerging from academic and industry researchers. The more established methodologies in the research literature are summarised below.</p>
+<p>These findings are indicative-only. They are not a brief for production deployment. At best, these methodologies provide an ensemble of techniques which could be used to score the likelihood an attack is LLM-driven, rather than provide a definitive determination.</p>
+<p>I suggest these methodologies inform long-term plans for adopting AI and AI-skilled professionals in the SOC.</p>
+<p>I anticipate major security vendors will release tooling within 6 to 12 months that applies these same principles.</p>
+<h3>Defensive prompt injection</h3>
+<p>Prompt injections embedded within system response payloads or other attacker-visible telemetry are emerging as a technique both to disrupt and fingerprint AI attackers.</p>
+<p>One example is the Trace framework. It uses a two-step methodology that includes terminal command fingerprinting (see below) and prompt injection to attempt to extract the attacking agent's system prompt.<sup class="cites"><a href="#ref-8" class="cite">8</a></sup></p>
+<p>Prompt injections are optimised for specific models and model families detected utilising LLMmap, an open-source research tool for prompt-based LLM fingerprinting.<sup class="cites"><a href="#ref-9" class="cite">9</a></sup> Success on a prompt injection can therefore contribute not only to detecting the presence of AI but also to fingerprinting the precise model and instructions the attacker is utilising. The Trace team were able to achieve an average 81.9% system prompt extraction rate using fingerprint-guided prompt injection payloads.<sup class="cites"><a href="#ref-8" class="cite">8</a></sup></p>
+<h3>Command lexical fingerprinting</h3>
+<p>A large volume of research papers and tooling have been produced to detect AI-generated code and identify the associated model family. The Trace team were able to predict with approximately 98% accuracy the attacking model in their simulation by applying classical machine-learning models to attacker terminal commands.<sup class="cites"><a href="#ref-8" class="cite">8</a></sup></p>
+<blockquote>"For example, DeepSeek chains find with -exec grep. Claude Opus constrains searches with -maxdepth. GPT-5.4 reads files via sed. Such idioms emerge from pretraining corpora and we observed that they persist across different scaffolds."<sup class="cites"><a href="#ref-8" class="cite">8</a></sup></blockquote>
+<p>Fingerprinting work has since extended past the terminal. Research published in 2026 applies the same approach to browser agents using interface interaction traces, a surface this document does not otherwise address and one that a SOC relying only on command telemetry would miss.<sup class="cites"><a href="#ref-17" class="cite">17</a></sup> A 2026 survey of terminal agents gives a broader view of the environment these command idioms emerge from.<sup class="cites"><a href="#ref-18" class="cite">18</a></sup></p>
+<h3>Canary tripping</h3>
+<p>Recent research indicates that LLMs are more than twice as likely as human attackers to fall for honey tokens and other canary resources.<sup class="cites"><a href="#ref-10" class="cite">10</a></sup> More capable models also appear to trip more canaries.<sup class="cites"><a href="#ref-11" class="cite">11</a></sup> Where historical baseline data is available, the tripping of an unusually high number of canaries may therefore serve as an additional measurable factor in determining the probability an attack is LLM-driven.</p>
+<p>This signal may degrade where agents share memory. Later work argues that a honeytoken cannot simultaneously be harmless to trusted agents and remain unrecognisable to an attacker able to pool information across instances, because a coalition probing repeatedly can learn to separate real objects from decoys.<sup class="cites"><a href="#ref-19" class="cite">19</a></sup> That is a theoretical result rather than a measured one, and it does not contradict the higher tripping rates above. It does suggest the signal is most reliable early and against single agents, and least reliable against the kind of coordinated swarm seen in disclosed incidents.<sup class="cites"><a href="#ref-14" class="cite">14</a>, <a href="#ref-19" class="cite">19</a></sup></p>
+<h3>Semantic diversity of high speed and high volume successive commands</h3>
+<p>LLM agents are unique in their ability to produce contextually-coherent retries with high-semantic-diversity in rapid succession. Each command is a meaningfully different reformulation, adapted to the previous command's output.</p>
+<p>This behaviour is distinct from human activity (high semantic entropy, but slow cadence) and from fuzzy script-driven commands (high volume, low semantic entropy or combinatorial mutations).</p>
+<p>Exact thresholds for the timings and volume indicative of AI-attack do not exist. Some research attack simulations have centred on an average of 1.7 seconds between local model commands, however this timing is likely longer where frontier APIs are used.<sup class="cites"><a href="#ref-6" class="cite">6</a></sup> A disclosed production incident provides a coarser but real anchor, with a documented 31 seconds between a failed login and a working corrective payload, diagnosis included.<sup class="cites"><a href="#ref-15" class="cite">15</a></sup></p>
+<p>I therefore suggest that the overall volume and lowest latency of high-entropy request clusters (both over short intervals and multi-hour sessions) may serve as an additional useful, but not definitive, metric in rating the likelihood of a sequence of actions as being AI-driven.</p>
+</section>
+<section id="sec-6">
+<h2><span class="num">6</span>Detection principles</h2>
+<p>Behaviour in this document means the combination of measurable execution features described above, such as timing between stages, retry cadence, payload shape and diversity, and sequence coherence across telemetry, rather than any single indicator. These features can serve as weighted inputs to a scoring model for the likelihood of an LLM-driven attacker, alongside subjective binary factors. Most organisations are more likely to receive this capability through vendor tooling than to build it in house.<sup class="cites"><a href="#ref-6" class="cite">6</a>, <a href="#ref-8" class="cite">8</a>, <a href="#ref-10" class="cite">10</a>, <a href="#ref-11" class="cite">11</a></sup></p>
+<ul><li>Detect behaviour, not AI attribution. Label activity as suspected AI-assisted only with stated confidence.<sup class="cites"><a href="#ref-1" class="cite">1</a>, <a href="#ref-2" class="cite">2</a>, <a href="#ref-3" class="cite">3</a>, <a href="#ref-6" class="cite">6</a></sup></li><li>Measure time compression between stages, especially recon to exploit and foothold to lateral movement.<sup class="cites"><a href="#ref-4" class="cite">4</a></sup></li><li>Correlate telemetry across endpoint, identity, network, cloud, WAF, SaaS, application, and SIEM (security information and event management) sources.<sup class="cites"><a href="#ref-1" class="cite">1</a>, <a href="#ref-2" class="cite">2</a>, <a href="#ref-5" class="cite">5</a></sup></li><li>Baseline commands, payload shape, user behaviour, service behaviour, and admin automation windows.<sup class="cites"><a href="#ref-5" class="cite">5</a>, <a href="#ref-6" class="cite">6</a></sup></li><li>Alert on rapid adaptive retries, payload mutation, and environment-specific payload generation.<sup class="cites"><a href="#ref-2" class="cite">2</a>, <a href="#ref-6" class="cite">6</a></sup></li><li>Use deception controls, honeypots, and canary assets as signal sources, not as proof that an agent is present, and treat their value as strongest against single agents rather than coordinated ones.<sup class="cites"><a href="#ref-6" class="cite">6</a>, <a href="#ref-19" class="cite">19</a></sup></li><li>Record the assessment basis, false positives considered, and confidence level in incident notes.<sup class="cites"><a href="#ref-1" class="cite">1</a>, <a href="#ref-3" class="cite">3</a>, <a href="#ref-5" class="cite">5</a></sup></li></ul>
+</section>
+<section id="sec-7">
+<h2><span class="num">7</span>Response implications</h2>
+<p>Incident response fundamentals do not change because suspected AI is involved.<sup class="cites"><a href="#ref-5" class="cite">5</a></sup> Two things about the operating environment do.</p>
+<p>The first is tempo inside an incident.<sup class="cites"><a href="#ref-4" class="cite">4</a>, <a href="#ref-5" class="cite">5</a></sup> SOC and cyber defence teams commonly maintain pre-approved containment paths, documented kill-chains, dependency maps, clear authority for rapid containment, rehearsed playbooks, vendor escalation paths, and SIEM plus XDR (extended detection and response) correlation. These are worth reviewing against compressed timelines.<sup class="cites"><a href="#ref-5" class="cite">5</a></sup> Identity, host, cloud, and application containment are usually considered before broad network containment. Network containment remains available when speed and blast radius justify it. It is not typically treated as the default response.<sup class="cites"><a href="#ref-5" class="cite">5</a></sup></p>
+<p>The second is detection durability across incidents. Faster containment does not address it. Anthropic's assessment is that where defenders could previously slow an attacker by deploying a new detection, a capable adversary may now close that loop and bypass the detection faster than the next one can be developed and deployed.<sup class="cites"><a href="#ref-13" class="cite">13</a></sup> Reported behaviour in the same assessment includes agents modifying malware autonomously when a detection fired and iterating until evasion succeeded.<sup class="cites"><a href="#ref-13" class="cite">13</a></sup> If that pattern holds, the useful measure is not only mean time to contain but how long a newly shipped detection survives contact. Most teams do not currently track that.</p>
+<p>A third consideration is practical rather than strategic. In at least one disclosed incident, responders found that commercial model guardrails initially refused to analyse genuine attack artefacts, and fell back to self-hosted models to complete the forensic work.<sup class="cites"><a href="#ref-14" class="cite">14</a></sup> Teams that expect to use AI assistance during response should establish before an incident whether their tooling will process hostile material.</p>
+</section>
+<section id="sec-8">
+<h2><span class="num">8</span>Limitations</h2>
+<p>No reliable public evidence currently proves AI attribution from logs alone.<sup class="cites"><a href="#ref-1" class="cite">1</a>, <a href="#ref-2" class="cite">2</a>, <a href="#ref-3" class="cite">3</a>, <a href="#ref-6" class="cite">6</a></sup> Many indicators overlap with skilled human operators, traditional automation, red team tooling, and security operations activity.<sup class="cites"><a href="#ref-1" class="cite">1</a>, <a href="#ref-3" class="cite">3</a>, <a href="#ref-6" class="cite">6</a></sup> In practice, teams generally work from a confidence-based assessment supported by cross-domain telemetry, threat intelligence, observed timing, and clear caveats.<sup class="cites"><a href="#ref-1" class="cite">1</a>, <a href="#ref-2" class="cite">2</a>, <a href="#ref-5" class="cite">5</a></sup> An assessment of this kind reflects current common practice rather than a ceiling. Posture can continue to improve as baselines, telemetry coverage, and detection features mature.</p>
+<p>The reframing in Section 1 carries its own limitation. The finding that a majority of documented operations were AI-orchestrated describes the set of AI-misuse cases one vendor detected on its own platform.<sup class="cites"><a href="#ref-13" class="cite">13</a></sup> It is not a measure of how often AI appears across intrusions generally. It should not be read as one.</p>
+<p>The emerging techniques in Section 5 have so far been demonstrated in research settings and are likely to require additional work before they can be operationalised and supported in day-to-day operations.<sup class="cites"><a href="#ref-8" class="cite">8</a>, <a href="#ref-10" class="cite">10</a>, <a href="#ref-11" class="cite">11</a></sup> Organisations pursuing them may need new or expanded capability, though interview research with SOC practitioners suggests the binding constraint is less often specialist headcount than organisational readiness and the management of over-reliance, with adoption proceeding under competitive pressure regardless of assessed feasibility.<sup class="cites"><a href="#ref-16" class="cite">16</a></sup> Alternatively, organisations may prefer to adopt the commercial tooling expected to incorporate these techniques within 6 to 12 months.</p>
+</section>
+<section id="sec-9">
+<h2><span class="num">9</span>References</h2>
+<p>Numbered citations throughout this document refer to the sources below.</p>
+<div class="ref" id="ref-1"><span class="refnum">1</span><div class="refbody"><p><strong>Adversarial Misuse of Generative AI.</strong> Google Cloud Threat Intelligence Group, January 2025. <a href="https://cloud.google.com/blog/topics/threat-intelligence/adversarial-misuse-generative-ai" target="_blank" rel="noopener">https://cloud.google.com/blog/topics/threat-intelligence/adversarial-misuse-generative-ai</a></p></div></div>
+<div class="ref" id="ref-2"><span class="refnum">2</span><div class="refbody"><p><strong>What we learned mapping a year's worth of AI-enabled cyber threats.</strong> Anthropic, 3 June 2026. <a href="https://www.anthropic.com/news/AI-enabled-cyber-threats-mitre-attack" target="_blank" rel="noopener">https://www.anthropic.com/news/AI-enabled-cyber-threats-mitre-attack</a></p></div></div>
+<div class="ref" id="ref-3"><span class="refnum">3</span><div class="refbody"><p><strong>The near-term impact of AI on the cyber threat.</strong> UK National Cyber Security Centre, January 2024. <a href="https://www.ncsc.gov.uk/report/impact-of-ai-on-cyber-threat" target="_blank" rel="noopener">https://www.ncsc.gov.uk/report/impact-of-ai-on-cyber-threat</a></p></div></div>
+<div class="ref" id="ref-4"><span class="refnum">4</span><div class="refbody"><p><strong>Frontier AI Trends Report.</strong> UK AI Security Institute, December 2025. <a href="https://www.aisi.gov.uk/frontier-ai-trends-report" target="_blank" rel="noopener">https://www.aisi.gov.uk/frontier-ai-trends-report</a></p></div></div>
+<div class="ref" id="ref-5"><span class="refnum">5</span><div class="refbody"><p><strong>NIST SP 800-61 Rev. 3, Incident Response Recommendations and Considerations for Cybersecurity Risk Management.</strong> Nelson, Rekhi, Souppaya, and Scarfone, NIST, 3 April 2025. <a href="https://csrc.nist.gov/pubs/sp/800/61/r3/final" target="_blank" rel="noopener">https://csrc.nist.gov/pubs/sp/800/61/r3/final</a></p></div></div>
+<div class="ref" id="ref-6"><span class="refnum">6</span><div class="refbody"><p><strong>LLM Agent Honeypot: Monitoring AI Hacking Agents in the Wild.</strong> Reworr and Volkov, arXiv, 2024, version 2. <a href="https://arxiv.org/html/2410.13919v2" target="_blank" rel="noopener">https://arxiv.org/html/2410.13919v2</a></p></div></div>
+<div class="ref" id="ref-7"><span class="refnum">7</span><div class="refbody"><p><strong>MITRE ATT&amp;CK Enterprise Matrix.</strong> MITRE, living resource, accessed 7 July 2026. <a href="https://attack.mitre.org/matrices/enterprise/" target="_blank" rel="noopener">https://attack.mitre.org/matrices/enterprise/</a></p></div></div>
+<div class="ref" id="ref-8"><span class="refnum">8</span><div class="refbody"><p><strong>Trace: Unmasking AI Attack Agents Through Terminal Behavior Fingerprinting.</strong> Ediga and Chattopadhyay, arXiv, 2026. <a href="https://arxiv.org/html/2605.01186" target="_blank" rel="noopener">https://arxiv.org/html/2605.01186</a></p></div></div>
+<div class="ref" id="ref-9"><span class="refnum">9</span><div class="refbody"><p><strong>LLMmap.</strong> Pasquini et al., GitHub, accessed 7 July 2026. <a href="https://github.com/pasquini-dario/LLMmap" target="_blank" rel="noopener">https://github.com/pasquini-dario/LLMmap</a></p></div></div>
+<div class="ref" id="ref-10"><span class="refnum">10</span><div class="refbody"><p><strong>Honeyquest for LLMs: Rethinking Cyber Deception for AI Attackers.</strong> arXiv, 2026. <a href="https://arxiv.org/abs/2606.21037" target="_blank" rel="noopener">https://arxiv.org/abs/2606.21037</a></p></div></div>
+<div class="ref" id="ref-11"><span class="refnum">11</span><div class="refbody"><p><strong>AI Agents and Canaries.</strong> Tracebit Research, accessed 7 July 2026. <a href="https://agentic.tracebit.com/" target="_blank" rel="noopener">https://agentic.tracebit.com/</a></p></div></div>
+<div class="ref" id="ref-12"><span class="refnum">12</span><div class="refbody"><p><strong>Why cyber defenders need to be ready for frontier AI.</strong> UK National Cyber Security Centre, March 2026. <a href="https://www.ncsc.gov.uk/blogs/why-cyber-defenders-need-to-be-ready-for-frontier-ai" target="_blank" rel="noopener">https://www.ncsc.gov.uk/blogs/why-cyber-defenders-need-to-be-ready-for-frontier-ai</a></p></div></div>
+<div class="ref" id="ref-13"><span class="refnum">13</span><div class="refbody"><p><strong>Detecting and countering misuse of AI: September 2026.</strong> Anthropic, September 2026, covering December 2025 to August 2026. <a href="https://www.anthropic.com/threat-intelligence-report-september-2026" target="_blank" rel="noopener">https://www.anthropic.com/threat-intelligence-report-september-2026</a></p><p class="refnote">Supports the shift from assistance to orchestration, the reported tempo figures, and the detection durability problem.</p></div></div>
+<div class="ref" id="ref-14"><span class="refnum">14</span><div class="refbody"><p><strong>Hugging Face autonomous agent breach research note.</strong> Cloud Security Alliance, July 2026. <a href="https://labs.cloudsecurityalliance.org/research/csa-research-note-huggingface-autonomous-agent-breach-202607/" target="_blank" rel="noopener">https://labs.cloudsecurityalliance.org/research/csa-research-note-huggingface-autonomous-agent-breach-202607/</a></p><p class="refnote">Supports the 17,000 logged actions figure, the disposable sandbox swarm, and the guardrail obstruction encountered during forensics.</p></div></div>
+<div class="ref" id="ref-15"><span class="refnum">15</span><div class="refbody"><p><strong>JADEPUFFER: Agentic ransomware for automated database extortion.</strong> Michael Clark, Sysdig, 1 July 2026. <a href="https://www.sysdig.com/blog/jadepuffer-agentic-ransomware-for-automated-database-extortion" target="_blank" rel="noopener">https://www.sysdig.com/blog/jadepuffer-agentic-ransomware-for-automated-database-extortion</a></p><p class="refnote">Supports the timestamped 31 second failed-login to corrective-payload interval and the observed parser adaptation.</p></div></div>
+<div class="ref" id="ref-16"><span class="refnum">16</span><div class="refbody"><p><strong>From Chasing Ghosts to Missed Attacks: Perspectives and Perceptions of SOC Practitioners on LLM Integration, Risks, and Readiness.</strong> Thurner, Jost, Horstmann, Ising, Groeber, Naiakshina and Schinzel, arXiv 2608.00672, 1 August 2026. <a href="https://arxiv.org/abs/2608.00672" target="_blank" rel="noopener">https://arxiv.org/abs/2608.00672</a></p><p class="refnote">Twenty-five practitioner interviews. Supports the readiness and over-reliance framing in Section 8.</p></div></div>
+<div class="ref" id="ref-17"><span class="refnum">17</span><div class="refbody"><p><strong>Known By Their Actions: Fingerprinting LLM Browser Agents via UI Traces.</strong> arXiv 2605.14786, 2026. <a href="https://arxiv.org/abs/2605.14786" target="_blank" rel="noopener">https://arxiv.org/abs/2605.14786</a></p><p class="refnote">Cited for the existence of browser-agent fingerprinting as a distinct surface. Abstract not assessed in depth for this revision.</p></div></div>
+<div class="ref" id="ref-18"><span class="refnum">18</span><div class="refbody"><p><strong>Terminal Agents: A Survey of AI Agents in Command-Line Environments.</strong> arXiv 2608.20485, August 2026. <a href="https://arxiv.org/abs/2608.20485" target="_blank" rel="noopener">https://arxiv.org/abs/2608.20485</a></p><p class="refnote">Cited as a landscape reference for terminal agent behaviour. Abstract not assessed in depth for this revision.</p></div></div>
+<div class="ref" id="ref-19"><span class="refnum">19</span><div class="refbody"><p><strong>When Agents Talk: Honeytokens under Shared Memory.</strong> arXiv 2608.11436, August 2026. <a href="https://arxiv.org/abs/2608.11436" target="_blank" rel="noopener">https://arxiv.org/abs/2608.11436</a></p><p class="refnote">Theoretical result. Supports the decay condition on canary tripping where agents pool information.</p></div></div>
+<p>Confidence language throughout reflects the public evidence base as at 23 September 2026.</p>
+</section>
+<section id="change-record" class="changerec">
+<h2>Change record, v3 to v4</h2>
+<p>Applied after a freshness scan covering 7 July to 23 September 2026. Every change below was approved individually. Nothing else in the document moved.</p>
+<div class="tw"><table>
+<thead><tr>
+<th>#</th>
+<th>Change</th>
+<th>Sections</th>
+<th>Evidence</th>
+</tr></thead><tbody>
+<tr><td>1</td><td>Executive summary reframed to lead with orchestration displacing assistance, narrowed to what the source actually claims. Detection durability separated from incident tempo.</td><td>1, 2, 7</td><td>13</td></tr>
+<tr><td>2</td><td>Hugging Face breach added as an observed anchor for breadth of exploration. Guardrail obstruction added as a response consideration.</td><td>3, 4, 7</td><td>14</td></tr>
+<tr><td>3</td><td>JadePuffer added as a timestamped anchor for retry-loop cadence.</td><td>2, 3, 5</td><td>15</td></tr>
+<tr><td>4</td><td>Capability constraint amended from specialist headcount to organisational readiness and over-reliance.</td><td>8</td><td>16</td></tr>
+<tr><td>5</td><td>Fingerprinting noted as extending past the terminal to browser agents.</td><td>5</td><td>17, 18</td></tr>
+<tr><td>6</td><td>Decay condition added to canary tripping where agents share memory.</td><td>5, 6</td><td>19</td></tr>
+<tr><td>-</td><td>Limitation added recording that the Section 1 reframe rests on one vendor's platform data.</td><td>8</td><td>13</td></tr>
+</tbody></table></div>
+<p>Section 5 is unchanged from v3 apart from the two additions above, because it has already been through the voice rewrite as the pilot section.</p>
+</section>
+      <footer>
+        Confidence language throughout reflects the public evidence base as at 23 September 2026.
+        Every claim carries a numbered citation to a named source. Where a source was not read in
+        full, the reference says so.
+      </footer>
+    </main>
+  </div>
+</div>

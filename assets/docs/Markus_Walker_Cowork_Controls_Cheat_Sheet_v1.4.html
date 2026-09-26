@@ -1,0 +1,947 @@
+<!doctype html>
+<html lang="en-AU">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Securing Claude Cowork: Controls, Gaps and Safer Defaults | M. Walker</title>
+<meta name="description" content="What the Claude Cowork admin console, device policy (MDM) and third-party deployments on Bedrock, Vertex and Foundry control, where they fall short, and which defaults to change. Version 1.4, evidence cut 23 September 2026.">
+<meta name="author" content="M. Walker">
+<link rel="canonical" href="https://www.markuswalker.com/assets/docs/Markus_Walker_Cowork_Controls_Cheat_Sheet_v1.4">
+<meta property="og:title" content="Securing Claude Cowork: Controls, Gaps and Safer Defaults | M. Walker">
+<meta property="og:description" content="What the Claude Cowork admin console, device policy (MDM) and third-party deployments on Bedrock, Vertex and Foundry control, where they fall short, and which defaults to change. Version 1.4, evidence cut 23 September 2026.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://www.markuswalker.com/assets/docs/Markus_Walker_Cowork_Controls_Cheat_Sheet_v1.4">
+<meta property="og:image" content="https://www.markuswalker.com/art/og-image.jpg">
+<link rel="up" href="https://www.markuswalker.com/projects/claude-cowork-controls-cheat-sheet/">
+<style>
+  :root {
+    color-scheme: light;
+    --paper:#FCFCFB; --surface:#F2F4F3; --raised:#FFFFFF;
+    --ink:#121A1C; --body:#25322F; --muted:#5A6669;
+    --rule:#DFE3E1; --rule-strong:#C3CBC8;
+    --accent:#0E5B57; --accent-soft:#E4EFEC;
+    --signal:#8C4A12; --signal-soft:#F6EDE2;
+    --sans:'IBM Plex Sans',system-ui,-apple-system,'Segoe UI',sans-serif;
+    --serif:'Source Serif 4',Georgia,'Times New Roman',serif;
+    --mono:'IBM Plex Mono',ui-monospace,'SF Mono',Menlo,monospace;
+  }
+  * { box-sizing:border-box; }
+  body {
+    background:var(--paper); color:var(--body);
+    font-family:var(--serif); font-size:16.5px; line-height:1.62;
+    margin:0; -webkit-font-smoothing:antialiased;
+  }
+  .shell { max-width:1180px; margin:0 auto; padding-inline:20px; padding-block:0 72px; }
+
+  /* masthead */
+  header.mast { padding-block:52px 34px; border-bottom:1px solid var(--rule-strong); }
+  .kicker {
+    font-family:var(--sans); font-size:11px; font-weight:600; letter-spacing:.14em;
+    text-transform:uppercase; color:var(--accent); margin:0 0 18px;
+  }
+  h1 {
+    font-family:var(--sans); font-weight:600; font-size:clamp(28px,4.6vw,44px);
+    line-height:1.14; letter-spacing:-.021em; color:var(--ink);
+    margin:0 0 12px; max-width:19ch; text-wrap:balance;
+  }
+  .standfirst { font-size:19px; color:var(--muted); margin:0 0 28px; max-width:52ch; }
+  .byline {
+    font-family:var(--sans); font-size:13.5px; color:var(--ink); font-weight:500;
+    margin:0 0 26px;
+  }
+  .byline span { color:var(--muted); font-weight:400; }
+
+  /* provenance strip: the paper's own discipline, made visible */
+  .prov {
+    display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+    gap:1px; background:var(--rule); border:1px solid var(--rule);
+    border-radius:3px; overflow:hidden;
+  }
+  .prov div { background:var(--raised); padding:13px 15px; }
+  .prov dt {
+    font-family:var(--sans); font-size:10px; font-weight:600; letter-spacing:.11em;
+    text-transform:uppercase; color:var(--muted); margin:0 0 5px;
+  }
+  .prov dd { font-family:var(--mono); font-size:14px; color:var(--ink); margin:0; font-weight:500; }
+
+  /* layout */
+  .cols { display:grid; grid-template-columns:1fr; gap:0; }
+  nav.rail { display:none; padding-top:38px; }
+  @media (min-width:1000px) {
+    .cols { grid-template-columns:196px minmax(0,1fr); gap:56px; align-items:start; }
+    nav.rail { position:sticky; top:calc(env(safe-area-inset-top,0px) + 28px); display:block; }
+  }
+  nav.rail a {
+    display:flex; gap:9px; font-family:var(--sans); font-size:12.5px; color:var(--muted);
+    text-decoration:none; padding:5px 0; line-height:1.4;
+  }
+  nav.rail a:hover { color:var(--accent); }
+  .nnum { font-family:var(--mono); font-size:11px; color:var(--rule-strong); min-width:13px; }
+
+  main { min-width:0; padding-top:38px; }
+  section { margin-bottom:46px; scroll-margin-top:24px; }
+  h2 {
+    font-family:var(--sans); font-weight:600; font-size:23px; letter-spacing:-.012em;
+    color:var(--ink); margin:0 0 18px; padding-bottom:11px;
+    border-bottom:1px solid var(--rule); display:flex; gap:13px; align-items:baseline;
+    text-wrap:balance;
+  }
+  .num { font-family:var(--mono); font-size:15px; color:var(--accent); font-weight:500; }
+  h3 {
+    font-family:var(--sans); font-weight:600; font-size:16px; color:var(--ink);
+    margin:30px 0 11px; letter-spacing:-.005em;
+  }
+  p { margin:0 0 15px; max-width:68ch; }
+  ul { margin:0 0 16px; padding-left:0; list-style:none; max-width:68ch; }
+  ul li { position:relative; padding-left:19px; margin-bottom:13px; }
+  ul li::before {
+    content:''; position:absolute; left:2px; top:.72em; width:5px; height:5px;
+    background:var(--accent); border-radius:50%;
+  }
+  blockquote {
+    margin:18px 0; padding:15px 19px; background:var(--surface);
+    border-left:2.5px solid var(--accent); border-radius:0 3px 3px 0;
+    font-family:var(--mono); font-size:13.5px; line-height:1.6; color:var(--ink);
+    max-width:68ch;
+  }
+
+  /* citations */
+  sup.cites { font-size:.66em; line-height:0; white-space:nowrap; }
+  a.cite {
+    color:var(--accent); text-decoration:none; font-family:var(--mono);
+    font-weight:500; padding:0 .5px;
+  }
+  a.cite:hover { text-decoration:underline; }
+
+  /* tables */
+  .tw { overflow-x:auto; margin:0 0 22px; border:1px solid var(--rule); border-radius:3px; }
+  table { border-collapse:collapse; width:100%; min-width:620px; background:var(--raised); }
+  th {
+    font-family:var(--sans); font-size:11px; font-weight:600; letter-spacing:.07em;
+    text-transform:uppercase; color:var(--muted); text-align:left;
+    padding:11px 14px; background:var(--surface); border-bottom:1px solid var(--rule-strong);
+    vertical-align:bottom;
+  }
+  td {
+    padding:13px 14px; font-size:14.5px; line-height:1.55;
+    border-bottom:1px solid var(--rule); vertical-align:top;
+  }
+  tbody tr:last-child td { border-bottom:none; }
+  td:first-child { font-family:var(--sans); font-weight:500; color:var(--ink); font-size:14px; }
+
+  /* references */
+  .ref {
+    display:grid; grid-template-columns:34px minmax(0,1fr); gap:11px;
+    padding:13px 0; border-bottom:1px solid var(--rule); scroll-margin-top:24px;
+  }
+  .ref:target { background:var(--accent-soft); border-radius:3px; padding-inline:11px; }
+  .refnum {
+    font-family:var(--mono); font-size:13px; font-weight:600; color:var(--accent);
+    padding-top:2px;
+  }
+  .refbody p { margin:0; font-size:14.5px; line-height:1.55; max-width:none; }
+  .refbody a { font-family:var(--mono); font-size:12.5px; color:var(--accent);
+    word-break:break-all; text-decoration:none; }
+  .refbody a:hover { text-decoration:underline; }
+  .refnote { color:var(--muted); font-size:13.5px !important; margin-top:5px !important; font-style:italic; }
+
+  /* change record */
+  .changerec {
+    background:var(--signal-soft); border:1px solid #E8D9C4; border-radius:4px;
+    padding:24px 24px 8px; margin-top:52px;
+  }
+  .changerec h2 { border-bottom-color:#E1CDB2; font-size:19px; }
+  .changerec .tw { border-color:#E1CDB2; }
+  .changerec table { background:#FFFDFA; min-width:560px; }
+  .changerec th { background:#F1E5D5; border-bottom-color:#E1CDB2; color:#7A4310; }
+  .changerec td { border-bottom-color:#EFE2D0; }
+  .changerec td:first-child { font-family:var(--mono); color:var(--signal); }
+
+  footer {
+    margin-top:46px; padding-top:22px; border-top:1px solid var(--rule-strong);
+    font-family:var(--sans); font-size:12.5px; color:var(--muted); line-height:1.7;
+  }
+  a:focus-visible, .cite:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+  @media (prefers-reduced-motion:reduce) { * { scroll-behavior:auto !important; } }
+  html { scroll-behavior:smooth; }
+</style><style>
+.ref{display:block!important;max-width:none!important;font-family:var(--sans);font-size:13.5px;line-height:1.5;margin:0 0 10px;overflow-wrap:anywhere;word-break:normal}
+.ref .rn{font-family:var(--mono);color:var(--accent);font-weight:600;margin-right:6px}
+section h3{font-family:var(--sans)}
+@media print{nav.rail{display:none!important}.cols{grid-template-columns:1fr!important}}
+</style>
+<style>
+sup.cites a{color:var(--accent);text-decoration:none;font-family:var(--mono)}
+sup.cites{color:var(--muted)}
+nav.rail a.sub{padding-left:14px;font-size:12px}
+.ref a{color:var(--accent)}
+@media print{
+ @page{size:A4}
+ body{font-size:10pt;line-height:1.45;background:#fff}
+ .shell{max-width:none;padding:0}
+ header.mast{padding-block:0 14pt}
+ h1{font-size:22pt;max-width:none}
+ .standfirst{font-size:11.5pt;margin-bottom:10pt}
+ main,main p,main li,main ul,main ol,main section{max-width:none!important}
+ main h2{font-size:14pt;break-after:avoid;margin-top:14pt}
+ main h3,main h4{break-after:avoid}
+ .tw table{font-size:8.5pt}
+ tr,li,.ref{break-inside:avoid}
+ .ref{font-size:8.5pt;margin-bottom:4pt}
+ a{color:inherit}
+ footer{font-size:8.5pt}
+ .tw{overflow:visible!important;display:block!important}
+ section,main,.cols,div{break-inside:auto!important}
+ .cols{display:block!important}
+ td,th{padding:4pt 6pt!important}
+}
+</style>
+<style>
+:root {
+  --paper: #f3ecde;
+  --surface: #faf7ee;
+  --raised: #faf7ee;
+  --ink: #203e43;
+  --body: #344a40;
+  --muted: #53665d;
+  --rule: #a4b0a04d;
+  --rule-strong: #627b5c80;
+  --accent: #197e88;
+  --accent-soft: #dce9e5;
+  --signal: #a34c39;
+  --signal-soft: #efe3d3;
+  --sans: "Atlas Sans", Arial, sans-serif;
+  --serif: "Atlas Serif", Georgia, serif;
+  --mono: Consolas, "SFMono-Regular", monospace;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  color: var(--body);
+  background:
+    radial-gradient(ellipse at 8% 9%, #e0e8d8 0, transparent 37%),
+    radial-gradient(ellipse at 93% 27%, #e7dfd3 0, transparent 35%),
+    var(--paper);
+  font: 400 17px/1.65 var(--sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+.shell {
+  max-width: 1380px;
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: 0 clamp(24px, 5vw, 76px) 90px;
+  background: linear-gradient(115deg, #fbf8f0 0%, #f8f4e9 67%, #f2eddf 100%);
+  border-inline: 1px solid #627b5c25;
+  box-shadow: 0 18px 60px #263d3510;
+}
+
+header.mast {
+  padding: clamp(46px, 6vw, 82px) 0 33px;
+  border-bottom: 1px solid var(--rule-strong);
+}
+
+.kicker {
+  margin: 0 0 19px;
+  color: var(--signal);
+  font: 600 11px/1.5 var(--sans);
+  letter-spacing: .16em;
+  text-transform: uppercase;
+}
+
+h1 {
+  max-width: 26ch;
+  margin: 0 0 18px;
+  color: var(--ink);
+  font: 400 clamp(39px, 4.8vw, 66px)/1.08 var(--serif);
+  letter-spacing: -.038em;
+  text-wrap: balance;
+}
+
+.standfirst {
+  max-width: 69ch;
+  margin: 0 0 24px;
+  color: #496369;
+  font: 400 clamp(18px, 2vw, 22px)/1.48 var(--sans);
+}
+
+.byline {
+  margin: 0 0 26px;
+  color: var(--ink);
+  font: 600 15px/1.4 var(--sans);
+}
+
+.byline span { color: var(--muted); font-weight: 400; }
+
+.prov {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px 0;
+  overflow: visible;
+  padding: 13px 0 0;
+  border: 0;
+  border-top: 1px solid var(--rule);
+  border-radius: 0;
+  background: transparent;
+}
+
+.prov div {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 0 21px 0 0;
+  margin: 0 19px 0 0;
+  border-right: 1px solid var(--rule-strong);
+  background: transparent;
+}
+
+.prov div:last-child { border-right: 0; }
+.prov dt { margin: 0; color: var(--muted); font: 600 10px/1.5 var(--sans); letter-spacing: .08em; text-transform: uppercase; }
+.prov dd { margin: 0; color: var(--ink); font: 600 13px/1.5 var(--sans); }
+
+.cols {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0;
+}
+
+nav.rail { display: none; }
+
+@media (min-width: 1080px) {
+  .cols { grid-template-columns: minmax(190px, 235px) minmax(0, 1fr); gap: clamp(38px, 5vw, 74px); }
+  nav.rail {
+    position: sticky;
+    top: 24px;
+    display: block;
+    align-self: start;
+    max-height: calc(100vh - 48px);
+    overflow: auto;
+    padding: 33px 13px 24px 0;
+    scrollbar-width: thin;
+    border-right: 1px solid var(--rule);
+  }
+}
+
+nav.rail a {
+  display: grid;
+  grid-template-columns: 26px minmax(0, 1fr);
+  gap: 7px;
+  padding: 7px 10px 7px 0;
+  color: #496369;
+  font: 400 14px/1.34 var(--sans);
+  text-decoration: none;
+}
+
+nav.rail a.sub { padding-left: 14px; font-size: 13px; }
+nav.rail a:hover, nav.rail a:focus-visible { color: #126c75; }
+nav.rail .nnum { min-width: 0; color: var(--signal); font: 600 11px/1.7 var(--sans); }
+
+main { min-width: 0; padding-top: 34px; }
+main > section { margin: 0 0 54px; scroll-margin-top: 24px; }
+main > section:has(> section) { margin: 0; }
+main > section > section { margin: 0 0 54px; scroll-margin-top: 24px; }
+
+h2 {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  width: 100%;
+  margin: 0 0 20px;
+  padding: 0 0 12px;
+  border-bottom: 1px solid var(--rule-strong);
+  color: var(--ink);
+  font: 400 clamp(27px, 2.5vw, 36px)/1.18 var(--serif);
+  letter-spacing: -.025em;
+  text-wrap: balance;
+}
+
+h2 .num { flex: none; color: var(--signal); font: italic 400 .62em/1.2 var(--serif); }
+
+h3 {
+  margin: 30px 0 12px;
+  color: #244b50;
+  font: 600 20px/1.25 var(--sans);
+  letter-spacing: -.015em;
+  scroll-margin-top: 24px;
+}
+
+h4 { margin: 25px 0 10px; color: var(--ink); font: 600 17px/1.3 var(--sans); }
+p { max-width: 75ch; margin: 0 0 16px; }
+
+ul, ol { max-width: 76ch; margin: 0 0 22px; padding-left: 25px; }
+ul { list-style: disc; }
+ul li { position: static; padding: 0; margin: 0 0 11px; }
+ul li::before { content: none; }
+li::marker { color: var(--signal); }
+main > section > ul:has(> li:only-child) { margin-bottom: 13px; }
+
+blockquote {
+  max-width: 74ch;
+  margin: 22px 0;
+  padding: 7px 0 7px 19px;
+  border: 0;
+  border-left: 2px solid var(--signal);
+  border-radius: 0;
+  background: none;
+  color: var(--ink);
+  font: 400 16px/1.6 var(--serif);
+}
+
+sup.cites { font-size: .72em; line-height: 0; white-space: normal; }
+sup.cites, sup.cites a, a.cite { color: #176873; font: 600 .9em/1 var(--sans); text-decoration: none; }
+sup.cites a:hover, a.cite:hover { text-decoration: underline; }
+
+.tw { max-width: 100%; overflow-x: auto; margin: 19px 0 25px; border: 0; border-top: 2px solid #31555c73; border-radius: 0; }
+table { width: 100%; min-width: 620px; border-collapse: collapse; background: transparent; }
+th {
+  padding: 11px 13px;
+  border-bottom: 1px solid var(--rule-strong);
+  background: #dce2d34d;
+  color: #31555c;
+  font: 600 12px/1.35 var(--sans);
+  letter-spacing: .025em;
+  text-align: left;
+  text-transform: none;
+  vertical-align: bottom;
+}
+
+td { padding: 12px 13px; border-bottom: 1px solid var(--rule); color: var(--body); font: 400 15px/1.5 var(--sans); vertical-align: top; }
+tbody tr:last-child td { border-bottom: 1px solid var(--rule); }
+td:first-child { color: var(--ink); font: 600 14px/1.5 var(--sans); }
+
+.ref { scroll-margin-top: 24px; }
+div.ref {
+  display: grid;
+  grid-template-columns: 32px minmax(0, 1fr);
+  gap: 10px;
+  max-width: 86ch;
+  margin: 0;
+  padding: 11px 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+p.ref {
+  display: block;
+  max-width: 86ch;
+  margin: 0;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--rule);
+  font: 400 14px/1.5 var(--sans);
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+
+.ref:target { padding-inline: 9px; border-radius: 0; background: var(--accent-soft); }
+.refnum, .ref .rn { color: var(--signal); font: 600 13px/1.5 var(--sans); }
+.refbody p { max-width: none; margin: 0; font: 400 14px/1.5 var(--sans); }
+.refbody p + p { margin-top: 5px; }
+.refbody a, .ref a { color: #176873; font: inherit; overflow-wrap: anywhere; word-break: normal; text-decoration-thickness: 1px; text-underline-offset: 2px; }
+.refnote { color: var(--muted); font-style: italic; }
+
+.changerec {
+  margin-top: 62px;
+  padding: 0;
+  border: 0;
+  border-top: 2px solid #a34c3973;
+  border-radius: 0;
+  background: none;
+}
+
+.changerec h2 { margin-top: 20px; font-size: clamp(25px, 2vw, 32px); }
+.changerec .tw { border-color: #a34c3973; }
+.changerec table { background: none; }
+.changerec th { background: #efe3d360; color: #774433; }
+.changerec td, .changerec tbody tr:last-child td { border-color: #a34c3933; }
+.changerec td:first-child { color: var(--signal); font: 600 14px/1.5 var(--sans); }
+
+footer {
+  max-width: 86ch;
+  margin-top: 60px;
+  padding-top: 19px;
+  border-top: 1px solid var(--rule-strong);
+  color: var(--muted);
+  font: 400 13px/1.55 var(--sans);
+}
+
+a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+@media (max-width: 700px) {
+  .shell { padding-inline: 20px; box-shadow: none; }
+  header.mast { padding-top: 40px; }
+  h1 { font-size: clamp(35px, 9vw, 50px); }
+  .prov div { flex-basis: calc(50% - 20px); margin-right: 0; padding-right: 8px; border: 0; }
+  main { padding-top: 30px; }
+  h2 { font-size: 27px; }
+  table { min-width: 540px; }
+}
+
+@media print {
+  @page { size: A4; margin: 16mm; }
+  html { scroll-behavior: auto; }
+  body { background: #fff; font-size: 10pt; }
+  .shell { max-width: none; padding: 0; border: 0; background: #fff; box-shadow: none; }
+  header.mast { padding: 0 0 12pt; }
+  h1 { font-size: 24pt; }
+  .standfirst { font-size: 12pt; }
+  .cols { display: block; }
+  nav.rail { display: none; }
+  main { padding: 14pt 0 0; }
+  main > section { margin-bottom: 28pt; }
+  main > section > section { margin-bottom: 28pt; }
+  h2 { font-size: 17pt; break-after: avoid; }
+  h3, h4 { break-after: avoid; }
+  p, li, td, th { font-size: 9.5pt; }
+  .tw { overflow: visible; }
+  table { min-width: 0; }
+  tr, .ref { break-inside: avoid; }
+  footer { margin-top: 12pt; padding-top: 7pt; font-size: 8pt; line-height: 1.3; break-inside: avoid; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
+
+</style>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<meta name="theme-color" content="#F3ECDE">
+<style data-site-theme>
+@font-face { font-family: 'Schibsted Grotesk'; font-style: normal; font-weight: 400 900; font-display: swap; src: url('/fonts/schibsted-grotesk-var.woff2') format('woff2'); }
+@font-face { font-family: 'Fraunces'; font-weight: 400; font-display: swap; src: url('/fonts/fraunces-regular.woff2') format('woff2'); }
+@font-face { font-family: 'Fraunces'; font-weight: 600; font-display: swap; src: url('/fonts/fraunces-semibold.woff2') format('woff2'); }
+
+:root {
+  --paper: #F3ECDE; --surface: #F4EEE1; --raised: #FBF7EE;
+  --ink: #1F2B26; --body: #2B3731; --muted: #46534C;
+  --rule: #D9CDB4; --rule-strong: rgba(127, 96, 37, .42);
+  --accent: #274931; --accent-soft: #E9E6D3;
+  --signal: #60481C; --signal-soft: #F1E8D6;
+  --gilt: #7F6025; --deep-sage: #28402F;
+  --sans: 'Schibsted Grotesk', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --serif: 'Fraunces', Georgia, 'Times New Roman', serif;
+  --mono: ui-monospace, 'SF Mono', Consolas, monospace;
+}
+
+h1 { font-weight: 600; letter-spacing: -.012em; color: var(--ink); }
+h2 { font-weight: 600; letter-spacing: -.006em; }
+h3 { color: var(--deep-sage); }
+.standfirst { color: var(--muted); }
+nav.rail a { color: var(--muted); }
+nav.rail a:hover, nav.rail a:focus-visible { color: var(--accent); }
+sup.cites, sup.cites a, a.cite, .refbody a, .ref a { color: var(--accent); }
+li::marker { color: var(--gilt); }
+blockquote { border-left-color: var(--gilt); }
+.tw { border-top-color: rgba(127, 96, 37, .55); }
+th { background: rgba(217, 205, 180, .35); color: var(--deep-sage); }
+.changerec, .changerec .tw { border-color: rgba(127, 96, 37, .55); }
+.changerec th { background: rgba(241, 232, 214, .6); color: var(--signal); }
+.changerec td, .changerec tbody tr:last-child td { border-color: rgba(127, 96, 37, .2); }
+
+@media screen {
+  /* the notebook wall behind the leaf, as on the project pages */
+  body {
+    background-color: #ad9d82;
+    background-image:
+      radial-gradient(ellipse 80% 75% at 50% 40%, rgba(120, 92, 56, 0) 55%, rgba(92, 68, 38, .38) 100%),
+      linear-gradient(rgb(198, 198, 196), rgb(198, 198, 196)),
+      url('/art/library/m2-worked-parchment.webp');
+    background-size: auto, auto, 100% auto;
+    background-position: center, center, center top;
+    background-repeat: no-repeat, no-repeat, repeat-y;
+    background-blend-mode: multiply, multiply, normal;
+  }
+  /* the document as a cream folio leaf with an inner hairline */
+  .shell {
+    position: relative; isolation: isolate;
+    width: min(80rem, 100% - 4rem); max-width: none; min-height: 0;
+    margin: clamp(1.25rem, 4vw, 3rem) auto clamp(2rem, 5vw, 4rem);
+    border: 0;
+    background: url('/paper.svg') center / 180px 180px, var(--raised);
+    box-shadow: 0 1px 2px rgba(31, 43, 38, .08), 0 8px 28px rgba(31, 43, 38, .10);
+  }
+  .shell::after { content: ''; position: absolute; inset: 5px; z-index: -1; border: 1px solid rgba(140, 106, 42, .34); pointer-events: none; }
+  @media (max-width: 700px) { .shell { width: calc(100% - 1.25rem); } }
+
+  /* the site bar: the MW mark home, Projects, and the PDF */
+  .site-bar { background: color-mix(in srgb, var(--raised) 90%, transparent); border-bottom: 1px solid #7D7566; }
+  .site-bar .bar-inner { display: flex; align-items: center; gap: 1rem; width: min(80rem, 100% - 2rem); min-height: 4rem; margin-inline: auto; padding-top: env(safe-area-inset-top, 0px); }
+  .site-bar .home { display: inline-flex; align-items: center; min-height: 44px; }
+  .site-bar .home img { display: block; width: 44px; height: 44px; }
+  .site-bar nav { display: flex; margin-left: auto; }
+  .site-bar nav a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 .7rem; border-radius: 4px; color: var(--ink); font: 500 .95rem/1 var(--sans); text-decoration: none; }
+  .site-bar nav a:hover { background: rgba(31, 43, 38, .07); }
+  .site-bar .pdf { display: inline-flex; align-items: center; min-height: 44px; padding: 7px 12px; border: 1.5px solid #8A3A1E; border-radius: 4px; background: #8A3A1E; color: #FFFFFF; font: 600 14px/1.2 var(--sans); text-decoration: none; }
+  .site-bar .pdf:hover { filter: brightness(1.08); }
+  .site-bar a:focus-visible { outline: 2.5px solid var(--accent); outline-offset: 3px; }
+}
+
+@media print { .site-bar { display: none; } }
+</style>
+
+
+</head>
+<body>
+<header class="site-bar">
+  <div class="bar-inner">
+    <a class="home" href="/" aria-label="Markus Walker, home"><img src="/brand/mw-mark.svg" alt="" width="44" height="44"></a>
+    <nav aria-label="Main navigation"><a href="/projects/">Projects</a></nav>
+    <a class="pdf" href="/assets/docs/Markus_Walker_Cowork_Controls_Cheat_Sheet_v1.4.pdf" download>Download PDF</a>
+  </div>
+</header>
+<div class="shell">
+  <header class="mast">
+    <p class="kicker">AI security &middot; Controls reference</p>
+    <h1>Securing Claude Cowork: Controls, Gaps and Safer Defaults</h1>
+    <p class="standfirst">What the admin console, device policy and third-party deployments actually control, and where they fall short.</p>
+    <p class="byline">M. Walker <span>&middot; Practitioner reference</span></p>
+    <dl class="prov">
+      <div><dt>Evidence cut</dt><dd>23 Sep 2026</dd></div>
+      <div><dt>Freshness scan</dt><dd>40 days</dd></div>
+      <div><dt>References</dt><dd>65</dd></div>
+      <div><dt>Version</dt><dd>1.4</dd></div>
+    </dl>
+  </header>
+  <div class="cols">
+    <nav class="rail" aria-label="Sections">
+<a href="#sec-1"><span class="nnum">1</span>Claude Cowork Overview</a>
+<a href="#sec-2"><span class="nnum">2</span>Key Controls Challenges</a>
+<a class="sub" href="#s2-1"><span class="nnum">2.1</span>Critically Dangerous Defaults</a>
+<a class="sub" href="#s2-2"><span class="nnum">2.2</span>Unrestricted Computer Use</a>
+<a class="sub" href="#s2-3"><span class="nnum">2.3</span>Missing Controls in First-Party Configuration</a>
+<a class="sub" href="#s2-4"><span class="nnum">2.4</span>Confusing Egress Controls</a>
+<a class="sub" href="#s2-5"><span class="nnum">2.5</span>Unclear Administrative vs Personal Settings Boundaries</a>
+<a class="sub" href="#s2-6"><span class="nnum">2.6</span>Session Visibility and the Compliance API</a>
+<a class="sub" href="#s2-7"><span class="nnum">2.7</span>Sandbox Escape and the Local Execution Decision</a>
+<a href="#sec-3"><span class="nnum">3</span>References</a>
+<a href="#sec-4"><span class="nnum">4</span>About this cheat sheet</a>
+    </nav>
+    <main>
+<section id="sec-1">
+<h2><span class="num">1</span>Claude Cowork Overview</h2>
+<h3>Thick Client</h3>
+<p>Cowork runs inside the Claude Desktop thick client (Mac, Windows 10/11, and Linux since 30 June 2026, in beta for Debian and Ubuntu with updates through the system package manager) alongside two other apps, Chat and Claude Code <sup class="cites">[<a href="#ref-4">4</a>, <a href="#ref-38">38</a>]</sup>. The three are tightly linked. In 3P, one managed configuration and one engine govern all three, and Chat file analysis uses Cowork's shell tool <sup class="cites">[<a href="#ref-30">30</a>, <a href="#ref-36">36</a>]</sup>. In 1P, a single network access setting governs cloud Cowork, local Cowork and chat <sup class="cites">[<a href="#ref-3">3</a>]</sup>. Cowork sessions now run in Anthropic's cloud by default rather than in the local VM, and local execution remains available for existing desktop deployments <sup class="cites">[<a href="#ref-3">3</a>]</sup>. Team tenants start with cloud execution on. Enterprise tenants start with it off, under a separate Run Cowork in the cloud setting, and the owner must also grant the Cowork in the cloud capability to a group through custom roles <sup class="cites">[<a href="#ref-2">2</a>]</sup>. See 2.7.</p>
+<p><strong>Naming note, 23 September 2026.</strong> Anthropic began rolling out one Claude, merging Cowork and chat, to Pro and Max on 16 September 2026 <sup class="cites">[<a href="#ref-1">1</a>, <a href="#ref-27">27</a>]</sup>. Team and Enterprise organisations keep chat and Cowork as they are today, and Anthropic has promised Enterprise admins at least 30 days' notice before anything changes <sup class="cites">[<a href="#ref-1">1</a>, <a href="#ref-2">2</a>]</sup>. The admin settings (Organization settings, Cowork, and Run Cowork in the cloud) and the 3P keys (coworkTabEnabled, coworkEgressAllowedHosts) still say Cowork, so this sheet does too. The 3P product is now documented as Claude Desktop on 3P <sup class="cites">[<a href="#ref-28">28</a>]</sup>.</p>
+<h3>Third-Party Inference Configuration (Claude Desktop on 3P)</h3>
+<p>"Claude Desktop on 3P" is a Claude Desktop configuration for third-party inference (Google Cloud's Agent Platform, formerly Vertex AI, AWS Bedrock, Microsoft Foundry, a gateway implementing the Anthropic Messages API, or the Anthropic API directly). It runs on a different control plane, MDM policy, while offering increased confidentiality together with Australian data residency for inference where the chosen model is offered in an Australian Bedrock or Vertex region. Anthropic names Asia/Pacific regions only, so check the provider's model availability for Australia <sup class="cites">[<a href="#ref-28">28</a>]</sup>. Anthropic-operated download and telemetry hosts remain (see 2.4.2). Foundry does not currently support this. On Microsoft Foundry, Anthropic operates the Claude models, and Azure hosted Foundry offers Global Standard or US Data Zone Standard residency only <sup class="cites">[<a href="#ref-28">28</a>]</sup>. Microsoft's own page still says equivalent guarantees are coming for Foundry <sup class="cites">[<a href="#ref-42">42</a>]</sup>. The Chat tab is available in this mode, generally available since 14 July 2026 and hidden until an administrator sets chatTabEnabled.</p>
+<p>An organisation that manages 3P from the claude.ai Enterprise Admin Console (beta) signs users in with a Claude account. The app then contacts api.anthropic.com at every launch and every configuration re-check, and Anthropic holds the user list and the saved configuration <sup class="cites">[<a href="#ref-33">33</a>, <a href="#ref-28">28</a>]</sup>. That gives up the "no Anthropic account" premise the 3P confidentiality argument rests on. Gateway deployments, and since 22 September 2026 Bedrock deployments too (inferenceCredentialKind: "external-idp"), can authenticate inference through the organisation's own OIDC identity provider, which keeps identity with the customer <sup class="cites">[<a href="#ref-38">38</a>]</sup>.</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Standard Cowork</th>
+<th>Claude Desktop on 3P</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Model inference</td>
+<td>Anthropic API</td>
+<td>Your Agent Platform (Vertex AI) / Bedrock / Foundry / gateway endpoint, or the Anthropic API directly</td>
+</tr>
+<tr>
+<td>Web application</td>
+<td>Loaded from claude.ai</td>
+<td>Bundled inside the desktop app</td>
+</tr>
+<tr>
+<td>User identity</td>
+<td>Anthropic account</td>
+<td>Local device identity only, the organisation's own OIDC identity provider (gateway, and Bedrock since 22 September 2026), or an Anthropic account when managed from the claude.ai admin console</td>
+</tr>
+<tr>
+<td>Conversation storage</td>
+<td>Anthropic backend</td>
+<td>Local disk on the user's machine</td>
+</tr>
+<tr>
+<td>Code execution sandbox</td>
+<td>Anthropic cloud (on by default for Team, off by default for Enterprise) or local VM for existing desktop deployments</td>
+<td>Local VM only. No cloud execution in 3P</td>
+</tr>
+<tr>
+<td>Chat tab</td>
+<td>Present</td>
+<td>Present since 16 June 2026, generally available 14 July 2026, off unless chatTabEnabled is set. Shown with Cowork as Home since 6 August 2026</td>
+</tr>
+<tr>
+<td>Chat file analysis sandbox</td>
+<td>Governed by the claude.ai code execution setting</td>
+<td>chatAdvancedFileAnalysisEnabled. Reads attached files, and project memory read only inside a project. No network access</td>
+</tr>
+<tr>
+<td>Session content for eDiscovery</td>
+<td>Compliance API, generally available for Enterprise since 26 August 2026 (beta from 3 August for web and mobile, 11 August for desktop), retrieval only</td>
+<td>Not captured by Anthropic. Transcripts sit on local disk. Device retention and legal hold keys (coworkSessionRetentionDays, sessionRetentionHold) since 10 September 2026</td>
+</tr>
+<tr>
+<td>Configuration</td>
+<td>Admin console at claude.ai, plus device policy (MDM) for Desktop</td>
+<td>One of the claude.ai Enterprise Admin Console (beta), OS-native configuration (MDM-managed or per-user), or a bootstrap server</td>
+</tr>
+</tbody>
+</table></div>
+<h3>Missing 3P Features</h3>
+<p>Still absent or withheld in 3P:</p>
+<ul>
+<li>Computer use. Anthropic's feature matrix shows it absent from 3P, and absent for Claude Enterprise too <sup class="cites">[<a href="#ref-29">29</a>]</sup>.</li>
+<li>The default Anthropic plugin marketplace, removed from 3P deployments on 2 July 2026. Provision your own through allowedPluginMarketplaces, out of beta since 27 August 2026. Since that same date the setup window pre-fills Anthropic's Cowork and Claude Code marketplaces, so the default sits one click away from being restored <sup class="cites">[<a href="#ref-38">38</a>, <a href="#ref-31">31</a>]</sup>.<ul>
+<li>Hosted (url) marketplaces can be pinned by SHA-256 (manifestSha256, beta, since 17 August 2026), and pinning is required for automatically installed plugins <sup class="cites">[<a href="#ref-38">38</a>]</sup>.</li>
+<li>userPluginMarketplacesEnabled and userPluginUploadsEnabled (25 August 2026) block member-added marketplaces and uploads. allowedPluginMcpServers (17 September 2026) limits which plugin MCP servers can connect <sup class="cites">[<a href="#ref-38">38</a>]</sup>.</li>
+</ul>
+</li>
+</ul>
+<p>Features that 3P previously lacked and now has:</p>
+<ul>
+<li>The Chat tab, generally available 14 July 2026.</li>
+<li>Projects, added 4 August 2026 and available even where the Cowork tab is turned off.</li>
+<li>Claude in Chrome, since September 2026, and only in organisations managed from the Enterprise Admin Console <sup class="cites">[<a href="#ref-29">29</a>, <a href="#ref-35">35</a>]</sup>.</li>
+<li>A built-in browser, since 17 September 2026 (v2.2553.0), through builtinBrowserEnabled (default false) with domain policy keys <sup class="cites">[<a href="#ref-35">35</a>, <a href="#ref-38">38</a>]</sup>.</li>
+</ul>
+<p>The Chat file analysis sandbox reads only the files attached to the conversation (plus, for a chat inside a project, that project's memory, read only), writes only inside the session directory, and has no network access, unconditionally and independent of coworkEgressAllowedHosts. That makes it a tighter boundary than Cowork's VM <sup class="cites">[<a href="#ref-36">36</a>]</sup>. It runs in the same local VM and shell tool as Cowork. Adding Bash to disabledBuiltinTools disables it. Since 15 September 2026 neither Chat nor Cowork asks for approval at each analysis step, though connector actions still ask, unless "Bash": "ask" is set in builtinToolPolicy <sup class="cites">[<a href="#ref-38">38</a>]</sup>. My assessment: in 3P, do file analysis in Chat rather than Cowork wherever the task allows.</p>
+<h3>Cowork Control Planes &amp; Hierarchy</h3>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Priority</th>
+<th>1P Cowork</th>
+<th>Claude Desktop on 3P</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Claude.ai Organisation Settings</td>
+<td>3rd Party Inference Provider</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Device policy (MDM), Team and Enterprise</td>
+<td>One delivery model: Enterprise Admin Console (beta), MDM policy, or bootstrap server</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Local User In-App Preferences</td>
+<td>Local Config (%LOCALAPPDATA%\Claude-3p/configLibrary)</td>
+</tr>
+<tr>
+<td>4</td>
+<td></td>
+<td>Local User In-App Preferences</td>
+</tr>
+</tbody>
+</table></div>
+<p>* 3P Local Config should be used only for temporary testing.</p>
+<p>1P device policy overrides the in-app extension allowlist, and machine policy beats user policy <sup class="cites">[<a href="#ref-5">5</a>]</sup>. The local config path is unchanged. The 3P hierarchy now starts with a choice of delivery model. Five refinements matter:</p>
+<ul>
+<li>The three 3P delivery models do not combine <sup class="cites">[<a href="#ref-32">32</a>]</sup>. A device carrying any MDM key outside the app-behaviour group ignores the admin console, and a bootstrap response replaces MDM values wholesale.</li>
+<li>Windows does not merge the policy hives. If HKLM carries a managed configuration, HKCU is ignored entirely.</li>
+<li>A managed source overrides local values, with one exception: the app-behaviour group, which is enforced as a unit. That group covers the update keys (including updateViaUpdatesHost), relaunchEnforcementHours, configRecheckIntervalMinutes and the proxy keys <sup class="cites">[<a href="#ref-30">30</a>]</sup>. Only disableAutoUpdates pins the client version. autoUpdaterEnforcementHours is a force-install window.</li>
+<li>Linux reads machine policy from /etc/claude-desktop/managed-settings.json, root owned.</li>
+<li>A bootstrap server can now push remote configuration. The consent prompt under trustBootstrapDelivery covers sensitive values only (credential helpers, endpoints, local commands, connectors), and by default there is no prompt at all when the bootstrap URL comes from machine-scoped MDM <sup class="cites">[<a href="#ref-34">34</a>]</sup>. The configuration reference describes the prompt as the default in all cases, so Anthropic's two pages differ <sup class="cites">[<a href="#ref-30">30</a>]</sup>. The old key name trustBootstrapLocalExec is rejected after 7 October 2026 and then reads as false <sup class="cites">[<a href="#ref-30">30</a>, <a href="#ref-31">31</a>]</sup>. Treat it as a control plane, not a convenience.</li>
+</ul>
+</section>
+<section id="sec-2">
+<h2><span class="num">2</span>Key Controls Challenges</h2>
+<h3 id="s2-1">2.1 Critically Dangerous Defaults</h3>
+<p>Both the 1P and the 3P configuration ship defaults that will hurt you, and some of them look harmless until you read what they actually do:</p>
+<ul>
+<li>The monthly spend limit defaults to unlimited. In 3P, inferenceMaxTokensPerWindow does nothing unless the cap and the window are both set, and once they are it is still a per-user soft cap counted on the client, not a quota the server enforces <sup class="cites">[<a href="#ref-30">30</a>]</sup>.</li>
+<li>'Rate Chats' defaults to enabled. That is my inference, because Anthropic does not state the default. One click stores the entire conversation, including content, custom styles, preferences and model settings, for five years, and Anthropic may use it to train models. Despite the Enterprise headline of no training on your data by default, the click counts as an opt in. Feedback excludes raw connector content unless it was copied into the conversation, and Anthropic de-links feedback from user and customer IDs. Disable at Organization settings, Data and Privacy <sup class="cites">[<a href="#ref-14">14</a>]</sup>.</li>
+<li>Plugins and connectors are open by default. A Knowledge Work marketplace is added to every organisation <sup class="cites">[<a href="#ref-8">8</a>]</sup>. Plugins set to Installed by default or Required also install into Claude Code, where their hooks, sub-agents and MCP servers run on the user's computer, and turning off Cowork does not stop that sync <sup class="cites">[<a href="#ref-8">8</a>]</sup>. Enterprise custom roles have carried per connector and per tool permissions (Always allow, Needs approval or Blocked) since 28 May 2026, enforced on Anthropic's servers, but only for members on a Custom role, not for locally run connectors and not in 3P <sup class="cites">[<a href="#ref-6">6</a>, <a href="#ref-7">7</a>, <a href="#ref-13">13</a>]</sup>. Outside those roles, enabling a connector makes it available to everyone, and each member still signs in <sup class="cites">[<a href="#ref-11">11</a>]</sup>. Default counts move with each release, so check the tenant rather than a published figure.</li>
+<li>Anthropic describes new custom roles as permissive by default: chat on, every organisation-enabled model available, and connectors at Needs approval. Check each tab before saving. Roles set to All capabilities also pick up new capabilities as they launch <sup class="cites">[<a href="#ref-6">6</a>, <a href="#ref-7">7</a>]</sup>. When Anthropic enables connector permissions for an organisation, its existing roles are seeded with Always allow <sup class="cites">[<a href="#ref-6">6</a>]</sup>.</li>
+<li>Organisation provisioned skills are on for every user across web chat, the Chat tab and Cowork. A user can switch one off but cannot delete it. Provisioned skills also load in Claude Code for users who sign in with their Claude account. The admin fix is syncClaudeAiSkills: false in Claude Code managed settings <sup class="cites">[<a href="#ref-9">9</a>]</sup>.</li>
+<li>Allow Automatically approve mode is on by default for Team and Enterprise <sup class="cites">[<a href="#ref-2">2</a>, <a href="#ref-15">15</a>]</sup>. Anthropic's 3P feature matrix (17 September 2026) says the mode is not available for Claude Enterprise <sup class="cites">[<a href="#ref-29">29</a>]</sup>. That conflict is unresolved, so check the tenant.</li>
+<li>The built-in browser and Claude in Chrome both default on for Enterprise from 10 September 2026 unless an owner had turned them off. See 2.2.</li>
+<li>Owners cannot restrict project creation <sup class="cites">[<a href="#ref-2">2</a>]</sup>. Share projects and Public projects are both on by default, and turning sharing off does not revoke existing user and group shares, though existing public projects become private. On Enterprise, sharing can be set per custom role <sup class="cites">[<a href="#ref-17">17</a>]</sup>.</li>
+<li>Artifacts can be shared by email with people outside the organisation (beta), on by default for Team and off for Enterprise, at Organization settings, Artifacts. Any member of the organisation who can edit an artifact can invite outsiders (up to 50 per artifact) once the owner sets a Shared version, and accepted invitations never expire. Cowork produces artifacts, so this is an output path outside every egress control. Admins can see and revoke outside access under Published artifacts <sup class="cites">[<a href="#ref-16">16</a>]</sup>.</li>
+</ul>
+<p>Where 3P is in use there are levers <sup class="cites">[<a href="#ref-30">30</a>]</sup>:</p>
+<ul>
+<li>skillCreationEnabled hides skill creation and disables the agent's own skill creation tools. One user report on GitHub says it is not enforced when delivered through the Claude apps gateway <sup class="cites">[<a href="#ref-64">64</a>]</sup>. That is unverified, so test it on your build.</li>
+<li>mcpPersistentAlwaysAllowEnabled removes the persistent Always allow choice. Since 22 September 2026 mcpScheduledTaskApprovalLifetimeDays offers a lasting approval for scheduled tasks even while persistent approvals are off, so set that to 0 as well <sup class="cites">[<a href="#ref-30">30</a>, <a href="#ref-38">38</a>]</sup>.</li>
+<li>disableBypassPermissionsMode (4 September 2026, off by default) removes the bypass permissions mode from Code and Cowork. Until it is set, the mode is available in 3P <sup class="cites">[<a href="#ref-30">30</a>, <a href="#ref-38">38</a>]</sup>.</li>
+<li>managedMcpServers toolPolicy supports blocked, ask and allow with wildcards, which is what a deny by default posture needs. Unrecognised values fail to the most restrictive setting. ask-session is deprecated: it behaves exactly as ask and is accepted until 7 October 2026, after which the app rejects the entry and that connector becomes unavailable <sup class="cites">[<a href="#ref-30">30</a>, <a href="#ref-31">31</a>]</sup>.</li>
+<li>Before 7 October 2026, search existing profiles for every spelling caught by that cut-off, about 20 in all. They include ask-session in builtinToolPolicy and orgPluginSettings, inferenceGatewayAuthScheme values sso and auto, the string or list forms of otlpHeaders, bootstrapHeaders and inferenceCustomHeaders, enduserAttribution, trustBootstrapLocalExec, isDxtEnabled, isDxtSignatureRequired and the orgPluginSettings record form. An undocumented client certificate fallback setting stops being accepted on 17 November 2026 <sup class="cites">[<a href="#ref-30">30</a>, <a href="#ref-31">31</a>, <a href="#ref-38">38</a>]</sup>.</li>
+</ul>
+<p>Several defaults are tighter than v1.2 of this sheet said, and some of them were missed at its cut: new custom roles default to Needs approval on every connector <sup class="cites">[<a href="#ref-6">6</a>]</sup>, Always allow for connector tools is off by default <sup class="cites">[<a href="#ref-2">2</a>]</sup>, network egress is off on new Enterprise organisations <sup class="cites">[<a href="#ref-23">23</a>]</sup>, memory is off by default for Team and Enterprise since 25 August 2026 <sup class="cites">[<a href="#ref-13">13</a>]</sup>, and from 2 October 2026 security scanning is on by default for Enterprise organisations that have not set it <sup class="cites">[<a href="#ref-9">9</a>]</sup>. The same date moves skill publishing to Requires review for organisations that have not chosen, which is tighter for Team (from Open) but looser for Enterprise (from Off) <sup class="cites">[<a href="#ref-9">9</a>]</sup>. New permissive defaults keep arriving. Check each release against the tenant, not against this sheet.</p>
+<h3 id="s2-2">2.2 Unrestricted Computer Use</h3>
+<p>Computer use is off by default, remains Pro and Max only, and has no administrative control on any plan. Anthropic states that Team and Enterprise do not have access, and there is no published date for Enterprise availability <sup class="cites">[<a href="#ref-18">18</a>]</sup>. There is still no sandbox: in Anthropic's own wording it has "no sandbox between Claude and your applications". Once enabled it runs with the user's privileges. It asks permission before accessing each application and some apps are off limits by default, but it can still reach applications it was never granted (a link in a mail client opening in Chrome), and it takes screenshots of whatever is visible, including material unrelated to the task <sup class="cites">[<a href="#ref-18">18</a>, <a href="#ref-50">50</a>]</sup>.</p>
+<p>Claude in Chrome is now administered separately: enabled by default on Team. On Enterprise it was disabled by default, and from 10 September 2026 it turns on by default unless an owner had already disabled it. Site allowlist and blocklist controls sit at Organization settings <sup class="cites">[<a href="#ref-19">19</a>]</sup>. On Enterprise, once cloud Cowork is enabled the side panel becomes a Cowork session and existing Chrome users switch over automatically, so the cloud Cowork toggle and the Chrome toggle are one decision. Zero data retention is not supported for Claude in Chrome <sup class="cites">[<a href="#ref-19">19</a>]</sup>. Three independent research reports (LayerX's ClaudeBleed in April, Manifold Security in July, Forever Security's BragJack in September 2026) show that another installed extension can drive Claude in Chrome <sup class="cites">[<a href="#ref-51">51</a>, <a href="#ref-52">52</a>, <a href="#ref-53">53</a>]</sup>. Manifold reported its two flaws unpatched in v1.0.80. Anthropic rated BragJack medium and paid a bounty with no fix date. None of the three is marked fixed, so keep Chrome off, or allowlist extensions, until Anthropic says otherwise.</p>
+<p>Claude Desktop also has a built-in browser for Cowork, controlled at Organization settings, Cowork, separately from Claude in Chrome. It is on by default for Team. On Enterprise it was off at launch and is on by default from 10 September 2026 <sup class="cites">[<a href="#ref-20">20</a>, <a href="#ref-21">21</a>]</sup>. Anything a user signs in to inside the built-in browser is available to Claude in future Cowork sessions on that computer. An Import cookies step brings saved logins across from Chrome, Edge and Firefox (Chrome and Edge on macOS only), with banking, email and SSO sites unchecked by default, and no admin control over the import is documented <sup class="cites">[<a href="#ref-20">20</a>]</sup>. Browser traffic leaves from the user's machine even when the session runs in the cloud <sup class="cites">[<a href="#ref-2">2</a>]</sup>. Anthropic does not say whether network egress settings apply to the built-in browser. They do not apply to web fetch, web search or Claude in Chrome <sup class="cites">[<a href="#ref-2">2</a>]</sup>.</p>
+<p>Computer use cannot be governed inside Anthropic's controls, so govern it at identity and endpoint. Two controls bind: Tenant restrictions at the proxy <sup class="cites">[<a href="#ref-22">22</a>]</sup>, and forceLoginOrgUUID in 1P Desktop device policy, which makes sign-in fail for any account outside the listed organisations <sup class="cites">[<a href="#ref-5">5</a>]</sup>. Both keep personal Pro and Max accounts off managed devices. That this also keeps computer use off is my inference from two documented facts, not an Anthropic statement.</p>
+<h3 id="s2-3">2.3 Missing Controls in First-Party Configuration</h3>
+<p>Model choice is the one area where 1P has caught up. Enterprise administrators can set an organisation default model and restrict which models each custom role may use, with a per model effort cap, at Organization settings, Models and under each role. Haiku cannot be disabled, so a fallback always exists <sup class="cites">[<a href="#ref-12">12</a>]</sup>. Claude Code honours availableModels in the CLI and IDE only, not in Claude Code on web or desktop <sup class="cites">[<a href="#ref-12">12</a>]</sup>. The related enforceAvailableModels key is not documented in the sources cited here.</p>
+<p>The remaining 1P controls sit in one of three places, and most of them are not in the admin console.</p>
+<p><strong>Admin console (Organization settings)</strong></p>
+<ul>
+<li>Model access, as above.</li>
+<li>Inference hooks (beta, Enterprise, since 5 August 2026, missed at the v1.2 cut). Each governed prompt across claude.ai, Cowork and Claude Code is held for the organisation's AI security server to allow or deny before inference. It is the first inline, deny capable control over 1P Cowork content <sup class="cites">[<a href="#ref-39">39</a>]</sup>.</li>
+</ul>
+<p><strong>Device policy (MDM), Team and Enterprise</strong></p>
+<p>These are Desktop policy keys rather than admin console settings, so they bind only on managed endpoints <sup class="cites">[<a href="#ref-5">5</a>]</sup>.</p>
+<ul>
+<li>Cowork and the Code tab on or off: secureVmFeaturesEnabled and isClaudeCodeForDesktopEnabled.</li>
+<li>Auto updates: disableAutoUpdates and autoUpdaterEnforcementHours.</li>
+<li>File system access: allowedWorkspaceFolders, "Filepath or filepaths the user can mount to Cowork". In 3P the same key adds per entry read only mode and pre-selected folders, but in Code sessions read only binds the file tools only, not Bash or SSH <sup class="cites">[<a href="#ref-30">30</a>]</sup>.</li>
+<li>Sign-in: forceLoginOrgUUID (see 2.2).</li>
+</ul>
+<p><strong>Nowhere in 1P</strong></p>
+<ul>
+<li>The code interpreter and bash for Cowork cannot be disabled in favour of simple file read and write. The claude.ai code interpreter toggle governs the Chat app only. The 3P lever is disabledBuiltinTools with Bash. disableBundledSkills governs Claude Code's bundled skills and is not a code interpreter control <sup class="cites">[<a href="#ref-30">30</a>]</sup>.</li>
+<li>Telemetry egress cannot be blocked. Claude Enterprise does not offer telemetry toggles <sup class="cites">[<a href="#ref-29">29</a>]</sup>. 3P uses disableEssentialTelemetry, disableNonessentialTelemetry and disableNonessentialServices.</li>
+<li>Computer use cannot be restricted from either control plane, and it is absent from 3P too, so it is not a 3P over 1P gap. See 2.2.</li>
+</ul>
+<p>With cost control settled, every gap that remains governs what Cowork can execute, reach or read.</p>
+<h3 id="s2-4">2.4 Confusing Egress Controls</h3>
+<h4>2.4.1 "1P"</h4>
+<p>Four points decide what a first-party session can reach, and none of them is quite what the setting name promises.</p>
+<ul>
+<li>Turning off web_search does not take Cowork offline. web_fetch and bash both remain. Web fetch runs server side and is limited to search results and URLs the user shared, and bash follows the egress setting <sup class="cites">[<a href="#ref-2">2</a>]</sup>.</li>
+<li>Egress has four options under Organization settings, Capabilities: off, package managers only, package managers plus specific domains, or all domains. New Enterprise organisations start with egress off, and cloud sessions use the same setting <sup class="cites">[<a href="#ref-23">23</a>, <a href="#ref-3">3</a>]</sup>. For Team, Anthropic's own article gives both package managers only and off, so check the tenant <sup class="cites">[<a href="#ref-23">23</a>]</sup>. Network settings apply only when a new session is created <sup class="cites">[<a href="#ref-2">2</a>]</sup>.</li>
+<li>Web fetch, web search and MCP connections, including Claude in Chrome, reach the network regardless of the egress settings <sup class="cites">[<a href="#ref-2">2</a>]</sup>.</li>
+<li>web_search runs server side at Anthropic and returns page content along with results, not only links <sup class="cites">[<a href="#ref-41">41</a>, <a href="#ref-24">24</a>]</sup>.</li>
+</ul>
+<h4>2.4.2 "3P"</h4>
+<p>Third-party egress rests on one key, and most of what matters is the traffic that key never sees.</p>
+<ul>
+<li>coworkEgressAllowedHosts accepts exact hosts, wildcards such as *.corp.com that match subdomains at any depth but not the apex, a bare wildcard, and a port suffix, across both the Cowork and Code tabs. Ports are enforced in Cowork, but the Code translation treats them as the bare host. The key does not cover Web Search (which runs at the inference provider), inference or MCP traffic <sup class="cites">[<a href="#ref-30">30</a>]</sup>.</li>
+<li>Shell commands and package installs run in a network sandbox that reaches only the listed hosts plus the inference provider. IP addresses match only when listed exactly, and localhost and private-network addresses are always blocked for web fetch. Setting * switches the shell network sandbox off <sup class="cites">[<a href="#ref-30">30</a>]</sup>. AWS's ccwb tooling sets coworkEgressAllowedHosts to ["*"] automatically when web search is enabled, which is a trap for Bedrock deployments <sup class="cites">[<a href="#ref-43">43</a>]</sup>.</li>
+<li>Left unset, the sandbox can reach only the inference endpoint. The app itself still reaches downloads.claude.ai for the VM bundle and CLI unless the offline installer is used. The model catalogue fetch has its own switch, modelCatalogEnabled <sup class="cites">[<a href="#ref-30">30</a>, <a href="#ref-28">28</a>]</sup>.</li>
+<li>Update and telemetry hosts still egress unless the telemetry and update keys are set. updateViaUpdatesHost allows updates without unblocking api.anthropic.com. Since 22 September 2026 essential telemetry also needs claude.ai, so claude.ai stays reachable unless disableEssentialTelemetry is set <sup class="cites">[<a href="#ref-30">30</a>, <a href="#ref-38">38</a>]</sup>.</li>
+<li>The documented "Locked down" profile is an illustrative example, not a built-in preset. It leaves the inference endpoint and your OTLP collector as the main paths out, but still reaches downloads.claude.ai unless the offline installer is deployed, needs modelCatalogEnabled: false, and still needs claude.ai for essential telemetry unless that is off. On Foundry, conversation content still reaches Anthropic-operated infrastructure under this profile. Console-managed apps also contact api.anthropic.com and claude.ai <sup class="cites">[<a href="#ref-30">30</a>, <a href="#ref-28">28</a>, <a href="#ref-38">38</a>]</sup>.</li>
+<li>TLS inspecting corporate proxies with a custom root CA now work.</li>
+</ul>
+<h4>2.4.3 Enforcement</h4>
+<p>Whether either allowlist holds is a separate question from how it is written, and the record below is made up of user reports rather than Anthropic statements.</p>
+<ul>
+<li>1P allowlist entries have been reported ignored, subdomains blocked, and the all domains setting not reaching the session proxy token (user reports on GitHub) <sup class="cites">[<a href="#ref-54">54</a>, <a href="#ref-55">55</a>, <a href="#ref-56">56</a>, <a href="#ref-57">57</a>]</sup>. None is marked fixed. 30112 and 34690 remain open, and 19087 and 33386 were closed as duplicates, not fixed.</li>
+<li>Four more user reports followed on 11 September 2026: sessions ignoring All domains (93512, cloud and local, a regression, and 93656, cloud), Specific allowed domains ignored (93520), and local egress blocked after a VM update (93589, closed by its author on 14 September with no Anthropic fix note) <sup class="cites">[<a href="#ref-58">58</a>, <a href="#ref-59">59</a>, <a href="#ref-60">60</a>, <a href="#ref-61">61</a>]</sup>.</li>
+<li>3P is not exempt: with a custom gateway the sandbox has been reported pinned to the gateway plus api.anthropic.com, with three independent reproductions (user report, open) <sup class="cites">[<a href="#ref-62">62</a>]</sup>. The earlier 3P citation, 56959 (managed allowedDomains ignored on Claude-3p with Bedrock), was closed as a duplicate of 37970 on 11 May 2026, not fixed <sup class="cites">[<a href="#ref-63">63</a>]</sup>.</li>
+<li>The cloud sandbox reports fail closed. They are not escapes, but they show that the policy feeding an enforced boundary has been reported wrong.</li>
+<li>Put the enforcing control at the network. Treat the in-app allowlist as best effort.</li>
+</ul>
+<h3 id="s2-5">2.5 Unclear Administrative vs Personal Settings Boundaries</h3>
+<p>For administrators, the boundary between a personal settings change and an organisation wide one is confusing.</p>
+<ul>
+<li>Custom connectors on Team and Enterprise can be added only by Owners, and a connector added that way is organisation level by design, even though each member still signs in individually <sup class="cites">[<a href="#ref-10">10</a>, <a href="#ref-11">11</a>]</sup>. A plugin that a member uploads through their own Customize menu installs for that member alone <sup class="cites">[<a href="#ref-8">8</a>]</sup>.</li>
+<li>Sessions run by an Owner or a Primary Owner do not experience the administrative limits on connectors and plugins set in the organisation admin panel. The exception is organisation wide model disables and effort caps, which do apply to them <sup class="cites">[<a href="#ref-6">6</a>, <a href="#ref-12">12</a>]</sup>. Always create a separate unprivileged account to test whether controls are working.</li>
+</ul>
+<h3 id="s2-6">2.6 Session Visibility and the Compliance API</h3>
+<p>The Compliance API reaches Cowork in the desktop app, on web and on mobile, and Claude Code in the CLI and the desktop app. Web and mobile Cowork transcripts went into beta on 3 August 2026, desktop sessions on 11 August. The session endpoints have been generally available for Enterprise since 26 August 2026, and beta coverage has since extended to Claude Science, Claude for Microsoft 365 (26 August) and Claude in Chrome (18 September) <sup class="cites">[<a href="#ref-39">39</a>]</sup>. Only the Primary Owner can enable the API <sup class="cites">[<a href="#ref-25">25</a>]</sup>. A transcript carries prompts and responses, web and MCP tool call content, and skills and artifacts content as text, with verified user, organisation, session and per message identifiers. Tool inputs and each tool result text entry are truncated to 10,000 bytes by default, thinking is never included, and images, PDFs and other non-text content appear only as placeholders <sup class="cites">[<a href="#ref-40">40</a>]</sup>. Before 3 August 2026 Cowork session content sat outside the Compliance API altogether, so this is a material improvement. Four limits set what it is worth:</p>
+<ul>
+<li>Retrieval only. There are no deletion endpoints for local sessions, so Cowork local sessions do not satisfy a deletion or access request.</li>
+<li>Transcript only. It shows what Claude was asked and what it returned, not what happened on the device. File and network activity surfaces only through tool calls and results, so anything that never reaches the API is not captured. Inference hooks (2.3) and OpenTelemetry (below) partly fill this gap.</li>
+<li>Coverage excludes Claude Code cloud sessions, sessions through a Console API key or a third party cloud, all local session data where HIPAA readiness is enabled, and zero data retention sessions <sup class="cites">[<a href="#ref-40">40</a>, <a href="#ref-25">25</a>]</sup>. A Claude Desktop on 3P deployment therefore gets no coverage of session content at all.</li>
+<li>Retention differs by session type. Local transcripts are kept six years by default, or your organisation's finite custom retention period where one is set, and the shortest applies where several are set. Remote transcripts are kept six years unless a user deletes the session sooner, after which the endpoints no longer return it and the transcript is not recoverable <sup class="cites">[<a href="#ref-40">40</a>]</sup>. A cloud Cowork transcript is not a legal hold record unless it is exported promptly.</li>
+</ul>
+<p>OpenTelemetry is the second visibility source, and it was missed at the v1.2 cut. Team and Enterprise owners can stream Cowork events for cloud and local sessions to their own OTLP collector from Organization settings, Cowork. The events include full prompt text, every tool and MCP call with parameters, the file paths Claude reads or changes, skills and plugins used, approval decisions and user email. Nothing is exported until an endpoint is set, and once it is, prompt content and tool parameters go to the collector by default <sup class="cites">[<a href="#ref-26">26</a>]</sup>. Unlike the Compliance API it is real time, available on Team, and records file paths.</p>
+<p>Session material also stays on the endpoint. Independent research reports Cowork session logs written world readable at 644, holding complete tool transcripts, model reasoning and user messages in plain text, with child session audit logs and main.log surviving deletion of the session in the interface <sup class="cites">[<a href="#ref-48">48</a>, <a href="#ref-49">49</a>]</sup>. A separate user report on GitHub says Delete in the Desktop sidebar leaves a Code tab session's transcript on disk until a later retention sweep <sup class="cites">[<a href="#ref-65">65</a>]</sup>. The 3P documentation says its data directory files are written owner only, which covers the 3P application data folder and not the standard Desktop logs the research examined <sup class="cites">[<a href="#ref-37">37</a>]</sup>. Check both. Anthropic does not document this and I have not tested it on a managed build, but it is specific enough to plan for: cover it with endpoint controls rather than assuming deletion in the interface is deletion on disk.</p>
+<p>Statements that Cowork activity is invisible to the Compliance API are now out of date for server held transcripts, and still correct for the device.</p>
+<h3 id="s2-7">2.7 Sandbox Escape and the Local Execution Decision</h3>
+<h4>2.7.1 Evidence</h4>
+<p>The public record here is one published escape, the flaw underneath it, and what Anthropic has and has not done since.</p>
+<ul>
+<li>A working escape from local Cowork execution was published on 23 July 2026. Researchers at Accomplish AI reached guest root inside the VM, then used the writable host mount that Cowork places there to read and write across the whole Mac as the logged in user, outside the connected folder and with no further permission prompt <sup class="cites">[<a href="#ref-44">44</a>]</sup>.</li>
+<li>What the escape could reach included SSH private keys, cloud credentials and anything the user's account can touch <sup class="cites">[<a href="#ref-44">44</a>]</sup>. Secondary press, citing Accomplish, reports roughly 500,000 macOS users running local sessions exposed <sup class="cites">[<a href="#ref-46">46</a>, <a href="#ref-47">47</a>]</sup>. The Accomplish post itself gives no such figure.</li>
+<li>The underlying flaw is CVE-2026-46331, a Linux kernel bug filed by the kernel's own CVE authority and fixed upstream, published 16 June 2026 <sup class="cites">[<a href="#ref-45">45</a>]</sup>. It is not a Cowork CVE, and no Cowork CVE exists. Anthropic closed the disclosure as informative without issuing a direct fix, on the grounds that the CVE fell inside the bounty programme's 30 day window for recently published bugs <sup class="cites">[<a href="#ref-44">44</a>, <a href="#ref-46">46</a>]</sup>. No Anthropic fix, advisory or new escape has appeared since.</li>
+<li>Accomplish says the path does not appear to apply to cloud execution, now the default <sup class="cites">[<a href="#ref-44">44</a>]</sup>. Local execution remains available for existing desktop deployments <sup class="cites">[<a href="#ref-3">3</a>]</sup>, and Claude Desktop on 3P has no cloud execution <sup class="cites">[<a href="#ref-28">28</a>]</sup>, so the path is not removed everywhere.</li>
+<li>requireCoworkFullVmSandbox has been deprecated since at least April 2026, judging by its position before the first dated entry (16 April 2026) in the configuration changelog, with no named replacement <sup class="cites">[<a href="#ref-31">31</a>]</sup>. My reading is that Anthropic's answer to local isolation is cloud execution. 3P does not offer it, and cloud processing cuts against the residency reason for choosing 3P.</li>
+</ul>
+<h4>2.7.2 Controls</h4>
+<p>What is available splits into what an administrator can set, what only Anthropic can fix, and the visibility either choice costs.</p>
+<ul>
+<li>Prefer cloud execution. Anthropic describes the cloud sandbox as sitting behind a mandatory egress proxy that the sandbox cannot reconfigure or bypass, with session scoped tokens, connector authorisation tokens kept outside the sandbox, and tenant isolation between organisations. A new organisation control governs trusted device enrolment on cloud sessions <sup class="cites">[<a href="#ref-3">3</a>]</sup>. Cloud sessions can still read and write the member's connected folders through the desktop app <sup class="cites">[<a href="#ref-3">3</a>]</sup>.</li>
+<li>Where local execution stays, the fixes Accomplish recommends (block unprivileged user namespaces, make the seccomp filter deny by default, stop unused kernel modules autoloading, and stop sharing the whole host into the VM) sit inside Anthropic's VM and have no documented admin setting <sup class="cites">[<a href="#ref-44">44</a>]</sup>. Accomplish argues that patching the guest kernel fixes only this one bug <sup class="cites">[<a href="#ref-44">44</a>]</sup>. Ask Anthropic for them. The admin levers are keeping builds current and restricting file system sharing with allowedWorkspaceFolders (device policy in 1P, see 2.3).</li>
+<li>Since 4 September 2026 (v1.46388.3) users can attach their home folder, Documents, AppData, the macOS Library folder and whole drives. Claude's own configuration and certain credential locations, such as SSH keys, cloud credentials and shell profiles, are carved out <sup class="cites">[<a href="#ref-38">38</a>]</sup>. This widens what a session can reach and makes allowedWorkspaceFolders more important.</li>
+<li>Accept the visibility cost of either choice. Anthropic states that the VM is isolated from host based security tools by design, and that cloud sessions run outside the endpoint so EDR cannot observe them either <sup class="cites">[<a href="#ref-3">3</a>]</sup>. OpenTelemetry (2.6) can log both cloud and local sessions, though it is not EDR <sup class="cites">[<a href="#ref-26">26</a>]</sup>.</li>
+</ul>
+<p>Cloud execution removes the whole-host mount, though not access to connected folders, and gives an egress boundary the sandbox cannot subvert. It also puts the session somewhere endpoint tooling cannot see it. Choose deliberately rather than by default.</p>
+</section>
+<section id="sec-3">
+<h2><span class="num">3</span>References</h2>
+<p>Reviewed 23 September 2026. Anthropic sources are authoritative for what the controls are. Platform vendor documentation and independent research are cited where Anthropic is silent, and are marked as such in the text. Dates are the page's own published or updated date where it exposes one.</p>
+<h3>Anthropic, Help Centre and Privacy Center</h3>
+<p class="ref" id="ref-1"><span class="rn">[1]</span> Claude Cowork and chat are one Claude, updated 16 September 2026. <a href="https://support.claude.com/en/articles/16761823-claude-cowork-and-chat-are-one-claude">https://support.claude.com/en/articles/16761823-claude-cowork-and-chat-are-one-claude</a></p>
+<p class="ref" id="ref-2"><span class="rn">[2]</span> Use Claude Cowork on Team and Enterprise plans, updated 22 September 2026. <a href="https://support.claude.com/en/articles/13455879-use-claude-cowork-on-team-and-enterprise-plans">https://support.claude.com/en/articles/13455879-use-claude-cowork-on-team-and-enterprise-plans</a></p>
+<p class="ref" id="ref-3"><span class="rn">[3]</span> Claude Cowork architecture overview, updated 16 September 2026. <a href="https://support.claude.com/en/articles/14479288-claude-cowork-architecture-overview">https://support.claude.com/en/articles/14479288-claude-cowork-architecture-overview</a></p>
+<p class="ref" id="ref-4"><span class="rn">[4]</span> Install Claude Desktop, updated 6 August 2026. <a href="https://support.claude.com/en/articles/10065433-install-claude-desktop">https://support.claude.com/en/articles/10065433-install-claude-desktop</a></p>
+<p class="ref" id="ref-5"><span class="rn">[5]</span> Enterprise configuration for Claude Desktop, updated 2 September 2026. <a href="https://support.claude.com/en/articles/12622667-enterprise-configuration-for-claude-desktop">https://support.claude.com/en/articles/12622667-enterprise-configuration-for-claude-desktop</a></p>
+<p class="ref" id="ref-6"><span class="rn">[6]</span> Set up role-based permissions on Enterprise plans, updated 16 September 2026. <a href="https://support.claude.com/en/articles/13930458-set-up-role-based-permissions-on-enterprise-plans">https://support.claude.com/en/articles/13930458-set-up-role-based-permissions-on-enterprise-plans</a></p>
+<p class="ref" id="ref-7"><span class="rn">[7]</span> Manage custom roles on Enterprise plans, updated 22 September 2026. <a href="https://support.claude.com/en/articles/13930452-manage-custom-roles-on-enterprise-plans">https://support.claude.com/en/articles/13930452-manage-custom-roles-on-enterprise-plans</a></p>
+<p class="ref" id="ref-8"><span class="rn">[8]</span> Manage plugins for your organization, updated 22 September 2026. <a href="https://support.claude.com/en/articles/13837433-manage-plugins-for-your-organization">https://support.claude.com/en/articles/13837433-manage-plugins-for-your-organization</a></p>
+<p class="ref" id="ref-9"><span class="rn">[9]</span> Provision and manage skills for your organization, updated 22 September 2026. <a href="https://support.claude.com/en/articles/13119606-provision-and-manage-skills-for-your-organization">https://support.claude.com/en/articles/13119606-provision-and-manage-skills-for-your-organization</a></p>
+<p class="ref" id="ref-10"><span class="rn">[10]</span> Get started with custom connectors using remote MCP, updated 11 August 2026. <a href="https://support.claude.com/en/articles/11175166-get-started-with-custom-connectors-using-remote-mcp">https://support.claude.com/en/articles/11175166-get-started-with-custom-connectors-using-remote-mcp</a></p>
+<p class="ref" id="ref-11"><span class="rn">[11]</span> Use connectors to extend Claude&#x27;s capabilities, updated 20 August 2026. <a href="https://support.claude.com/en/articles/11176164-use-connectors-to-extend-claude-s-capabilities">https://support.claude.com/en/articles/11176164-use-connectors-to-extend-claude-s-capabilities</a></p>
+<p class="ref" id="ref-12"><span class="rn">[12]</span> Manage model access for your organization, updated 1 September 2026. <a href="https://support.claude.com/en/articles/15694740-manage-model-access-for-your-organization">https://support.claude.com/en/articles/15694740-manage-model-access-for-your-organization</a></p>
+<p class="ref" id="ref-13"><span class="rn">[13]</span> Release notes, updated 22 September 2026. Source for connector permissions (28 May 2026) and memory off by default (25 August 2026). <a href="https://support.claude.com/en/articles/12138966-release-notes">https://support.claude.com/en/articles/12138966-release-notes</a></p>
+<p class="ref" id="ref-14"><span class="rn">[14]</span> Is my data used for model training? (commercial), updated 18 August 2026. <a href="https://privacy.claude.com/en/articles/7996868-is-my-data-used-for-model-training">https://privacy.claude.com/en/articles/7996868-is-my-data-used-for-model-training</a></p>
+<p class="ref" id="ref-15"><span class="rn">[15]</span> Get started with Claude Cowork, updated 18 September 2026. <a href="https://support.claude.com/en/articles/13345190-get-started-with-claude-cowork">https://support.claude.com/en/articles/13345190-get-started-with-claude-cowork</a></p>
+<p class="ref" id="ref-16"><span class="rn">[16]</span> Invite people outside your organization to an artifact, updated 18 September 2026. <a href="https://support.claude.com/en/articles/16989529-invite-people-outside-your-organization-to-an-artifact">https://support.claude.com/en/articles/16989529-invite-people-outside-your-organization-to-an-artifact</a></p>
+<p class="ref" id="ref-17"><span class="rn">[17]</span> Control project sharing for your organization, updated 22 September 2026. <a href="https://support.claude.com/en/articles/9927533-control-project-sharing-for-your-organization">https://support.claude.com/en/articles/9927533-control-project-sharing-for-your-organization</a></p>
+<p class="ref" id="ref-18"><span class="rn">[18]</span> Let Claude use your computer in Cowork, updated 16 September 2026. <a href="https://support.claude.com/en/articles/14128542-let-claude-use-your-computer-in-cowork">https://support.claude.com/en/articles/14128542-let-claude-use-your-computer-in-cowork</a></p>
+<p class="ref" id="ref-19"><span class="rn">[19]</span> Claude in Chrome admin controls, updated 31 August 2026. <a href="https://support.claude.com/en/articles/13065128-claude-in-chrome-admin-controls">https://support.claude.com/en/articles/13065128-claude-in-chrome-admin-controls</a></p>
+<p class="ref" id="ref-20"><span class="rn">[20]</span> Use the built-in browser in Claude Cowork, updated 16 September 2026. <a href="https://support.claude.com/en/articles/16607400-use-the-built-in-browser-in-claude-cowork">https://support.claude.com/en/articles/16607400-use-the-built-in-browser-in-claude-cowork</a></p>
+<p class="ref" id="ref-21"><span class="rn">[21]</span> Set up browser use in Claude Cowork for Team and Enterprise plans, updated 16 September 2026. <a href="https://support.claude.com/en/articles/16635803-set-up-browser-use-in-claude-cowork-for-team-and-enterprise-plans">https://support.claude.com/en/articles/16635803-set-up-browser-use-in-claude-cowork-for-team-and-enterprise-plans</a></p>
+<p class="ref" id="ref-22"><span class="rn">[22]</span> Enforce network-level access control with tenant restrictions, updated 3 August 2026. <a href="https://support.claude.com/en/articles/13198485-enforce-network-level-access-control-with-tenant-restrictions">https://support.claude.com/en/articles/13198485-enforce-network-level-access-control-with-tenant-restrictions</a></p>
+<p class="ref" id="ref-23"><span class="rn">[23]</span> Create and edit files with Claude, updated 6 August 2026. Source for the egress options and the self-contradictory Team default. <a href="https://support.claude.com/en/articles/12111783-create-and-edit-files-with-claude">https://support.claude.com/en/articles/12111783-create-and-edit-files-with-claude</a></p>
+<p class="ref" id="ref-24"><span class="rn">[24]</span> Enable and use web search, updated 22 September 2026. <a href="https://support.claude.com/en/articles/10684626-enable-and-use-web-search">https://support.claude.com/en/articles/10684626-enable-and-use-web-search</a></p>
+<p class="ref" id="ref-25"><span class="rn">[25]</span> Access the Compliance API, updated 21 September 2026. <a href="https://support.claude.com/en/articles/13015708-access-the-compliance-api">https://support.claude.com/en/articles/13015708-access-the-compliance-api</a></p>
+<p class="ref" id="ref-26"><span class="rn">[26]</span> Monitor Claude Cowork activity with OpenTelemetry, updated 16 September 2026. <a href="https://support.claude.com/en/articles/14477985-monitor-claude-cowork-activity-with-opentelemetry">https://support.claude.com/en/articles/14477985-monitor-claude-cowork-activity-with-opentelemetry</a></p>
+<h3>Anthropic, product and platform documentation</h3>
+<p class="ref" id="ref-27"><span class="rn">[27]</span> Claude Cowork and chat are now one Claude (blog), 16 September 2026. <a href="https://claude.com/blog/cowork-is-now-claude">https://claude.com/blog/cowork-is-now-claude</a></p>
+<p class="ref" id="ref-28"><span class="rn">[28]</span> Claude Desktop on 3P, Overview. Source for the provider list, the Foundry operating and residency statements and the residual Anthropic hosts. <a href="https://claude.com/docs/third-party/claude-desktop/overview">https://claude.com/docs/third-party/claude-desktop/overview</a></p>
+<p class="ref" id="ref-29"><span class="rn">[29]</span> Claude Desktop on 3P, Feature matrix, 17 September 2026. Source for computer use absence, Claude in Chrome in console-managed 3P, and &quot;Claude Enterprise does not offer telemetry toggles&quot;. <a href="https://claude.com/docs/third-party/claude-desktop/feature-matrix">https://claude.com/docs/third-party/claude-desktop/feature-matrix</a></p>
+<p class="ref" id="ref-30"><span class="rn">[30]</span> Claude Desktop on 3P, Configuration reference, 23 September 2026. <a href="https://claude.com/docs/third-party/claude-desktop/configuration">https://claude.com/docs/third-party/claude-desktop/configuration</a></p>
+<p class="ref" id="ref-31"><span class="rn">[31]</span> Claude Desktop on 3P, Configuration changelog. <a href="https://claude.com/docs/third-party/claude-desktop/configuration-changelog">https://claude.com/docs/third-party/claude-desktop/configuration-changelog</a></p>
+<p class="ref" id="ref-32"><span class="rn">[32]</span> Claude Desktop on 3P, Installation and setup, 22 September 2026. Source for &quot;The models don&#x27;t combine.&quot; <a href="https://claude.com/docs/third-party/claude-desktop/installation">https://claude.com/docs/third-party/claude-desktop/installation</a></p>
+<p class="ref" id="ref-33"><span class="rn">[33]</span> Claude Desktop on 3P, Deploy with Enterprise Admin Console (beta), 18 September 2026. <a href="https://claude.com/docs/third-party/claude-desktop/admin-console">https://claude.com/docs/third-party/claude-desktop/admin-console</a></p>
+<p class="ref" id="ref-34"><span class="rn">[34]</span> Claude Desktop on 3P, Bootstrap. Source for the scope of the trustBootstrapDelivery prompt. <a href="https://claude.com/docs/third-party/claude-desktop/bootstrap">https://claude.com/docs/third-party/claude-desktop/bootstrap</a></p>
+<p class="ref" id="ref-35"><span class="rn">[35]</span> Claude Desktop on 3P, Built-in browser and Claude in Chrome, 18 September 2026. <a href="https://claude.com/docs/third-party/claude-desktop/browser">https://claude.com/docs/third-party/claude-desktop/browser</a></p>
+<p class="ref" id="ref-36"><span class="rn">[36]</span> Claude Desktop on 3P, Chat, 11 September 2026. <a href="https://claude.com/docs/third-party/claude-desktop/chat">https://claude.com/docs/third-party/claude-desktop/chat</a></p>
+<p class="ref" id="ref-37"><span class="rn">[37]</span> Claude Desktop on 3P, User identity and local data. <a href="https://claude.com/docs/third-party/claude-desktop/data-storage">https://claude.com/docs/third-party/claude-desktop/data-storage</a></p>
+<p class="ref" id="ref-38"><span class="rn">[38]</span> Claude Desktop changelog, to v2.7032.0, 22 September 2026. <a href="https://claude.com/docs/cowork/changelog">https://claude.com/docs/cowork/changelog</a></p>
+<p class="ref" id="ref-39"><span class="rn">[39]</span> Claude Platform release notes. Entries of 3 August, 5 August, 11 August, 26 August and 18 September 2026. <a href="https://platform.claude.com/docs/en/release-notes/overview">https://platform.claude.com/docs/en/release-notes/overview</a></p>
+<p class="ref" id="ref-40"><span class="rn">[40]</span> Compliance API, sessions. <a href="https://platform.claude.com/docs/en/manage-claude/compliance-sessions">https://platform.claude.com/docs/en/manage-claude/compliance-sessions</a></p>
+<p class="ref" id="ref-41"><span class="rn">[41]</span> Web search tool, Claude Platform docs. <a href="https://platform.claude.com/docs/en/agents-and-tools/tool-use/web-search-tool">https://platform.claude.com/docs/en/agents-and-tools/tool-use/web-search-tool</a></p>
+<h3>Platform vendor documentation</h3>
+<p class="ref" id="ref-42"><span class="rn">[42]</span> Microsoft, Configure Claude Desktop for Microsoft Foundry, 14 July 2026. Its compliance line is out of step with Anthropic&#x27;s overview [28]. <a href="https://learn.microsoft.com/en-us/azure/foundry/foundry-models/how-to/configure-claude-desktop">https://learn.microsoft.com/en-us/azure/foundry/foundry-models/how-to/configure-claude-desktop</a></p>
+<p class="ref" id="ref-43"><span class="rn">[43]</span> AWS Solutions Library, Claude Cowork 3P guidance (COWORK_3P.md), last changed 17 July 2026. Source for the ccwb setting of coworkEgressAllowedHosts to [&quot;\*&quot;]. Its statements that the Chat tab is unavailable and that computer use depends on Anthropic hosted inference are superseded by Anthropic&#x27;s feature matrix [29]. <a href="https://github.com/aws-solutions-library-samples/guidance-for-claude-code-with-amazon-bedrock/blob/main/assets/docs/COWORK_3P.md">https://github.com/aws-solutions-library-samples/guidance-for-claude-code-with-amazon-bedrock/blob/main/assets/docs/COWORK_3P.md</a></p>
+<h3>Independent security research and press</h3>
+<p class="ref" id="ref-44"><span class="rn">[44]</span> Accomplish AI, SharedRoot sandbox escape, disclosed 23 July 2026. Primary source for the exploitation chain, the reachable material and the recommended fixes in 2.7. <a href="https://accomplish.ai/blog/sharedroot-escaping-claude-cowork-sandbox/">https://accomplish.ai/blog/sharedroot-escaping-claude-cowork-sandbox/</a></p>
+<p class="ref" id="ref-45"><span class="rn">[45]</span> CVE-2026-46331 record, Linux kernel (CNA kernel.org), published 16 June 2026. <a href="https://www.cve.org/CVERecord?id=CVE-2026-46331">https://www.cve.org/CVERecord?id=CVE-2026-46331</a></p>
+<p class="ref" id="ref-46"><span class="rn">[46]</span> The Hacker News, Claude Cowork Flaw Could Let AI Agent Escape Its VM and Access Mac Files, 23 July 2026. Source, with [47], for the 500,000 exposure estimate attributed to Accomplish and for Anthropic&#x27;s response. <a href="https://thehackernews.com/2026/07/claude-cowork-flaw-could-let-ai-agent.html">https://thehackernews.com/2026/07/claude-cowork-flaw-could-let-ai-agent.html</a></p>
+<p class="ref" id="ref-47"><span class="rn">[47]</span> The Next Web, Anthropic&#x27;s Claude Cowork could escape its local VM and read credentials on a Mac, 26 July 2026. <a href="https://thenextweb.com/news/claude-cowork-sandbox-escape-mac-files-sharedroot">https://thenextweb.com/news/claude-cowork-sandbox-escape-mac-files-sharedroot</a></p>
+<p class="ref" id="ref-48"><span class="rn">[48]</span> Pluto Security, Inside Claude Cowork: how Anthropic&#x27;s autonomous agent actually works, published 1 April 2026, modified 4 September 2026. Source for the reported 644 permissions on session log files and the contents of audit.jsonl. <a href="https://pluto.security/blog/inside-claude-cowork-how-anthropics-autonomous-agent-actually-works/">https://pluto.security/blog/inside-claude-cowork-how-anthropics-autonomous-agent-actually-works/</a></p>
+<p class="ref" id="ref-49"><span class="rn">[49]</span> Pluto Security, Securing Claude Cowork: what security teams actually need to know, published 16 April 2026, modified 4 September 2026. Source for the reported survival of child session audit logs and main.log after session deletion. Not independently verified by me and not documented by Anthropic. <a href="https://pluto.security/blog/claude-cowork-security/">https://pluto.security/blog/claude-cowork-security/</a></p>
+<p class="ref" id="ref-50"><span class="rn">[50]</span> Harmonic Security, Securing Claude Cowork: a security practitioner&#x27;s guide, published 10 March 2026, updated 14 September 2026. Corroborates the computer use position in 2.2 and is cited for nothing else. <a href="https://www.harmonic.security/resources/securing-claude-cowork-a-security-practitioners-guide">https://www.harmonic.security/resources/securing-claude-cowork-a-security-practitioners-guide</a></p>
+<p class="ref" id="ref-51"><span class="rn">[51]</span> Manifold Security, ClaudeBleed Reopened: Browser Extensions Can Still Push Claude for Chrome to Read Your Gmail, 14 July 2026. <a href="https://www.manifold.security/blog/claude-for-chrome-extension-bypass">https://www.manifold.security/blog/claude-for-chrome-extension-bypass</a></p>
+<p class="ref" id="ref-52"><span class="rn">[52]</span> Forever Security (Gal Weizman), BragJack: How We Hijacked 5 Of The World&#x27;s Most Popular Browsers Using Their Built-In AI Assistants, 16 September 2026. <a href="https://forever.security/blog/bragjack-hijacking-5-browsers-via-built-in-ai-assistants">https://forever.security/blog/bragjack-hijacking-5-browsers-via-built-in-ai-assistants</a></p>
+<p class="ref" id="ref-53"><span class="rn">[53]</span> The Hacker News, One Extension Could Hijack AI Assistants Across Chrome, Comet, Edge, Opera Neon and Claude, 16 September 2026. Source for the vendor response and the link to LayerX&#x27;s ClaudeBleed and Manifold. <a href="https://thehackernews.com/2026/09/one-extension-could-hijack-ai.html">https://thehackernews.com/2026/09/one-extension-could-hijack-ai.html</a></p>
+<h3>Defect reports, anthropics/claude-code</h3>
+<p>User reports, not Anthropic statements. States are as of 23 September 2026.</p>
+<p class="ref" id="ref-54"><span class="rn">[54]</span> Issue 30112, Cowork egress allowlist not working, custom domains blocked with blocked-by-allowlist under the all domains setting. Open. <a href="https://github.com/anthropics/claude-code/issues/30112">https://github.com/anthropics/claude-code/issues/30112</a></p>
+<p class="ref" id="ref-55"><span class="rn">[55]</span> Issue 34690, the all domains setting not reflected in the session proxy token. Open. <a href="https://github.com/anthropics/claude-code/issues/34690">https://github.com/anthropics/claude-code/issues/34690</a></p>
+<p class="ref" id="ref-56"><span class="rn">[56]</span> Issue 19087, additional allowed domains not applied to container egress. Closed as a duplicate of 11897. <a href="https://github.com/anthropics/claude-code/issues/19087">https://github.com/anthropics/claude-code/issues/19087</a></p>
+<p class="ref" id="ref-57"><span class="rn">[57]</span> Issue 33386, Cowork egress allowlist not applying to subdomains. Closed as a duplicate of 30112. <a href="https://github.com/anthropics/claude-code/issues/33386">https://github.com/anthropics/claude-code/issues/33386</a></p>
+<p class="ref" id="ref-58"><span class="rn">[58]</span> Issue 93512, cloud and local sessions ignore All domains, 11 September 2026. Open, regression. <a href="https://github.com/anthropics/claude-code/issues/93512">https://github.com/anthropics/claude-code/issues/93512</a></p>
+<p class="ref" id="ref-59"><span class="rn">[59]</span> Issue 93520, Specific allowed domains ignored, 11 September 2026. Open. <a href="https://github.com/anthropics/claude-code/issues/93520">https://github.com/anthropics/claude-code/issues/93520</a></p>
+<p class="ref" id="ref-60"><span class="rn">[60]</span> Issue 93589, local egress blocked after a VM update, 11 September 2026. Closed by its author as completed on 14 September 2026, with no Anthropic fix note. <a href="https://github.com/anthropics/claude-code/issues/93589">https://github.com/anthropics/claude-code/issues/93589</a></p>
+<p class="ref" id="ref-61"><span class="rn">[61]</span> Issue 93656, All domains not applied to cloud sessions, 11 September 2026. Open. <a href="https://github.com/anthropics/claude-code/issues/93656">https://github.com/anthropics/claude-code/issues/93656</a></p>
+<p class="ref" id="ref-62"><span class="rn">[62]</span> Issue 94758, Claude Desktop on 3P with a custom gateway pins the sandbox to the gateway plus api.anthropic.com, 16 September 2026. Open, three independent reproductions. Cited as the basis for the caution about 3P enforcement in 2.4.3 and not independently verified by me. <a href="https://github.com/anthropics/claude-code/issues/94758">https://github.com/anthropics/claude-code/issues/94758</a></p>
+<p class="ref" id="ref-63"><span class="rn">[63]</span> Issue 56959, managed settings allowedDomains not honoured on Claude-3p with Bedrock, sandbox pinned to four hosts. Closed as a duplicate of 37970 on 11 May 2026, not fixed. Replaced by [62] as the 3P citation. <a href="https://github.com/anthropics/claude-code/issues/56959">https://github.com/anthropics/claude-code/issues/56959</a></p>
+<p class="ref" id="ref-64"><span class="rn">[64]</span> Issue 94848, skillCreationEnabled not enforced when set through the Claude apps gateway, 16 September 2026. Open, single report. <a href="https://github.com/anthropics/claude-code/issues/94848">https://github.com/anthropics/claude-code/issues/94848</a></p>
+<p class="ref" id="ref-65"><span class="rn">[65]</span> Issue 94866, no environment scoping on the shared ~/.claude state root (includes: sidebar Delete leaves a Code tab transcript on disk), 16 September 2026. Open. <a href="https://github.com/anthropics/claude-code/issues/94866">https://github.com/anthropics/claude-code/issues/94866</a></p>
+</section>
+<section id="sec-4">
+<h2><span class="num">4</span>About this cheat sheet</h2>
+<p>This document is meant as an awareness-raising guide to Cowork controls. It is not a complete reference, and it is not a risk or threat assessment. As noted, new information is being discovered all the time, and it is important to check for any updates after the date of production of this file: 23 September 2026</p>
+</section>
+      <footer>
+        Every claim carries a numbered citation. The sheet separates what Anthropic documents, what
+        independent research reports, what single users have reported, and what I infer, and says which is which.
+        Controls in this product change with most releases. Check your tenant against the date above.
+      </footer>
+    </main>
+  </div>
+</div>
+</body></html>
