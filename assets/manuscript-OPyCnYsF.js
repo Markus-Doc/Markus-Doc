@@ -1,5 +1,7 @@
-function e(e,t){let n=t.replace(`#`,``);return new e.Vector3(parseInt(n.slice(0,2),16)/255,parseInt(n.slice(2,4),16)/255,parseInt(n.slice(4,6),16)/255)}var t=(e,t,n,r)=>new e.Vector3().copy(t).lerp(n,r);function n(e){let t=e>>>0;return()=>{t=t+1831565813>>>0;let e=t;return e=Math.imul(e^e>>>15,e|1),e^=e+Math.imul(e^e>>>7,e|61),((e^e>>>14)>>>0)/4294967296}}function r(e){return{uTime:{value:0},uRes:{value:new e.Vector2(1,1)},uDpr:{value:1},uPxK:{value:800},uFocus:{value:12},uAperture:{value:5},uFogNear:{value:16},uFogFar:{value:80},uWarp:{value:0},uSpeed:{value:0},uAttnPos:{value:new e.Vector3},uAttnR:{value:new e.Vector2(8,30)},uAttnOn:{value:0},uLand:{value:0},uCamR:{value:100}}}var i=`
+function e(e,t){let n=t.replace(`#`,``);return new e.Vector3(parseInt(n.slice(0,2),16)/255,parseInt(n.slice(2,4),16)/255,parseInt(n.slice(4,6),16)/255)}var t=(e,t,n,r)=>new e.Vector3().copy(t).lerp(n,r);function n(e){let t=e>>>0;return()=>{t=t+1831565813>>>0;let e=t;return e=Math.imul(e^e>>>15,e|1),e^=e+Math.imul(e^e>>>7,e|61),((e^e>>>14)>>>0)/4294967296}}function r(e){return{uTime:{value:0},uRes:{value:new e.Vector2(1,1)},uDpr:{value:1},uPxK:{value:800},uFocus:{value:12},uAperture:{value:5},uFogNear:{value:16},uFogFar:{value:80},uWarp:{value:0},uSpeed:{value:0},uAttnPos:{value:new e.Vector3},uAttnR:{value:new e.Vector2(8,30)},uAttnOn:{value:0},uLand:{value:0},uCamR:{value:100},uVolOn:{value:1},uVolGlow:{value:1},uVolHaze:{value:1},uVolRays:{value:1},uVolDark:{value:1},uVolEdge:{value:1},uVolDepth:{value:1},uMajors:{value:Array.from({length:8},()=>new e.Vector4(0,0,0,0))}}}var i=`
 uniform float uTime, uDpr, uPxK, uFocus, uAperture, uFogNear, uFogFar, uWarp, uSpeed, uAttnOn, uLand, uCamR;
+uniform float uVolOn, uVolGlow, uVolHaze, uVolRays, uVolDark, uVolEdge, uVolDepth;
+uniform vec4 uMajors[8];
 uniform vec2 uRes, uAttnR;
 uniform vec3 uAttnPos;
 float fogAmt(float z) { float f = smoothstep(uFogNear, uFogFar, z); return f * (2.0 - f); }
@@ -10,6 +12,12 @@ float cocPx(float z) { return min(uAperture * uDpr * abs(z - uFocus) / max(z, 0.
 float nearFade(float z, float a, float b) { return smoothstep(a, b, z); }
 // 0 on the near face of the network, 1 on its far face (seen from outside it)
 float depthK(float z) { return clamp((z - uCamR + 46.0) / 92.0, 0.0, 1.0); }
+// how strongly the light of the core and the hubs falls on a point (0 to 1)
+float majorLight(vec3 p) {
+  float l = 0.0;
+  for (int i = 0; i < 8; i++) { vec4 m = uMajors[i]; if (m.w > 0.0) l = max(l, 1.0 - smoothstep(m.w * 0.15, m.w, distance(p, m.xyz))); }
+  return l;
+}
 float hash11(float p) { p = fract(p * 0.1031); p *= p + 33.33; p *= p + p; return fract(p); }
 `,a=`
 vec4 ribbonClip(vec3 p, vec3 dir, float halfPx, float side, out float z) {
@@ -60,10 +68,10 @@ vec4 ribbonClip(vec3 p, vec3 dir, float halfPx, float side, out float z) {
         float vig = smoothstep(0.45, 1.25, length(q));
         col = mix(col, uEdgeTone, vig * 0.85);
         gl_FragColor = vec4(col, 1.0);
-      }`}),f=new n.Mesh(u,d);return f.frustumCulled=!1,f.renderOrder=-100,{object:f,update(e){d.uniforms.uInvProj.value.copy(e.projectionMatrixInverse),d.uniforms.uCamRot.value.extractRotation(e.matrixWorld)},dispose(){u.dispose(),d.dispose()}}}function c({THREE:t,network:r,tokens:s,shared:c,quality:l}){let u=l.tier===`low`?3:6,d=new t.InstancedBufferGeometry,f=[],p=[];for(let e=0;e<=u;e++)f.push(e/u,-1,e/u,1);for(let e=0;e<u;e++){let t=e*2;p.push(t,t+1,t+2,t+1,t+3,t+2)}d.setAttribute(`position`,new t.BufferAttribute(new Float32Array((u+1)*2*3),3)),d.setAttribute(`seg`,new t.BufferAttribute(new Float32Array(f),2)),d.setIndex(p);let m=r.edges,h=r.nodes.map(e=>e.pos),g=[],_=new Set(m.map(([e,t])=>e<t?e*4096+t:t*4096+e));r.nodes.forEach((e,t)=>{if(e.kind!==`junction`)return;let n=[];r.nodes.forEach((r,i)=>{if(i===t)return;let a=Math.hypot(r.pos[0]-e.pos[0],r.pos[1]-e.pos[1],r.pos[2]-e.pos[2]);a<10&&n.push([a,i])}),n.sort((e,t)=>e[0]-t[0]);let i=0;for(let[,e]of n){let n=t<e?t*4096+e:e*4096+t;if(!_.has(n)&&(_.add(n),g.push([t,e]),++i>=1))break}});let v=m.concat(g),y=v.length,b=m.map(([e,t])=>Math.hypot(h[e][0]-h[t][0],h[e][1]-h[t][1],h[e][2]-h[t][2])).sort((e,t)=>e-t),x=b[b.length>>1]||8,S=new Float32Array(y*3),C=new Float32Array(y*3),w=new Float32Array(y*2),T=new Float32Array(y*2),E=new Float32Array(y).fill(2),D=n(7331),O=n(2718),k=r.nodes.map(e=>e.kind!==`junction`);v.forEach(([e,t],n)=>{S.set(h[e],n*3),C.set(h[t],n*3);let r=D();w[n*2]=r<.12?1.55:r<.5?1.1:.85,w[n*2+1]=D()*100,T[n*2]=n>=m.length?2:k[e]||k[t]?1:0,T[n*2+1]=O()}),d.setAttribute(`aA`,new t.InstancedBufferAttribute(S,3)),d.setAttribute(`aB`,new t.InstancedBufferAttribute(C,3)),d.setAttribute(`aW`,new t.InstancedBufferAttribute(w,2)),d.setAttribute(`aK`,new t.InstancedBufferAttribute(T,2));let A=new t.InstancedBufferAttribute(E,1);A.setUsage(t.DynamicDrawUsage),d.setAttribute(`aHop`,A),d.instanceCount=y;let j=r.nodes.map(()=>[]);m.forEach(([e,t])=>{j[e].push(t),j[t].push(e)});let M=new t.ShaderMaterial({transparent:!0,depthWrite:!1,depthTest:!1,premultipliedAlpha:!0,side:t.DoubleSide,uniforms:{...c,uInk:{value:e(t,s.edge)},uAlpha:{value:s.edgeAlpha},uMed:{value:x}},vertexShader:i+a+o+`
+      }`}),f=new n.Mesh(u,d);return f.frustumCulled=!1,f.renderOrder=-100,{object:f,update(e){d.uniforms.uInvProj.value.copy(e.projectionMatrixInverse),d.uniforms.uCamRot.value.extractRotation(e.matrixWorld)},dispose(){u.dispose(),d.dispose()}}}function c({THREE:r,network:s,tokens:c,shared:l,quality:u}){let d=u.tier===`low`?3:6,f=new r.InstancedBufferGeometry,p=[],m=[];for(let e=0;e<=d;e++)p.push(e/d,-1,e/d,1);for(let e=0;e<d;e++){let t=e*2;m.push(t,t+1,t+2,t+1,t+3,t+2)}f.setAttribute(`position`,new r.BufferAttribute(new Float32Array((d+1)*2*3),3)),f.setAttribute(`seg`,new r.BufferAttribute(new Float32Array(p),2)),f.setIndex(m);let h=s.edges,g=s.nodes.map(e=>e.pos),_=[],v=new Set(h.map(([e,t])=>e<t?e*4096+t:t*4096+e));s.nodes.forEach((e,t)=>{if(e.kind!==`junction`)return;let n=[];s.nodes.forEach((r,i)=>{if(i===t)return;let a=Math.hypot(r.pos[0]-e.pos[0],r.pos[1]-e.pos[1],r.pos[2]-e.pos[2]);a<10&&n.push([a,i])}),n.sort((e,t)=>e[0]-t[0]);let r=0;for(let[,e]of n){let n=t<e?t*4096+e:e*4096+t;if(!v.has(n)&&(v.add(n),_.push([t,e]),++r>=1))break}});let y=h.concat(_),b=y.length,x=h.map(([e,t])=>Math.hypot(g[e][0]-g[t][0],g[e][1]-g[t][1],g[e][2]-g[t][2])).sort((e,t)=>e-t),S=x[x.length>>1]||8,C=new Float32Array(b*3),w=new Float32Array(b*3),T=new Float32Array(b*2),E=new Float32Array(b*2),D=new Float32Array(b).fill(2),O=n(7331),k=n(2718),A=s.nodes.map(e=>e.kind!==`junction`);y.forEach(([e,t],n)=>{C.set(g[e],n*3),w.set(g[t],n*3);let r=O();T[n*2]=r<.12?1.55:r<.5?1.1:.85,T[n*2+1]=O()*100,E[n*2]=n>=h.length?2:A[e]||A[t]?1:0,E[n*2+1]=k()}),f.setAttribute(`aA`,new r.InstancedBufferAttribute(C,3)),f.setAttribute(`aB`,new r.InstancedBufferAttribute(w,3)),f.setAttribute(`aW`,new r.InstancedBufferAttribute(T,2)),f.setAttribute(`aK`,new r.InstancedBufferAttribute(E,2));let j=new r.InstancedBufferAttribute(D,1);j.setUsage(r.DynamicDrawUsage),f.setAttribute(`aHop`,j),f.instanceCount=b;let M=s.nodes.map(()=>[]);h.forEach(([e,t])=>{M[e].push(t),M[t].push(e)});let N=new r.ShaderMaterial({transparent:!0,depthWrite:!1,depthTest:!1,premultipliedAlpha:!0,side:r.DoubleSide,uniforms:{...l,uInk:{value:e(r,c.edge)},uAlpha:{value:c.edgeAlpha},uMed:{value:S},uInkLit:{value:t(r,e(r,c.edge),e(r,c.nodeRing),.7)},uSheath:{value:new r.Vector3(1,.965,.88)},uThread:{value:new r.Vector3(1,.97,.9)}},vertexShader:i+a+o+`
       attribute vec2 seg; attribute vec3 aA, aB; attribute vec2 aW, aK; attribute float aHop;
       uniform float uMed;
-      varying float vAlpha, vAmp; varying vec3 vRib, vP;
+      varying float vAlpha, vAmp, vLit, vLum; varying vec3 vRib, vP;
       void main() {
         vec3 P = mix(aA, aB, seg.x);
         float z = max(-(modelViewMatrix * vec4(P, 1.0)).z, 0.02);
@@ -115,27 +123,42 @@ vec4 ribbonClip(vec3 p, vec3 dir, float halfPx, float side, out float z) {
         amp *= 1.0 - uLand;
         float coc = cocPx(z) * 0.55 * (1.0 - 0.8 * near) * (1.0 - uLand);
         float w = nib + coc;
-        float halfPx = w * 0.5 + 1.0, halfW = halfPx + nib * 0.5 * amp;
+        float lit = min(majorLight(P) * uLand * uVolOn * uVolEdge, 1.0);
+        // a thread of light: most strokes, strongest in the middle of the sphere
+        float mid = 1.0 - smoothstep(22.0, 50.0, length(P));
+        float lumK = uLand * uVolOn * min(uVolEdge, 1.5) * (hash11(aW.y * 3.7 + 1.9) < 0.85 ? 1.0 : 0.25) * max(mid, lit * 0.8);
+        float halfPx = w * 0.5 + 1.0, halfW = halfPx + nib * 0.5 * amp + 3.0 * uDpr * max(lit, min(lumK, 1.0));
         float zz;
         gl_Position = ribbonClip(P, normalize(aB - aA), halfW, seg.y, zz);
         float fog = fogAmt(z);
         vAlpha = mix(mix(pr, 1.0, near), 1.0, hb) * pow(nib / w, 1.3) * (1.0 - fog * 0.94 * (1.0 - 0.7 * hb)) * nearFade(z, 0.25, 1.1) * aMul;
-        vAlpha = mix(vAlpha, mix(0.84, 0.38, dk) * mix(1.0, 0.42, shell) * mix(0.9, 1.0, pr) * keep * rnd * mix(1.0, 0.3, smoothstep(1.35 * uMed, 1.6 * uMed, length(aB - aA))), uLand);
+        // volume pass: the near face a little stronger, the far face fainter
+        float vd = uVolDepth * uVolOn;
+        vAlpha = mix(vAlpha, mix(0.84, 0.38, dk) * mix(1.0 + 0.15 * vd, 1.0 - 0.2 * vd, dk) * mix(1.0, 0.42, shell) * mix(0.9, 1.0, pr) * keep * rnd * mix(1.0, 0.3, smoothstep(1.35 * uMed, 1.6 * uMed, length(aB - aA))), uLand);
         // the landing mesh fades out with the landing
         if (aK.x > 1.5) { vAlpha *= uLand * 0.85; }
         vRib = vec3(seg.y * halfW, halfPx, 1.0) * gl_Position.w;
         vP = P; vAmp = amp * nib * 0.5 * gl_Position.w;
+        // lit by the core and the hubs, seen from outside only (inside, the near wires keep 3:1 ink)
+        vLit = lit; vLum = lumK;
       }`,fragmentShader:i+`
-      uniform vec3 uInk; uniform float uAlpha;
-      varying float vAlpha, vAmp; varying vec3 vRib, vP;
+      uniform vec3 uInk, uInkLit, uSheath, uThread; uniform float uAlpha;
+      varying float vAlpha, vAmp, vLit, vLum; varying vec3 vRib, vP;
       void main() {
         float vHalf = vRib.y / vRib.z, d = abs(vRib.x / vRib.z);   // px from the stroke centre
         if (vAmp > 0.0) vHalf += vAmp / vRib.z * pow(0.5 + 0.5 * sin(distance(vP, uAttnPos) * 0.8 - uTime * 1.5), 4.0);
-        float a = clamp(vHalf - 0.5 - d, 0.0, 1.0);
-        a = a * vAlpha * uAlpha * 1.35;
-        if (a < 0.004) discard;
-        gl_FragColor = vec4(uInk * a, a);
-      }`}),N=new t.Mesh(d,M);return N.frustumCulled=!1,N.renderOrder=1,{object:N,setFocus(e){if(E.fill(2),e>=0){let t=new Set(j[e]);m.forEach(([n,r],i)=>{E[i]=n===e||r===e?0:t.has(n)||t.has(r)?1:2})}A.needsUpdate=!0},dispose(){d.dispose(),M.dispose()}}}function l({THREE:t,network:r,tokens:o,shared:s,quality:c}){let l=c.tier===`low`,u=new t.InstancedBufferGeometry,d=[],f=[];for(let e=0;e<=72;e++)d.push(e/72,-1,e/72,1);for(let e=0;e<72;e++){let t=e*2;f.push(t,t+1,t+2,t+1,t+3,t+2)}u.setAttribute(`position`,new t.BufferAttribute(new Float32Array(438),3)),u.setAttribute(`seg`,new t.BufferAttribute(new Float32Array(d),2)),u.setIndex(f);let p=[],m=[],h=[],g=n(1452),_=(e,t,n)=>{p.push(...e),m.push(...t),h.push(...n)},v=Math.PI*2;for(let e of r.nodes){if(e.kind!==`hub`&&e.kind!==`core`)continue;let t=e.kind===`core`,n=e.radius;_(e.pos,[n*(t?2.6:3.1),g()*v,v,t?56:44],[.8,1.3,.56,.0026]),!l&&(_(e.pos,[n*(t?4.4:5.4),g()*v,v*(.55+g()*.25),110],[.6,1.05,.3,-.0018]),t&&_(e.pos,[n*7.2,.2+g()*1.2,v*.42,160],[.5,1,.62,.0014]))}let y=r.nodes.filter(e=>e.kind===`junction`),b=l?5:10;for(let e=0;e<b;e++){let t=y[Math.floor(g()*y.length)];_(t.pos,[11+g()*14,g()*v,v*(.2+g()*.25),70],[.5,1,.7,(e%2?-1:1)*.0022])}let x=p.length/3;u.setAttribute(`aC`,new t.InstancedBufferAttribute(new Float32Array(p),3)),u.setAttribute(`aArc`,new t.InstancedBufferAttribute(new Float32Array(m),4)),u.setAttribute(`aSty`,new t.InstancedBufferAttribute(new Float32Array(h),4)),u.instanceCount=x;let S=new t.ShaderMaterial({transparent:!0,depthWrite:!1,depthTest:!1,premultipliedAlpha:!0,side:t.DoubleSide,uniforms:{...s,uInk:{value:e(t,o.nodeRing)}},vertexShader:i+a+`
+        float cov = clamp(vHalf - 0.5 - d, 0.0, 1.0);
+        float lum = min(vLum, 1.0);
+        float a = min(cov * vAlpha * uAlpha * 1.35 * (1.0 + 0.25 * vLit), 1.0);
+        // a thread of light is drawn near opaque, or it vanishes into the bright volume behind it
+        a = mix(a, max(a, cov * min(vAlpha * 2.2, 1.0) * 0.9), lum);
+        // the sheath of light round the stroke, fading out a few px either side
+        float s = max(vLit * 0.26, lum * 0.1) * min(vAlpha * 2.5, 1.0) * exp(-pow(d / (vHalf + 2.5 * uDpr), 2.0));
+        float o = a + s * (1.0 - a);
+        if (o < 0.004) discard;
+        vec3 ink = mix(mix(uInk, uInkLit, vLit * 0.8), uThread, lum * 0.95);
+        gl_FragColor = vec4(ink * a + uSheath * s * (1.0 - a), o);
+      }`}),P=new r.Mesh(f,N);return P.frustumCulled=!1,P.renderOrder=1,{object:P,setFocus(e){if(D.fill(2),e>=0){let t=new Set(M[e]);h.forEach(([n,r],i)=>{D[i]=n===e||r===e?0:t.has(n)||t.has(r)?1:2})}j.needsUpdate=!0},dispose(){f.dispose(),N.dispose()}}}function l({THREE:t,network:r,tokens:o,shared:s,quality:c}){let l=c.tier===`low`,u=new t.InstancedBufferGeometry,d=[],f=[];for(let e=0;e<=72;e++)d.push(e/72,-1,e/72,1);for(let e=0;e<72;e++){let t=e*2;f.push(t,t+1,t+2,t+1,t+3,t+2)}u.setAttribute(`position`,new t.BufferAttribute(new Float32Array(438),3)),u.setAttribute(`seg`,new t.BufferAttribute(new Float32Array(d),2)),u.setIndex(f);let p=[],m=[],h=[],g=n(1452),_=(e,t,n)=>{p.push(...e),m.push(...t),h.push(...n)},v=Math.PI*2;for(let e of r.nodes){if(e.kind!==`hub`&&e.kind!==`core`)continue;let t=e.kind===`core`,n=e.radius;_(e.pos,[n*(t?2.6:3.1),g()*v,v,t?56:44],[.8,1.3,.56,.0026]),!l&&(_(e.pos,[n*(t?4.4:5.4),g()*v,v*(.55+g()*.25),110],[.6,1.05,.3,-.0018]),t&&_(e.pos,[n*7.2,.2+g()*1.2,v*.42,160],[.5,1,.62,.0014]))}let y=r.nodes.filter(e=>e.kind===`junction`),b=l?5:10;for(let e=0;e<b;e++){let t=y[Math.floor(g()*y.length)];_(t.pos,[11+g()*14,g()*v,v*(.2+g()*.25),70],[.5,1,.7,(e%2?-1:1)*.0022])}let x=p.length/3;u.setAttribute(`aC`,new t.InstancedBufferAttribute(new Float32Array(p),3)),u.setAttribute(`aArc`,new t.InstancedBufferAttribute(new Float32Array(m),4)),u.setAttribute(`aSty`,new t.InstancedBufferAttribute(new Float32Array(h),4)),u.instanceCount=x;let S=new t.ShaderMaterial({transparent:!0,depthWrite:!1,depthTest:!1,premultipliedAlpha:!0,side:t.DoubleSide,uniforms:{...s,uInk:{value:e(t,o.nodeRing)}},vertexShader:i+a+`
       attribute vec2 seg; attribute vec3 aC; attribute vec4 aArc, aSty;
       varying float vAlpha, vS, vDuty; varying vec3 vRib;
       void main() {
@@ -175,10 +198,10 @@ vec4 ribbonClip(vec3 p, vec3 dir, float halfPx, float side, out float z) {
         a *= dash * vAlpha;
         if (a < 0.004) discard;
         gl_FragColor = vec4(uInk * a, a);
-      }`}),C=new t.Mesh(u,S);return C.frustumCulled=!1,C.renderOrder=0,{object:C,count:x,dispose(){u.dispose(),S.dispose()}}}var u={junction:0,leaf:1,hub:2,core:3,soon:4};function d({THREE:r,network:a,tokens:s,shared:c}){let l=a.nodes,d=l.length,f=[[-49,6,4,.8],[-53,-12,-6,.6],[-45,25,-12,.7],[-55,17,10,.5],[-47,-26,8,.55],[50,-14,-8,.6],[44,30,6,.5]],p=d+f.length,m=new r.InstancedBufferGeometry,h=new r.PlaneGeometry(2,2);m.index=h.index,m.setAttribute(`position`,h.getAttribute(`position`));let g=new Float32Array(p*3),_=new Float32Array(p*4),v=new Float32Array(p),y=n(90210);l.forEach((e,t)=>{g.set(e.pos,t*3),_.set([e.radius,u[e.kind]??0,y(),t],t*4)}),f.forEach(([e,t,n,r],i)=>{g.set([e,t,n],(d+i)*3),_.set([r,1,.5,-10-i],(d+i)*4)}),m.setAttribute(`aPos`,new r.InstancedBufferAttribute(g,3)),m.setAttribute(`aInfo`,new r.InstancedBufferAttribute(_,4));let b=new r.InstancedBufferAttribute(v,1);b.setUsage(r.DynamicDrawUsage),m.setAttribute(`aRoute`,b),m.instanceCount=p;let x=e(r,s.node),S=e(r,s.panel),C=e(r,s.hub),w=Array.from({length:6},()=>new r.Vector4(-1,-99,0,0)),T=new r.ShaderMaterial({transparent:!0,depthWrite:!1,depthTest:!0,premultipliedAlpha:!0,uniforms:{...c,uInk:{value:x},uPaper:{value:S},uBrass:{value:C},uUmber:{value:e(r,s.nodeRing)},uSage:{value:e(r,s.core)},uSageDeep:{value:t(r,e(r,s.core),x,.55)},uSoon:{value:e(r,s.soon)},uCopper:{value:e(r,s.route)},uCopperLit:{value:e(r,s.routeGlow)},uBrassLit:{value:t(r,C,S,.25)},uGlowSage:{value:t(r,e(r,s.glassLit||s.core),x,.2)},uGlass:{value:e(r,s.glass||s.node)},uGlassLit:{value:e(r,s.glassLit||s.core)},uNeonA:{value:e(r,s.neon[0])},uNeonB:{value:e(r,s.neon[1])},uHalo:{value:e(r,s.halo||`#F4FAF6`)},uGold:{value:e(r,s.core)},uGoldLit:{value:t(r,e(r,s.core),new r.Vector3(1,.97,.88),.6)},uFocusIdx:{value:-1},uFocusT:{value:0},uRouteT:{value:0},uGlowK:{value:1},uHits:{value:w}},vertexShader:i+o+`
+      }`}),C=new t.Mesh(u,S);return C.frustumCulled=!1,C.renderOrder=0,{object:C,count:x,dispose(){u.dispose(),S.dispose()}}}var u={junction:0,leaf:1,hub:2,core:3,soon:4};function d({THREE:r,network:a,tokens:s,shared:c}){let l=a.nodes,d=l.length,f=[[-49,6,4,.8],[-53,-12,-6,.6],[-45,25,-12,.7],[-55,17,10,.5],[-47,-26,8,.55],[50,-14,-8,.6],[44,30,6,.5]],p=d+f.length,m=new r.InstancedBufferGeometry,h=new r.PlaneGeometry(2,2);m.index=h.index,m.setAttribute(`position`,h.getAttribute(`position`));let g=new Float32Array(p*3),_=new Float32Array(p*4),v=new Float32Array(p),y=n(90210);l.forEach((e,t)=>{g.set(e.pos,t*3),_.set([e.radius,u[e.kind]??0,y(),t],t*4)}),f.forEach(([e,t,n,r],i)=>{g.set([e,t,n],(d+i)*3),_.set([r,1,.5,-10-i],(d+i)*4)}),m.setAttribute(`aPos`,new r.InstancedBufferAttribute(g,3)),m.setAttribute(`aInfo`,new r.InstancedBufferAttribute(_,4));let b=new r.InstancedBufferAttribute(v,1);b.setUsage(r.DynamicDrawUsage),m.setAttribute(`aRoute`,b),m.instanceCount=p;let x=e(r,s.node),S=e(r,s.panel),C=e(r,s.hub),w=Array.from({length:6},()=>new r.Vector4(-1,-99,0,0)),T=new r.ShaderMaterial({transparent:!0,depthWrite:!1,depthTest:!0,premultipliedAlpha:!0,uniforms:{...c,uInk:{value:x},uPaper:{value:S},uBrass:{value:C},uUmber:{value:e(r,s.nodeRing)},uSage:{value:e(r,s.core)},uSageDeep:{value:t(r,e(r,s.core),x,.55)},uSoon:{value:e(r,s.soon)},uCopper:{value:e(r,s.route)},uCopperLit:{value:e(r,s.routeGlow)},uBrassLit:{value:t(r,C,S,.25)},uGlowSage:{value:t(r,e(r,s.glassLit||s.core),x,.2)},uGlass:{value:e(r,s.glass||s.node)},uGlassLit:{value:e(r,s.glassLit||s.core)},uNeonA:{value:e(r,s.neon[0])},uNeonB:{value:e(r,s.neon[1])},uHalo:{value:e(r,s.halo||`#F4FAF6`)},uGold:{value:e(r,s.core)},uGoldLit:{value:t(r,e(r,s.core),new r.Vector3(1,.97,.88),.6)},uHaze:{value:t(r,S,e(r,s.core),.15)},uFocusIdx:{value:-1},uFocusT:{value:0},uRouteT:{value:0},uGlowK:{value:1},uHits:{value:w}},vertexShader:i+o+`
       attribute vec3 aPos; attribute vec4 aInfo; attribute float aRoute;
       uniform float uFocusIdx;
-      varying vec2 vUv; varying float vR, vBlur, vAlpha, vKind, vSeed, vIdx, vRoute, vFocus, vAttn, vInkF, vFar, vDk;
+      varying vec2 vUv; varying float vR, vBlur, vAlpha, vKind, vSeed, vIdx, vRoute, vFocus, vAttn, vInkF, vFar, vDk, vBead;
       void main() {
         float kind = aInfo.y;
         vec4 mv = modelViewMatrix * vec4(aPos, 1.0);
@@ -200,6 +223,9 @@ vec4 ribbonClip(vec3 p, vec3 dir, float halfPx, float side, out float z) {
         rPx = mix(rPx, max(rPx, (kind > 1.5 && kind < 2.5 ? 17.0 : kind > 0.5 && kind < 1.5 ? 7.0 : kind < 0.5 ? 2.8 : 0.0) * uDpr), uLand);
         // hubs and the core never shrink below a readable brass-ringed bead, however far away
         rPx = max(rPx, (kind < 0.5 ? 1.25 : kind > 1.5 && kind < 3.5 ? 6.5 : 2.6) * uDpr);
+        // volume pass: some junctions become small glass beads in white halos (the reference)
+        vBead = kind < 0.5 && aInfo.z >= 0.1 && aInfo.z < 0.18 ? uLand * uVolOn : 0.0;
+        rPx = mix(rPx, max(rPx, 5.5 * uDpr), vBead);
         float ext = kind < 0.5 ? 2.9 : kind < 2.5 ? 1.7 : kind < 3.5 ? 1.95 : 1.4;
         // the landing draws soft white halos and outer brass rings: the quad makes room for them
         ext = mix(ext, kind < 0.5 ? 3.4 : kind < 1.5 ? 2.6 : kind < 2.5 ? 2.3 : kind < 3.5 ? 2.6 : kind < 4.5 ? 1.4 : 3.2, uLand);
@@ -241,12 +267,13 @@ vec4 ribbonClip(vec3 p, vec3 dir, float halfPx, float side, out float z) {
         vFar = 1.0 - 0.5 * smoothstep(20.0, 30.0, z) * (1.0 - attnAt(aPos));
         vAlpha = fade * (1.0 - lens) * (1.0 - fogAmt(z) * 0.95 * (1.0 - focus)) / (1.0 + stretch * 1.5) * mix(1.0, 0.5, smoothstep(6.0 * uDpr, 40.0 * uDpr, coc));
         // seen from outside, a node on the far face is drawn lighter, never blurred or fogged away
-        vAlpha = mix(vAlpha, fade * mix(1.0, 0.6, vDk), uLand) * (1.0 - hideByCore);
+        // (the volume pass pushes the far face a little further back)
+        vAlpha = mix(vAlpha, fade * mix(1.0, 0.6 - (kind > 1.5 && kind < 3.5 ? 0.0 : 0.1) * uVolDepth * uVolOn, vDk), uLand) * (1.0 - hideByCore);
       }`,fragmentShader:i+`
-      uniform vec3 uInk, uPaper, uBrass, uUmber, uSage, uSageDeep, uSoon, uCopper, uCopperLit, uBrassLit, uNeonA, uNeonB, uGlowSage, uGlass, uGlassLit, uHalo, uGold, uGoldLit;
+      uniform vec3 uInk, uPaper, uBrass, uUmber, uSage, uSageDeep, uSoon, uCopper, uCopperLit, uBrassLit, uNeonA, uNeonB, uGlowSage, uGlass, uGlassLit, uHalo, uGold, uGoldLit, uHaze;
       uniform float uFocusT, uRouteT, uGlowK;
       uniform vec4 uHits[6];
-      varying vec2 vUv; varying float vR, vBlur, vAlpha, vKind, vSeed, vIdx, vRoute, vFocus, vAttn, vInkF, vFar, vDk;
+      varying vec2 vUv; varying float vR, vBlur, vAlpha, vKind, vSeed, vIdx, vRoute, vFocus, vAttn, vInkF, vFar, vDk, vBead;
       vec4 acc = vec4(0.0);
       float glowA = 0.0;
       void over(vec3 c, float a) { a = clamp(a, 0.0, 1.0); acc.rgb = c * a + acc.rgb * (1.0 - a); acc.a = a + acc.a * (1.0 - a); }
@@ -288,7 +315,14 @@ vec4 ribbonClip(vec3 p, vec3 dir, float halfPx, float side, out float z) {
       void landLook(float d, float r, float px, vec3 ringCol) {
         float fk = mix(1.0, 0.72, vDk);
         float a = atan(vUv.y, vUv.x);
-        if (vKind < 0.5) {
+        if (vKind < 0.5 && vBead > 0.02) {
+          // (fades with the landing rather than switching, so nothing pops through the dive)
+          float rb = r * 0.62;
+          over(uHalo, (1.0 - smoothstep(rb, r * 2.4, d)) * 0.5 * vBead);
+          vec3 bead = glassBead(vUv / rb, mix(uGlass, uInk, 0.8), mix(uInk, uGlassLit, 0.45));
+          over(bead, disc(d, rb) * 0.97 * fk * vBead);
+          over(uInk, ringAt(d, rb, max(0.8 * px, rb * 0.08)) * 0.5 * vBead);
+        } else if (vKind < 0.5) {
           float rd = max(r * 0.7, 1.7 * px);
           bool glint = vSeed > 0.66;
           if (glint) {
@@ -320,6 +354,10 @@ vec4 ribbonClip(vec3 p, vec3 dir, float halfPx, float side, out float z) {
           over(ringCol, ringAt(d, r * 1.0, max(0.9 * px, r * 0.05)) * 0.85);
           float dash = step(0.45, fract(a / 6.2831853 * 30.0 + uTime * 0.004));
           over(ringCol, ringAt(d, r * 1.4, max(0.9 * px, r * 0.05)) * dash * 0.8);
+          // volume pass: a bright ring of light round the bead (the reference's lit hubs)
+          float vk = min(uVolGlow, 1.3) * uVolOn;
+          over(uGold, ring(abs(d - r * 0.72), max(5.0 * px, r * 0.5)) * 0.35 * vk * fk);
+          over(mix(uGoldLit, vec3(1.0), 0.25), ring(abs(d - r * 0.62), max(2.2 * px, r * 0.16)) * 0.95 * vk * fk);
           over(uHalo, ringAt(d, r * 1.85, max(0.9 * px, r * 0.04)) * 0.35);
         } else if (vKind < 3.5) {
           vec2 p = vUv / r;
@@ -331,6 +369,9 @@ vec4 ribbonClip(vec3 p, vec3 dir, float halfPx, float side, out float z) {
           over(uGold, (1.0 - smoothstep(0.0, r * 0.6, length(nc))) * 0.85);
           over(uGoldLit, disc(length(nc), max(r * 0.13, 1.5 * px)) * 0.8);
           over(uBrass, ringAt(d, r, max(1.3 * px, r * 0.05)) * 0.9);
+          float vk = min(uVolGlow, 1.3) * uVolOn;
+          over(uGold, ring(abs(d - r * 1.18), max(6.0 * px, r * 0.4)) * 0.4 * vk);
+          over(mix(uGoldLit, vec3(1.0), 0.25), ring(abs(d - r * 1.08), max(2.6 * px, r * 0.12)) * 0.95 * vk);
           float dash = step(0.5, fract(a / 6.2831853 * 40.0 - uTime * 0.003));
           over(ringCol, ringAt(d, r * 1.75, max(0.9 * px, r * 0.035)) * dash * 0.75);
         }
@@ -417,6 +458,9 @@ vec4 ribbonClip(vec3 p, vec3 dir, float halfPx, float side, out float z) {
         if (uLand > 0.01 && vKind < 3.5) {
           vec4 near = acc; acc = vec4(0.0);
           landLook(d, r, px, ringCol);
+          // volume pass: atmospheric depth, the far face tinted toward the warm air
+          // (the core and the hubs stay clear: they are the landmarks)
+          if (vKind < 1.5) acc.rgb = mix(acc.rgb, uHaze * acc.a, vDk * 0.28 * uVolDepth * uVolOn);
           acc = mix(near, acc, uLand);
           glowA *= 1.0 - uLand;
         }
@@ -688,9 +732,104 @@ float pulseAt(float s) {
         // the luminous boundary: a soft bright rim with a faint glow either side
         // a faint thin boundary arc, a drawn line of light rather than a glowing ring
         float rim = exp(-pow((d - 1.0) / 0.0045, 2.0)) * 0.22 + exp(-pow((d - 1.0) / 0.03, 2.0)) * 0.04;
+        // volume pass: the boundary becomes a clear line of light with a soft glow either side
+        rim *= 1.0 + 0.6 * uVolGlow * uVolOn;
+        rim += exp(-pow((d - 1.0) / 0.05, 2.0)) * 0.035 * uVolGlow * uVolOn;
         float inner = 0.0;
         float a = (pool + rim + inner) * uLand * (1.0 - uWarp);
         if (a < 0.003) discard;
         vec3 c = (uPool * pool + uHalo * (rim + inner)) / max(pool + rim + inner, 1e-4);
         gl_FragColor = vec4(c * a, a);
-      }`}),c=new n.Mesh(o,s);return c.frustumCulled=!1,c.renderOrder=-1,{object:c,dispose(){o.dispose(),s.dispose()}}}var C=6.5;function w({THREE:e,scene:t,camera:n,renderer:i,network:a,tokens:o,quality:u}){t.background=new e.Color(o.sceneBg),t.fog=null;let f=r(e),_={THREE:e,network:a,tokens:o,quality:u,shared:f},v=new e.Group;v.name=`manuscript-skin`;let y=s(_),x=c(_),w=d(_),T=p(_),E=m({..._,nodes:w}),D=h(_),O=g(_),k=l(_),A=b(_),j=[y,S(_),k,A,x,w,T,E,D,O];for(let e of j)v.add(e.object);t.add(v),T.set([new e.Vector3(0,0,-900),new e.Vector3(0,.1,-900)],0),O.object.visible=!0,i.compile(t,n),T.reset(),O.object.visible=!1;let M=new Map(a.nodes.map((e,t)=>[e.id,t])),N=new e.Vector2,P=new e.Vector3,F=new e.Vector3,I=-1,L=0,R=typeof document<`u`?document.documentElement:null,z=0;function B(e){if(!e){w.setRouteNodes(null);return}let t=new Set;a.nodes.forEach((n,r)=>{P.fromArray(n.pos);for(let n=0;n<e.length;n+=2)if(e[n].distanceToSquared(P)<1.44){t.add(r);break}}),w.setRouteNodes(t)}return{setRoute(e){T.set(e,L),e&&e.length>1&&B(e)},setFocus(e){I=e!=null&&M.has(e)?M.get(e):-1,w.uniforms.uFocusIdx.value=I,w.uniforms.uFocusT.value=0,x.setFocus(I),E.setFocus(I),I>=0&&f.uAttnPos.value.fromArray(a.nodes[I].pos)},update(e,t,r){L=e;let o=!!R&&R.classList.contains(`motion-reduced`);o||(z+=t),n.updateMatrixWorld(),i.getDrawingBufferSize(N);let s=f;s.uTime.value=z,s.uRes.value.copy(N),s.uDpr.value=i.getPixelRatio(),s.uPxK.value=N.y/2/Math.tan(n.fov*Math.PI/360),s.uWarp.value=r.warp||0,s.uSpeed.value=r.speed||0;let c=n.position.length();s.uCamR.value=c;let l=Math.min(Math.max((c-58)/30,0),1);s.uLand.value=l*l*(3-2*l);let u=C;!r.travelling&&I>=0?u=P.fromArray(a.nodes[I].pos).distanceTo(n.position):r.glide&&(u=r.targetDist);let d=e=>o?1:1-Math.exp(-t*e);s.uFocus.value+=(u-s.uFocus.value)*d(4),s.uAperture.value+=((r.travelling?4.5:3.2)-s.uAperture.value)*d(3);let p=Math.max(s.uFocus.value-35,0);s.uFogNear.value=16+p*.9,s.uFogFar.value=80+p*1.4;let m=I>=0&&(!r.travelling||r.glide)?1:0;if(s.uAttnOn.value+=(m-s.uAttnOn.value)*d(m?2.2:5),I>=0){let e=P.fromArray(a.nodes[I].pos).distanceTo(n.position);s.uAttnR.value.set(Math.min(Math.max(5,e*.2),14),Math.min(Math.max(18,e*.6),44)),w.uniforms.uGlowK.value=1-.65*Math.min(Math.max((e-85)/55,0),1)}let h=w.uniforms;h.uFocusT.value=o?1:Math.min(1,h.uFocusT.value+t*(r.travelling?.5:1.6)),h.uRouteT.value=T.active?Math.min(1,h.uRouteT.value+t*3):Math.max(0,h.uRouteT.value-t*1.5),y.update(n),T.update(e,t,r),E.update(z,t,r,n,o),D.update(z,t,r,n,I>=0?F.fromArray(a.nodes[I].pos):null),O.update(e,t,r,n)},dispose(){t.remove(v);for(let e of j)e.dispose();t.background=null}}}export{w as createSkin};
+      }`}),c=new n.Mesh(o,s);return c.frustumCulled=!1,c.renderOrder=-1,{object:c,dispose(){o.dispose(),s.dispose()}}}function C({THREE:e,network:t,shared:r,quality:a}){let s=new e.Group;s.name=`volume`;let c=a.tier===`low`,l=new e.PlaneGeometry(2,2),u=new e.ShaderMaterial({transparent:!0,depthTest:!1,depthWrite:!1,blending:e.CustomBlending,blendEquation:e.AddEquation,blendSrc:e.OneFactor,blendDst:e.SrcAlphaFactor,blendSrcAlpha:e.ZeroFactor,blendDstAlpha:e.OneFactor,uniforms:{...r,uLight:{value:new e.Vector3(1,.93,.78)},uHazeC:{value:new e.Vector3(.94,.91,.84)},uSrc:{value:new e.Vector3(-75,170,-40)}},vertexShader:i+o+`
+      uniform vec3 uSrc;
+      varying vec2 vCore, vSrc; varying float vRc;
+      void main() {
+        vec4 c = projectionMatrix * modelViewMatrix * vec4(0.0, 0.0, 0.0, 1.0);
+        vec4 s = projectionMatrix * modelViewMatrix * vec4(uSrc, 1.0);
+        vCore = (c.xy / c.w * 0.5 + 0.5) * uRes;
+        vSrc = (s.xy / max(s.w, 0.1) * 0.5 + 0.5) * uRes;
+        vRc = ROUND_R * uPxK / max(c.w, 1.0);
+        gl_Position = vec4(position.xy, 0.0, 1.0);
+      }`,fragmentShader:i+`
+      uniform vec3 uLight, uHazeC;
+      varying vec2 vCore, vSrc; varying float vRc;
+      float h2(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
+      float n2(vec2 p) {
+        vec2 i = floor(p), f = fract(p); f = f * f * (3.0 - 2.0 * f);
+        return mix(mix(h2(i), h2(i + vec2(1.0, 0.0)), f.x), mix(h2(i + vec2(0.0, 1.0)), h2(i + vec2(1.0, 1.0)), f.x), f.y);
+      }
+      float fbm(vec2 p) { float s = 0.0, a = 0.5; for (int i = 0; i < 4; i++) { s += a * n2(p); p = p * 2.03 + 11.7; a *= 0.5; } return s; }
+      void main() {
+        float k = uLand * (1.0 - uWarp) * uVolOn;
+        if (k < 0.002) discard;
+        vec2 q = (gl_FragCoord.xy - vCore) / vRc;       // network radii from the core, y up
+        float d = length(q);
+        // the parchment darkens toward sepia away from the network
+        // (most inside the sphere, so the light of the threads and beads has something to read
+        // against; outside it the paper stays a mid tan, deepening only toward the corners)
+        float insideSoft = 1.0 - smoothstep(0.75, 1.15, d);
+        float dim = 1.0 - k * uVolDark * (mix(0.14, 0.4, insideSoft) + 0.26 * smoothstep(1.4, 3.0, d));
+        // the volume filling the sphere: smoke, lit unevenly, brightest toward the core
+        float cloud = fbm(q * 2.2 + vec2(uTime * 0.012, -uTime * 0.008));
+        float smoke = smoothstep(0.25, 0.8, fbm(q * 4.5 - vec2(uTime * 0.01, 3.0) + cloud));
+        float inside = 1.0 - smoothstep(0.85, 1.05, d);
+        float vol = exp(-d * d * 1.2) * 0.1 * (0.5 + cloud) + exp(-d * d * 7.0) * 0.1;
+        float haze = inside * (0.04 + 0.14 * smoke) + exp(-d * d * 0.6) * 0.05 * smoke;
+        // mist on the floor below the sphere, pooled brightest under it
+        // (dappled: broken into patches of light, never a solid band)
+        float fy = q.y + 1.1;
+        float band = exp(-fy * fy / 0.1) * exp(-q.x * q.x / 16.0);
+        float pool = exp(-(q.x * q.x) / 0.7 - fy * fy / 0.08);
+        float wisp = fbm(vec2(q.x * 1.6 + uTime * 0.01, q.y * 5.0));
+        float dapple = smoothstep(0.35, 0.8, fbm(vec2(q.x * 3.2, (q.y + 1.3) * 9.0) + 3.1));
+        float mist = (band * 0.26 + pool * 0.1) * (0.3 + 1.2 * wisp) + smoothstep(-0.85, -1.5, q.y) * (0.08 + 0.3 * dapple) * exp(-q.x * q.x / 16.0);
+        // the shaft: a fan of streaked light from above, aimed at the core
+        vec2 v = gl_FragCoord.xy - vSrc, ax = normalize(vCore - vSrc);
+        float along = dot(v, ax) / vRc, across = (v.x * ax.y - v.y * ax.x) / max(length(v), 1.0);
+        float cone = exp(-across * across / 0.06);
+        float streak = fbm(vec2(across * 26.0, uTime * 0.02)) * 0.7 + fbm(vec2(across * 70.0, 3.0 + uTime * 0.03)) * 0.3;
+        streak = smoothstep(0.3, 0.75, streak);
+        // measured from the core: full strength from the top of the frame down to the core,
+        // fading out toward the floor
+        float t = along - length(vCore - vSrc) / vRc;
+        float shaft = cone * (0.25 + 1.5 * streak) * exp(-max(t + 0.2, 0.0) * 1.1) * 0.26;
+        // (the floor mist takes the paler smoke light, not the warm candle light)
+        vec3 light = (uLight * (vol * uVolHaze + shaft * uVolRays) + uHazeC * (haze + mist) * uVolHaze) * k;
+        gl_FragColor = vec4(light, dim);
+      }`}),d=new e.Mesh(l,u);d.frustumCulled=!1,d.renderOrder=-50,s.add(d);let f=[],p=n(5150),m=n(90210),h=t.nodes.map(()=>m());t.nodes.forEach((e,t)=>{e.kind===`junction`&&h[t]>=.1&&h[t]<.18&&f.push([...e.pos,2.4,.55,2,p()])});for(let e of t.nodes)if(e.kind===`core`)f.push([...e.pos,11,1,0,0]);else if(e.kind===`hub`)f.push([...e.pos,6.5,.85,1,p()]);else if(e.kind===`leaf`||e.kind===`soon`)f.push([...e.pos,3.4,.6,2,p()]);else{let t=p();t<.22?f.push([...e.pos,1.3,.8,3,p()]):t<.28&&f.push([...e.pos,1.1,.5,4,p()])}let g=c?60:150;for(let e=0;e<g;e++){let e=p()*Math.PI*2,t=p()*2-1,n=Math.sqrt(1-t*t),r=20+p()**.6*75;f.push([Math.cos(e)*n*r,t*r*.8,Math.sin(e)*n*r,.35+p()*.5,.35+p()*.4,5,p()])}let _=[],v=t=>{let n=new e.InstancedBufferGeometry;n.index=l.index,n.setAttribute(`position`,l.getAttribute(`position`));let r=new Float32Array(t.length*3),i=new Float32Array(t.length*4);return t.forEach(([e,t,n,a,o,s,c],l)=>{r.set([e,t,n],l*3),i.set([a,o,s,c],l*4)}),n.setAttribute(`aPos`,new e.InstancedBufferAttribute(r,3)),n.setAttribute(`aInfo`,new e.InstancedBufferAttribute(i,4)),n.instanceCount=t.length,_.push(n),n},y=new e.ShaderMaterial({transparent:!0,depthTest:!1,depthWrite:!1,blending:e.CustomBlending,blendEquation:e.AddEquation,blendSrc:e.OneFactor,blendDst:e.OneFactor,blendSrcAlpha:e.ZeroFactor,blendDstAlpha:e.OneFactor,uniforms:{...r,uCoreC:{value:new e.Vector3(1,.86,.58)},uGoldC:{value:new e.Vector3(1,.74,.36)},uPaleC:{value:new e.Vector3(.9,1,.97)},uWhiteC:{value:new e.Vector3(1,.97,.9)}},vertexShader:i+`
+      attribute vec3 aPos; attribute vec4 aInfo;
+      varying vec2 vQ; varying float vA, vType, vSeed;
+      void main() {
+        vec4 mv = modelViewMatrix * vec4(aPos, 1.0);
+        float z = -mv.z, type = aInfo.z;
+        float a = aInfo.y * mix(0.25, 1.0, uLand) * uVolGlow * uVolOn * (1.0 - uWarp) * nearFade(z, 2.0, 8.0);
+        a *= mix(1.0, 0.45, depthK(z) * uVolDepth);
+        if (type > 4.5) a *= (0.55 + 0.45 * sin(uTime * (0.7 + aInfo.w * 1.6) + aInfo.w * 40.0)) * uLand;
+        if (a < 0.003 || z < 0.3) { gl_Position = vec4(2.0, 2.0, 2.0, 1.0); return; }
+        float rPx = aInfo.x * uPxK / z;
+        // glints and dust keep a visible minimum size however far away
+        rPx = max(rPx, (type > 4.5 ? 2.5 : type > 2.5 ? 7.0 : 10.0) * uDpr);
+        float quad = min(rPx, uRes.y * 0.4);
+        mv.xy += position.xy * quad * z / uPxK;
+        gl_Position = projectionMatrix * mv;
+        vQ = position.xy; vA = a; vType = type; vSeed = aInfo.w;
+      }`,fragmentShader:i+`
+      uniform vec3 uCoreC, uGoldC, uPaleC, uWhiteC;
+      varying vec2 vQ; varying float vA, vType, vSeed;
+      void main() {
+        float d2 = dot(vQ, vQ);
+        float g; vec3 c;
+        if (vType < 0.5) { g = exp(-d2 * 5.0) * 0.4 + exp(-d2 * 20.0) * 0.45; c = uCoreC; }
+        else if (vType < 1.5) { g = exp(-d2 * 6.0) * 0.36 + exp(-d2 * 26.0) * 0.4; c = uGoldC; }
+        else if (vType < 2.5) { g = exp(-d2 * 10.0) * 0.26 + exp(-d2 * 40.0) * 0.26; c = uPaleC; }
+        else if (vType < 4.5) {
+          // a small star: a soft point with thin cross spikes on some
+          vec2 a = abs(vQ);
+          float spike = exp(-a.y * 60.0) * exp(-a.x * 3.5) + exp(-a.x * 60.0) * exp(-a.y * 3.5);
+          g = exp(-d2 * 14.0) * 0.5 + exp(-d2 * 90.0) * 0.8 + spike * 0.3 * step(vSeed, 0.3) * step(3.5, vType);
+          c = vType < 3.5 ? uGoldC : uWhiteC;
+        } else { g = exp(-d2 * 9.0) * 0.8; c = mix(uGoldC, uWhiteC, vSeed); }
+        g *= vA * smoothstep(1.0, 0.85, sqrt(d2));
+        if (g < 0.002) discard;
+        gl_FragColor = vec4(c * g, 0.0);
+      }`}),b=new e.Mesh(v(f.filter(e=>e[5]<2.5)),y);b.frustumCulled=!1,b.renderOrder=3.5;let x=new e.Mesh(v(f.filter(e=>e[5]>2.5)),y);x.frustumCulled=!1,x.renderOrder=4.5,s.add(b,x);let S=r.uMajors.value;return t.nodes.filter(e=>e.kind===`core`||e.kind===`hub`).slice(0,S.length).forEach((e,t)=>S[t].set(...e.pos,e.kind===`core`?34:20)),{object:s,dispose(){l.dispose();for(let e of _)e.dispose();u.dispose(),y.dispose()}}}var w=6.5;function T({THREE:e,scene:t,camera:n,renderer:i,network:a,tokens:o,quality:u}){t.background=new e.Color(o.sceneBg),t.fog=null;let f=r(e),_={THREE:e,network:a,tokens:o,quality:u,shared:f},v=new e.Group;v.name=`manuscript-skin`;let y=s(_),x=c(_),T=d(_),E=p(_),D=m({..._,nodes:T}),O=h(_),k=g(_),A=l(_),j=b(_),M=[y,S(_),C(_),A,j,x,T,E,D,O,k];for(let e of M)v.add(e.object);t.add(v),E.set([new e.Vector3(0,0,-900),new e.Vector3(0,.1,-900)],0),k.object.visible=!0,i.compile(t,n),E.reset(),k.object.visible=!1;let N=new Map(a.nodes.map((e,t)=>[e.id,t])),P=new e.Vector2,F=new e.Vector3,I=new e.Vector3,L=-1,R=0,z=typeof document<`u`?document.documentElement:null,B=0;function V(e){if(!e){T.setRouteNodes(null);return}let t=new Set;a.nodes.forEach((n,r)=>{F.fromArray(n.pos);for(let n=0;n<e.length;n+=2)if(e[n].distanceToSquared(F)<1.44){t.add(r);break}}),T.setRouteNodes(t)}return{setRoute(e){E.set(e,R),e&&e.length>1&&V(e)},setFocus(e){L=e!=null&&N.has(e)?N.get(e):-1,T.uniforms.uFocusIdx.value=L,T.uniforms.uFocusT.value=0,x.setFocus(L),D.setFocus(L),L>=0&&f.uAttnPos.value.fromArray(a.nodes[L].pos)},update(e,t,r){R=e;let o=!!z&&z.classList.contains(`motion-reduced`);o||(B+=t),n.updateMatrixWorld(),i.getDrawingBufferSize(P);let s=f;s.uTime.value=B,s.uRes.value.copy(P),s.uDpr.value=i.getPixelRatio(),s.uPxK.value=P.y/2/Math.tan(n.fov*Math.PI/360),s.uWarp.value=r.warp||0,s.uSpeed.value=r.speed||0;let c=n.position.length();s.uCamR.value=c;let l=Math.min(Math.max((c-58)/30,0),1);s.uLand.value=l*l*(3-2*l);let u=w;!r.travelling&&L>=0?u=F.fromArray(a.nodes[L].pos).distanceTo(n.position):r.glide&&(u=r.targetDist);let d=e=>o?1:1-Math.exp(-t*e);s.uFocus.value+=(u-s.uFocus.value)*d(4),s.uAperture.value+=((r.travelling?4.5:3.2)-s.uAperture.value)*d(3);let p=Math.max(s.uFocus.value-35,0);s.uFogNear.value=16+p*.9,s.uFogFar.value=80+p*1.4;let m=L>=0&&(!r.travelling||r.glide)?1:0;if(s.uAttnOn.value+=(m-s.uAttnOn.value)*d(m?2.2:5),L>=0){let e=F.fromArray(a.nodes[L].pos).distanceTo(n.position);s.uAttnR.value.set(Math.min(Math.max(5,e*.2),14),Math.min(Math.max(18,e*.6),44)),T.uniforms.uGlowK.value=1-.65*Math.min(Math.max((e-85)/55,0),1)}let h=T.uniforms;h.uFocusT.value=o?1:Math.min(1,h.uFocusT.value+t*(r.travelling?.5:1.6)),h.uRouteT.value=E.active?Math.min(1,h.uRouteT.value+t*3):Math.max(0,h.uRouteT.value-t*1.5),y.update(n),E.update(e,t,r),D.update(B,t,r,n,o),O.update(B,t,r,n,L>=0?I.fromArray(a.nodes[L].pos):null),k.update(e,t,r,n)},dispose(){t.remove(v);for(let e of M)e.dispose();t.background=null}}}export{T as createSkin};
