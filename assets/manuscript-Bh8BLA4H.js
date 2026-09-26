@@ -426,15 +426,30 @@ float solidVis(float kind, float rPx) {
           over(uGoldLit, disc(length(nc), max(rh * 0.14, 1.4 * px)) * 0.85);
           float vk = min(uVolGlow, 1.3) * uVolOn * uLand;
           over(uGold, ring(abs(d - rh * 1.25), max(4.0 * px, rh * 0.45)) * 0.22 * vk);
+          // volume pass (kept from the painted core): warm light pooled round the lantern and a
+          // lit gold ring at its rim, so the core glows as the landmark of the drawing
+          over(mix(uGold, uPaper, 0.3), (1.0 - smoothstep(r * 0.6, r * 2.7, d)) * 0.45 * vk);
+          over(uGold, ring(abs(d - r * 1.8), max(6.0 * px, r * 0.4)) * 0.3 * vk);
+          over(mix(uGoldLit, vec3(1.0), 0.25), ring(abs(d - r * 1.78), max(2.4 * px, r * 0.12)) * 0.95 * vk);
+          over(uHalo, ringAt(d, r * 2.25, max(1.0 * px, r * 0.04)) * 0.35 * uLand);
         } else if (vKind > 1.5) {
           // hub: a soft light and a small glass bead at the heart of the solid
           float lk = mix(1.0, 0.6, uLand); // (the hub's solid is 0.6 times the size from outside)
           over(uHalo, (1.0 - smoothstep(r * 0.3 * lk, r * 2.0 * lk, d)) * 0.28);
-          float rh = r * 0.32 * lk;
+          float rh = r * 0.32 * mix(1.0, 0.85, uLand); // the glass heart stays a clear bead
           over(mix(uGold, uGoldLit, 0.4), (1.0 - smoothstep(rh, rh * 2.6, d)) * 0.35 * uVolOn);
           vec3 bead = glassBead(vUv / rh, mix(uGlass, uInk, 0.8), mix(uInk, uGlassLit, 0.4));
           over(bead, disc(d, rh) * 0.95);
           over(uInk, ringAt(d, rh, max(0.8 * px, rh * 0.08)) * 0.6);
+          // volume pass (kept from the painted hubs): a warm ring of light just outside the solid,
+          // lit at its edge, a dashed brass ring and a pale halo ring, all scaled to the solid
+          float vk = min(uVolGlow, 1.3) * uVolOn * uLand;
+          float rs = r * 1.1 * lk; // the solid's radius
+          over(uGold, ring(abs(d - rs * 1.1), max(4.0 * px, rs * 0.45)) * 0.3 * vk);
+          over(mix(uGoldLit, uGold, 0.35), ring(abs(d - rs * 1.12), max(1.8 * px, rs * 0.11)) * 0.95 * vk);
+          float dash = step(0.45, fract(atan(vUv.y, vUv.x) / 6.2831853 * 30.0 + uTime * 0.004));
+          over(uBrass, ringAt(d, rs * 1.45, max(0.9 * px, rs * 0.05)) * dash * 0.7 * uLand);
+          over(uHalo, ringAt(d, rs * 1.75, max(0.9 * px, rs * 0.04)) * 0.35 * uLand);
         } else {
           // leaf: a faint light and an ink heart
           over(uHalo, (1.0 - smoothstep(r * 0.3, r * 1.8, d)) * 0.22);

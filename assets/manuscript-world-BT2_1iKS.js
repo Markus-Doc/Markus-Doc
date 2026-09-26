@@ -1,4 +1,4 @@
-import{d as e,f as t,l as n,p as r}from"./index-C7pifLwf.js";var i=`
+import{d as e,f as t,l as n,p as r}from"./index-B1JfHjHE.js";var i=`
   varying vec2 vNdc;
   void main() { vNdc = position.xy; gl_Position = vec4(position.xy, 0.9999, 1.0); }`,a=`
   uniform sampler2D uMap;
