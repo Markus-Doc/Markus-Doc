@@ -4,9 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex, nofollow">
-  <meta name="color-scheme" content="light dark">
-  <meta name="theme-color" content="#F3ECDE" media="(prefers-color-scheme: light)">
-  <meta name="theme-color" content="#141C19" media="(prefers-color-scheme: dark)">
+  <meta name="color-scheme" content="light">
+  <meta name="theme-color" content="#F3ECDE">
   <title>Projects | Markus Walker</title>
   <meta name="description" content="Projects by Markus Walker, AI engineer in Brisbane: a Claude Cowork controls cheat sheet, a SOC white paper on AI-driven attacks, MCP access governance, RESYNTH and security planning work.">
   <link rel="canonical" href="https://www.markuswalker.com/projects/">
@@ -101,15 +100,7 @@
   </script>
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="preload" href="/fonts/schibsted-grotesk-var.woff2" as="font" type="font/woff2" crossorigin>
-  <script>
-    // Apply the saved or OS theme before first paint so the page never flashes.
-    (function () {
-      var t;
-      try { t = localStorage.getItem('mw-theme'); } catch (e) {}
-      if (t !== 'light' && t !== 'dark') t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-      document.documentElement.dataset.theme = t;
-    })();
-  </script>
+  <link rel="preload" href="/fonts/fraunces-semibold.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="/site/styles.css">
 </head>
 <body>
@@ -126,10 +117,7 @@
         <a href="/#/approach">Approach</a>
         <a href="/#/contact">Contact</a>
       </nav>
-      <button class="theme-toggle" type="button" aria-label="Switch to dark theme" title="Toggle light and dark theme">
-        <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z"/></svg>
-        <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg>
-      </button>
+      <a class="button button-small resume-link" href="/Markus_Walker_Resume.pdf" download>Resume PDF</a>
     </div>
   </header>
   <main id="main" tabindex="-1">
@@ -220,21 +208,5 @@
     </div>
   </footer>
 
-  <script>
-    (function () {
-      var root = document.documentElement;
-      var btn = document.querySelector('.theme-toggle');
-      function sync() {
-        var dark = root.dataset.theme === 'dark';
-        btn.setAttribute('aria-label', dark ? 'Switch to light theme' : 'Switch to dark theme');
-      }
-      btn.addEventListener('click', function () {
-        root.dataset.theme = root.dataset.theme === 'dark' ? 'light' : 'dark';
-        try { localStorage.setItem('mw-theme', root.dataset.theme); } catch (e) {}
-        sync();
-      });
-      sync();
-    })();
-  </script>
 </body>
 </html>

@@ -1,0 +1,265 @@
+{
+ "size": 4096,
+ "quality": 0.82,
+ "paper": [
+  205,
+  178,
+  146
+ ],
+ "flattened": true,
+ "built": "2026-09-25",
+ "sources": [
+  {
+   "id": "scene",
+   "uv": [
+    0,
+    0,
+    0.4560546875,
+    0.256103515625
+   ],
+   "px": [
+    1868,
+    1049
+   ],
+   "paper": [
+    202,
+    175,
+    144
+   ],
+   "lum": {
+    "p20": 159.646,
+    "p50": 179.48899999999998,
+    "p80": 189.083
+   },
+   "native": [
+    1872,
+    1056
+   ],
+   "file": "C:/Users/marku/OneDrive/Documents/0.1-GitHub/portfolio-website/.inbox/sphere-refs/01-landing-scene.jpg"
+  },
+  {
+   "id": "wallA",
+   "uv": [
+    0.45703125,
+    0,
+    0.994140625,
+    0.302978515625
+   ],
+   "px": [
+    2200,
+    1241
+   ],
+   "paper": [
+    204,
+    177,
+    146
+   ],
+   "lum": {
+    "p20": 156.16899999999998,
+    "p50": 181.724,
+    "p80": 190.756
+   },
+   "native": [
+    2497,
+    1408
+   ],
+   "file": "C:/Users/marku/OneDrive/Documents/0.1-GitHub/portfolio-website/.inbox/working-folder/sphere-inner-walls-v1.png"
+  },
+  {
+   "id": "wallB",
+   "uv": [
+    0,
+    0.303955078125,
+    0.537109375,
+    0.60693359375
+   ],
+   "px": [
+    2200,
+    1241
+   ],
+   "paper": [
+    201,
+    173,
+    141
+   ],
+   "lum": {
+    "p20": 141.31099999999998,
+    "p50": 177.956,
+    "p80": 195.41400000000002
+   },
+   "native": [
+    2497,
+    1408
+   ],
+   "file": "C:/Users/marku/OneDrive/Documents/0.1-GitHub/portfolio-website/.inbox/working-folder/sphere-inner-walls-v1-2.png"
+  },
+  {
+   "id": "px",
+   "uv": [
+    0.5380859375,
+    0.303955078125,
+    0.767578125,
+    0.533447265625
+   ],
+   "px": [
+    940,
+    940
+   ],
+   "paper": [
+    199,
+    173,
+    142
+   ],
+   "lum": {
+    "p20": 163.685,
+    "p50": 177.23999999999998,
+    "p80": 182.799
+   },
+   "native": [
+    1254,
+    1254
+   ],
+   "file": "C:/Users/marku/OneDrive/Documents/0.1-GitHub/portfolio-website/.inbox/working-folder/Final/background-views/px.png"
+  },
+  {
+   "id": "nx",
+   "uv": [
+    0.7685546875,
+    0.303955078125,
+    0.998046875,
+    0.533447265625
+   ],
+   "px": [
+    940,
+    940
+   ],
+   "paper": [
+    200,
+    174,
+    142
+   ],
+   "lum": {
+    "p20": 162.28999999999996,
+    "p50": 178.05499999999998,
+    "p80": 184.23999999999998
+   },
+   "native": [
+    1254,
+    1254
+   ],
+   "file": "C:/Users/marku/OneDrive/Documents/0.1-GitHub/portfolio-website/.inbox/working-folder/Final/background-views/nx.png"
+  },
+  {
+   "id": "py",
+   "uv": [
+    0,
+    0.60791015625,
+    0.2294921875,
+    0.83740234375
+   ],
+   "px": [
+    940,
+    940
+   ],
+   "paper": [
+    199,
+    173,
+    142
+   ],
+   "lum": {
+    "p20": 165.582,
+    "p50": 176.98399999999998,
+    "p80": 181.539
+   },
+   "native": [
+    1254,
+    1254
+   ],
+   "file": "C:/Users/marku/OneDrive/Documents/0.1-GitHub/portfolio-website/.inbox/working-folder/Final/background-views/py.png"
+  },
+  {
+   "id": "ny",
+   "uv": [
+    0.23046875,
+    0.60791015625,
+    0.4599609375,
+    0.83740234375
+   ],
+   "px": [
+    940,
+    940
+   ],
+   "paper": [
+    199,
+    173,
+    142
+   ],
+   "lum": {
+    "p20": 163.54299999999998,
+    "p50": 177.539,
+    "p80": 182.86999999999998
+   },
+   "native": [
+    1254,
+    1254
+   ],
+   "file": "C:/Users/marku/OneDrive/Documents/0.1-GitHub/portfolio-website/.inbox/working-folder/Final/background-views/ny.png"
+  },
+  {
+   "id": "pz",
+   "uv": [
+    0.4609375,
+    0.60791015625,
+    0.6904296875,
+    0.83740234375
+   ],
+   "px": [
+    940,
+    940
+   ],
+   "paper": [
+    199,
+    173,
+    141
+   ],
+   "lum": {
+    "p20": 164.799,
+    "p50": 176.827,
+    "p80": 181.827
+   },
+   "native": [
+    1254,
+    1254
+   ],
+   "file": "C:/Users/marku/OneDrive/Documents/0.1-GitHub/portfolio-website/.inbox/working-folder/Final/background-views/pz.png"
+  },
+  {
+   "id": "nz",
+   "uv": [
+    0.69140625,
+    0.60791015625,
+    0.9208984375,
+    0.83740234375
+   ],
+   "px": [
+    940,
+    940
+   ],
+   "paper": [
+    200,
+    173,
+    142
+   ],
+   "lum": {
+    "p20": 162.68099999999998,
+    "p50": 177.653,
+    "p80": 183.539
+   },
+   "native": [
+    1254,
+    1254
+   ],
+   "file": "C:/Users/marku/OneDrive/Documents/0.1-GitHub/portfolio-website/.inbox/working-folder/Final/background-views/nz.png"
+  }
+ ]
+}
