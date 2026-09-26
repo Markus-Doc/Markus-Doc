@@ -1,0 +1,41 @@
+# Markus Walker
+
+> AI engineer based in Brisbane, Australia. I deliver AI solutions from start to finish, secure by design, backed by thirteen years in IT and OT infrastructure. Looking for forward deployed engineer (FDE), AI engineer, applied AI engineer, AI solutions engineer or architect, AI security engineer and AI platform engineer roles, fully remote. Hybrid or relocation considered for an exceptional opportunity.
+
+Current role: Senior Engineer, Secure AI. Clearance: current AGSVA Baseline, eligible for NV1 and NV2.
+
+## Profile
+
+- [Resume and portfolio](https://www.markuswalker.com/): experience, projects, writing and capabilities
+- [Resume PDF](https://www.markuswalker.com/Markus_Walker_Resume.pdf): two-page resume
+- [LinkedIn](https://www.linkedin.com/in/markus-walker-au/)
+- [GitHub](https://github.com/markus-doc)
+
+## What I do
+
+- Take agentic AI from scoping with the client through architecture, build, security controls and handover.
+- Build security in from the first design decision: AI threat modelling, secure software development, MCP governance, access boundaries and control assessment.
+- Build knowledge bases agents can reason over, with provenance and human review over what counts as true.
+- Platforms I work with include Azure AI Foundry, Azure OpenAI, AWS Bedrock, Claude, Codex, ChatGPT, MCP and n8n, with Python, TypeScript and PowerShell.
+
+## Projects
+
+Each project has its own page and was accurate at the time of writing. Index: https://www.markuswalker.com/projects/
+
+- [Securing Claude Cowork: controls, gaps and safer defaults](https://www.markuswalker.com/projects/claude-cowork-controls-cheat-sheet/): what the Claude Cowork admin console, device policy and third-party deployments control, and where they fall short. Version 1.4, evidence cut 23 September 2026. [Full text](https://www.markuswalker.com/assets/docs/Markus_Walker_Cowork_Controls_Cheat_Sheet_v1.4)
+- [Human, script or AI? Spotting AI-driven attacks in the SOC](https://www.markuswalker.com/projects/distinguishing-ai-driven-attacks/): SOC advisory white paper. Version 5, evidence cut 23 September 2026. [Full text](https://www.markuswalker.com/assets/docs/Markus_Walker_AI_Driven_Attacks_White_Paper_v5)
+- [AI and MCP access governance](https://www.markuswalker.com/projects/mcp-access-governance/): portfolio proof of concept for structured review of AI agent integrations and MCP-connected tools (May to July 2026)
+- [RESYNTH](https://www.markuswalker.com/projects/resynth/): open-source pipeline that consolidates several AI deep-research reports into one verified master document (June 2026)
+- [AWS security architecture case study](https://www.markuswalker.com/projects/aws-security-architecture-case-study/): fictional planning case study (April 2026)
+- [Incident response planning portfolio](https://www.markuswalker.com/projects/incident-response-planning/): structured around NIST SP 800-61 (April 2026)
+
+## Experience
+
+- Senior Engineer, Secure AI, June 2026 to present
+- Independent practitioner and professional development, 2025 to 2026
+- IT Field Engineer, Tata Consultancy Services, May 2019 to August 2025: IT and OT for Shell QGC and QCLNG operations across more than twenty remote Queensland sites
+- Earlier roles, 2005 to 2019: gas project site roles in Queensland, and networked lighting and audio systems in the USA
+
+## Contact
+
+- Email: markus@markuswalker.com

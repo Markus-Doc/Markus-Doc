@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="robots" content="noindex, nofollow">
+  <meta name="robots" content="index,follow,max-image-preview:large">
   <meta name="color-scheme" content="light">
   <meta name="theme-color" content="#F3ECDE">
   <title>Markus Walker | Forward Deployed and Secure AI Engineer</title>
@@ -15,6 +15,14 @@
   <meta property="og:type" content="profile">
   <meta property="og:url" content="https://www.markuswalker.com/">
   <meta property="og:image" content="https://www.markuswalker.com/art/og-image.jpg">
+  <meta name="author" content="Markus Walker">
+  <meta property="og:locale" content="en_AU">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="A network of luminous nodes drawn over Renaissance sketches on aged vellum.">
+  <meta property="profile:first_name" content="Markus">
+  <meta property="profile:last_name" content="Walker">
+  <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="preload" href="/fonts/schibsted-grotesk-var.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/fonts/fraunces-semibold.woff2" as="font" type="font/woff2" crossorigin>
@@ -30,6 +38,49 @@
       var layers = lm ? decodeURIComponent(lm[1]) : (location.search.indexOf('look=line') !== -1 ? '' : 'notebook-sphere');
       if (layers !== 'none') layers.split(',').forEach(function (n) { if (/^[\w-]+$/.test(n)) document.documentElement.classList.add('layer-' + n); });
     })();
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Person",
+        "@id": "https://www.markuswalker.com/#person",
+        "name": "Markus Walker",
+        "url": "https://www.markuswalker.com/",
+        "image": "https://www.markuswalker.com/art/og-image.jpg",
+        "jobTitle": "AI Engineer",
+        "description": "AI engineer in Brisbane who delivers AI solutions from start to finish, secure by design, backed by thirteen years in IT and OT infrastructure.",
+        "address": { "@type": "PostalAddress", "addressLocality": "Brisbane", "addressRegion": "QLD", "addressCountry": "AU" },
+        "email": "mailto:markus@markuswalker.com",
+        "sameAs": [
+          "https://www.linkedin.com/in/markus-walker-au/",
+          "https://github.com/markus-doc"
+        ],
+        "knowsAbout": [
+          "Forward deployed engineering", "AI solutions architecture", "Agentic AI", "AI agents",
+          "Large language models", "Secure AI", "AI security", "AI threat modelling", "Prompt injection",
+          "Model Context Protocol", "MCP governance", "Knowledge engineering", "Knowledge graphs",
+          "Retrieval-augmented generation", "Azure AI Foundry", "Azure OpenAI", "AWS Bedrock",
+          "Cloud security", "Identity and access management", "IT and OT infrastructure"
+        ],
+        "hasCredential": [
+          { "@type": "EducationalOccupationalCredential", "name": "Certificate IV in Cyber Security (22603VIC)", "credentialCategory": "certificate", "recognizedBy": { "@type": "Organization", "name": "TAFE Queensland" } },
+          { "@type": "EducationalOccupationalCredential", "name": "AWS Certified Solutions Architect, Associate", "credentialCategory": "certification" },
+          { "@type": "EducationalOccupationalCredential", "name": "Claude Certified Associate: Foundations", "credentialCategory": "certification" }
+        ],
+        "seeks": { "@type": "Demand", "description": "Forward deployed engineer, AI engineer, applied AI engineer, AI solutions engineer or architect, AI security engineer and AI platform engineer roles. Fully remote. Hybrid or relocation considered for an exceptional opportunity." }
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://www.markuswalker.com/#website",
+        "url": "https://www.markuswalker.com/",
+        "name": "Markus Walker",
+        "inLanguage": "en-AU",
+        "about": { "@id": "https://www.markuswalker.com/#person" }
+      }
+    ]
+  }
   </script>
   <script type="module" crossorigin src="/assets/index-DSEiP2Ra.js"></script>
   <link rel="stylesheet" crossorigin href="/assets/index-B16BNMsI.css">
