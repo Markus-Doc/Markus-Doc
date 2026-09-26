@@ -297,6 +297,13 @@ main:focus { outline: none; }
 .footer-inner p { margin: 0; }
 .site-footer .text-link { font-size: .875rem; color: var(--ink); }
 
+/* The Runner project page carries two gameplay captures */
+.shots { display: grid; gap: 1rem; margin: 2rem 0 0; max-width: 60rem; }
+@media (min-width: 760px) { .shots { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.shots .evidence { margin: 0; }
+.shots .evidence img { background: #0b0f1a; image-rendering: pixelated; }
+:root[data-theme='dark'] .shots .evidence img { filter: none; }
+
 @media print {
   .site-header, .theme-toggle, .sketch, .actions, .site-footer .text-link { display: none; }
   body { background: #fff; color: #000; }
