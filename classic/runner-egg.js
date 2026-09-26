@@ -165,32 +165,30 @@
   function place(el, p) { el.style.transform = 'translate(' + p.x + 'px,' + p.y + 'px)'; }
 
   // Run in from the left with small hops, then one big jump onto the terminal.
+  // Positions come from elapsed time, not frame count, so a busy page (the
+  // interactive site's WebGL scene on a slow phone) drops frames but keeps pace.
   function run(runner, terminal) {
     var groundY = stage.clientHeight - 13 * SCALE;
     var target = terminalTop(terminal);
+    var startX = -13 * SCALE;
     var jumpFrom = target.x - 110;
-    var x = -13 * SCALE;
     var speed = Math.max(260, stage.clientWidth / 3.2); // px per second
-    var t0 = null;
-    var tick = 0;
-    var jumpStart = null;
+    var RUN_MS = Math.max(0, (jumpFrom - startX) / speed * 1000);
     var JUMP_MS = 520;
+    var t0 = null;
 
     function frame(now) {
       if (!stage) return;
       if (t0 === null) t0 = now;
-      var dt = Math.min(0.05, (now - (frame.last || now)) / 1000);
-      frame.last = now;
+      var e = now - t0;
 
-      if (jumpStart === null) {
-        x += speed * dt;
-        tick += dt;
+      if (e < RUN_MS) {
+        var tick = e / 1000;
         var legs = Math.floor(tick * 11) % 2 ? 'runA' : 'runB';
         runner.innerHTML = FRAMES[legs];
-        place(runner, { x: x, y: groundY - Math.abs(Math.sin(tick * 11)) * 4 });
-        if (x >= jumpFrom) jumpStart = now;
+        place(runner, { x: startX + speed * tick, y: groundY - Math.abs(Math.sin(tick * 11)) * 4 });
       } else {
-        var p = Math.min(1, (now - jumpStart) / JUMP_MS);
+        var p = Math.min(1, (e - RUN_MS) / JUMP_MS);
         var jx = jumpFrom + (target.x - jumpFrom) * p;
         var arc = Math.sin(p * Math.PI) * 70;
         var jy = groundY + (target.y - groundY) * p - arc;
