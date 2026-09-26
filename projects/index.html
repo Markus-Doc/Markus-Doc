@@ -4,16 +4,15 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="index,follow,max-image-preview:large">
-  <meta name="color-scheme" content="light dark">
-  <meta name="theme-color" content="#F3ECDE" media="(prefers-color-scheme: light)">
-  <meta name="theme-color" content="#141C19" media="(prefers-color-scheme: dark)">
+  <meta name="color-scheme" content="light">
+  <meta name="theme-color" content="#F3ECDE">
   <title>Projects | Markus Walker</title>
-  <meta name="description" content="Projects by Markus Walker, AI engineer in Brisbane: a Claude Cowork controls cheat sheet, a SOC white paper on AI-driven attacks, MCP access governance, RESYNTH and security planning work.">
+  <meta name="description" content="Projects by Markus Walker, AI engineer in Brisbane: a guide to securing Claude Cowork, a SOC white paper on AI-driven attacks, MCP access governance, RESYNTH and security planning work.">
   <link rel="canonical" href="https://www.markuswalker.com/projects/">
   <meta name="author" content="Markus Walker">
   <meta property="og:site_name" content="Markus Walker">
   <meta property="og:title" content="Projects | Markus Walker">
-  <meta property="og:description" content="Projects by Markus Walker, AI engineer in Brisbane: a Claude Cowork controls cheat sheet, a SOC white paper on AI-driven attacks, MCP access governance, RESYNTH and security planning work.">
+  <meta property="og:description" content="Projects by Markus Walker, AI engineer in Brisbane: a guide to securing Claude Cowork, a SOC white paper on AI-driven attacks, MCP access governance, RESYNTH and security planning work.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://www.markuswalker.com/projects/">
   <meta property="og:locale" content="en_AU">
@@ -30,7 +29,7 @@
       "@id": "https://www.markuswalker.com/projects/#page",
       "name": "Projects",
       "url": "https://www.markuswalker.com/projects/",
-      "description": "Projects by Markus Walker, AI engineer in Brisbane: a Claude Cowork controls cheat sheet, a SOC white paper on AI-driven attacks, MCP access governance, RESYNTH and security planning work.",
+      "description": "Projects by Markus Walker, AI engineer in Brisbane: a guide to securing Claude Cowork, a SOC white paper on AI-driven attacks, MCP access governance, RESYNTH and security planning work.",
       "author": {
         "@id": "https://www.markuswalker.com/#person"
       },
@@ -44,13 +43,13 @@
             "@type": "ListItem",
             "position": 1,
             "url": "https://www.markuswalker.com/projects/claude-cowork-controls-cheat-sheet/",
-            "name": "Claude Cowork controls cheat sheet"
+            "name": "Securing Claude Cowork: controls, gaps and safer defaults"
           },
           {
             "@type": "ListItem",
             "position": 2,
             "url": "https://www.markuswalker.com/projects/distinguishing-ai-driven-attacks/",
-            "name": "Distinguishing AI-driven attacks from human and automated activity"
+            "name": "Human, script or AI? Spotting AI-driven attacks in the SOC"
           },
           {
             "@type": "ListItem",
@@ -101,16 +100,8 @@
   </script>
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="preload" href="/fonts/schibsted-grotesk-var.woff2" as="font" type="font/woff2" crossorigin>
-  <script>
-    // Apply the saved or OS theme before first paint so the page never flashes.
-    (function () {
-      var t;
-      try { t = localStorage.getItem('mw-theme'); } catch (e) {}
-      if (t !== 'light' && t !== 'dark') t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-      document.documentElement.dataset.theme = t;
-    })();
-  </script>
-  <link rel="stylesheet" href="/styles.css">
+  <link rel="preload" href="/fonts/fraunces-semibold.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/site/styles.css">
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -119,22 +110,19 @@
     <div class="wrap header-inner">
       <a class="monogram" href="/" aria-label="Markus Walker, home">MW<span class="ink-period">.</span></a>
       <nav class="site-nav" aria-label="Main navigation">
-        <a href="/#experience">Experience</a>
+        <a href="/#/experience">Experience</a>
         <a href="/projects/" aria-current="page">Projects</a>
-        <a href="/#writing">Writing</a>
-        <a href="/#capabilities">Capabilities</a>
-        <a href="/#approach">Approach</a>
-        <a href="/#contact">Contact</a>
+        <a href="/#/writing">Writing</a>
+        <a href="/#/capabilities">Capabilities</a>
+        <a href="/#/approach">Approach</a>
+        <a href="/#/contact">Contact</a>
       </nav>
-      <button class="theme-toggle" type="button" aria-label="Switch to dark theme" title="Toggle light and dark theme">
-        <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z"/></svg>
-        <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg>
-      </button>
+      <a class="button button-small resume-link" href="/Markus_Walker_Resume.pdf" download>Resume PDF</a>
     </div>
   </header>
   <main id="main" tabindex="-1">
     <section class="section project-page">
-      <img class="sketch" src="/art/sketch-book-tree.webp" alt="" aria-hidden="true">
+      <img class="sketch" src="/site/art/sketch-book-tree.webp" alt="" aria-hidden="true">
       <div class="wrap">
         <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> <span aria-hidden="true">/</span> <span aria-current="page">Projects</span></nav>
         <p class="eyebrow">Selected work</p>
@@ -145,7 +133,7 @@
           <article class="project">
             <div class="project-head">
               <p class="project-kind">Practitioner reference</p>
-              <h2 class="project-name"><a href="/projects/claude-cowork-controls-cheat-sheet/">Claude Cowork controls cheat sheet</a></h2>
+              <h2 class="project-name"><a href="/projects/claude-cowork-controls-cheat-sheet/">Securing Claude Cowork: controls, gaps and safer defaults</a></h2>
             </div>
             <div class="project-body">
               <p class="project-date"><strong>Version 1.4, evidence cut 23 September 2026.</strong></p>
@@ -156,7 +144,7 @@
           <article class="project">
             <div class="project-head">
               <p class="project-kind">SOC advisory white paper</p>
-              <h2 class="project-name"><a href="/projects/distinguishing-ai-driven-attacks/">Distinguishing AI-driven attacks from human and automated activity</a></h2>
+              <h2 class="project-name"><a href="/projects/distinguishing-ai-driven-attacks/">Human, script or AI? Spotting AI-driven attacks in the SOC</a></h2>
             </div>
             <div class="project-body">
               <p class="project-date"><strong>Version 5, evidence cut 23 September 2026.</strong></p>
@@ -220,21 +208,5 @@
     </div>
   </footer>
 
-  <script>
-    (function () {
-      var root = document.documentElement;
-      var btn = document.querySelector('.theme-toggle');
-      function sync() {
-        var dark = root.dataset.theme === 'dark';
-        btn.setAttribute('aria-label', dark ? 'Switch to light theme' : 'Switch to dark theme');
-      }
-      btn.addEventListener('click', function () {
-        root.dataset.theme = root.dataset.theme === 'dark' ? 'light' : 'dark';
-        try { localStorage.setItem('mw-theme', root.dataset.theme); } catch (e) {}
-        sync();
-      });
-      sync();
-    })();
-  </script>
 </body>
 </html>

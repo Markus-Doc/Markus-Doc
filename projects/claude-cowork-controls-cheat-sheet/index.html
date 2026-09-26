@@ -4,15 +4,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="index,follow,max-image-preview:large">
-  <meta name="color-scheme" content="light dark">
-  <meta name="theme-color" content="#F3ECDE" media="(prefers-color-scheme: light)">
-  <meta name="theme-color" content="#141C19" media="(prefers-color-scheme: dark)">
-  <title>Claude Cowork controls cheat sheet | Markus Walker</title>
+  <meta name="color-scheme" content="light">
+  <meta name="theme-color" content="#F3ECDE">
+  <title>Securing Claude Cowork: controls, gaps and safer defaults | Markus Walker</title>
   <meta name="description" content="A reference for Claude Cowork administrators: what the admin console, device policy (MDM) and third-party deployments on Bedrock, Vertex and Foundry control, and where they fall short.">
   <link rel="canonical" href="https://www.markuswalker.com/projects/claude-cowork-controls-cheat-sheet/">
   <meta name="author" content="Markus Walker">
   <meta property="og:site_name" content="Markus Walker">
-  <meta property="og:title" content="Claude Cowork controls cheat sheet | Markus Walker">
+  <meta property="og:title" content="Securing Claude Cowork: controls, gaps and safer defaults | Markus Walker">
   <meta property="og:description" content="A reference for Claude Cowork administrators: what the admin console, device policy (MDM) and third-party deployments on Bedrock, Vertex and Foundry control, and where they fall short.">
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://www.markuswalker.com/projects/claude-cowork-controls-cheat-sheet/">
@@ -28,8 +27,8 @@
     {
       "@type": "TechArticle",
       "@id": "https://www.markuswalker.com/projects/claude-cowork-controls-cheat-sheet/#work",
-      "name": "Claude Cowork controls cheat sheet",
-      "headline": "Claude Cowork controls cheat sheet",
+      "name": "Securing Claude Cowork: controls, gaps and safer defaults",
+      "headline": "Securing Claude Cowork: controls, gaps and safer defaults",
       "description": "A reference for Claude Cowork administrators: what the admin console, device policy (MDM) and third-party deployments on Bedrock, Vertex and Foundry control, and where they fall short.",
       "url": "https://www.markuswalker.com/projects/claude-cowork-controls-cheat-sheet/",
       "author": {
@@ -71,7 +70,7 @@
         {
           "@type": "ListItem",
           "position": 3,
-          "name": "Claude Cowork controls cheat sheet",
+          "name": "Securing Claude Cowork: controls, gaps and safer defaults",
           "item": "https://www.markuswalker.com/projects/claude-cowork-controls-cheat-sheet/"
         }
       ]
@@ -81,16 +80,8 @@
   </script>
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="preload" href="/fonts/schibsted-grotesk-var.woff2" as="font" type="font/woff2" crossorigin>
-  <script>
-    // Apply the saved or OS theme before first paint so the page never flashes.
-    (function () {
-      var t;
-      try { t = localStorage.getItem('mw-theme'); } catch (e) {}
-      if (t !== 'light' && t !== 'dark') t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-      document.documentElement.dataset.theme = t;
-    })();
-  </script>
-  <link rel="stylesheet" href="/styles.css">
+  <link rel="preload" href="/fonts/fraunces-semibold.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/site/styles.css">
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -99,26 +90,23 @@
     <div class="wrap header-inner">
       <a class="monogram" href="/" aria-label="Markus Walker, home">MW<span class="ink-period">.</span></a>
       <nav class="site-nav" aria-label="Main navigation">
-        <a href="/#experience">Experience</a>
+        <a href="/#/experience">Experience</a>
         <a href="/projects/" aria-current="page">Projects</a>
-        <a href="/#writing">Writing</a>
-        <a href="/#capabilities">Capabilities</a>
-        <a href="/#approach">Approach</a>
-        <a href="/#contact">Contact</a>
+        <a href="/#/writing">Writing</a>
+        <a href="/#/capabilities">Capabilities</a>
+        <a href="/#/approach">Approach</a>
+        <a href="/#/contact">Contact</a>
       </nav>
-      <button class="theme-toggle" type="button" aria-label="Switch to dark theme" title="Toggle light and dark theme">
-        <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z"/></svg>
-        <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg>
-      </button>
+      <a class="button button-small resume-link" href="/Markus_Walker_Resume.pdf" download>Resume PDF</a>
     </div>
   </header>
   <main id="main" tabindex="-1">
     <article class="section project-page">
-      <img class="sketch" src="/art/folio-armillary-atom.webp" alt="" aria-hidden="true">
+      <img class="sketch" src="/site/art/folio-armillary-atom.webp" alt="" aria-hidden="true">
       <div class="wrap">
-        <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> <span aria-hidden="true">/</span> <a href="/projects/">Projects</a> <span aria-hidden="true">/</span> <span aria-current="page">Claude Cowork controls cheat sheet</span></nav>
+        <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> <span aria-hidden="true">/</span> <a href="/projects/">Projects</a> <span aria-hidden="true">/</span> <span aria-current="page">Securing Claude Cowork: controls, gaps and safer defaults</span></nav>
         <p class="eyebrow">Practitioner reference</p>
-        <h1 class="page-title">Claude Cowork controls cheat sheet</h1>
+        <h1 class="page-title">Securing Claude Cowork: controls, gaps and safer defaults</h1>
         <p class="project-date"><strong>Version 1.4, evidence cut 23 September 2026.</strong></p>
         <p class="lede narrow">A reference for administrators on what the Claude Cowork admin console, device policy (MDM) and third-party deployments on Bedrock, Vertex and Foundry actually control, where they fall short, and which defaults to change first.</p>
         <ul class="links links-row"><li><a class="button" href="/assets/docs/Markus_Walker_Cowork_Controls_Cheat_Sheet_v1.4" target="_blank" rel="noopener">Read online <span aria-hidden="true">↗</span></a></li><li><a class="button button-quiet" href="/assets/docs/Markus_Walker_Cowork_Controls_Cheat_Sheet_v1.4.pdf" target="_blank" rel="noopener">Download PDF <span aria-hidden="true">↗</span></a></li></ul>
@@ -139,7 +127,7 @@
         </div>
         <h2 class="subhead">More projects</h2>
         <ul class="more-projects">
-          <li><a href="/projects/distinguishing-ai-driven-attacks/">Distinguishing AI-driven attacks from human and automated activity</a> <span>SOC advisory white paper, Version 5</span></li>
+          <li><a href="/projects/distinguishing-ai-driven-attacks/">Human, script or AI? Spotting AI-driven attacks in the SOC</a> <span>SOC advisory white paper, Version 5</span></li>
           <li><a href="/projects/mcp-access-governance/">AI and MCP access governance</a> <span>Portfolio proof of concept, May to July 2026</span></li>
           <li><a href="/projects/resynth/">RESYNTH research pipeline</a> <span>Open-source tool, First released June 2026</span></li>
           <li><a href="/projects/aws-security-architecture-case-study/">AWS security architecture case study</a> <span>Fictional case study, April 2026</span></li>
@@ -156,21 +144,5 @@
     </div>
   </footer>
 
-  <script>
-    (function () {
-      var root = document.documentElement;
-      var btn = document.querySelector('.theme-toggle');
-      function sync() {
-        var dark = root.dataset.theme === 'dark';
-        btn.setAttribute('aria-label', dark ? 'Switch to light theme' : 'Switch to dark theme');
-      }
-      btn.addEventListener('click', function () {
-        root.dataset.theme = root.dataset.theme === 'dark' ? 'light' : 'dark';
-        try { localStorage.setItem('mw-theme', root.dataset.theme); } catch (e) {}
-        sync();
-      });
-      sync();
-    })();
-  </script>
 </body>
 </html>

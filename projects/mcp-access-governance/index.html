@@ -4,9 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="index,follow,max-image-preview:large">
-  <meta name="color-scheme" content="light dark">
-  <meta name="theme-color" content="#F3ECDE" media="(prefers-color-scheme: light)">
-  <meta name="theme-color" content="#141C19" media="(prefers-color-scheme: dark)">
+  <meta name="color-scheme" content="light">
+  <meta name="theme-color" content="#F3ECDE">
   <title>AI and MCP access governance | Markus Walker</title>
   <meta name="description" content="A working proof of concept for governing AI agent integrations and MCP-connected tools: structured intake, risk classification, human review and decision evidence.">
   <link rel="canonical" href="https://www.markuswalker.com/projects/mcp-access-governance/">
@@ -70,16 +69,8 @@
   </script>
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="preload" href="/fonts/schibsted-grotesk-var.woff2" as="font" type="font/woff2" crossorigin>
-  <script>
-    // Apply the saved or OS theme before first paint so the page never flashes.
-    (function () {
-      var t;
-      try { t = localStorage.getItem('mw-theme'); } catch (e) {}
-      if (t !== 'light' && t !== 'dark') t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-      document.documentElement.dataset.theme = t;
-    })();
-  </script>
-  <link rel="stylesheet" href="/styles.css">
+  <link rel="preload" href="/fonts/fraunces-semibold.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/site/styles.css">
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -88,22 +79,19 @@
     <div class="wrap header-inner">
       <a class="monogram" href="/" aria-label="Markus Walker, home">MW<span class="ink-period">.</span></a>
       <nav class="site-nav" aria-label="Main navigation">
-        <a href="/#experience">Experience</a>
+        <a href="/#/experience">Experience</a>
         <a href="/projects/" aria-current="page">Projects</a>
-        <a href="/#writing">Writing</a>
-        <a href="/#capabilities">Capabilities</a>
-        <a href="/#approach">Approach</a>
-        <a href="/#contact">Contact</a>
+        <a href="/#/writing">Writing</a>
+        <a href="/#/capabilities">Capabilities</a>
+        <a href="/#/approach">Approach</a>
+        <a href="/#/contact">Contact</a>
       </nav>
-      <button class="theme-toggle" type="button" aria-label="Switch to dark theme" title="Toggle light and dark theme">
-        <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z"/></svg>
-        <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg>
-      </button>
+      <a class="button button-small resume-link" href="/Markus_Walker_Resume.pdf" download>Resume PDF</a>
     </div>
   </header>
   <main id="main" tabindex="-1">
     <article class="section project-page">
-      <img class="sketch" src="/art/folio-armillary-atom.webp" alt="" aria-hidden="true">
+      <img class="sketch" src="/site/art/folio-armillary-atom.webp" alt="" aria-hidden="true">
       <div class="wrap">
         <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> <span aria-hidden="true">/</span> <a href="/projects/">Projects</a> <span aria-hidden="true">/</span> <span aria-current="page">AI and MCP access governance</span></nav>
         <p class="eyebrow">Portfolio proof of concept</p>
@@ -113,7 +101,7 @@
         <ul class="links links-row"><li><a class="button" href="/assets/docs/Markus_Walker_MCP_Governance_Platform_v2.pdf" target="_blank" rel="noopener">Open portfolio PDF <span aria-hidden="true">↗</span></a></li><li><a class="button button-quiet" href="https://github.com/markus-doc/MCP_Governance_Platform" target="_blank" rel="noopener noreferrer">View repository <span aria-hidden="true">↗</span></a></li><li><a class="button button-quiet" href="/assets/docs/N8N-MCP_Access_Governance_Platform-v2.json" target="_blank" rel="noopener">Example workflow JSON <span aria-hidden="true">↗</span></a></li></ul>
         <div class="page-body">
           <p>AI agents and MCP-connected tools can receive data, call APIs and trigger actions across SaaS, cloud and internal platforms. The platform puts a repeatable control loop in front of that, using fictional vendors and mock intake data.</p>
-          <figure class="evidence"><a href="/art/mcp-n8n-workflow-full.webp" target="_blank" rel="noopener"><img src="/art/mcp-n8n-workflow.webp" width="1400" height="322" loading="lazy" alt="The n8n workflow canvas: an MCP request passes a pre-approval check, a nine-rule security linter, a risk classifier and an AI research agent, then waits for human security review before the decision is written to an evidence log."></a><figcaption>The built n8n workflow, from intake through human review to the evidence log. <a href="/art/mcp-n8n-workflow-full.webp" target="_blank" rel="noopener">Open full size <span aria-hidden="true">↗</span></a></figcaption></figure>
+          <figure class="evidence"><a href="/site/art/mcp-n8n-workflow-full.webp" target="_blank" rel="noopener"><img src="/site/art/mcp-n8n-workflow.webp" width="1400" height="322" loading="lazy" alt="The n8n workflow canvas: an MCP request passes a pre-approval check, a nine-rule security linter, a risk classifier and an AI research agent, then waits for human security review before the decision is written to an evidence log."></a><figcaption>The built n8n workflow, from intake through human review to the evidence log. <a href="/site/art/mcp-n8n-workflow-full.webp" target="_blank" rel="noopener">Open full size <span aria-hidden="true">↗</span></a></figcaption></figure>
           <h2>The control loop</h2>
           <ul class="reading-list">
             <li><strong>Request.</strong> Capture the owner, purpose, data class, environment and tool details.</li>
@@ -131,8 +119,8 @@
         </div>
         <h2 class="subhead">More projects</h2>
         <ul class="more-projects">
-          <li><a href="/projects/claude-cowork-controls-cheat-sheet/">Claude Cowork controls cheat sheet</a> <span>Practitioner reference, Version 1.4</span></li>
-          <li><a href="/projects/distinguishing-ai-driven-attacks/">Distinguishing AI-driven attacks from human and automated activity</a> <span>SOC advisory white paper, Version 5</span></li>
+          <li><a href="/projects/claude-cowork-controls-cheat-sheet/">Securing Claude Cowork: controls, gaps and safer defaults</a> <span>Practitioner reference, Version 1.4</span></li>
+          <li><a href="/projects/distinguishing-ai-driven-attacks/">Human, script or AI? Spotting AI-driven attacks in the SOC</a> <span>SOC advisory white paper, Version 5</span></li>
           <li><a href="/projects/resynth/">RESYNTH research pipeline</a> <span>Open-source tool, First released June 2026</span></li>
           <li><a href="/projects/aws-security-architecture-case-study/">AWS security architecture case study</a> <span>Fictional case study, April 2026</span></li>
           <li><a href="/projects/incident-response-planning/">Incident response planning portfolio</a> <span>Planning portfolio, April 2026</span></li>
@@ -148,21 +136,5 @@
     </div>
   </footer>
 
-  <script>
-    (function () {
-      var root = document.documentElement;
-      var btn = document.querySelector('.theme-toggle');
-      function sync() {
-        var dark = root.dataset.theme === 'dark';
-        btn.setAttribute('aria-label', dark ? 'Switch to light theme' : 'Switch to dark theme');
-      }
-      btn.addEventListener('click', function () {
-        root.dataset.theme = root.dataset.theme === 'dark' ? 'light' : 'dark';
-        try { localStorage.setItem('mw-theme', root.dataset.theme); } catch (e) {}
-        sync();
-      });
-      sync();
-    })();
-  </script>
 </body>
 </html>

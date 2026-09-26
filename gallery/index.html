@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex, nofollow">
+<title>Preview gallery | Markus Walker</title>
+<script>(function(){var t;try{t=localStorage.getItem('mw-theme')}catch(e){}if(t!=='light'&&t!=='dark')t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';document.documentElement.dataset.theme=t})();</script>
+<style>
+:root{--ground:#F3ECDE;--panel:#FBF7EE;--edge:#D9CDB4;--ink:#1F2B26;--soft:#46534C;--accent:#8A3A1E;--accentInk:#fff;--keep:#2E6B3F;--kill:#8A3A1E;--merge:#6B4F16}
+:root[data-theme=dark]{--ground:#070B14;--panel:#0E1422;--edge:#26314A;--ink:#E9EDF5;--soft:#B4BDD0;--accent:#FFB454;--accentInk:#1A1206;--keep:#8FD3A0;--kill:#FFB454;--merge:#E8C77A}
+*{box-sizing:border-box}body{margin:0;background:var(--ground);color:var(--ink);font:16px/1.55 system-ui,sans-serif}
+a{color:var(--accent)}:focus-visible{outline:2.5px solid var(--accent);outline-offset:3px}
+.wrap{max-width:1180px;margin:0 auto;padding:24px 16px 64px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+h1{font:600 32px/1.15 Georgia,serif;margin:0}.lede{color:var(--soft);max-width:70ch}
+button{font:inherit;min-height:44px;padding:8px 14px;border-radius:4px;border:1.5px solid var(--accent);background:var(--accent);color:var(--accentInk);cursor:pointer}
+button.quiet{background:transparent;color:var(--ink);border-color:var(--soft)}
+table{width:100%;border-collapse:collapse;background:var(--panel);border:1px solid var(--edge);border-radius:6px;margin:16px 0 28px}
+th,td{text-align:left;vertical-align:top;padding:10px 12px;border-top:1px solid var(--edge)}thead th{border-top:0;color:var(--soft);font-size:14px}
+.call{display:inline-block;padding:2px 8px;border-radius:3px;border:1.5px solid currentColor;font-weight:600;font-size:14px}
+.call-keep{color:var(--keep)}.call-kill{color:var(--kill)}.call-merge{color:var(--merge)}.call-park{color:var(--soft)}
+.card{background:var(--panel);border:1px solid var(--edge);border-radius:8px;padding:20px;margin:0 0 24px}
+.card h2{font:600 24px/1.2 Georgia,serif;margin:4px 0}.card h3{font-size:16px;margin:18px 0 6px}
+.tag{display:inline-block;margin:0;padding:2px 8px;border-radius:3px;font-size:13px;font-weight:700;border:1.5px solid currentColor}
+.tag-candidate{color:var(--keep)}.tag-exploration{color:var(--merge)}.status{margin:2px 0 12px;color:var(--soft)}
+.shots{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:8px}.shots img{width:100%;height:auto;display:block;border:1px solid var(--edge);border-radius:4px}
+dl{margin:12px 0 0}dl div{display:grid;grid-template-columns:170px 1fr;gap:12px;padding:6px 0;border-top:1px solid var(--edge)}dt{font-weight:600;color:var(--soft)}dd{margin:0}
+.ask{margin-top:14px;padding:14px;border:1px solid var(--edge);border-radius:6px}fieldset{border:0;padding:0;margin:8px 0 0;display:flex;flex-wrap:wrap;gap:14px;align-items:center}legend{font-weight:600;margin-bottom:6px}
+fieldset label{display:inline-flex;align-items:center;gap:6px;min-height:44px}input[type=radio]{width:20px;height:20px;accent-color:var(--accent)}
+.note{flex:1 1 280px}.note input{flex:1;min-height:40px;padding:6px 10px;font:inherit;color:var(--ink);background:var(--ground);border:1px solid var(--soft);border-radius:4px}
+code{font-size:.92em}
+@media (max-width:700px){dl div{grid-template-columns:1fr;gap:2px}table,thead,tbody,tr,th,td{display:block}thead{display:none}td{border-top:0;padding-top:0}td::before{content:attr(data-label);display:block;font-weight:600;font-size:13px;color:var(--soft)}}
+</style>
+</head>
+<body><div class="wrap">
+<div class="top"><h1>Preview gallery</h1><div><button class="quiet" id="theme" type="button">Switch theme</button> <button id="copy" type="button">Copy my answers</button></div></div>
+<p class="lede">Every live preview of the interactive site, updated 2026-09-25, morning (overnight run complete). Candidates carry the Renaissance layer (orrery gateway, parchment and ink, engraved instruments, your approved art) with the network inside it; explorations may go wild. Mark each keep, kill or merge, then copy your answers back to me.</p>
+<p id="copied" role="status" aria-live="polite" class="lede"></p>
+<section class="card main" aria-labelledby="main-title">
+  <p class="tag tag-candidate">Main site</p>
+  <h2 id="main-title">Main site: Da Vinci meets the AI network (lane A, production candidate)</h2>
+  <p class="status"><a href="https://dev.markus-doc.pages.dev/">Dev preview (after the publish command below)</a> &middot; <a href="https://dev.markus-doc.pages.dev/gallery/">This gallery on the dev preview</a></p>
+  <p>Nothing was pushed to Markus-Doc/Markus-Doc overnight, per your boundary. The build is staged on the deploy-vision branch in D:\GitHub\markus-doc-dev and publishes the site and this gallery to the dev preview with: git -C D:\GitHub\markus-doc-dev push origin deploy-vision:dev . Until you run it, the live dev preview shows an older build. Locally: cd D:\GitHub\portfolio-vision, npm run dev, then open http://localhost:5173/ (this page: /gallery/index.html).</p>
+  <div class="shots"><a href="shots/classic-light-landing.jpg" target="_blank" rel="noopener"><img src="shots/classic-light-landing.jpg" alt="Main site, light theme, landing" loading="lazy" width="640" height="400"></a><a href="shots/classic-light-arrival.jpg" target="_blank" rel="noopener"><img src="shots/classic-light-arrival.jpg" alt="Main site, light theme, arrival" loading="lazy" width="640" height="400"></a><a href="shots/classic-dark-landing.jpg" target="_blank" rel="noopener"><img src="shots/classic-dark-landing.jpg" alt="Main site, dark theme, landing" loading="lazy" width="640" height="400"></a><a href="shots/classic-dark-arrival.jpg" target="_blank" rel="noopener"><img src="shots/classic-dark-arrival.jpg" alt="Main site, dark theme, arrival" loading="lazy" width="640" height="400"></a></div>
+  <h3>Verdict</h3><ul><li>The design evaluator (three rounds against your vision records and references 1 to 4) now rates lane A production-worthy for your review: &quot;the best lane A so far and nothing blocks it&quot;. Both themes read as a Da Vinci notebook with the AI network drawn in.</li></ul><h3>What was built overnight</h3><ul><li>Gateway: the orrery film, and the dive into its atom, which now shows the brain through the atom in both themes (D-34).</li><li>Light: the network drawn on worked parchment with marginalia, a drawn line hierarchy (bold near the page you are on, hairlines far away), dashed construction circles round the hubs, and ink studies at 12 of 13 stops.</li><li>Dark: re-graded toward your reference 1: teal-black ground, teal wiring, amber star points, bokeh, engraved brass bezels instead of planet rings, lamp-lit parchment pages carrying the ink studies, and teal-black chrome with a brass rim.</li><li>Engraved brass instruments at every section hub (quadrant, dividers, astrolabe, sector, compass rose, nocturnal), modelled in code.</li><li>Quiet life at rest: a small &quot;thought&quot; pulse, breathing junctions, drifting motes; none of it under reduced motion.</li><li>The reader panel is a folio leaf; the whole-network view rings the brain with hub tags.</li><li>Every project and document page from the static site lives inside the site; the 24 September resume (no phone number) ships.</li><li>Checks: 11 of 11 unit tests; 96 arrivals with 0 framing flags; 0 text-contrast failures in 3326 samples; reduced motion 0.00 % change at rest; laptop proxy rides 58.5 to 59.2 fps.</li></ul><h3>What the advisor and evaluator flagged</h3><ul><li>The laptop figure is a proxy (this machine's GPU with the CPU throttled 4x), not a measurement on a real laptop.</li><li>The eight ink studies (four new tonight: magnifier, sealed pages, eye, book on two hands) and the six instruments need your approval before anything goes live.</li><li>Dark direction: a teal-black night with lamp-lit pages and brass. Is this your Renaissance after dark, or should it move toward the dark manuscript reference (a dark page inside burnt parchment margins)?</li><li>Should a hub's instrument stay put through the landing instead of stepping aside and fading in?</li><li>&quot;Lose the Orrery&quot; may have meant the photoreal film rather than the gateway; the art library also holds the tabletop and geometric orrery studies. The overnight brief kept the gateway.</li><li>Two &quot;read online&quot; document links still point at the live site; their HTML is not in the repository.</li><li>Open, small: the mcp-governance stop has no Renaissance piece (no clear spot); a doubled copper strand near the lens on some rides; tag borders over busy backgrounds.</li></ul><h3>What is left for you</h3><ul><li>Keep, kill or merge on the cards below, and the approvals above.</li><li>Publish to the dev preview with the one command above, then check on a real phone, Safari and a real laptop.</li><li>Going live on main stays your decision.</li></ul>
+</section>
+<h2 style="font:600 22px/1.2 Georgia,serif;margin:18px 0 0">Verdicts</h2>
+<table><thead><tr><th scope="col">Preview</th><th scope="col">My call</th><th scope="col">Your answer</th><th scope="col">Advisor (Fable)</th><th scope="col">Why</th></tr></thead><tbody><tr><th scope="row"><a href="#classic">Main site: orrery gateway, lane A manuscript world, engraved instruments</a></th><td data-label="My call"><span class="call call-keep">Keep</span></td><td data-label="Your answer">Keep. Lose the orrery; keep an opening zoom in, probably onto the flowing mesh look.</td><td data-label="Advisor (Fable)">Agree: the orrery gateway matches every vision record and the overnight brief, and the film-to-core dive is the one Markus approved. Watch item: the dark interior should read as reference 1 (focus band, bokeh), a skin pass, not an opening change.</td><td data-label="Why">The orrery gateway, manuscript skin and brass already carry the Renaissance layer; the night skin keeps your one-toggle rule. Missing: your art placed in the scene.</td></tr><tr><th scope="row"><a href="#network-opening">Network opening (zoom in)</a></th><td data-label="My call"><span class="call call-merge">Merge</span></td><td data-label="Your answer">Merge. Worth a light pass; a maybe merge.</td><td data-label="Advisor (Fable)">Keep runnable as the alternative; the zoom-in is built. Not the default while the orrery is the gateway.</td><td data-label="Why">Built as ?opening=network with the zoom in. The orrery gateway stays the default per the overnight brief.</td></tr><tr><th scope="row"><a href="#line">Line look (references 3 and 4)</a></th><td data-label="My call"><span class="call call-merge">Merge</span></td><td data-label="Your answer">Merge. It has potential.</td><td data-label="Advisor (Fable)">Thin map, runnable, not built tonight; the overnight MAIN names manuscript and engraved instruments, not the line language.</td><td data-label="Why">Its ink line, hatching and thread chambers are a strong drawing language, but alone it has no parchment, instruments or art. Candidate C puts it on codex pages.</td></tr><tr><th scope="row"><a href="#line-mono">Line look, pure mono</a></th><td data-label="My call"><span class="call call-park">Park</span></td><td data-label="Your answer">Park it (not kill).</td><td data-label="Advisor (Fable)">Drop (decision D-27).</td><td data-label="Why">Without colour the route differs from the wiring by weight only, which is harder to follow for your eyes.</td></tr><tr><th scope="row"><a href="#galaxy">Spiral galaxy opening</a></th><td data-label="My call"><span class="call call-kill">Kill</span></td><td data-label="Your answer">Not answered yet</td><td data-label="Advisor (Fable)">Dropped (decision D-25).</td><td data-label="Why">A misreading of 'galaxy'; already disabled.</td></tr><tr><th scope="row"><a href="#ren-b">Exploration B: engraved instruments</a></th><td data-label="My call"><span class="call call-merge">Merge</span></td><td data-label="Your answer">Not answered yet</td><td data-label="Advisor (Fable)">Engraved instruments only, never a cage; reuse the ring geometry as graduated arcs and scales.</td><td data-label="Why">Carries the engraved-instrument pillar that A and C do not cover.</td></tr></tbody></table>
+
+  <article class="card" id="classic" aria-labelledby="t-classic">
+    <header>
+      <p class="tag tag-candidate">Candidate</p>
+      <h2 id="t-classic">Main site: orrery gateway, lane A manuscript world, engraved instruments</h2>
+      <p class="status">The production candidate (D-35), evaluator verdict: production-worthy for review</p>
+    </header>
+    <div class="shots"><a href="shots/classic-light-landing.jpg" target="_blank" rel="noopener"><img src="shots/classic-light-landing.jpg" alt="Main site: orrery gateway, lane A manuscript world, engraved instruments, light theme, landing" loading="lazy" width="640" height="400"></a><a href="shots/classic-light-arrival.jpg" target="_blank" rel="noopener"><img src="shots/classic-light-arrival.jpg" alt="Main site: orrery gateway, lane A manuscript world, engraved instruments, light theme, arrival at a project" loading="lazy" width="640" height="400"></a><a href="shots/classic-dark-landing.jpg" target="_blank" rel="noopener"><img src="shots/classic-dark-landing.jpg" alt="Main site: orrery gateway, lane A manuscript world, engraved instruments, dark theme, landing" loading="lazy" width="640" height="400"></a><a href="shots/classic-dark-arrival.jpg" target="_blank" rel="noopener"><img src="shots/classic-dark-arrival.jpg" alt="Main site: orrery gateway, lane A manuscript world, engraved instruments, dark theme, arrival at a project" loading="lazy" width="640" height="400"></a></div>
+    <dl class="facts">
+      <div><dt>Preview</dt><dd><a href="/">/</a> (add <code>&amp;theme=dark</code> or <code>&amp;theme=light</code>)</dd></div>
+      <div><dt>Lane or branch</dt><dd>Core with skin A (manuscript) and skin B (night), <code>dev/vision-pass</code></dd></div>
+      <div><dt>Explores</dt><dd>The main direction: the orrery film opens, the camera dives into its atom and rides the brain-shaped network, drawn as ink and brass on parchment in light and as glass and amber light in dark.</dd></div>
+    </dl>
+    <h3>How the Renaissance layer and the network meet</h3>
+    <dl class="meets"><div><dt>Gateway</dt><dd>Orrery film, dive into the atom</dd></div><div><dt>Ground</dt><dd>Parchment (light), night (dark)</dd></div><div><dt>Instruments</dt><dd>Brass rings on content nodes, ticked rings on hubs</dd></div><div><dt>Art</dt><dd>None placed yet (the orrery film only)</dd></div><div><dt>Type</dt><dd>Fraunces headings, boxed call-out tags</dd></div></dl>
+    <div class="ask">
+      <p class="question"><strong>Question:</strong> Did &quot;Lose the Orrery&quot; mean the photoreal film itself (the art library also has the tabletop and geometric orrery studies), or the gateway? The overnight brief kept the gateway.</p>
+      <fieldset><legend>Your call</legend>
+        <label><input type="radio" name="call-classic" value="keep"> Keep</label><label><input type="radio" name="call-classic" value="kill"> Kill</label><label><input type="radio" name="call-classic" value="merge"> Merge</label><label><input type="radio" name="call-classic" value="park"> Park</label>
+        <label class="note">Note <input type="text" name="note-classic" autocomplete="off"></label>
+      </fieldset>
+    </div>
+  </article>
+  <article class="card" id="ren-a" aria-labelledby="t-ren-a">
+    <header>
+      <p class="tag tag-candidate">Candidate</p>
+      <h2 id="t-ren-a">Candidate A: manuscript world</h2>
+      <p class="status">Merged into the main site (D-35)</p>
+    </header>
+    <div class="shots"><a href="shots/ren-a-light-landing.jpg" target="_blank" rel="noopener"><img src="shots/ren-a-light-landing.jpg" alt="Candidate A: manuscript world, light theme, landing" loading="lazy" width="640" height="400"></a><a href="shots/ren-a-light-arrival.jpg" target="_blank" rel="noopener"><img src="shots/ren-a-light-arrival.jpg" alt="Candidate A: manuscript world, light theme, arrival at a project" loading="lazy" width="640" height="400"></a><a href="shots/ren-a-dark-landing.jpg" target="_blank" rel="noopener"><img src="shots/ren-a-dark-landing.jpg" alt="Candidate A: manuscript world, dark theme, landing" loading="lazy" width="640" height="400"></a><a href="shots/ren-a-dark-arrival.jpg" target="_blank" rel="noopener"><img src="shots/ren-a-dark-arrival.jpg" alt="Candidate A: manuscript world, dark theme, arrival at a project" loading="lazy" width="640" height="400"></a></div>
+    <dl class="facts">
+      <div><dt>Preview</dt><dd><a href="/">/</a> (add <code>&amp;theme=dark</code> or <code>&amp;theme=light</code>)</dd></div>
+      <div><dt>Lane or branch</dt><dd>Renaissance lane A, <code>lane/ren-a</code></dd></div>
+      <div><dt>Explores</dt><dd>The network drawn into a worked parchment folio, with your approved ink studies placed as marginal drawings around the brain. Dark shows them on lit parchment plates.</dd></div>
+    </dl>
+    <h3>How the Renaissance layer and the network meet</h3>
+    <dl class="meets"><div><dt>Gateway</dt><dd>Orrery film, dive into the atom</dd></div><div><dt>Ground</dt><dd>Worked parchment (light), lamp-lit plates in the dark</dd></div><div><dt>Instruments</dt><dd>Brass rings on nodes (as classic)</dd></div><div><dt>Art</dt><dd>3 to 6 approved ink cutouts, parchment backgrounds</dd></div><div><dt>Type</dt><dd>As classic</dd></div></dl>
+    <div class="ask">
+      <p class="question"><strong>Question:</strong> In dark, do the lamp-lit parchment plates keep the manuscript world for you, or should dark carry more (or none)?</p>
+      <fieldset><legend>Your call</legend>
+        <label><input type="radio" name="call-ren-a" value="keep"> Keep</label><label><input type="radio" name="call-ren-a" value="kill"> Kill</label><label><input type="radio" name="call-ren-a" value="merge"> Merge</label><label><input type="radio" name="call-ren-a" value="park"> Park</label>
+        <label class="note">Note <input type="text" name="note-ren-a" autocomplete="off"></label>
+      </fieldset>
+    </div>
+  </article>
+  <article class="card" id="ren-b" aria-labelledby="t-ren-b">
+    <header>
+      <p class="tag tag-exploration">Exploration</p>
+      <h2 id="t-ren-b">Exploration B: engraved instruments</h2>
+      <p class="status">Merged into the main site</p>
+    </header>
+    <div class="shots"><a href="shots/ren-b-light-landing.jpg" target="_blank" rel="noopener"><img src="shots/ren-b-light-landing.jpg" alt="Exploration B: engraved instruments, light theme, landing" loading="lazy" width="640" height="400"></a><a href="shots/ren-b-light-arrival.jpg" target="_blank" rel="noopener"><img src="shots/ren-b-light-arrival.jpg" alt="Exploration B: engraved instruments, light theme, arrival at a project" loading="lazy" width="640" height="400"></a><a href="shots/ren-b-dark-landing.jpg" target="_blank" rel="noopener"><img src="shots/ren-b-dark-landing.jpg" alt="Exploration B: engraved instruments, dark theme, landing" loading="lazy" width="640" height="400"></a><a href="shots/ren-b-dark-arrival.jpg" target="_blank" rel="noopener"><img src="shots/ren-b-dark-arrival.jpg" alt="Exploration B: engraved instruments, dark theme, arrival at a project" loading="lazy" width="640" height="400"></a></div>
+    <dl class="facts">
+      <div><dt>Preview</dt><dd><a href="/">/</a> (add <code>&amp;theme=dark</code> or <code>&amp;theme=light</code>)</dd></div>
+      <div><dt>Lane or branch</dt><dd>Renaissance lane B, <code>lane/ren-b</code></dd></div>
+      <div><dt>Explores</dt><dd>Engraved instruments that are not the orrery (the orrery never recurs inside): graduated arcs and scales framing the brain, small brass instruments at the section hubs.</dd></div>
+    </dl>
+    <h3>How the Renaissance layer and the network meet</h3>
+    <dl class="meets"><div><dt>Gateway</dt><dd>Orrery film, dive into the atom</dd></div><div><dt>Ground</dt><dd>As classic</dd></div><div><dt>Instruments</dt><dd>Engraved scales and arcs, small brass instruments at hubs</dd></div><div><dt>Art</dt><dd>Modelled, matched to your instrument studies</dd></div><div><dt>Type</dt><dd>As classic</dd></div></dl>
+    <div class="ask">
+      <p class="question"><strong>Question:</strong> Instruments appear only where they have a clear spot. Enough, or should every hub always show its instrument?</p>
+      <fieldset><legend>Your call</legend>
+        <label><input type="radio" name="call-ren-b" value="keep"> Keep</label><label><input type="radio" name="call-ren-b" value="kill"> Kill</label><label><input type="radio" name="call-ren-b" value="merge"> Merge</label><label><input type="radio" name="call-ren-b" value="park"> Park</label>
+        <label class="note">Note <input type="text" name="note-ren-b" autocomplete="off"></label>
+      </fieldset>
+    </div>
+  </article>
+  <article class="card" id="ren-c" aria-labelledby="t-ren-c">
+    <header>
+      <p class="tag tag-candidate">Candidate</p>
+      <h2 id="t-ren-c">Candidate C: line look on codex pages</h2>
+      <p class="status">Parked exploration (thin map)</p>
+    </header>
+    <div class="shots"><a href="shots/ren-c-light-landing.jpg" target="_blank" rel="noopener"><img src="shots/ren-c-light-landing.jpg" alt="Candidate C: line look on codex pages, light theme, landing" loading="lazy" width="640" height="400"></a><a href="shots/ren-c-light-arrival.jpg" target="_blank" rel="noopener"><img src="shots/ren-c-light-arrival.jpg" alt="Candidate C: line look on codex pages, light theme, arrival at a project" loading="lazy" width="640" height="400"></a><a href="shots/ren-c-dark-landing.jpg" target="_blank" rel="noopener"><img src="shots/ren-c-dark-landing.jpg" alt="Candidate C: line look on codex pages, dark theme, landing" loading="lazy" width="640" height="400"></a><a href="shots/ren-c-dark-arrival.jpg" target="_blank" rel="noopener"><img src="shots/ren-c-dark-arrival.jpg" alt="Candidate C: line look on codex pages, dark theme, arrival at a project" loading="lazy" width="640" height="400"></a></div>
+    <dl class="facts">
+      <div><dt>Preview</dt><dd><a href="/?look=line&amp;layer=codex">/?look=line&amp;layer=codex</a> (add <code>&amp;theme=dark</code> or <code>&amp;theme=light</code>)</dd></div>
+      <div><dt>Lane or branch</dt><dd>Renaissance lane C, <code>lane/ren-c</code></dd></div>
+      <div><dt>Explores</dt><dd>The line look drawn on the leaves of a Leonardo-style notebook: parchment, ruled margins, marginalia; a dark codex with brass rules at night.</dd></div>
+    </dl>
+    <h3>How the Renaissance layer and the network meet</h3>
+    <dl class="meets"><div><dt>Gateway</dt><dd>Orrery film, dive into the atom</dd></div><div><dt>Ground</dt><dd>Parchment leaves (light), dark codex boards (dark)</dd></div><div><dt>Instruments</dt><dd>Brass or gilt rules and ticked scales</dd></div><div><dt>Art</dt><dd>2 to 4 ink cutouts as marginalia, parchment backgrounds</dd></div><div><dt>Type</dt><dd>Rubricated running heads</dd></div></dl>
+    <div class="ask">
+      <p class="question"><strong>Question:</strong> Answered once the preview is up.</p>
+      <fieldset><legend>Your call</legend>
+        <label><input type="radio" name="call-ren-c" value="keep"> Keep</label><label><input type="radio" name="call-ren-c" value="kill"> Kill</label><label><input type="radio" name="call-ren-c" value="merge"> Merge</label><label><input type="radio" name="call-ren-c" value="park"> Park</label>
+        <label class="note">Note <input type="text" name="note-ren-c" autocomplete="off"></label>
+      </fieldset>
+    </div>
+  </article>
+  <article class="card" id="network-opening" aria-labelledby="t-network-opening">
+    <header>
+      <p class="tag tag-exploration">Exploration</p>
+      <h2 id="t-network-opening">Network opening (zoom in)</h2>
+      <p class="status">Runnable alternative; the orrery gateway is the default (D-34)</p>
+    </header>
+    <div class="shots"><a href="shots/network-opening-light-landing.jpg" target="_blank" rel="noopener"><img src="shots/network-opening-light-landing.jpg" alt="Network opening (zoom in), light theme, landing" loading="lazy" width="640" height="400"></a><a href="shots/network-opening-light-arrival.jpg" target="_blank" rel="noopener"><img src="shots/network-opening-light-arrival.jpg" alt="Network opening (zoom in), light theme, arrival at a project" loading="lazy" width="640" height="400"></a><a href="shots/network-opening-dark-landing.jpg" target="_blank" rel="noopener"><img src="shots/network-opening-dark-landing.jpg" alt="Network opening (zoom in), dark theme, landing" loading="lazy" width="640" height="400"></a><a href="shots/network-opening-dark-arrival.jpg" target="_blank" rel="noopener"><img src="shots/network-opening-dark-arrival.jpg" alt="Network opening (zoom in), dark theme, arrival at a project" loading="lazy" width="640" height="400"></a></div>
+    <dl class="facts">
+      <div><dt>Preview</dt><dd><a href="/?opening=network">/?opening=network</a> (add <code>&amp;theme=dark</code> or <code>&amp;theme=light</code>)</dd></div>
+      <div><dt>Lane or branch</dt><dd>Core, <code>dev/vision-pass</code></dd></div>
+      <div><dt>Explores</dt><dd>Opening without the orrery: the camera starts far out, eases in onto the whole brain mesh turning slowly, then glides to the core on Enter. Your light pass is built.</dd></div>
+    </dl>
+    <h3>How the Renaissance layer and the network meet</h3>
+    <dl class="meets"><div><dt>Gateway</dt><dd>Zoom in onto the whole brain (no orrery)</dd></div><div><dt>Ground</dt><dd>As classic</dd></div><div><dt>Instruments</dt><dd>As classic</dd></div><div><dt>Art</dt><dd>None</dd></div><div><dt>Type</dt><dd>As classic</dd></div></dl>
+    <div class="ask">
+      <p class="question"><strong>Question:</strong> Nothing open: kept runnable in case you want it back as the default.</p>
+      <fieldset><legend>Your call</legend>
+        <label><input type="radio" name="call-network-opening" value="keep"> Keep</label><label><input type="radio" name="call-network-opening" value="kill"> Kill</label><label><input type="radio" name="call-network-opening" value="merge"> Merge</label><label><input type="radio" name="call-network-opening" value="park"> Park</label>
+        <label class="note">Note <input type="text" name="note-network-opening" autocomplete="off"></label>
+      </fieldset>
+    </div>
+  </article>
+  <article class="card" id="line" aria-labelledby="t-line">
+    <header>
+      <p class="tag tag-exploration">Exploration</p>
+      <h2 id="t-line">Line look (references 3 and 4)</h2>
+      <p class="status">Merging into candidate C (codex pages)</p>
+    </header>
+    <div class="shots"><a href="shots/line-light-landing.jpg" target="_blank" rel="noopener"><img src="shots/line-light-landing.jpg" alt="Line look (references 3 and 4), light theme, landing" loading="lazy" width="640" height="400"></a><a href="shots/line-light-arrival.jpg" target="_blank" rel="noopener"><img src="shots/line-light-arrival.jpg" alt="Line look (references 3 and 4), light theme, arrival at a project" loading="lazy" width="640" height="400"></a><a href="shots/line-dark-landing.jpg" target="_blank" rel="noopener"><img src="shots/line-dark-landing.jpg" alt="Line look (references 3 and 4), dark theme, landing" loading="lazy" width="640" height="400"></a><a href="shots/line-dark-arrival.jpg" target="_blank" rel="noopener"><img src="shots/line-dark-arrival.jpg" alt="Line look (references 3 and 4), dark theme, arrival at a project" loading="lazy" width="640" height="400"></a></div>
+    <dl class="facts">
+      <div><dt>Preview</dt><dd><a href="/?look=line">/?look=line</a> (add <code>&amp;theme=dark</code> or <code>&amp;theme=light</code>)</dd></div>
+      <div><dt>Lane or branch</dt><dd>Skin A (line) and skin B (line, dark), <code>dev/vision-pass</code></dd></div>
+      <div><dt>Explores</dt><dd>A black and white drawing language: ink on paper in light, white thread on black in dark, each node in a chamber of threads, colour only on the route and destination.</dd></div>
+    </dl>
+    <h3>How the Renaissance layer and the network meet</h3>
+    <dl class="meets"><div><dt>Gateway</dt><dd>Orrery</dd></div><div><dt>Ground</dt><dd>White paper (light), black (dark)</dd></div><div><dt>Instruments</dt><dd>None</dd></div><div><dt>Art</dt><dd>None</dd></div><div><dt>Type</dt><dd>As classic</dd></div></dl>
+    <div class="ask">
+      <p class="question"><strong>Question:</strong> Merge this line and thread-chamber language into the codex candidate (C), or keep it separate?</p>
+      <fieldset><legend>Your call</legend>
+        <label><input type="radio" name="call-line" value="keep"> Keep</label><label><input type="radio" name="call-line" value="kill"> Kill</label><label><input type="radio" name="call-line" value="merge"> Merge</label><label><input type="radio" name="call-line" value="park"> Park</label>
+        <label class="note">Note <input type="text" name="note-line" autocomplete="off"></label>
+      </fieldset>
+    </div>
+  </article>
+  <article class="card" id="line-mono" aria-labelledby="t-line-mono">
+    <header>
+      <p class="tag tag-exploration">Exploration</p>
+      <h2 id="t-line-mono">Line look, pure mono</h2>
+      <p class="status">Parked</p>
+    </header>
+    <div class="shots"><a href="shots/line-mono-light-landing.jpg" target="_blank" rel="noopener"><img src="shots/line-mono-light-landing.jpg" alt="Line look, pure mono, light theme, landing" loading="lazy" width="640" height="400"></a><a href="shots/line-mono-light-arrival.jpg" target="_blank" rel="noopener"><img src="shots/line-mono-light-arrival.jpg" alt="Line look, pure mono, light theme, arrival at a project" loading="lazy" width="640" height="400"></a><a href="shots/line-mono-dark-landing.jpg" target="_blank" rel="noopener"><img src="shots/line-mono-dark-landing.jpg" alt="Line look, pure mono, dark theme, landing" loading="lazy" width="640" height="400"></a><a href="shots/line-mono-dark-arrival.jpg" target="_blank" rel="noopener"><img src="shots/line-mono-dark-arrival.jpg" alt="Line look, pure mono, dark theme, arrival at a project" loading="lazy" width="640" height="400"></a></div>
+    <dl class="facts">
+      <div><dt>Preview</dt><dd><a href="/?look=line&amp;accent=0">/?look=line&amp;accent=0</a> (add <code>&amp;theme=dark</code> or <code>&amp;theme=light</code>)</dd></div>
+      <div><dt>Lane or branch</dt><dd>Skin A and skin B, <code>dev/vision-pass</code></dd></div>
+      <div><dt>Explores</dt><dd>The line look with no colour at all.</dd></div>
+    </dl>
+    <h3>How the Renaissance layer and the network meet</h3>
+    <dl class="meets"><div><dt>Gateway</dt><dd>Orrery</dd></div><div><dt>Ground</dt><dd>White paper (light), black (dark)</dd></div><div><dt>Instruments</dt><dd>None</dd></div><div><dt>Art</dt><dd>None</dd></div><div><dt>Type</dt><dd>As classic</dd></div></dl>
+    <div class="ask">
+      <p class="question"><strong>Question:</strong> Parked. Nothing to decide now.</p>
+      <fieldset><legend>Your call</legend>
+        <label><input type="radio" name="call-line-mono" value="keep"> Keep</label><label><input type="radio" name="call-line-mono" value="kill"> Kill</label><label><input type="radio" name="call-line-mono" value="merge"> Merge</label><label><input type="radio" name="call-line-mono" value="park"> Park</label>
+        <label class="note">Note <input type="text" name="note-line-mono" autocomplete="off"></label>
+      </fieldset>
+    </div>
+  </article>
+  <article class="card" id="galaxy" aria-labelledby="t-galaxy">
+    <header>
+      <p class="tag tag-exploration">Exploration</p>
+      <h2 id="t-galaxy">Spiral galaxy opening</h2>
+      <p class="status">Killed (D-25)</p>
+    </header>
+    <div class="shots"><a href="shots/galaxy-light-landing.jpg" target="_blank" rel="noopener"><img src="shots/galaxy-light-landing.jpg" alt="Spiral galaxy opening, archived frame" loading="lazy" width="640" height="400"></a></div>
+    <dl class="facts">
+      
+      <div><dt>Lane or branch</dt><dd>Galaxy lane (ended), <code>lane/galaxy</code></dd></div>
+      <div><dt>Explores</dt><dd>An astronomical spiral galaxy as the opening. A misreading of 'galaxy'.</dd></div>
+    </dl>
+    <h3>How the Renaissance layer and the network meet</h3>
+    <dl class="meets"><div><dt>Gateway</dt><dd>None</dd></div><div><dt>Ground</dt><dd>Night window on parchment</dd></div><div><dt>Instruments</dt><dd>Engraved rings</dd></div><div><dt>Art</dt><dd>None</dd></div><div><dt>Type</dt><dd>As classic</dd></div></dl>
+    <div class="ask">
+      <p class="question"><strong>Question:</strong> Confirm it stays dropped.</p>
+      <fieldset><legend>Your call</legend>
+        <label><input type="radio" name="call-galaxy" value="keep"> Keep</label><label><input type="radio" name="call-galaxy" value="kill"> Kill</label><label><input type="radio" name="call-galaxy" value="merge"> Merge</label><label><input type="radio" name="call-galaxy" value="park"> Park</label>
+        <label class="note">Note <input type="text" name="note-galaxy" autocomplete="off"></label>
+      </fieldset>
+    </div>
+  </article>
+<h2 style="font:600 22px/1.2 Georgia,serif;margin:28px 0 8px">Other directions, thinly mapped</h2>
+<p class="lede">Not built further. Each has a KB record (what it is, screenshots, what it would take to finish) and a preview kept runnable, so you can switch later.</p>
+<table><thead><tr><th scope="col">Direction</th><th scope="col">Status</th><th scope="col">Preview</th><th scope="col">What it would take</th><th scope="col">KB record</th></tr></thead><tbody><tr><th scope="row">Line look, mono plus accent</th><td data-label="Status">Parked, merge candidate</td><td data-label="Preview"><a href="/?look=line">/?look=line</a></td><td data-label="What it would take">About 3 to 5 hours to ship as a toggle</td><td data-label="KB record"><code>website-design-kb/bundles/experience/concepts/directions/line-look.md</code></td></tr><tr><th scope="row">Line look, pure mono</th><td data-label="Status">Parked</td><td data-label="Preview"><a href="/?look=line&amp;accent=0">/?look=line&amp;accent=0</a></td><td data-label="What it would take">Comparison only</td><td data-label="KB record"><code>directions/line-mono.md</code></td></tr><tr><th scope="row">Network opening (zoom in)</th><td data-label="Status">Runnable alternative</td><td data-label="Preview"><a href="/?opening=network">/?opening=network</a></td><td data-label="What it would take">Complete as an alternative</td><td data-label="KB record"><code>directions/network-opening.md</code></td></tr><tr><th scope="row">Codex pages (candidate C)</th><td data-label="Status">Parked exploration</td><td data-label="Preview"><a href="/?look=line&amp;layer=codex">/?look=line&amp;layer=codex</a></td><td data-label="What it would take">About 5 to 7 hours</td><td data-label="KB record"><code>directions/codex-candidate-c.md</code></td></tr><tr><th scope="row">Spiral galaxy opening</th><td data-label="Status">Killed (D-25)</td><td data-label="Preview">Branch lane/galaxy only</td><td data-label="What it would take">Not recommended</td><td data-label="KB record"><code>directions/spiral-galaxy-opening.md</code></td></tr><tr><th scope="row">Mesh hold after the orrery dive</th><td data-label="Status">Mapped, not built</td><td data-label="Preview">Not built</td><td data-label="What it would take">About 3 to 4 hours; adds about 3 s to the intro</td><td data-label="KB record"><code>directions/mesh-hold-after-dive.md</code></td></tr></tbody></table>
+</div>
+<script>
+(function(){
+  var root=document.documentElement;
+  document.getElementById('theme').addEventListener('click',function(){root.dataset.theme=root.dataset.theme==='dark'?'light':'dark';try{localStorage.setItem('mw-theme',root.dataset.theme)}catch(e){}});
+  var KEY='mw-gallery-answers',saved={};try{saved=JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){}
+  document.querySelectorAll('.card').forEach(function(card){var id=card.id,s=saved[id]||{};
+    card.querySelectorAll('input').forEach(function(i){if(i.type==='radio'&&i.value===s.call)i.checked=true;if(i.type==='text'&&s.note)i.value=s.note;
+      i.addEventListener('change',save);i.addEventListener('input',save)});});
+  function save(){var out={};document.querySelectorAll('.card').forEach(function(card){var c=card.querySelector('input[type=radio]:checked'),n=card.querySelector('input[type=text]');out[card.id]={call:c?c.value:'',note:n?n.value:''}});try{localStorage.setItem(KEY,JSON.stringify(out))}catch(e){};return out}
+  document.getElementById('copy').addEventListener('click',function(){var out=save(),lines=[];document.querySelectorAll('.card').forEach(function(card){var a=out[card.id];if(a.call||a.note)lines.push(card.querySelector('h2').textContent+': '+(a.call||'no call')+(a.note?' ('+a.note+')':''))});
+    var text=lines.join('\n')||'No answers yet.';(navigator.clipboard?navigator.clipboard.writeText(text):Promise.reject()).then(function(){document.getElementById('copied').textContent='Copied '+lines.length+' answers. Paste them to Claude.'},function(){document.getElementById('copied').textContent=text})});
+})();
+</script>
+</body></html>

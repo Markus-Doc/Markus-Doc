@@ -2,8 +2,8 @@
    for reading. The Renaissance feel comes from the parchment palette and faint
    ink sketches behind each section, not from display type. */
 
-@font-face { font-family: 'Schibsted Grotesk'; font-style: normal; font-weight: 400 700; font-display: swap; src: url('/fonts/schibsted-grotesk-var.woff2') format('woff2'); }
-@font-face { font-family: 'Schibsted Grotesk'; font-style: italic; font-weight: 400 700; font-display: swap; src: url('/fonts/schibsted-grotesk-italic-var.woff2') format('woff2'); }
+@font-face { font-family: 'Schibsted Grotesk'; font-style: normal; font-weight: 400 700; font-display: swap; src: url('/classic/fonts/schibsted-grotesk-var.woff2') format('woff2'); }
+@font-face { font-family: 'Schibsted Grotesk'; font-style: italic; font-weight: 400 700; font-display: swap; src: url('/classic/fonts/schibsted-grotesk-italic-var.woff2') format('woff2'); }
 
 :root {
   --font-body: 'Schibsted Grotesk', system-ui, -apple-system, 'Segoe UI', sans-serif;
@@ -21,7 +21,7 @@
   --sage-ink: #3d6b5f;
   --sketch-opacity: .13;
   --sketch-filter: none;
-  --paper-texture: url('/paper.svg');
+  --paper-texture: url('/classic/paper.svg');
 
   color-scheme: light;
 }
@@ -164,7 +164,7 @@ main:focus { outline: none; }
 .hero {
   background:
     linear-gradient(90deg, rgb(243 236 222 / .94) 0%, rgb(243 236 222 / .88) 50%, rgb(243 236 222 / .5) 100%),
-    url('/art/parchment-worked.webp') center / cover no-repeat,
+    url('/classic/art/parchment-worked.webp') center / cover no-repeat,
     var(--paper);
 }
 :root[data-theme='dark'] .hero { background: var(--paper); }
@@ -256,7 +256,7 @@ main:focus { outline: none; }
   border-top: 1px solid var(--rule);
   background:
     linear-gradient(90deg, rgb(243 236 222 / .93) 0%, rgb(243 236 222 / .85) 55%, rgb(243 236 222 / .35) 100%),
-    url('/art/parchment-alchemy.webp') center / cover no-repeat,
+    url('/classic/art/parchment-alchemy.webp') center / cover no-repeat,
     var(--paper);
 }
 :root[data-theme='dark'] .section-contact { background: var(--sage); }

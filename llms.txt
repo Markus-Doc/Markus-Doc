@@ -22,8 +22,8 @@ Current role: Senior Engineer, Secure AI. Clearance: current AGSVA Baseline, eli
 
 Each project has its own page and was accurate at the time of writing. Index: https://www.markuswalker.com/projects/
 
-- [Claude Cowork controls cheat sheet](https://www.markuswalker.com/projects/claude-cowork-controls-cheat-sheet/): what the Claude Cowork admin console, device policy and third-party deployments control, and where they fall short. Version 1.4, evidence cut 23 September 2026. [Full text](https://www.markuswalker.com/assets/docs/Markus_Walker_Cowork_Controls_Cheat_Sheet_v1.4)
-- [Distinguishing AI-driven attacks from human and automated activity](https://www.markuswalker.com/projects/distinguishing-ai-driven-attacks/): SOC advisory white paper. Version 5, evidence cut 23 September 2026. [Full text](https://www.markuswalker.com/assets/docs/Markus_Walker_AI_Driven_Attacks_White_Paper_v5)
+- [Securing Claude Cowork: controls, gaps and safer defaults](https://www.markuswalker.com/projects/claude-cowork-controls-cheat-sheet/): what the Claude Cowork admin console, device policy and third-party deployments control, and where they fall short. Version 1.4, evidence cut 23 September 2026. [Full text](https://www.markuswalker.com/assets/docs/Markus_Walker_Cowork_Controls_Cheat_Sheet_v1.4)
+- [Human, script or AI? Spotting AI-driven attacks in the SOC](https://www.markuswalker.com/projects/distinguishing-ai-driven-attacks/): SOC advisory white paper. Version 5, evidence cut 23 September 2026. [Full text](https://www.markuswalker.com/assets/docs/Markus_Walker_AI_Driven_Attacks_White_Paper_v5)
 - [AI and MCP access governance](https://www.markuswalker.com/projects/mcp-access-governance/): portfolio proof of concept for structured review of AI agent integrations and MCP-connected tools (May to July 2026)
 - [RESYNTH](https://www.markuswalker.com/projects/resynth/): open-source pipeline that consolidates several AI deep-research reports into one verified master document (June 2026)
 - [AWS security architecture case study](https://www.markuswalker.com/projects/aws-security-architecture-case-study/): fictional planning case study (April 2026)

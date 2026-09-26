@@ -1,0 +1,4 @@
+function e({root:e,intro:t,engine:n,isDone:r}){document.body.insertAdjacentHTML(`afterbegin`,`<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <filter id="orrery-key" color-interpolation-filters="sRGB">
+      <feColorMatrix type="matrix" values="1.08 0 0 0 0  0 1.05 0 0 0  0 0 1.02 0 0  0 0 -3.4 0 2.95"/>
+    </filter></svg>`),t.insertAdjacentHTML(`afterbegin`,`<div class="intro-orrery" aria-hidden="true"><video id="orrery-film" muted playsinline loop preload="auto" autoplay poster="/art/opening/orrery-motion-parchment-v2.webp" src="/art/opening/orrery-motion-parchment-v2.mp4"></video></div>`);let i=()=>{if(r())return;n.placeFar();let t=n.framing();e.style.setProperty(`--nx`,`${t.node.x}px`),e.style.setProperty(`--ny`,`${t.node.y}px`)};return i(),addEventListener(`resize`,i),t.querySelector(`#orrery-film`)}export{e as mountOrrery};

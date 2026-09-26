@@ -2,28 +2,43 @@
 <html lang="en-AU">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="robots" content="index,follow,max-image-preview:large">
-  <meta name="color-scheme" content="light dark">
-  <meta name="theme-color" content="#F3ECDE" media="(prefers-color-scheme: light)">
-  <meta name="theme-color" content="#141C19" media="(prefers-color-scheme: dark)">
-  <title>Markus Walker | Forward Deployed AI Engineer, Brisbane</title>
-  <meta name="description" content="Markus Walker is a Brisbane AI engineer who delivers AI solutions from start to finish, secure by design. Open to forward deployed, AI solutions and AI security engineering roles.">
+  <meta name="color-scheme" content="light">
+  <meta name="theme-color" content="#F3ECDE">
+  <title>Markus Walker | Forward Deployed and Secure AI Engineer</title>
+  <meta name="description" content="Markus Walker is a Brisbane AI engineer who architects and delivers AI solutions from start to finish, secure by design. Open to forward deployed, Secure AI and AI engineering roles.">
   <link rel="canonical" href="https://www.markuswalker.com/">
-  <meta name="author" content="Markus Walker">
   <meta property="og:site_name" content="Markus Walker">
-  <meta property="og:title" content="Markus Walker | Forward Deployed AI Engineer, Brisbane">
+  <meta property="og:title" content="Markus Walker | Forward Deployed and Secure AI Engineer">
   <meta property="og:description" content="AI solutions, start to finish. Secure by design. Resume and portfolio of Markus Walker, AI engineer in Brisbane.">
   <meta property="og:type" content="profile">
   <meta property="og:url" content="https://www.markuswalker.com/">
-  <meta property="og:locale" content="en_AU">
   <meta property="og:image" content="https://www.markuswalker.com/art/og-image.jpg">
+  <meta name="author" content="Markus Walker">
+  <meta property="og:locale" content="en_AU">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:image:alt" content="A network of luminous nodes drawn over Renaissance sketches on aged vellum.">
   <meta property="profile:first_name" content="Markus">
   <meta property="profile:last_name" content="Walker">
   <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="preload" href="/fonts/schibsted-grotesk-var.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/fraunces-semibold.woff2" as="font" type="font/woff2" crossorigin>
+  <script>
+    // One build for now (D-37): the light manuscript theme, whatever the OS or a saved choice says.
+    // Dark is parked: ?theme=dark shows it for this visit only (for comparing looks); it is not saved.
+    (function () {
+      var m = location.search.match(/[?&]theme=(light|dark)/);
+      document.documentElement.dataset.theme = m ? m[1] : 'light';
+      // the network opening is the only default (D-37); ?opening=orrery is a parked test switch
+      if (location.search.indexOf('opening=orrery') === -1) document.documentElement.classList.add('opening-network');
+      var lm = /[?&]layer=([^&]*)/.exec(location.search);
+      var layers = lm ? decodeURIComponent(lm[1]) : (location.search.indexOf('look=line') !== -1 ? '' : 'notebook-sphere');
+      if (layers !== 'none') layers.split(',').forEach(function (n) { if (/^[\w-]+$/.test(n)) document.documentElement.classList.add('layer-' + n); });
+    })();
+  </script>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -67,443 +82,180 @@
     ]
   }
   </script>
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-  <link rel="preload" href="/fonts/schibsted-grotesk-var.woff2" as="font" type="font/woff2" crossorigin>
-  <script>
-    // Apply the saved or OS theme before first paint so the page never flashes.
-    (function () {
-      var t;
-      try { t = localStorage.getItem('mw-theme'); } catch (e) {}
-      if (t !== 'light' && t !== 'dark') t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-      document.documentElement.dataset.theme = t;
-    })();
-  </script>
-  <link rel="stylesheet" href="/styles.css">
+  <script type="module" crossorigin src="/assets/index-DSEiP2Ra.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-B16BNMsI.css">
 </head>
 <body>
-  <a class="skip-link" href="#main">Skip to content</a>
+  <a class="skip-link" href="#reader">Skip to content</a>
 
-  <header class="site-header">
-    <div class="wrap header-inner">
-      <a class="monogram" href="#top" aria-label="Markus Walker, back to top">MW<span class="ink-period">.</span></a>
-      <nav class="site-nav" aria-label="Main navigation">
-        <a href="#experience">Experience</a>
-        <a href="#work">Projects</a>
-        <a href="#writing">Writing</a>
-        <a href="#capabilities">Capabilities</a>
-        <a href="#approach">Approach</a>
-        <a href="#contact">Contact</a>
-      </nav>
-      <button class="theme-toggle" type="button" aria-label="Switch to dark theme" title="Toggle light and dark theme">
+  <!-- Paper edge filters (folio.css). Each runs on a .paper sheet, the parent of the clipped
+       stock, so the torn outline itself gets displaced. Three scales of noise: a soft swell that
+       bends the edge, a mid-scale zigzag (the torn look) and a fine fibre of about 1 px. "full"
+       is the torn leaf (hero, rail, reader, index, phone sheets); "slip" the same tear with more
+       vertical headroom for the short controls strip; "strip" a gentler swell for the long top
+       bar. "calm" (fibre only) is kept for anything that wants a near straight edge. -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <defs>
+      <filter id="torn-calm" x="-2%" y="-2%" width="104%" height="104%" color-interpolation-filters="sRGB">
+        <feTurbulence type="fractalNoise" baseFrequency="0.28 0.3" numOctaves="2" seed="5" result="fibre"/>
+        <feDisplacementMap in="SourceGraphic" in2="fibre" scale="3" xChannelSelector="R" yChannelSelector="G" result="frayed"/>
+        <feGaussianBlur in="frayed" stdDeviation="0.45"/>
+      </filter>
+      <filter id="torn-full" x="-5%" y="-5%" width="110%" height="110%" color-interpolation-filters="sRGB">
+        <feTurbulence type="fractalNoise" baseFrequency="0.012 0.016" numOctaves="2" seed="7" result="swell"/>
+        <feDisplacementMap in="SourceGraphic" in2="swell" scale="16" xChannelSelector="R" yChannelSelector="G" result="wavy"/>
+        <feTurbulence type="fractalNoise" baseFrequency="0.075" numOctaves="2" seed="13" result="zig"/>
+        <feDisplacementMap in="wavy" in2="zig" scale="6.5" xChannelSelector="R" yChannelSelector="G" result="ragged"/>
+        <feTurbulence type="fractalNoise" baseFrequency="0.55" numOctaves="2" seed="23" result="fibre"/>
+        <feDisplacementMap in="ragged" in2="fibre" scale="3.4" xChannelSelector="R" yChannelSelector="G" result="torn"/>
+        <feGaussianBlur in="torn" stdDeviation="0.6"/>
+      </filter>
+      <filter id="torn-slip" x="-4%" y="-30%" width="108%" height="160%" color-interpolation-filters="sRGB">
+        <feTurbulence type="fractalNoise" baseFrequency="0.012 0.016" numOctaves="2" seed="7" result="swell"/>
+        <feDisplacementMap in="SourceGraphic" in2="swell" scale="13" xChannelSelector="R" yChannelSelector="G" result="wavy"/>
+        <feTurbulence type="fractalNoise" baseFrequency="0.075" numOctaves="2" seed="13" result="zig"/>
+        <feDisplacementMap in="wavy" in2="zig" scale="6" xChannelSelector="R" yChannelSelector="G" result="ragged"/>
+        <feTurbulence type="fractalNoise" baseFrequency="0.55" numOctaves="2" seed="23" result="fibre"/>
+        <feDisplacementMap in="ragged" in2="fibre" scale="3.4" xChannelSelector="R" yChannelSelector="G" result="torn"/>
+        <feGaussianBlur in="torn" stdDeviation="0.6"/>
+      </filter>
+      <filter id="torn-strip" x="-1%" y="-40%" width="102%" height="180%" color-interpolation-filters="sRGB">
+        <feTurbulence type="fractalNoise" baseFrequency="0.01 0.03" numOctaves="2" seed="31" result="swell"/>
+        <feDisplacementMap in="SourceGraphic" in2="swell" scale="8" xChannelSelector="R" yChannelSelector="G" result="wavy"/>
+        <feTurbulence type="fractalNoise" baseFrequency="0.075" numOctaves="2" seed="37" result="zig"/>
+        <feDisplacementMap in="wavy" in2="zig" scale="5.5" xChannelSelector="R" yChannelSelector="G" result="ragged"/>
+        <feTurbulence type="fractalNoise" baseFrequency="0.55" numOctaves="2" seed="41" result="fibre"/>
+        <feDisplacementMap in="ragged" in2="fibre" scale="3.2" xChannelSelector="R" yChannelSelector="G" result="torn"/>
+        <feGaussianBlur in="torn" stdDeviation="0.6"/>
+      </filter>
+    </defs>
+  </svg>
+
+  <canvas id="scene" tabindex="0" role="img" aria-label="Map of the network. Drag or use the arrow keys to look around, plus and minus to zoom, N to step through the pages in view and Enter to go there, O for the whole network, Escape to return to the page." aria-describedby="map-help"></canvas>
+  <p id="map-help" class="sr-only">Every page on the map is also in the main navigation, the reader's Connected links and the Index.</p>
+  <div id="veil" aria-hidden="true"></div>
+  <div id="ghost" aria-hidden="true"></div>
+  <div id="labels" role="group" aria-label="Map of the network"></div>
+
+  <header class="topbar">
+    <div class="paper" aria-hidden="true"></div>
+    <a class="brand" href="#/markus" data-node="markus" aria-label="Markus Walker, home">
+      <img class="monogram" src="/brand/mw-mark.svg" alt="" width="44" height="44">
+      <span class="brand-text"><span class="brand-name">Markus Walker</span><span class="brand-role">AI solutions, start to finish</span></span>
+    </a>
+    <nav id="nav" aria-label="Main">
+      <ul>
+        <li class="phone-only nav-resume"><a href="/Markus_Walker_Resume.pdf" download aria-label="Resume PDF, download">Resume <span aria-hidden="true">↓</span></a></li>
+        <li><a href="#/experience" data-node="experience">Experience</a></li>
+        <li><a href="#/projects" data-node="projects">Projects</a></li>
+        <li><a href="#/writing" data-node="writing">Writing</a></li>
+        <li><a href="#/capabilities" data-node="capabilities">Capabilities</a></li>
+        <li><a href="#/approach" data-node="approach">Approach</a></li>
+        <li><a href="#/contact" data-node="contact">Contact</a></li>
+      </ul>
+    </nav>
+    <div class="tools">
+      <button id="index-toggle" class="icon-button" type="button" aria-haspopup="dialog" title="Index: find any page (/)">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6"/><path d="M16 16l4 4"/></svg>
+        <span class="sr-only">Index: find any page</span>
+      </button>
+      <a class="button button-small resume-link" href="/Markus_Walker_Resume.pdf" download>Resume PDF</a>
+      <button id="motion-toggle" class="icon-button" type="button" aria-pressed="false" title="Reduce motion">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h4l3-7 4 14 3-7h4"/></svg>
+        <span class="sr-only">Reduce motion</span>
+      </button>
+      <button id="theme-toggle" class="icon-button" type="button" title="Switch theme" hidden>
         <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z"/></svg>
         <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg>
+        <span class="sr-only" id="theme-label">Switch to dark theme</span>
+      </button>
+      <button id="menu-toggle" class="icon-button" type="button" aria-expanded="false" aria-controls="nav">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        <span class="sr-only">Menu</span>
       </button>
     </div>
   </header>
 
-  <main id="main" tabindex="-1">
-
-    <!-- Title: who, what, and how to get the resume -->
-    <section class="hero" id="top" aria-labelledby="hero-name">
-      <svg class="ink-network" viewBox="0 0 900 640" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><g class="ink-edges" fill="none"><path d="M430 300Q413 321 407 347"/><path d="M430 300Q466 321 504 336"/><path d="M430 300Q467 306 503 317"/><path d="M430 300Q431 342 435 384"/><path d="M430 300Q438 276 453 256"/><path d="M430 300Q394 291 367 267"/><path d="M430 300Q478 327 534 331"/><path class="hub-edge" d="M430 300Q570 245 700 170"/><path class="hub-edge" d="M430 300Q559 387 690 470"/><path class="hub-edge" d="M430 300Q356 206 250 150"/><path class="hub-edge" d="M430 300Q328 393 220 480"/><path class="hub-edge" d="M430 300Q622 350 820 330"/><path d="M407 347Q418 367 435 384"/><path d="M407 347Q365 383 316 406"/><path d="M407 347Q403 375 393 402"/><path d="M504 336Q503 327 503 317"/><path d="M504 336Q519 332 534 331"/><path d="M332 244Q352 241 371 237"/><path d="M332 244Q351 253 367 267"/><path d="M332 244Q318 235 304 225"/><path d="M503 317Q472 291 453 256"/><path d="M503 317Q517 327 534 331"/><path d="M435 384Q415 394 393 402"/><path d="M435 384Q427 425 418 466"/><path d="M453 256Q412 245 371 237"/><path d="M371 237Q366 251 367 267"/><path d="M371 237Q337 232 304 225"/><path d="M700 170Q676 189 661 216"/><path d="M700 170Q691 142 681 114"/><path class="hub-edge" d="M700 170Q693 320 690 470"/><path class="hub-edge" d="M700 170Q759 251 820 330"/><path d="M700 170Q689 188 672 199"/><path d="M700 170Q705 155 711 140"/><path d="M700 170Q668 150 643 122"/><path d="M700 170Q699 137 714 108"/><path d="M627 211Q644 216 661 216"/><path d="M627 211Q605 184 591 153"/><path d="M627 211Q650 204 672 199"/><path d="M612 135Q617 131 621 125"/><path d="M612 135Q627 126 642 116"/><path d="M612 135Q602 145 591 153"/><path d="M612 135Q628 129 643 122"/><path d="M621 125Q631 121 642 116"/><path d="M621 125Q604 137 591 153"/><path d="M621 125Q632 122 643 122"/><path d="M779 226Q779 261 781 296"/><path d="M779 226Q800 226 820 231"/><path d="M779 226Q811 229 841 239"/><path d="M642 116Q642 119 643 122"/><path d="M713 94Q697 104 681 114"/><path d="M713 94Q711 117 711 140"/><path d="M713 94Q713 101 714 108"/><path d="M661 216Q668 208 672 199"/><path d="M681 114Q696 126 711 140"/><path d="M681 114Q662 117 643 122"/><path d="M681 114Q697 111 714 108"/><path d="M591 153Q617 137 643 122"/><path d="M690 470Q664 466 637 466"/><path d="M690 470Q712 464 735 459"/><path d="M690 470Q671 498 654 527"/><path d="M690 470Q656 452 623 433"/><path d="M690 470Q675 503 675 539"/><path class="hub-edge" d="M690 470Q762 406 820 330"/><path d="M690 470Q698 493 713 511"/><path d="M690 470Q704 465 715 454"/><path d="M662 585Q654 557 654 527"/><path d="M662 585Q669 562 675 539"/><path d="M662 585Q638 585 616 594"/><path d="M662 585Q684 598 709 603"/><path d="M637 466Q651 495 654 527"/><path d="M637 466Q627 451 623 433"/><path d="M736 535Q757 520 779 506"/><path d="M736 535Q706 543 675 539"/><path d="M736 535Q723 524 713 511"/><path d="M736 535Q729 572 709 603"/><path d="M735 459Q750 452 763 443"/><path d="M735 459Q754 485 779 506"/><path d="M735 459Q751 451 762 438"/><path d="M735 459Q725 458 715 454"/><path d="M654 527Q664 534 675 539"/><path d="M654 527Q684 521 713 511"/><path d="M654 527Q640 564 616 594"/><path d="M623 433Q667 452 715 454"/><path d="M763 443Q764 476 779 506"/><path d="M763 443Q762 441 762 438"/><path d="M763 443Q738 443 715 454"/><path d="M675 539Q693 524 713 511"/><path d="M675 539Q645 567 616 594"/><path d="M675 539Q684 575 709 603"/><path d="M250 150Q287 162 326 161"/><path d="M250 150Q215 129 189 99"/><path d="M250 150Q252 125 256 100"/><path d="M250 150Q204 184 159 218"/><path d="M250 150Q285 166 316 187"/><path d="M250 150Q274 139 300 136"/><path class="hub-edge" d="M250 150Q249 316 220 480"/><path d="M250 150Q277 155 304 154"/><path d="M326 161Q324 175 316 187"/><path d="M326 161Q314 148 300 136"/><path d="M326 161Q315 158 304 154"/><path d="M189 99Q223 92 256 100"/><path d="M189 99Q201 66 218 36"/><path d="M256 100Q293 92 328 79"/><path d="M256 100Q237 68 218 36"/><path d="M256 100Q282 114 300 136"/><path d="M256 100Q298 77 326 37"/><path d="M159 218Q128 256 108 302"/><path d="M159 218Q137 231 123 253"/><path d="M316 187Q314 207 304 225"/><path d="M316 187Q308 171 304 154"/><path d="M328 79Q321 111 300 136"/><path d="M328 79Q330 58 326 37"/><path d="M218 36Q272 31 326 37"/><path d="M300 136Q303 145 304 154"/><path d="M300 136Q311 86 326 37"/><path d="M220 480Q210 504 210 531"/><path d="M220 480Q198 455 169 438"/><path d="M220 480Q194 505 163 523"/><path d="M220 480Q202 466 190 446"/><path d="M220 480Q258 484 295 473"/><path d="M220 480Q208 498 196 517"/><path d="M133 488Q154 465 169 438"/><path d="M133 488Q126 501 114 510"/><path d="M133 488Q152 502 163 523"/><path d="M210 531Q187 525 163 523"/><path d="M210 531Q251 500 295 473"/><path d="M210 531Q202 525 196 517"/><path d="M210 531Q197 560 196 591"/><path d="M169 438Q181 422 190 404"/><path d="M169 438Q179 444 190 446"/><path d="M169 438Q178 414 196 394"/><path d="M169 438Q112 396 44 374"/><path d="M190 404Q195 425 190 446"/><path d="M190 404Q173 371 146 346"/><path d="M190 404Q193 399 196 394"/><path d="M114 510Q139 514 163 523"/><path d="M114 510Q155 514 196 517"/><path d="M163 523Q180 523 196 517"/><path d="M163 523Q183 555 196 591"/><path d="M190 446Q188 420 196 394"/><path d="M295 473Q306 439 316 406"/><path d="M196 517Q201 554 196 591"/><path d="M820 330Q800 318 786 300"/><path d="M820 330Q798 316 781 296"/><path d="M820 330Q797 339 771 338"/><path d="M820 330Q797 336 773 335"/><path d="M820 330Q830 306 845 283"/><path d="M820 330Q780 322 743 308"/><path d="M744 296Q765 301 786 300"/><path d="M744 296Q763 294 781 296"/><path d="M744 296Q744 302 743 308"/><path d="M786 300Q783 298 781 296"/><path d="M786 300Q780 320 771 338"/><path d="M786 300Q783 319 773 335"/><path d="M781 296Q779 316 773 335"/><path d="M781 296Q763 306 743 308"/><path d="M771 338Q773 336 773 335"/><path d="M771 338Q757 322 743 308"/><path d="M773 335Q756 323 743 308"/><path d="M820 231Q833 257 845 283"/><path d="M820 231Q830 237 841 239"/><path d="M845 283Q839 261 841 239"/><path d="M146 346Q130 321 108 302"/><path d="M146 346Q172 369 196 394"/><path d="M146 346Q134 300 123 253"/><path d="M146 346Q93 352 44 374"/><path d="M762 438Q739 447 715 454"/><path d="M466 565Q541 580 616 594"/><path d="M466 565Q437 480 393 402"/><path d="M466 565Q454 510 418 466"/><path d="M684 340Q690 321 699 303"/><path d="M684 340Q716 328 743 308"/><path d="M684 340Q676 322 665 307"/><path d="M711 140Q713 124 714 108"/><path d="M699 303Q721 305 743 308"/><path d="M699 303Q682 306 665 307"/><path d="M108 302Q110 276 123 253"/><path d="M108 302Q82 344 44 374"/><path d="M743 308Q704 315 665 307"/><path d="M316 406Q355 408 393 402"/><path d="M393 402Q410 432 418 466"/></g><g class="ink-orbits" fill="none"><circle cx="430" cy="300" r="42" stroke-dasharray="2 5"/><circle cx="700" cy="170" r="30" stroke-dasharray="2 5"/><circle cx="690" cy="470" r="30" stroke-dasharray="2 5"/><circle cx="250" cy="150" r="30" stroke-dasharray="2 5"/><circle cx="220" cy="480" r="30" stroke-dasharray="2 5"/><circle cx="820" cy="330" r="30" stroke-dasharray="2 5"/></g><g class="ink-nodes"><circle class="node-ring" cx="430" cy="300" r="13"/><circle class="node-core" cx="430" cy="300" r="7"/><circle class="node" cx="407" cy="347" r="1.6"/><circle class="node" cx="504" cy="336" r="2.8"/><circle class="node" cx="332" cy="244" r="2.2"/><circle class="node" cx="503" cy="317" r="1.6"/><circle class="node" cx="435" cy="384" r="1.6"/><circle class="node" cx="453" cy="256" r="2.2"/><circle class="node" cx="371" cy="237" r="1.6"/><circle class="node" cx="367" cy="267" r="2.2"/><circle class="node" cx="534" cy="331" r="2.8"/><circle class="node-hub" cx="700" cy="170" r="5"/><circle class="node" cx="627" cy="211" r="2.8"/><circle class="node" cx="612" cy="135" r="1.6"/><circle class="node" cx="621" cy="125" r="2.8"/><circle class="node" cx="779" cy="226" r="1.6"/><circle class="node" cx="642" cy="116" r="3.4"/><circle class="node" cx="713" cy="94" r="3.4"/><circle class="node" cx="661" cy="216" r="2.2"/><circle class="node" cx="681" cy="114" r="2.8"/><circle class="node" cx="591" cy="153" r="3.4"/><circle class="node-hub" cx="690" cy="470" r="5"/><circle class="node" cx="662" cy="585" r="1.6"/><circle class="node" cx="637" cy="466" r="2.8"/><circle class="node" cx="736" cy="535" r="1.6"/><circle class="node" cx="735" cy="459" r="2.8"/><circle class="node" cx="654" cy="527" r="3.4"/><circle class="node" cx="623" cy="433" r="1.6"/><circle class="node" cx="763" cy="443" r="1.6"/><circle class="node" cx="779" cy="506" r="3.4"/><circle class="node" cx="675" cy="539" r="2.8"/><circle class="node-hub" cx="250" cy="150" r="5"/><circle class="node" cx="326" cy="161" r="2.2"/><circle class="node" cx="189" cy="99" r="2.2"/><circle class="node" cx="256" cy="100" r="2.2"/><circle class="node" cx="159" cy="218" r="3.4"/><circle class="node" cx="316" cy="187" r="2.8"/><circle class="node" cx="328" cy="79" r="2.8"/><circle class="node" cx="218" cy="36" r="3.4"/><circle class="node" cx="300" cy="136" r="2.2"/><circle class="node" cx="304" cy="225" r="1.6"/><circle class="node-hub" cx="220" cy="480" r="5"/><circle class="node" cx="133" cy="488" r="2.8"/><circle class="node" cx="210" cy="531" r="2.8"/><circle class="node" cx="169" cy="438" r="2.2"/><circle class="node" cx="190" cy="404" r="1.6"/><circle class="node" cx="114" cy="510" r="3.4"/><circle class="node" cx="163" cy="523" r="3.4"/><circle class="node" cx="190" cy="446" r="1.6"/><circle class="node" cx="295" cy="473" r="1.6"/><circle class="node" cx="196" cy="517" r="1.6"/><circle class="node-hub" cx="820" cy="330" r="5"/><circle class="node" cx="744" cy="296" r="2.8"/><circle class="node" cx="786" cy="300" r="2.2"/><circle class="node" cx="781" cy="296" r="2.8"/><circle class="node" cx="771" cy="338" r="3.4"/><circle class="node" cx="773" cy="335" r="1.6"/><circle class="node" cx="820" cy="231" r="3.4"/><circle class="node" cx="845" cy="283" r="1.6"/><circle class="node" cx="196" cy="591" r="2"/><circle class="node" cx="146" cy="346" r="1.4"/><circle class="node" cx="672" cy="199" r="2.6"/><circle class="node" cx="762" cy="438" r="2"/><circle class="node" cx="466" cy="565" r="2"/><circle class="node" cx="684" cy="340" r="2.6"/><circle class="node" cx="304" cy="154" r="1.4"/><circle class="node" cx="713" cy="511" r="2.6"/><circle class="node" cx="711" cy="140" r="2"/><circle class="node" cx="326" cy="37" r="1.4"/><circle class="node" cx="699" cy="303" r="1.4"/><circle class="node" cx="616" cy="594" r="2"/><circle class="node" cx="715" cy="454" r="2"/><circle class="node" cx="841" cy="239" r="1.4"/><circle class="node" cx="108" cy="302" r="2"/><circle class="node" cx="196" cy="394" r="2.6"/><circle class="node" cx="743" cy="308" r="2.6"/><circle class="node" cx="316" cy="406" r="2.6"/><circle class="node" cx="123" cy="253" r="2.6"/><circle class="node" cx="665" cy="307" r="1.4"/><circle class="node" cx="393" cy="402" r="1.4"/><circle class="node" cx="709" cy="603" r="2"/><circle class="node" cx="418" cy="466" r="1.4"/><circle class="node" cx="643" cy="122" r="1.4"/><circle class="node" cx="44" cy="374" r="2"/><circle class="node" cx="714" cy="108" r="2.6"/></g></svg>
-      <div class="wrap">
-        <div class="hero-copy">
-          <p class="eyebrow">Brisbane, Australia</p>
-          <h1 id="hero-name" class="signature">Markus Walker</h1>
-          <p class="brand-position">AI solutions, start to finish. <em>Secure by design.</em></p>
-          <p class="lede">I architect and deliver AI solutions from start to finish. I scope the problem with the client, design the architecture, build the agents and tools, and hand over something the team can run, with security built in at each stage. Most of my effort goes into the part a better model won't fix, which is an organisation's own knowledge and the controls around it.</p>
-          <p>Thirteen years in IT infrastructure, including seven running IT and operational technology for remote gas operations, and the last two focused on AI engineering and Secure AI.</p>
-          <div class="actions">
-            <a class="button" href="/Markus_Walker_Resume.pdf" download>Download resume PDF <span aria-hidden="true">↓</span></a>
-            <a class="button button-quiet" href="mailto:markus@markuswalker.com">Email <span aria-hidden="true">↗</span></a>
-            <a class="button button-quiet" href="https://www.linkedin.com/in/markus-walker-au/" target="_blank" rel="noopener noreferrer">LinkedIn <span aria-hidden="true">↗</span></a>
-            <a class="button button-quiet" href="https://github.com/markus-doc" target="_blank" rel="noopener noreferrer">GitHub <span aria-hidden="true">↗</span></a>
-          </div>
-        </div>
-      </div>
-
-      <div class="wrap">
-        <dl class="glance" aria-label="At a glance">
-          <div><dt>Current role</dt><dd>Senior Engineer, Secure AI<br><span>CyberCX, part of Accenture</span></dd></div>
-          <div><dt>Focus</dt><dd>AI solutioning, start to finish<br><span>Secure AI and governed knowledge</span></dd></div>
-          <div><dt>Looking for</dt><dd>FDE and AI engineering roles<br><span>Fully remote</span></dd></div>
-          <div><dt>Clearance</dt><dd>AGSVA Baseline<br><span>Eligible for NV1 and NV2</span></dd></div>
-        </dl>
-      </div>
-    </section>
-
-    <!-- Experience -->
-    <section class="section" id="experience" aria-labelledby="experience-title">
-      <img class="sketch" src="/art/sketch-escapement.webp" alt="" aria-hidden="true" loading="lazy">
-      <div class="wrap">
-        <p class="eyebrow"><span class="sec-no">01</span> Resume</p>
-        <h2 id="experience-title">Experience <em>that crosses boundaries</em></h2>
-        <p class="lede narrow">IT and OT infrastructure from breaking ground to operations, then cloud engineering and cybersecurity. Now I secure AI systems, from LLMs to agents. Each step has been about making technology hold up where it runs.</p>
-
-        <ol class="timeline">
-          <li>
-            <p class="when">June 2026 to present</p>
-            <div>
-              <h3>Senior Engineer, Secure AI</h3>
-              <p class="where">CyberCX, part of Accenture</p>
-              <ul class="reading-list">
-                <li>Deliver secure AI solutions end to end, from use-case assessment and architecture through build, security controls and handover.</li>
-                <li>Deployed sovereign AI environments on Azure: virtual machines built from golden images, Azure AI Foundry with Azure OpenAI models hosted in an Australian region, and device management and access controls that restrict each machine to the approved models.</li>
-                <li>Build knowledge bases for people and AI agents, and AI-assisted document generation workflows with reusable skills, agents and review steps.</li>
-                <li>Build custom AI plugins and agentic workflows, distributed as versioned releases through a GitHub Enterprise marketplace.</li>
-                <li>Present workshops on frontier AI and security, and advise on MCP governance, secure SDLC and enterprise AI adoption.</li>
-                <li>Write AI security guidance and white papers for enterprise teams, turning research into advice they can act on.</li>
-              </ul>
-            </div>
-          </li>
-          <li>
-            <p class="when">2025 to 2026</p>
-            <div>
-              <h3>Independent practitioner and professional development</h3>
-              <p>Contract work for clients as an independent practitioner, alongside a focused stretch of study and certification.</p>
-              <ul class="reading-list">
-                <li>Completed the Certificate IV in Cyber Security (22603VIC) at TAFE Queensland, the main focus of this period.</li>
-                <li>Earned the AWS Certified Solutions Architect, Associate and three Oracle Cloud Infrastructure certifications, including Generative AI Professional, along with further cloud and AI training.</li>
-                <li>Built projects in AWS security architecture and incident response, and worked through Splunk and Active Directory security labs.</li>
-              </ul>
-            </div>
-          </li>
-          <li>
-            <p class="when">May 2019 to August 2025</p>
-            <div>
-              <h3>IT Field Engineer</h3>
-              <p class="where">Tata Consultancy Services</p>
-              <p>Embedded contractor running IT and OT for Shell QGC and QCLNG upstream and midstream operations in Queensland, on the same assets I had helped build and commission in earlier site roles.</p>
-              <ul class="reading-list">
-                <li>IT field engineering across more than twenty remote sites, including camps, plants and drilling environments, covering planned work, escalations and after-hours support.</li>
-                <li>Kept Microsoft 365, networking and telecom platforms running for control-room operations and service continuity.</li>
-                <li>Complete network transformation across the operations area, as part of Shell's acquisition and integration of BG Group, plus Starlink connectivity for remote operations from project development through deployment.</li>
-                <li>Entra ID identity and access management, including role-based access and device compliance, and the move from SCCM to Intune, Windows Autopilot and Azure AD Join.</li>
-              </ul>
-            </div>
-          </li>
-          <li>
-            <p class="when">January to May 2019</p>
-            <div>
-              <h3>Junior Network Engineer</h3>
-              <p class="where">Data#3</p>
-              <p>Field engineering and cutover coordination for the Shell QGC Enterprise Network Transformation project.</p>
-            </div>
-          </li>
-          <li>
-            <p class="when">2005 to 2019</p>
-            <div>
-              <h3>Earlier roles</h3>
-              <p>QGC site roles with MSS, ECM and Protech (2012 to 2019), on gas plant projects from breaking ground through construction and commissioning to handover into operations. Before that, lighting and sound engineering with Airco Audio in the USA (2005 to 2012), running networked lighting and audio control systems for live production.</p>
-            </div>
-          </li>
-        </ol>
-
-        <h3 class="subhead">Skills</h3>
-        <dl class="skills">
-          <div><dt>AI engineering</dt><dd>LLMs, AI agents, multi-agent design, agentic workflows, MCP servers, custom plugins, n8n, Claude Code, Codex</dd></div>
-          <div><dt>Secure AI</dt><dd>AI threat modelling, AI security capability assessment, prompt injection testing, secure SDLC, AI and MCP governance, IAM, incident response planning</dd></div>
-          <div><dt>Knowledge engineering</dt><dd>Knowledge graphs and ontologies, Neo4j, vector embeddings and semantic retrieval, Open Knowledge Format, ingestion pipelines, provenance and validation</dd></div>
-          <div><dt>Software</dt><dd>Python (FastAPI, Pydantic), TypeScript, React, Playwright, pytest, PowerShell, Git</dd></div>
-          <div><dt>Cloud and platforms</dt><dd>Azure (AI Foundry, Azure OpenAI, Virtual Desktop), AWS (Bedrock, Bedrock AgentCore), Oracle Cloud, Microsoft 365, Entra ID, Intune</dd></div>
-        </dl>
-
-        <div class="resume-foot">
-          <div>
-            <h3>Certifications and education</h3>
-            <ul class="reading-list">
-              <li>Claude Certified Associate: Foundations, Anthropic Claude Partner Network, 2026</li>
-              <li>Certificate IV in Cyber Security (22603VIC), TAFE Queensland, March 2026</li>
-              <li>AWS Certified Solutions Architect, Associate, 2025</li>
-              <li>Oracle Cloud Infrastructure, three certifications including Generative AI Professional, 2025</li>
-              <li>University studies in audio engineering, St. Louis, USA</li>
-            </ul>
-          </div>
-          <div>
-            <h3>Clearance</h3>
-            <p>Current AGSVA Baseline clearance, eligible for NV1 and NV2.</p>
-            <a class="button" href="/Markus_Walker_Resume.pdf" download>Download resume PDF <span aria-hidden="true">↓</span></a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Selected work -->
-    <section class="section section-tinted" id="work" aria-labelledby="work-title">
-      <img class="sketch" src="/art/sketch-book-tree.webp" alt="" aria-hidden="true" loading="lazy">
-      <div class="wrap">
-        <p class="eyebrow"><span class="sec-no">02</span> Selected work</p>
-        <h2 id="work-title">Projects</h2>
-        <p class="lede narrow">Work you can open and check. Each piece says what it is and when I made it.</p>
-        <p class="small-note narrow">Every project was accurate at the time of writing. My tools and methods have moved on since some of them, so treat the older pieces as a record of how I worked at the time.</p>
-
-        <div class="project-list">
-          <article class="project">
-            <div class="project-head">
-              <p class="project-kind">Practitioner reference</p>
-              <h3><a href="/projects/claude-cowork-controls-cheat-sheet/">Claude Cowork controls cheat sheet</a></h3>
-            </div>
-            <div class="project-body">
-              <p class="project-date"><strong>Version 1.4, evidence cut 23 September 2026.</strong></p>
-              <p>A reference for administrators on what the Claude Cowork admin console, device policy (MDM) and third-party deployments on Bedrock, Vertex and Foundry actually control, where they fall short, and which defaults to change first. 65 references, checked against Anthropic's documentation.</p>
-              <ul class="links">
-                <li><a class="text-link" href="/projects/claude-cowork-controls-cheat-sheet/">Project details <span aria-hidden="true">→</span></a></li>
-                <li><a class="text-link" href="/assets/docs/Markus_Walker_Cowork_Controls_Cheat_Sheet_v1.4" target="_blank" rel="noopener">Read online <span aria-hidden="true">↗</span></a></li>
-                <li><a class="text-link" href="/assets/docs/Markus_Walker_Cowork_Controls_Cheat_Sheet_v1.4.pdf" target="_blank" rel="noopener">Download PDF <span aria-hidden="true">↗</span></a></li>
-              </ul>
-            </div>
-          </article>
-
-          <article class="project">
-            <div class="project-head">
-              <p class="project-kind">SOC advisory white paper</p>
-              <h3><a href="/projects/distinguishing-ai-driven-attacks/">Distinguishing AI-driven attacks from human and automated activity</a></h3>
-            </div>
-            <div class="project-body">
-              <p class="project-date"><strong>Version 5, evidence cut 23 September 2026.</strong></p>
-              <p>A SOC advisory paper on telling AI-driven attack activity apart from human and automated activity. From logs alone the evidence supports a confidence score, not attribution. The paper covers which indicators carry signal, the detection methods now emerging, and what that means for response. 19 references.</p>
-              <ul class="links">
-                <li><a class="text-link" href="/projects/distinguishing-ai-driven-attacks/">Project details <span aria-hidden="true">→</span></a></li>
-                <li><a class="text-link" href="/assets/docs/Markus_Walker_AI_Driven_Attacks_White_Paper_v5" target="_blank" rel="noopener">Read online <span aria-hidden="true">↗</span></a></li>
-                <li><a class="text-link" href="/assets/docs/Markus_Walker_AI_Driven_Attacks_White_Paper_v5.pdf" target="_blank" rel="noopener">Download PDF <span aria-hidden="true">↗</span></a></li>
-              </ul>
-            </div>
-          </article>
-
-          <article class="project">
-            <div class="project-head">
-              <p class="project-kind">Portfolio proof of concept</p>
-              <h3><a href="/projects/mcp-access-governance/">AI and MCP access governance</a></h3>
-            </div>
-            <div class="project-body">
-              <p class="project-date"><strong>May to July 2026.</strong> My approach to MCP governance has moved on since.</p>
-              <p>A working demonstration of structured review for AI agent integrations and MCP-connected tools. The portfolio uses fictional vendors and mock intake data to show request intake, risk classification, human review and decision evidence.</p>
-              <figure class="evidence">
-                <a href="/art/mcp-n8n-workflow-full.webp" target="_blank" rel="noopener"><img src="/art/mcp-n8n-workflow.webp" width="1400" height="322" loading="lazy" alt="The n8n workflow canvas: an MCP request passes a pre-approval check, a nine-rule security linter, a risk classifier and an AI research agent, then waits for human security review before the decision is written to an evidence log."></a>
-                <figcaption>The built n8n workflow, from intake through human review to the evidence log. <a href="/art/mcp-n8n-workflow-full.webp" target="_blank" rel="noopener">Open full size <span aria-hidden="true">↗</span></a></figcaption>
-              </figure>
-              <p class="small-note">Portfolio proof of concept. Not a production deployment, certification or attestation.</p>
-              <ul class="links">
-                <li><a class="text-link" href="/projects/mcp-access-governance/">Project details <span aria-hidden="true">→</span></a></li>
-                <li><a class="text-link" href="/assets/docs/Markus_Walker_MCP_Governance_Platform_v2.pdf" target="_blank" rel="noopener">Open portfolio PDF <span aria-hidden="true">↗</span></a></li>
-                <li><a class="text-link" href="https://github.com/markus-doc/MCP_Governance_Platform" target="_blank" rel="noopener noreferrer">View repository <span aria-hidden="true">↗</span></a></li>
-                <li><a class="text-link" href="/assets/docs/N8N-MCP_Access_Governance_Platform-v2.json" target="_blank" rel="noopener">Example workflow JSON <span aria-hidden="true">↗</span></a></li>
-              </ul>
-            </div>
-          </article>
-
-          <article class="project">
-            <div class="project-head">
-              <p class="project-kind">Open-source tool</p>
-              <h3><a href="/projects/resynth/">RESYNTH research pipeline</a></h3>
-            </div>
-            <div class="project-body">
-              <p class="project-date"><strong>First released June 2026, last updated July 2026.</strong> Parts of it may since have been overtaken by newer tooling.</p>
-              <p>A command-line pipeline that takes several AI deep-research reports on one topic and consolidates them into a single verified master document. It follows systematic review methods: every claim keeps its source, conflicts are handled in the open, and completeness is checked by machine.</p>
-              <p>The pipeline has no runtime AI dependency. Any assistant can drive it, and every stage can be rerun and inspected from the shell.</p>
-              <ul class="links">
-                <li><a class="text-link" href="/projects/resynth/">Project details <span aria-hidden="true">→</span></a></li>
-                <li><a class="text-link" href="https://github.com/Markus-Doc/resynth" target="_blank" rel="noopener noreferrer">View repository <span aria-hidden="true">↗</span></a></li>
-              </ul>
-            </div>
-          </article>
-
-          <article class="project">
-            <div class="project-head">
-              <p class="project-kind">Fictional case study</p>
-              <h3><a href="/projects/aws-security-architecture-case-study/">AWS security architecture</a></h3>
-            </div>
-            <div class="project-body">
-              <p class="project-date"><strong>April 2026.</strong> AWS services and guidance change often.</p>
-              <p>A fictional case study for Rossco's Coffee, covering security architecture and migration planning. The portfolio considers identity and access, network boundaries, resilience, monitoring and recovery, supported by a testing and deployment plan.</p>
-              <p class="small-note">This is a planning case study. The architecture is proposed rather than presented as a live production system.</p>
-              <ul class="links">
-                <li><a class="text-link" href="/projects/aws-security-architecture-case-study/">Project details <span aria-hidden="true">→</span></a></li>
-                <li><a class="text-link" href="/assets/docs/Markus_Walker_Cloud_Case_Study.pdf" target="_blank" rel="noopener">Open case study PDF <span aria-hidden="true">↗</span></a></li>
-              </ul>
-            </div>
-          </article>
-
-          <article class="project">
-            <div class="project-head">
-              <p class="project-kind">Planning portfolio</p>
-              <h3><a href="/projects/incident-response-planning/">Incident response</a></h3>
-            </div>
-            <div class="project-body">
-              <p class="project-date"><strong>April 2026.</strong></p>
-              <p>A practical incident response planning portfolio structured around NIST SP 800-61. It covers response roles, communications, escalation, evidence handling, recovery and post-incident review.</p>
-              <p class="small-note">This page describes a portfolio document, not a live customer programme.</p>
-              <ul class="links">
-                <li><a class="text-link" href="/projects/incident-response-planning/">Project details <span aria-hidden="true">→</span></a></li>
-                <li><a class="text-link" href="/assets/docs/Markus_Walker_IRP_Portfolio.pdf" target="_blank" rel="noopener">Open portfolio PDF <span aria-hidden="true">↗</span></a></li>
-              </ul>
-            </div>
-          </article>
-
-          <article class="project">
-            <div class="project-head">
-              <p class="project-kind">Self-directed research</p>
-              <h3>Governed knowledge for AI agents</h3>
-            </div>
-            <div class="project-body">
-              <p>A knowledge base designed for agent use. Agents propose updates as pull requests, accountable people review them before anything merges, and access is scoped so an agent only reaches the knowledge it is cleared to see.</p>
-              <p><span class="badge">Write-up coming soon</span></p>
-            </div>
-          </article>
-
-          <article class="project">
-            <div class="project-head">
-              <p class="project-kind">Architecture</p>
-              <h3>Secure agentic AI reference architecture</h3>
-            </div>
-            <div class="project-body">
-              <p>A reference architecture that keeps the logical design independent of any one cloud or model, with a capability matrix that compares major AI platforms against the same set of security controls.</p>
-              <p><span class="badge">Coming soon</span></p>
-            </div>
-          </article>
-        </div>
-
-        <p><a class="text-link" href="/projects/">All projects, one page each <span aria-hidden="true">→</span></a></p>
-      </div>
-    </section>
-
-    <!-- Writing -->
-    <section class="section" id="writing" aria-labelledby="writing-title">
-      <img class="sketch" src="/art/sketch-quills.webp" alt="" aria-hidden="true" loading="lazy">
-      <div class="wrap">
-        <p class="eyebrow"><span class="sec-no">03</span> Technical communication</p>
-        <h2 id="writing-title">Writing for <em>decisions</em></h2>
-        <p class="lede">Research and technical guidance should help someone decide what to do next.</p>
-        <h3>AI security research</h3>
-        <p>I've rewritten my white paper on telling AI-driven attacks apart from human and automated activity, with practical SOC guidance on detection, triage, false positives and the limits of AI attribution. The new version is in my own voice, with evidence updated to 23 September 2026.</p>
-        <p><a class="text-link" href="/projects/distinguishing-ai-driven-attacks/">Read about the white paper <span aria-hidden="true">→</span></a></p>
-        <h3>Enterprise AI guidance</h3>
-        <p>I write guidance on deployment options, administrative controls, access boundaries and security configuration for enterprise AI adoption.</p>
-        <p><a class="text-link" href="/projects/claude-cowork-controls-cheat-sheet/">See the Claude Cowork controls cheat sheet <span aria-hidden="true">→</span></a></p>
-        <h3>Public security lab</h3>
-        <p>A controlled Active Directory capstone walkthrough covering credential handling, tunnelling and pivoting.</p>
-        <a class="text-link" href="https://markus-doc.github.io/cybersecurity-writeups/articles/tryhackme/rtcc/1-Red_Team_Capstone_Crawl-Through" target="_blank" rel="noopener noreferrer">Read the lab writeup <span aria-hidden="true">↗</span></a>
-      </div>
-    </section>
-
-    <!-- Capabilities -->
-    <section class="section section-tinted" id="capabilities" aria-labelledby="capabilities-title">
-      <img class="sketch" src="/art/sketch-armillary.webp" alt="" aria-hidden="true" loading="lazy">
-      <div class="wrap">
-        <p class="eyebrow"><span class="sec-no">04</span> Practice</p>
-        <h2 id="capabilities-title">Capabilities</h2>
-        <div class="folio-grid">
-          <article class="folio">
-            <img class="folio-art" src="/art/folio-moebius.webp" alt="" aria-hidden="true" loading="lazy">
-            <p class="folio-no" aria-hidden="true">i.</p>
-            <h3>Agentic AI, end to end</h3>
-            <p class="folio-lede">I work with the client team from scoping to handover.</p>
-            <p>I scope the use case, design the architecture, build the agents, tools and workflows, put the controls in place and hand over something the team can operate.</p>
-            <p>Recent work includes custom AI plugins, versioned workflow packaging, document generation and review processes, built with Claude, Codex, ChatGPT, Python, PowerShell, MCP and n8n.</p>
-            <a class="text-link" href="https://github.com/Markus-Doc/resynth" target="_blank" rel="noopener noreferrer">See RESYNTH on GitHub <span aria-hidden="true">↗</span></a>
-          </article>
-          <article class="folio">
-            <img class="folio-art" src="/art/folio-armillary-atom.webp" alt="" aria-hidden="true" loading="lazy">
-            <p class="folio-no" aria-hidden="true">ii.</p>
-            <h3>Secure AI</h3>
-            <p class="folio-lede">Make AI useful. <em>Keep it defensible.</em></p>
-            <p>I build security in from the first design decision. The work covers AI threat modelling, secure software development, MCP governance, access boundaries and control assessment, with findings written up as guidance people can implement.</p>
-            <p>I treat an agent's reach into data as an access control decision. An agent that can only reach what it is permitted to see has a smaller blast radius, and a document it can't open can't prompt-inject it.</p>
-            <a class="text-link" href="#work">See the governance project <span aria-hidden="true">→</span></a>
-          </article>
-          <article class="folio">
-            <img class="folio-art" src="/art/folio-polyhedron.webp" alt="" aria-hidden="true" loading="lazy">
-            <p class="folio-no" aria-hidden="true">iii.</p>
-            <h3>Knowledge for AI agents</h3>
-            <p class="folio-lede">The layer I'm working through most deeply right now.</p>
-            <p>I build knowledge bases agents can reason over, from graph ontologies and vector-searchable knowledge graphs to open-format repositories. They come with ingestion, retrieval and provenance tooling, and people decide what counts as true.</p>
-            <p><span class="badge">Examples coming soon</span></p>
-          </article>
-          <article class="folio">
-            <img class="folio-art" src="/art/folio-orrery.webp" alt="" aria-hidden="true" loading="lazy">
-            <p class="folio-no" aria-hidden="true">iv.</p>
-            <h3>Technical delivery</h3>
-            <p class="folio-lede">Seven years running technology where distance, access and service continuity had immediate operational consequences.</p>
-            <p>That still shapes my AI delivery. I design for the people who will run the system, and I make sure the handover works for them.</p>
-            <a class="text-link" href="#experience">See the experience <span aria-hidden="true">→</span></a>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <!-- Approach -->
-    <section class="section" id="approach" aria-labelledby="approach-title">
-      <img class="sketch" src="/art/sketch-hands.webp" alt="" aria-hidden="true" loading="lazy">
-      <div class="wrap">
-        <p class="eyebrow"><span class="sec-no">05</span> What I believe</p>
-        <h2 id="approach-title">Build for the AI <em>that's coming.</em></h2>
-        <p class="lede">Models get better every few months. Whatever I build has to still be worth having when they do.</p>
-        <h3>Build what frontier AI won't replace</h3>
-        <p>Models keep improving at reasoning, writing code and handling formats. None of that tells them what your business has decided is true, or who is accountable for it. That knowledge has to be built, kept and owned, and that's where I put my effort.</p>
-        <h3>Learn each layer by building it</h3>
-        <p>I'm working through AI one layer at a time, from research and governance to deployment, using real research and things I've built. Security goes into each layer as I go.</p>
-        <h3>Governed knowledge</h3>
-        <p>Knowledge is the layer I've worked through most so far. An agent should read knowledge that an accountable person approved, that carries its source, and that expires before it goes stale. Agents propose updates as pull requests, and people review them before anything merges. Each agent only reaches what it's cleared to see.</p>
-        <h3>Stay engine-agnostic</h3>
-        <p>I don't tie a build to one model or vendor. The model is a swappable part, so I use open formats in plain markdown, standard protocols such as MCP, and agent instructions any assistant can read.</p>
-      </div>
-    </section>
-
-    <!-- Contact -->
-    <section class="section section-contact" id="contact" aria-labelledby="contact-title">
-      <img class="sketch" src="/art/sketch-compass.webp" alt="" aria-hidden="true" loading="lazy">
-      <div class="wrap">
-        <p class="eyebrow">Brisbane, Australia</p>
-        <h2 id="contact-title">Get <em>in touch</em></h2>
-        <div class="seeking">
-          <div>
-            <h3>Roles I'm looking for</h3>
-            <ul class="role-list">
-              <li>Forward deployed engineer (FDE)</li>
-              <li>AI engineer</li>
-              <li>Applied AI engineer</li>
-              <li>AI solutions engineer</li>
-              <li>AI solutions architect</li>
-              <li>AI security engineer</li>
-              <li>AI platform engineer</li>
-            </ul>
-          </div>
-          <div>
-            <h3>Location</h3>
-            <p>Based in Brisbane and looking for fully remote roles. For an exceptional opportunity I'd still consider hybrid or relocating.</p>
-          </div>
-        </div>
-        <ul class="links links-row">
-          <li><a class="button" href="mailto:markus@markuswalker.com">Email Markus <span aria-hidden="true">↗</span></a></li>
-          <li><a class="button button-quiet" href="https://www.linkedin.com/in/markus-walker-au/" target="_blank" rel="noopener noreferrer">LinkedIn <span aria-hidden="true">↗</span></a></li>
-          <li><a class="button button-quiet" href="https://github.com/markus-doc" target="_blank" rel="noopener noreferrer">GitHub <span aria-hidden="true">↗</span></a></li>
-        </ul>
-      </div>
-    </section>
+  <main id="reader" class="reader" tabindex="-1" aria-labelledby="reader-title">
+    <div class="paper" aria-hidden="true"></div>
+    <div class="reader-bar">
+      <button id="back" class="text-button" type="button" hidden><span aria-hidden="true">←</span> Back</button>
+      <button id="sheet-toggle" class="text-button" type="button" aria-expanded="false">Read more</button>
+    </div>
+    <div class="reader-scroll">
+      <article id="reader-body"></article>
+      <nav id="connected" class="connected" aria-label="Connected"></nav>
+    </div>
   </main>
 
-  <footer class="site-footer">
-    <div class="wrap footer-inner">
-      <p>© 2026 Markus Walker</p>
-      <a class="text-link" href="#top">Back to top <span aria-hidden="true">↑</span></a>
-    </div>
-  </footer>
+  <nav id="contents-rail" class="contents-rail" aria-label="Contents"></nav>
 
-  <script>
-    (function () {
-      var root = document.documentElement;
-      var btn = document.querySelector('.theme-toggle');
-      function sync() {
-        var dark = root.dataset.theme === 'dark';
-        btn.setAttribute('aria-label', dark ? 'Switch to light theme' : 'Switch to dark theme');
-      }
-      btn.addEventListener('click', function () {
-        root.dataset.theme = root.dataset.theme === 'dark' ? 'light' : 'dark';
-        try { localStorage.setItem('mw-theme', root.dataset.theme); } catch (e) {}
-        sync();
-      });
-      sync();
-    })();
-  </script>
+  <div class="explore-controls" id="explore-controls" role="group" aria-label="Map controls">
+    <div class="paper" aria-hidden="true"></div>
+    <button id="rotate-left" class="icon-button" type="button" title="Rotate left"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12a7 7 0 1 1 2.1 5"/><path d="M4 7v5h5"/></svg><span class="sr-only">Rotate left</span></button>
+    <button id="rotate-right" class="icon-button" type="button" title="Rotate right"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12a7 7 0 1 0-2.1 5"/><path d="M20 7v5h-5"/></svg><span class="sr-only">Rotate right</span></button>
+    <button id="zoom-out" class="icon-button" type="button" title="Zoom out"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/></svg><span class="sr-only">Zoom out</span></button>
+    <button id="zoom-in" class="icon-button" type="button" title="Zoom in"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg><span class="sr-only">Zoom in</span></button>
+    <button id="recentre" class="text-button" type="button">Re-centre</button>
+    <button id="help-open" class="text-button" type="button" title="How to move">
+      <svg viewBox="0 0 24 24" aria-hidden="true" width="18" height="18"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.2a2.4 2.4 0 1 1 3.5 2.1c-.9.5-1.3 1-1.3 2"/><path d="M12 16.5h.01"/></svg>
+      How to move
+    </button>
+    <button id="overview" class="button button-quiet button-small" type="button" hidden>Whole network</button>
+    <button id="back-to-page" class="button button-small" type="button" hidden>Back to page</button>
+    <button id="start-over" class="text-button start-over" type="button" title="Back to the first view">
+      <svg viewBox="0 0 24 24" aria-hidden="true" width="18" height="18"><path d="M4 12a8 8 0 1 0 2.3-5.6"/><path d="M4 4v4h4"/></svg>
+      Start Over
+    </button>
+  </div>
+
+  <dialog id="index-dialog" aria-labelledby="index-title">
+    <div class="paper" aria-hidden="true"></div>
+    <form method="dialog" class="index-head">
+      <h2 id="index-title">Index</h2>
+      <button class="icon-button" value="close" aria-label="Close the index"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    </form>
+    <label class="sr-only" for="index-search">Search pages</label>
+    <input id="index-search" type="search" placeholder="Search pages, projects, experience" autocomplete="off">
+    <p id="index-count" class="sr-only" role="status" aria-live="polite"></p>
+    <div id="index-list"></div>
+  </dialog>
+
+  <div class="travel" id="travel" hidden>
+    <div class="paper" aria-hidden="true"></div>
+    <button id="arrive-now" class="button button-quiet button-small" type="button">Arrive now</button>
+  </div>
+  <p id="status" class="sr-only" role="status" aria-live="polite"></p>
+
+
+  <section id="intro" class="intro" aria-labelledby="intro-title">
+    <div class="intro-copy">
+      <div class="paper" aria-hidden="true"></div>
+      <div class="intro-scroll">
+        <p class="kicker">Brisbane, Australia</p>
+        <h1 id="intro-title" tabindex="-1">Markus Walker</h1>
+        <p class="headline">AI solutions, start to finish. <strong>Secure by design.</strong></p>
+        <p class="intro-lede">I architect and deliver AI solutions from start to finish, with security built in at each stage. I'm open to interesting forward deployed, Secure AI and AI engineering roles, and happy to hear from recruiters and teams doing worthwhile AI work.</p>
+        <div class="actions">
+          <button class="button" type="button" data-action="enter">Enter the network</button>
+          <a class="button button-quiet" href="/Markus_Walker_Resume.pdf" download>Resume PDF <span aria-hidden="true">↓</span></a>
+        </div>
+        <p class="intro-shortcuts">Or go straight to
+          <a href="#/experience" data-enter-to="experience">experience</a>,
+          <a href="#/projects" data-enter-to="projects">projects</a> or
+          <a href="#/contact" data-enter-to="contact">contact</a>.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <div id="fallback" class="fallback" hidden></div>
+
+  <noscript>
+    <div class="noscript">
+      <p>This version of the site needs JavaScript. The plain HTML resume and portfolio is at <a href="https://www.markuswalker.com/">www.markuswalker.com</a>.</p>
+    </div>
+  </noscript>
+
 </body>
 </html>
