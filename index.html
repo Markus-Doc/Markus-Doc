@@ -37,6 +37,9 @@
       var lm = /[?&]layer=([^&]*)/.exec(location.search);
       var layers = lm ? decodeURIComponent(lm[1]) : (location.search.indexOf('look=line') !== -1 ? '' : 'notebook-sphere');
       if (layers !== 'none') layers.split(',').forEach(function (n) { if (/^[\w-]+$/.test(n)) document.documentElement.classList.add('layer-' + n); });
+      // the landing from the first paint: the reader stays hidden behind the hero while the
+      // scene loads (it used to show as a second torn page until the script caught up)
+      if (!/^#\/[\w-]+$/.test(location.hash) && location.search.indexOf('intro=skip') === -1) document.documentElement.classList.add('intro-active');
     })();
   </script>
   <script type="application/ld+json">
@@ -82,7 +85,7 @@
     ]
   }
   </script>
-  <script type="module" crossorigin src="/assets/index-DSEiP2Ra.js"></script>
+  <script type="module" crossorigin src="/assets/index-B1JfHjHE.js"></script>
   <link rel="stylesheet" crossorigin href="/assets/index-B16BNMsI.css">
 </head>
 <body>
