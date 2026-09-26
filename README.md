@@ -58,6 +58,7 @@ twenty remote sites.
 | [MCP_Governance_Platform](https://github.com/Markus-Doc/MCP_Governance_Platform) | A working proof of concept and enterprise design pattern for governing AI agent and MCP-connected integrations. | Proof of concept. May 2026. |
 | [SubstrateOS](https://github.com/Markus-Doc/SubstrateOS) | A thin, local-first AI orchestration harness. Not a platform. | Working. Started June 2026. |
 | [resynth](https://github.com/Markus-Doc/resynth) | Consolidates several AI deep research reports into one verified master document. A gated systematic review pipeline with no runtime AI dependency. | Working, v0.2.4. Started June 2026. |
+| [Runner: Claude study game](https://www.markuswalker.com/runner/) | A pixel-art side-scroller for studying the Claude Certified Architect, Foundations exam, with question terminals, boss fights and timed mock exams. [Source](https://github.com/Markus-Doc/claude-study-game). | Live. Started July 2026. |
 | [ISC2 CC study lab](https://markus-doc.github.io/isc2-cc-study/) | Flashcard drill and multiple choice quiz for ISC2 Certified in Cybersecurity revision. Static, original questions only. | Live, small on purpose. Built May 2026. |
 
 ## In progress
