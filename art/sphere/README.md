@@ -4,7 +4,7 @@ Derived art for the landing's inner notebook sphere: the painted wall the visito
 sees all round from inside the sphere. The node network is the focal layer and
 everything here sits behind it.
 
-Total size is about 2.9 MB (`atlas-4k.webp` 2.0 MB, `atlas-2k.webp` 0.8 MB,
+Total size is about 3.3 MB (`atlas-4k.webp` 2.3 MB, `atlas-2k.webp` 0.9 MB,
 `parchment.webp` about 0.1 MB).
 
 ## Masters are untouched
@@ -20,7 +20,10 @@ headless Chromium canvas, and writes the files here. Nothing is written into
 | `scene` | `sphere-refs/01-landing-scene.jpg` (1868x1049, the target scene) | the front of the sphere, projected from the landing camera |
 | `wallA` | `working-folder/sphere-inner-walls-v1.png` (2497x1408) | the strip below the landing frame |
 | `wallB` | `working-folder/sphere-inner-walls-v1-2.png` (2497x1408) | the ceiling strip above the landing frame |
-| `px` `nx` `py` `ny` `pz` `nz` | `working-folder/Final/background-views/*.png` (1254 px) | right, left, up, down, back; `pz` is in the atlas but unused (the scene carries the front) |
+| `px` `nx` `ny` `pz` `nz` | `working-folder/Final/background-views/*.png` (1254 px) | right, left, down, back; `pz` (cropped clear of its Vitruvian figure) fills the band above the landing view |
+| `up` | `1-Final_Touches/backgroud-sections/directly-up.png` (1254 px) | the zenith, replacing `py.png` in that slot (26 September 2026) |
+| `creation` | `working-folder/Final/individual-assets/c1-creation-of-ai.webp` (1774x887) | the centrepiece behind the landing network: robot and God, the gap between their fingertips on the nucleus (used once) |
+| `field` | `working-folder/descisions/inner-sphere-background/master/Master_reference.jpg` (2128x912) | a quiet field of small studies under the centrepiece, so the landing centre is never bare paper; the Grok mark is masked out and cropped away |
 
 What the build does to each source:
 
@@ -46,10 +49,11 @@ The face filename mapping stays authoritative for the rotated views:
 | --- | --- | --- |
 | `px` | right | human and robotic hands reaching |
 | `nx` | left | hands using a drawing compass |
-| `py` | up | celestial armillary |
+| `up` | up (the zenith, image top toward +Z) | celestial chart with the gold sunburst, Markus's redrawn up view |
 | `ny` | down | mechanical collective-mind apparatus |
 | `nz` | back | mechanical cognition head |
 | front | the landing's view, down -Z | the target scene (its own Vitruvian upper left) |
+| front, above the landing view | yaw 0, pitch 34 | `pz` right of x 0.44, top half: brain, networks, robotic head, machine, tree |
 
 ## Files
 

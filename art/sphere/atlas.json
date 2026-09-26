@@ -7,7 +7,7 @@
   146
  ],
  "flattened": true,
- "built": "2026-09-25",
+ "built": "2026-09-26",
  "sources": [
   {
    "id": "scene",
@@ -150,7 +150,7 @@
    "file": "C:/Users/marku/OneDrive/Documents/0.1-GitHub/portfolio-website/.inbox/working-folder/Final/background-views/nx.png"
   },
   {
-   "id": "py",
+   "id": "up",
    "uv": [
     0,
     0.60791015625,
@@ -162,20 +162,20 @@
     940
    ],
    "paper": [
-    199,
-    173,
-    142
+    201,
+    175,
+    144
    ],
    "lum": {
-    "p20": 165.582,
-    "p50": 176.98399999999998,
-    "p80": 181.539
+    "p20": 167.457,
+    "p50": 179.23999999999998,
+    "p80": 182.94099999999997
    },
    "native": [
     1254,
     1254
    ],
-   "file": "C:/Users/marku/OneDrive/Documents/0.1-GitHub/portfolio-website/.inbox/working-folder/Final/background-views/py.png"
+   "file": "C:/Users/marku/OneDrive/Documents/0.1-GitHub/portfolio-website/.inbox/1-Final_Touches/backgroud-sections/directly-up.png"
   },
   {
    "id": "ny",
@@ -260,6 +260,62 @@
     1254
    ],
    "file": "C:/Users/marku/OneDrive/Documents/0.1-GitHub/portfolio-website/.inbox/working-folder/Final/background-views/nz.png"
+  },
+  {
+   "id": "creation",
+   "uv": [
+    0,
+    0.83837890625,
+    0.322265625,
+    0.99951171875
+   ],
+   "px": [
+    1320,
+    660
+   ],
+   "paper": [
+    199,
+    174,
+    144
+   ],
+   "lum": {
+    "p20": 151.087,
+    "p50": 177.86999999999998,
+    "p80": 194.735
+   },
+   "native": [
+    1774,
+    887
+   ],
+   "file": "C:/Users/marku/OneDrive/Documents/0.1-GitHub/portfolio-website/.inbox/working-folder/Final/individual-assets/c1-creation-of-ai.webp"
+  },
+  {
+   "id": "field",
+   "uv": [
+    0.3232421875,
+    0.83837890625,
+    0.69921875,
+    0.99951171875
+   ],
+   "px": [
+    1540,
+    660
+   ],
+   "paper": [
+    198,
+    173,
+    142
+   ],
+   "lum": {
+    "p20": 167.756,
+    "p50": 176.72400000000002,
+    "p80": 180.642
+   },
+   "native": [
+    2128,
+    912
+   ],
+   "file": "C:/Users/marku/OneDrive/Documents/0.1-GitHub/portfolio-website/.inbox/working-folder/descisions/inner-sphere-background/master/Master_reference.jpg"
   }
  ]
 }
