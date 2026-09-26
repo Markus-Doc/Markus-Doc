@@ -51,6 +51,8 @@ twenty remote sites.
 
 | Where | What it is | Status |
 |---|---|---|
+| [Securing Claude Cowork: Controls, Gaps and Safer Defaults](https://www.markuswalker.com/projects/claude-cowork-controls-cheat-sheet/) | What the Claude Cowork admin console, device policy and third-party deployments actually control, where they fall short, and which defaults to change first. | Published. Version 1.4, September 2026. |
+| [Human, Script or AI? Spotting AI-Driven Attacks in the SOC](https://www.markuswalker.com/projects/distinguishing-ai-driven-attacks/) | A SOC advisory white paper on telling AI-driven attacks apart from human and automated activity, with practical guidance for detection, triage and response. | Published. Version 5, September 2026. |
 | [Cybersecurity portfolio](https://markus-doc.github.io/cybersecurity-portfolio/) | Capability design kept separate from technical execution, with supporting artefacts as downloadable deliverables. | Live. Started April 2026. |
 | [Write-ups](https://markus-doc.github.io/cybersecurity-writeups/) | Articles, research notes, CTF write-ups and lab walkthroughs. | Live. Written early 2026. |
 | [MCP_Governance_Platform](https://github.com/Markus-Doc/MCP_Governance_Platform) | A working proof of concept and enterprise design pattern for governing AI agent and MCP-connected integrations. | Proof of concept. May 2026. |
@@ -60,8 +62,6 @@ twenty remote sites.
 
 ## In progress
 
-- **AI SOC white paper.** An independent piece on telling AI-driven attacks apart from
-  human and automated activity, with practical guidance for SOC teams. Coming soon.
 - **AWS-native AI security mapping.** Working through native observability and identity
   controls, then the gaps and the options for filling them. Kept in a private
   workspace for now and paused between sessions.
@@ -81,5 +81,6 @@ current AGSVA Baseline clearance, eligible for NV1 and NV2.
 
 ---
 
-This repository also holds the compiled static release for markuswalker.com. Build and
-deployment notes are in [DEPLOYMENT.md](DEPLOYMENT.md).
+This repository also holds the compiled release of markuswalker.com: the interactive
+notebook site, with the plain HTML version at [/classic/](https://www.markuswalker.com/classic/)
+for browsers that cannot run it. Build and deployment notes are in [DEPLOYMENT.md](DEPLOYMENT.md).
