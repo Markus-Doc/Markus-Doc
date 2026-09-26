@@ -1,6 +1,6 @@
-function e(e,t){let n=t.replace(`#`,``);return new e.Vector3(parseInt(n.slice(0,2),16)/255,parseInt(n.slice(2,4),16)/255,parseInt(n.slice(4,6),16)/255)}var t=(e,t,n,r)=>new e.Vector3().copy(t).lerp(n,r);function n(e){let t=e>>>0;return()=>{t=t+1831565813>>>0;let e=t;return e=Math.imul(e^e>>>15,e|1),e^=e+Math.imul(e^e>>>7,e|61),((e^e>>>14)>>>0)/4294967296}}function r(e){return{uTime:{value:0},uRes:{value:new e.Vector2(1,1)},uDpr:{value:1},uPxK:{value:800},uFocus:{value:12},uAperture:{value:5},uFogNear:{value:16},uFogFar:{value:80},uWarp:{value:0},uSpeed:{value:0},uAttnPos:{value:new e.Vector3},uAttnR:{value:new e.Vector2(8,30)},uAttnOn:{value:0},uLand:{value:0},uCamR:{value:100},uVolOn:{value:1},uVolGlow:{value:1},uVolHaze:{value:1},uVolRays:{value:1},uVolDark:{value:1},uVolEdge:{value:1},uVolDepth:{value:1},uMajors:{value:Array.from({length:8},()=>new e.Vector4(0,0,0,0))},uDriftAmp:{value:.3},uDrift:{value:0},uAnchors:{value:Array.from({length:32},()=>new e.Vector4(1e4,1e4,1e4,0))}}}var i=`
+function e(e,t){let n=t.replace(`#`,``);return new e.Vector3(parseInt(n.slice(0,2),16)/255,parseInt(n.slice(2,4),16)/255,parseInt(n.slice(4,6),16)/255)}var t=(e,t,n,r)=>new e.Vector3().copy(t).lerp(n,r);function n(e){let t=e>>>0;return()=>{t=t+1831565813>>>0;let e=t;return e=Math.imul(e^e>>>15,e|1),e^=e+Math.imul(e^e>>>7,e|61),((e^e>>>14)>>>0)/4294967296}}function r(e){return{uTime:{value:0},uRes:{value:new e.Vector2(1,1)},uDpr:{value:1},uPxK:{value:800},uFocus:{value:12},uAperture:{value:5},uFogNear:{value:16},uFogFar:{value:80},uWarp:{value:0},uSpeed:{value:0},uAttnPos:{value:new e.Vector3},uAttnR:{value:new e.Vector2(8,30)},uAttnOn:{value:0},uLand:{value:0},uCamR:{value:100},uVolOn:{value:1},uVolGlow:{value:1},uVolHaze:{value:1},uVolRays:{value:1},uVolDark:{value:1},uVolEdge:{value:1},uVolDepth:{value:1},uVolIn:{value:1},uVolLand:{value:0},uMajors:{value:Array.from({length:8},()=>new e.Vector4(0,0,0,0))},uDriftAmp:{value:.3},uDrift:{value:0},uAnchors:{value:Array.from({length:32},()=>new e.Vector4(1e4,1e4,1e4,0))}}}var i=`
 uniform float uTime, uDpr, uPxK, uFocus, uAperture, uFogNear, uFogFar, uWarp, uSpeed, uAttnOn, uLand, uCamR;
-uniform float uVolOn, uVolGlow, uVolHaze, uVolRays, uVolDark, uVolEdge, uVolDepth;
+uniform float uVolOn, uVolGlow, uVolHaze, uVolRays, uVolDark, uVolEdge, uVolDepth, uVolLand;
 uniform vec4 uMajors[8];
 uniform float uDrift;
 uniform vec4 uAnchors[32];
@@ -142,10 +142,10 @@ vec4 ribbonClip(vec3 p, vec3 dir, float halfPx, float side, out float z) {
         amp *= 1.0 - uLand;
         float coc = cocPx(z) * 0.55 * (1.0 - 0.8 * near) * (1.0 - uLand);
         float w = nib + coc;
-        float lit = min(majorLight(P) * uLand * uVolOn * uVolEdge, 1.0);
+        float lit = min(majorLight(P) * uVolLand * uVolOn * uVolEdge, 1.0);
         // a thread of light: most strokes, strongest in the middle of the sphere
         float mid = 1.0 - smoothstep(22.0, 50.0, length(P));
-        float lumK = uLand * uVolOn * min(uVolEdge, 1.5) * (hash11(aW.y * 3.7 + 1.9) < 0.85 ? 1.0 : 0.25) * max(mid, lit * 0.8);
+        float lumK = uVolLand * uVolOn * min(uVolEdge, 1.5) * (hash11(aW.y * 3.7 + 1.9) < 0.85 ? 1.0 : 0.25) * max(mid, lit * 0.8);
         float halfPx = w * 0.5 + 1.0, halfW = halfPx + nib * 0.5 * amp + 3.0 * uDpr * max(lit, min(lumK, 1.0));
         float zz;
         gl_Position = ribbonClip(P, normalize(drift(aB) - drift(aA)), halfW, seg.y, zz);
@@ -243,7 +243,7 @@ vec4 ribbonClip(vec3 p, vec3 dir, float halfPx, float side, out float z) {
         // hubs and the core never shrink below a readable brass-ringed bead, however far away
         rPx = max(rPx, (kind < 0.5 ? 1.25 : kind > 1.5 && kind < 3.5 ? 6.5 : 2.6) * uDpr);
         // volume pass: some junctions become small glass beads in white halos (the reference)
-        vBead = kind < 0.5 && aInfo.z >= 0.1 && aInfo.z < 0.18 ? uLand * uVolOn : 0.0;
+        vBead = kind < 0.5 && aInfo.z >= 0.1 && aInfo.z < 0.18 ? uVolLand * uVolOn : 0.0;
         rPx = mix(rPx, max(rPx, 5.5 * uDpr), vBead);
         float ext = kind < 0.5 ? 2.9 : kind < 2.5 ? 1.7 : kind < 3.5 ? 1.95 : 1.4;
         // the landing draws soft white halos and outer brass rings: the quad makes room for them
@@ -768,6 +768,11 @@ float pulseAt(float s) {
         vCore = (c.xy / c.w * 0.5 + 0.5) * uRes;
         vSrc = (s.xy / max(s.w, 0.1) * 0.5 + 0.5) * uRes;
         vRc = ROUND_R * uPxK / max(c.w, 1.0);
+        // inside the sphere the whole view is the lit volume: measure it from the screen centre
+        // (the core may be behind the camera, where its projection means nothing)
+        float inS = 1.0 - smoothstep(ROUND_R * 0.9, ROUND_R * 1.15, uCamR);
+        vCore = mix(vCore, uRes * 0.5, inS);
+        vRc = mix(vRc, uRes.y * 0.75, inS);
         gl_Position = vec4(position.xy, 0.0, 1.0);
       }`,fragmentShader:i+`
       uniform vec3 uLight, uHazeC;
@@ -779,7 +784,7 @@ float pulseAt(float s) {
       }
       float fbm(vec2 p) { float s = 0.0, a = 0.5; for (int i = 0; i < 4; i++) { s += a * n2(p); p = p * 2.03 + 11.7; a *= 0.5; } return s; }
       void main() {
-        float k = uLand * (1.0 - uWarp) * uVolOn;
+        float k = uVolLand * (1.0 - uWarp) * uVolOn;
         if (k < 0.002) discard;
         vec2 q = (gl_FragCoord.xy - vCore) / vRc;       // network radii from the core, y up
         float d = length(q);
@@ -821,9 +826,9 @@ float pulseAt(float s) {
       void main() {
         vec4 mv = modelViewMatrix * vec4(drift(aPos), 1.0);
         float z = -mv.z, type = aInfo.z;
-        float a = aInfo.y * mix(0.25, 1.0, uLand) * uVolGlow * uVolOn * (1.0 - uWarp) * nearFade(z, 2.0, 8.0);
+        float a = aInfo.y * mix(0.25, 1.0, uVolLand) * uVolGlow * uVolOn * (1.0 - uWarp) * nearFade(z, 2.0, 8.0);
         a *= mix(1.0, 0.45, depthK(z) * uVolDepth);
-        if (type > 4.5) a *= (0.55 + 0.45 * sin(uTime * (0.7 + aInfo.w * 1.6) + aInfo.w * 40.0)) * uLand;
+        if (type > 4.5) a *= (0.55 + 0.45 * sin(uTime * (0.7 + aInfo.w * 1.6) + aInfo.w * 40.0)) * uVolLand;
         if (a < 0.003 || z < 0.3) { gl_Position = vec4(2.0, 2.0, 2.0, 1.0); return; }
         float rPx = aInfo.x * uPxK / z;
         // glints and dust keep a visible minimum size however far away
@@ -851,4 +856,4 @@ float pulseAt(float s) {
         g *= vA * smoothstep(1.0, 0.85, sqrt(d2));
         if (g < 0.002) discard;
         gl_FragColor = vec4(c * g, 0.0);
-      }`}),b=new e.Mesh(v(f.filter(e=>e[5]<2.5)),y);b.frustumCulled=!1,b.renderOrder=3.5;let x=new e.Mesh(v(f.filter(e=>e[5]>2.5)),y);x.frustumCulled=!1,x.renderOrder=4.5,s.add(b,x);let S=r.uMajors.value;return t.nodes.filter(e=>e.kind===`core`||e.kind===`hub`).slice(0,S.length).forEach((e,t)=>S[t].set(...e.pos,e.kind===`core`?34:20)),{object:s,dispose(){l.dispose();for(let e of _)e.dispose();u.dispose(),y.dispose()}}}var w=6.5;function T({THREE:e,scene:t,camera:n,renderer:i,network:a,tokens:o,quality:u}){t.background=new e.Color(o.sceneBg),t.fog=null;let f=r(e),_={THREE:e,network:a,tokens:o,quality:u,shared:f},v=new e.Group;v.name=`manuscript-skin`;let y=s(_),x=c(_),T=d(_),E=p(_),D=m({..._,nodes:T}),O=h(_),k=g(_),A=l(_),j=b(_),M=[y,S(_),C(_),A,j,x,T,E,D,O,k];for(let e of M)v.add(e.object);t.add(v),E.set([new e.Vector3(0,0,-900),new e.Vector3(0,.1,-900)],0),k.object.visible=!0,i.compile(t,n),E.reset(),k.object.visible=!1;let N=new Map(a.nodes.map((e,t)=>[e.id,t]));a.nodes.filter(e=>e.kind!==`junction`).slice(0,32).forEach((e,t)=>f.uAnchors.value[t].set(...e.pos,1));let P=0,F=new e.Vector2,I=new e.Vector3,L=new e.Vector3,R=-1,z=0,B=typeof document<`u`?document.documentElement:null,V=0;function H(e){if(!e){T.setRouteNodes(null);return}let t=new Set;a.nodes.forEach((n,r)=>{I.fromArray(n.pos);for(let n=0;n<e.length;n+=2)if(e[n].distanceToSquared(I)<1.44){t.add(r);break}}),T.setRouteNodes(t)}return{setRoute(e){E.set(e,z),e&&e.length>1&&H(e)},setFocus(e){R=e!=null&&N.has(e)?N.get(e):-1,T.uniforms.uFocusIdx.value=R,T.uniforms.uFocusT.value=0,x.setFocus(R),D.setFocus(R),R>=0&&f.uAttnPos.value.fromArray(a.nodes[R].pos)},update(e,t,r){z=e;let o=!!B&&B.classList.contains(`motion-reduced`);o||(V+=t),n.updateMatrixWorld(),i.getDrawingBufferSize(F);let s=f;s.uTime.value=V,s.uRes.value.copy(F),s.uDpr.value=i.getPixelRatio(),s.uPxK.value=F.y/2/Math.tan(n.fov*Math.PI/360),s.uWarp.value=r.warp||0,s.uSpeed.value=r.speed||0;let c=n.position.length();s.uCamR.value=c;let l=Math.min(Math.max((c-58)/30,0),1);s.uLand.value=l*l*(3-2*l);let u=w;!r.travelling&&R>=0?u=I.fromArray(a.nodes[R].pos).distanceTo(n.position):r.glide&&(u=r.targetDist);let d=e=>o?1:1-Math.exp(-t*e);s.uFocus.value+=(u-s.uFocus.value)*d(4),s.uAperture.value+=((r.travelling?4.5:3.2)-s.uAperture.value)*d(3);let p=Math.max(s.uFocus.value-35,0);s.uFogNear.value=16+p*.9,s.uFogFar.value=80+p*1.4;let m=R>=0&&(!r.travelling||r.glide)?1:0;s.uAttnOn.value+=(m-s.uAttnOn.value)*d(m?2.2:5);let h=r.travelling||o?0:1;if(P+=(h-P)*(o?1:1-Math.exp(-t*(h?.9:5))),s.uDrift.value=P*s.uDriftAmp.value,R>=0){let e=I.fromArray(a.nodes[R].pos).distanceTo(n.position);s.uAttnR.value.set(Math.min(Math.max(5,e*.2),14),Math.min(Math.max(18,e*.6),44)),T.uniforms.uGlowK.value=1-.65*Math.min(Math.max((e-85)/55,0),1)}let g=T.uniforms;g.uFocusT.value=o?1:Math.min(1,g.uFocusT.value+t*(r.travelling?.5:1.6)),g.uRouteT.value=E.active?Math.min(1,g.uRouteT.value+t*3):Math.max(0,g.uRouteT.value-t*1.5),y.update(n),E.update(e,t,r),D.update(V,t,r,n,o),O.update(V,t,r,n,R>=0?L.fromArray(a.nodes[R].pos):null),k.update(e,t,r,n)},dispose(){t.remove(v);for(let e of M)e.dispose();t.background=null}}}export{T as createSkin};
+      }`}),b=new e.Mesh(v(f.filter(e=>e[5]<2.5)),y);b.frustumCulled=!1,b.renderOrder=3.5;let x=new e.Mesh(v(f.filter(e=>e[5]>2.5)),y);x.frustumCulled=!1,x.renderOrder=4.5,s.add(b,x);let S=r.uMajors.value;return t.nodes.filter(e=>e.kind===`core`||e.kind===`hub`).slice(0,S.length).forEach((e,t)=>S[t].set(...e.pos,e.kind===`core`?34:20)),{object:s,dispose(){l.dispose();for(let e of _)e.dispose();u.dispose(),y.dispose()}}}var w=6.5;function T({THREE:e,scene:t,camera:n,renderer:i,network:a,tokens:o,quality:u}){t.background=new e.Color(o.sceneBg),t.fog=null;let f=r(e),_={THREE:e,network:a,tokens:o,quality:u,shared:f},v=new e.Group;v.name=`manuscript-skin`;let y=s(_),x=c(_),T=d(_),E=p(_),D=m({..._,nodes:T}),O=h(_),k=g(_),A=l(_),j=b(_),M=[y,S(_),C(_),A,j,x,T,E,D,O,k];for(let e of M)v.add(e.object);t.add(v),E.set([new e.Vector3(0,0,-900),new e.Vector3(0,.1,-900)],0),k.object.visible=!0,i.compile(t,n),E.reset(),k.object.visible=!1;let N=new Map(a.nodes.map((e,t)=>[e.id,t]));a.nodes.filter(e=>e.kind!==`junction`).slice(0,32).forEach((e,t)=>f.uAnchors.value[t].set(...e.pos,1));let P=0,F=new e.Vector2,I=new e.Vector3,L=new e.Vector3,R=-1,z=0,B=typeof document<`u`?document.documentElement:null,V=0;function H(e){if(!e){T.setRouteNodes(null);return}let t=new Set;a.nodes.forEach((n,r)=>{I.fromArray(n.pos);for(let n=0;n<e.length;n+=2)if(e[n].distanceToSquared(I)<1.44){t.add(r);break}}),T.setRouteNodes(t)}return{setRoute(e){E.set(e,z),e&&e.length>1&&H(e)},setFocus(e){R=e!=null&&N.has(e)?N.get(e):-1,T.uniforms.uFocusIdx.value=R,T.uniforms.uFocusT.value=0,x.setFocus(R),D.setFocus(R),R>=0&&f.uAttnPos.value.fromArray(a.nodes[R].pos)},update(e,t,r){z=e;let o=!!B&&B.classList.contains(`motion-reduced`);o||(V+=t),n.updateMatrixWorld(),i.getDrawingBufferSize(F);let s=f;s.uTime.value=V,s.uRes.value.copy(F),s.uDpr.value=i.getPixelRatio(),s.uPxK.value=F.y/2/Math.tan(n.fov*Math.PI/360),s.uWarp.value=r.warp||0,s.uSpeed.value=r.speed||0;let c=n.position.length();s.uCamR.value=c;let l=Math.min(Math.max((c-58)/30,0),1);s.uLand.value=l*l*(3-2*l),s.uVolLand.value=Math.max(s.uLand.value,s.uVolIn.value);let u=w;!r.travelling&&R>=0?u=I.fromArray(a.nodes[R].pos).distanceTo(n.position):r.glide&&(u=r.targetDist);let d=e=>o?1:1-Math.exp(-t*e);s.uFocus.value+=(u-s.uFocus.value)*d(4),s.uAperture.value+=((r.travelling?4.5:3.2)-s.uAperture.value)*d(3);let p=Math.max(s.uFocus.value-35,0);s.uFogNear.value=16+p*.9,s.uFogFar.value=80+p*1.4;let m=R>=0&&(!r.travelling||r.glide)?1:0;s.uAttnOn.value+=(m-s.uAttnOn.value)*d(m?2.2:5);let h=r.travelling||o?0:1;if(P+=(h-P)*(o?1:1-Math.exp(-t*(h?.9:5))),s.uDrift.value=P*s.uDriftAmp.value,R>=0){let e=I.fromArray(a.nodes[R].pos).distanceTo(n.position);s.uAttnR.value.set(Math.min(Math.max(5,e*.2),14),Math.min(Math.max(18,e*.6),44)),T.uniforms.uGlowK.value=1-.65*Math.min(Math.max((e-85)/55,0),1)}let g=T.uniforms;g.uFocusT.value=o?1:Math.min(1,g.uFocusT.value+t*(r.travelling?.5:1.6)),g.uRouteT.value=E.active?Math.min(1,g.uRouteT.value+t*3):Math.max(0,g.uRouteT.value-t*1.5),y.update(n),E.update(e,t,r),D.update(V,t,r,n,o),O.update(V,t,r,n,R>=0?L.fromArray(a.nodes[R].pos):null),k.update(e,t,r,n)},dispose(){t.remove(v);for(let e of M)e.dispose();t.background=null}}}export{T as createSkin};
