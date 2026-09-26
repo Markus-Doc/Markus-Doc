@@ -31,17 +31,18 @@
       if (layers !== 'none') layers.split(',').forEach(function (n) { if (/^[\w-]+$/.test(n)) document.documentElement.classList.add('layer-' + n); });
     })();
   </script>
-  <script type="module" crossorigin src="/assets/index-Bgk0WjrU.js"></script>
-  <link rel="stylesheet" crossorigin href="/assets/index-BVpWfouM.css">
+  <script type="module" crossorigin src="/assets/index-DYsSF1N1.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-BMISKtAw.css">
 </head>
 <body>
   <a class="skip-link" href="#reader">Skip to content</a>
 
   <!-- Paper edge filters (folio.css). Each runs on a .paper sheet, the parent of the clipped
-       stock, so the torn outline itself gets displaced. Two scales of noise: a soft swell of a
-       few px and a fine fibre of about 1 px. "calm" is the fibre alone, for the straight hero
-       card and contents rail; "full" is the torn leaf (reader, index, phone sheets); "slip" is
-       the same tear with more vertical headroom for the short map controls strip. -->
+       stock, so the torn outline itself gets displaced. Three scales of noise: a soft swell that
+       bends the edge, a mid-scale zigzag (the torn look) and a fine fibre of about 1 px. "full"
+       is the torn leaf (hero, rail, reader, index, phone sheets); "slip" the same tear with more
+       vertical headroom for the short controls strip; "strip" a gentler swell for the long top
+       bar. "calm" (fibre only) is kept for anything that wants a near straight edge. -->
   <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
     <defs>
       <filter id="torn-calm" x="-2%" y="-2%" width="104%" height="104%" color-interpolation-filters="sRGB">
@@ -49,19 +50,32 @@
         <feDisplacementMap in="SourceGraphic" in2="fibre" scale="3" xChannelSelector="R" yChannelSelector="G" result="frayed"/>
         <feGaussianBlur in="frayed" stdDeviation="0.45"/>
       </filter>
-      <filter id="torn-full" x="-4%" y="-4%" width="108%" height="108%" color-interpolation-filters="sRGB">
-        <feTurbulence type="fractalNoise" baseFrequency="0.016 0.02" numOctaves="3" seed="7" result="swell"/>
-        <feDisplacementMap in="SourceGraphic" in2="swell" scale="20" xChannelSelector="R" yChannelSelector="G" result="wavy"/>
-        <feTurbulence type="fractalNoise" baseFrequency="0.3" numOctaves="2" seed="23" result="fibre"/>
-        <feDisplacementMap in="wavy" in2="fibre" scale="3.2" xChannelSelector="R" yChannelSelector="G" result="torn"/>
-        <feGaussianBlur in="torn" stdDeviation="0.55"/>
+      <filter id="torn-full" x="-5%" y="-5%" width="110%" height="110%" color-interpolation-filters="sRGB">
+        <feTurbulence type="fractalNoise" baseFrequency="0.012 0.016" numOctaves="2" seed="7" result="swell"/>
+        <feDisplacementMap in="SourceGraphic" in2="swell" scale="16" xChannelSelector="R" yChannelSelector="G" result="wavy"/>
+        <feTurbulence type="fractalNoise" baseFrequency="0.075" numOctaves="2" seed="13" result="zig"/>
+        <feDisplacementMap in="wavy" in2="zig" scale="6.5" xChannelSelector="R" yChannelSelector="G" result="ragged"/>
+        <feTurbulence type="fractalNoise" baseFrequency="0.55" numOctaves="2" seed="23" result="fibre"/>
+        <feDisplacementMap in="ragged" in2="fibre" scale="3.4" xChannelSelector="R" yChannelSelector="G" result="torn"/>
+        <feGaussianBlur in="torn" stdDeviation="0.6"/>
       </filter>
-      <filter id="torn-slip" x="-4%" y="-25%" width="108%" height="150%" color-interpolation-filters="sRGB">
-        <feTurbulence type="fractalNoise" baseFrequency="0.016 0.02" numOctaves="3" seed="7" result="swell"/>
-        <feDisplacementMap in="SourceGraphic" in2="swell" scale="17" xChannelSelector="R" yChannelSelector="G" result="wavy"/>
-        <feTurbulence type="fractalNoise" baseFrequency="0.3" numOctaves="2" seed="23" result="fibre"/>
-        <feDisplacementMap in="wavy" in2="fibre" scale="3.2" xChannelSelector="R" yChannelSelector="G" result="torn"/>
-        <feGaussianBlur in="torn" stdDeviation="0.55"/>
+      <filter id="torn-slip" x="-4%" y="-30%" width="108%" height="160%" color-interpolation-filters="sRGB">
+        <feTurbulence type="fractalNoise" baseFrequency="0.012 0.016" numOctaves="2" seed="7" result="swell"/>
+        <feDisplacementMap in="SourceGraphic" in2="swell" scale="13" xChannelSelector="R" yChannelSelector="G" result="wavy"/>
+        <feTurbulence type="fractalNoise" baseFrequency="0.075" numOctaves="2" seed="13" result="zig"/>
+        <feDisplacementMap in="wavy" in2="zig" scale="6" xChannelSelector="R" yChannelSelector="G" result="ragged"/>
+        <feTurbulence type="fractalNoise" baseFrequency="0.55" numOctaves="2" seed="23" result="fibre"/>
+        <feDisplacementMap in="ragged" in2="fibre" scale="3.4" xChannelSelector="R" yChannelSelector="G" result="torn"/>
+        <feGaussianBlur in="torn" stdDeviation="0.6"/>
+      </filter>
+      <filter id="torn-strip" x="-1%" y="-40%" width="102%" height="180%" color-interpolation-filters="sRGB">
+        <feTurbulence type="fractalNoise" baseFrequency="0.01 0.03" numOctaves="2" seed="31" result="swell"/>
+        <feDisplacementMap in="SourceGraphic" in2="swell" scale="8" xChannelSelector="R" yChannelSelector="G" result="wavy"/>
+        <feTurbulence type="fractalNoise" baseFrequency="0.075" numOctaves="2" seed="37" result="zig"/>
+        <feDisplacementMap in="wavy" in2="zig" scale="5.5" xChannelSelector="R" yChannelSelector="G" result="ragged"/>
+        <feTurbulence type="fractalNoise" baseFrequency="0.55" numOctaves="2" seed="41" result="fibre"/>
+        <feDisplacementMap in="ragged" in2="fibre" scale="3.2" xChannelSelector="R" yChannelSelector="G" result="torn"/>
+        <feGaussianBlur in="torn" stdDeviation="0.6"/>
       </filter>
     </defs>
   </svg>
@@ -73,6 +87,7 @@
   <div id="labels" role="group" aria-label="Map of the network"></div>
 
   <header class="topbar">
+    <div class="paper" aria-hidden="true"></div>
     <a class="brand" href="#/markus" data-node="markus" aria-label="Markus Walker, home">
       <span class="monogram" aria-hidden="true">MW</span>
       <span class="brand-text"><span class="brand-name">Markus Walker</span><span class="brand-role">AI solutions, start to finish</span></span>
