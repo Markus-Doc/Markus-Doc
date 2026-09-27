@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="index,follow,max-image-preview:large">
+  <meta name="color-scheme" content="light">
+  <meta name="theme-color" content="#F3ECDE">
+  <title>Building a governed AI agent on an open knowledge base | Markus Walker</title>
+  <meta name="description" content="How I designed, built and run a governed AI agent: an open knowledge base as its memory, policy as code, a tiered model cascade and a security model that treats the agent as untrusted.">
+  <link rel="canonical" href="https://www.markuswalker.com/projects/governed-ai-agent/">
+  <meta name="author" content="Markus Walker">
+  <meta property="og:site_name" content="Markus Walker">
+  <meta property="og:title" content="Building a governed AI agent on an open knowledge base | Markus Walker">
+  <meta property="og:description" content="How I designed, built and run a governed AI agent: an open knowledge base as its memory, policy as code, a tiered model cascade and a security model that treats the agent as untrusted.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://www.markuswalker.com/projects/governed-ai-agent/">
+  <meta property="og:locale" content="en_AU">
+  <meta property="og:image" content="https://www.markuswalker.com/art/og-image.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "TechArticle",
+      "@id": "https://www.markuswalker.com/projects/governed-ai-agent/#work",
+      "name": "Building a governed AI agent on an open knowledge base",
+      "headline": "Building a governed AI agent on an open knowledge base",
+      "description": "How I designed, built and run a governed AI agent: an open knowledge base as its memory, policy as code, a tiered model cascade and a security model that treats the agent as untrusted.",
+      "url": "https://www.markuswalker.com/projects/governed-ai-agent/",
+      "author": {
+        "@id": "https://www.markuswalker.com/#person"
+      },
+      "dateModified": "2026-09-27",
+      "inLanguage": "en-AU",
+      "isPartOf": {
+        "@id": "https://www.markuswalker.com/#website"
+      },
+      "encoding": [
+        {
+          "@type": "MediaObject",
+          "contentUrl": "https://www.markuswalker.com/assets/docs/Markus_Walker_Governed_AI_Agent",
+          "encodingFormat": "text/html"
+        },
+        {
+          "@type": "MediaObject",
+          "contentUrl": "https://www.markuswalker.com/assets/docs/Markus_Walker_Governed_AI_Agent.pdf",
+          "encodingFormat": "application/pdf"
+        }
+      ]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://www.markuswalker.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Projects",
+          "item": "https://www.markuswalker.com/projects/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Building a governed AI agent on an open knowledge base",
+          "item": "https://www.markuswalker.com/projects/governed-ai-agent/"
+        }
+      ]
+    }
+  ]
+}
+  </script>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="preload" href="/fonts/schibsted-grotesk-var.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/fraunces-semibold.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/site/styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="monogram" href="/" aria-label="Markus Walker, home">MW<span class="ink-period">.</span></a>
+      <nav class="site-nav" aria-label="Main navigation">
+        <a href="/#/experience">Experience</a>
+        <a href="/projects/" aria-current="page">Projects</a>
+        <a href="/#/writing">Writing</a>
+        <a href="/#/capabilities">Capabilities</a>
+        <a href="/#/approach">Approach</a>
+        <a href="/#/contact">Contact</a>
+      </nav>
+      <a class="button button-small resume-link" href="/Markus_Walker_Resume.pdf" download>Resume PDF</a>
+    </div>
+  </header>
+  <main id="main" tabindex="-1">
+    <article class="section project-page">
+      <img class="sketch" src="/site/art/folio-moebius.webp" alt="" aria-hidden="true">
+      <div class="wrap">
+        <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> <span aria-hidden="true">/</span> <a href="/projects/">Projects</a> <span aria-hidden="true">/</span> <span aria-current="page">Building a governed AI agent on an open knowledge base</span></nav>
+        <p class="eyebrow">Agent build case study</p>
+        <h1 class="page-title">Building a governed AI agent on an open knowledge base</h1>
+        <p class="project-date"><strong>First live cloud run 27 September 2026.</strong></p>
+        <p class="lede narrow">I designed and built a custom AI agent that runs in the cloud, draws everything it knows from an open knowledge base, and can only act inside policy written as code. I tested it on a live, high-stakes domain: my own job search.</p>
+        <ul class="links links-row"><li><a class="button" href="/assets/docs/Markus_Walker_Governed_AI_Agent" target="_blank" rel="noopener">Read online <span aria-hidden="true">↗</span></a></li><li><a class="button button-quiet" href="/assets/docs/Markus_Walker_Governed_AI_Agent.pdf" target="_blank" rel="noopener">Download PDF <span aria-hidden="true">↗</span></a></li></ul>
+        <div class="page-body">
+          <p>In its first nine days the system tracked 234 roles and logged 8,782 deterministic decisions at zero model cost. All 208 automated tests pass. It runs entirely in the cloud: a person presses Run in a web console, and the agent works inside rules it cannot change.</p>
+          <h2>What it demonstrates</h2>
+          <ul class="reading-list">
+            <li><strong>Agent design.</strong> One bounded agent step inside deterministic code, with a tool allowlist and no credentials of its own.</li>
+            <li><strong>Knowledge engineering.</strong> An OKF v0.2 knowledge base that the agent, the code and people all read from one record.</li>
+            <li><strong>AI governance.</strong> Policy as code, human holds, a truthfulness gate on every claim, and Git history as the audit trail.</li>
+            <li><strong>Cloud security.</strong> Zero-trust access, a least-privilege token, encryption at rest and controls against prompt injection.</li>
+            <li><strong>Cost engineering.</strong> A tiered model cascade that keeps most decisions at zero tokens.</li>
+            <li><strong>Delivery.</strong> Serverless control plane, CI/CD on GitHub Actions and 208 automated tests.</li>
+          </ul>
+          <p class="small-note">Figures come from the project's own repository, test run and run ledger as of 27 September 2026.</p>
+        </div>
+        <h2 class="subhead">More projects</h2>
+        <ul class="more-projects">
+          <li><a href="/projects/claude-cowork-controls-cheat-sheet/">Securing Claude Cowork: controls, gaps and safer defaults</a> <span>Practitioner reference, Version 1.4</span></li>
+          <li><a href="/projects/runner-claude-study-game/">Runner: Claude study game</a> <span>Study game, July to September 2026</span></li>
+          <li><a href="/projects/distinguishing-ai-driven-attacks/">Human, script or AI? Spotting AI-driven attacks in the SOC</a> <span>SOC advisory white paper, Version 5</span></li>
+          <li><a href="/projects/mcp-access-governance/">AI and MCP access governance</a> <span>Portfolio proof of concept, May to July 2026</span></li>
+          <li><a href="/projects/resynth/">RESYNTH research pipeline</a> <span>Open-source tool, First released June 2026</span></li>
+          <li><a href="/projects/aws-security-architecture-case-study/">AWS security architecture case study</a> <span>Fictional case study, April 2026</span></li>
+          <li><a href="/projects/incident-response-planning/">Incident response planning portfolio</a> <span>Planning portfolio, April 2026</span></li>
+        </ul>
+      </div>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-inner">
+      <p>© 2026 Markus Walker</p>
+      <a class="text-link" href="/">markuswalker.com <span aria-hidden="true">→</span></a>
+    </div>
+  </footer>
+
+  <script src="/site/runner-egg.js" defer></script>
+</body>
+</html>
