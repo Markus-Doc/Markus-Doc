@@ -51,6 +51,7 @@ twenty remote sites.
 
 | Where | What it is | Status |
 |---|---|---|
+| [Building a Governed AI Agent on an Open Knowledge Base](https://www.markuswalker.com/projects/governed-ai-agent/) | A custom AI agent that runs in the cloud, draws everything it knows from an open knowledge base, and can only act inside policy written as code. Repository: [governed-ai-agent](https://github.com/Markus-Doc/governed-ai-agent). | Live. September 2026. |
 | [Securing Claude Cowork: Controls, Gaps and Safer Defaults](https://www.markuswalker.com/projects/claude-cowork-controls-cheat-sheet/) | What the Claude Cowork admin console, device policy and third-party deployments actually control, where they fall short, and which defaults to change first. | Published. Version 1.4, September 2026. |
 | [Human, Script or AI? Spotting AI-Driven Attacks in the SOC](https://www.markuswalker.com/projects/distinguishing-ai-driven-attacks/) | A SOC advisory white paper on telling AI-driven attacks apart from human and automated activity, with practical guidance for detection, triage and response. | Published. Version 5, September 2026. |
 | [Cybersecurity portfolio](https://markus-doc.github.io/cybersecurity-portfolio/) | Capability design kept separate from technical execution, with supporting artefacts as downloadable deliverables. | Live. Started April 2026. |
