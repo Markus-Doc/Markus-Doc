@@ -212,3 +212,6 @@ main:focus { outline: none; }
 @media (min-width: 760px) { .shots { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 .shots .evidence { margin: 0; }
 .shots .evidence img { background: #0b0f1a; image-rendering: pixelated; }
+
+/* The full piece comes first: its buttons sit under the date, the summary below them. */
+.project-page .links-row + .lede { margin-top: 1.75rem; }
