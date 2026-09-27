@@ -6,3 +6,7 @@
 /main.js / 301
 /assets/favicon.svg /favicon.svg 301
 /assets/images/* / 301
+# Repository notes are for GitHub, not the site
+/AGENTS.md / 301
+/DEPLOYMENT.md / 301
+/README.md / 301
