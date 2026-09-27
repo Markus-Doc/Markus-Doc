@@ -308,3 +308,6 @@ main:focus { outline: none; }
   .site-header, .theme-toggle, .sketch, .actions, .site-footer .text-link { display: none; }
   body { background: #fff; color: #000; }
 }
+
+/* The full piece comes first: its buttons sit under the date, the summary below them. */
+.project-page .links-row + .lede { margin-top: 1.75rem; }
