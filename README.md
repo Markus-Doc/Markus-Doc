@@ -1,8 +1,8 @@
 # Markus Walker
 
-Forward deployed AI engineer. I take agentic AI from project commencement to full
-deliverables, with a Secure AI approach at every layer. Based in Brisbane, looking for
-fully remote roles. Hybrid or relocation considered for an exceptional opportunity.
+Independent AI engineer, end to end, grounded in cybersecurity. I take agentic AI from
+project commencement to full deliverables, with a Secure AI approach at every layer.
+Based in Brisbane.
 
 I build agentic AI systems that stay grounded in an organisation's own knowledge, and
 the controls that make them safe to put in front of a business. The work runs end to
@@ -43,8 +43,8 @@ model underneath it changes.
   knowledge graphs, and the ingestion, redaction, retrieval and provenance tooling
   around them.
 
-Thirteen years of IT infrastructure sit behind that, including seven running IT and
-operational technology for upstream and midstream gas operations across more than
+Thirteen years in cybersecurity, IT infrastructure and operational technology sit behind
+that, including seven running IT and OT for upstream and midstream gas operations across more than
 twenty remote sites.
 
 ## Selected work
