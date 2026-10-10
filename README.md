@@ -77,8 +77,8 @@ twenty remote sites.
 
 AWS Certified Solutions Architect, Associate. Three Oracle Cloud Infrastructure
 certifications, including Generative AI Professional. Anthropic Claude Certified
-Associate, Foundations. Certificate IV in Cyber Security. Australian citizen with a
-current AGSVA Baseline clearance, eligible for NV1 and NV2.
+Associate, Foundations. Certificate IV in Cyber Security. Australian citizen, eligible
+for NV1 and NV2.
 
 [Resume (PDF)](Markus_Walker_Resume.pdf) ·
 [markuswalker.com](https://www.markuswalker.com/) ·
