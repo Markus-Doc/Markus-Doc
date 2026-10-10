@@ -2,6 +2,8 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://www.markuswalker.com/</loc><lastmod>2026-09-26</lastmod></url>
   <url><loc>https://www.markuswalker.com/projects/</loc><lastmod>2026-09-26</lastmod></url>
+  <url><loc>https://www.markuswalker.com/projects/offerings-atlas/</loc><lastmod>2026-10-10</lastmod></url>
+  <url><loc>https://www.markuswalker.com/projects/llm-gateway/</loc><lastmod>2026-10-10</lastmod></url>
   <url><loc>https://www.markuswalker.com/projects/governed-ai-agent/</loc><lastmod>2026-09-27</lastmod></url>
   <url><loc>https://www.markuswalker.com/projects/claude-cowork-controls-cheat-sheet/</loc><lastmod>2026-09-26</lastmod></url>
   <url><loc>https://www.markuswalker.com/projects/distinguishing-ai-driven-attacks/</loc><lastmod>2026-09-26</lastmod></url>
@@ -13,6 +15,8 @@
   <url><loc>https://www.markuswalker.com/projects/incident-response-planning/</loc><lastmod>2026-09-26</lastmod></url>
   <url><loc>https://www.markuswalker.com/assets/docs/Markus_Walker_Cowork_Controls_Cheat_Sheet_v1.4</loc><lastmod>2026-09-26</lastmod></url>
   <url><loc>https://www.markuswalker.com/assets/docs/Markus_Walker_AI_Driven_Attacks_White_Paper_v5</loc><lastmod>2026-09-26</lastmod></url>
+  <url><loc>https://www.markuswalker.com/assets/docs/Markus_Walker_Offerings_Atlas</loc><lastmod>2026-10-10</lastmod></url>
+  <url><loc>https://www.markuswalker.com/assets/docs/Markus_Walker_LLM_Gateway</loc><lastmod>2026-10-10</lastmod></url>
   <url><loc>https://www.markuswalker.com/assets/docs/Markus_Walker_Governed_AI_Agent</loc><lastmod>2026-09-27</lastmod></url>
   <url><loc>https://www.markuswalker.com/Markus_Walker_Resume.pdf</loc><lastmod>2026-09-24</lastmod></url>
 </urlset>

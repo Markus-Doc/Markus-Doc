@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en-AU"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>A Local Gateway for Headless Claude and Codex | M. Walker</title><style>*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.65;text-rendering:optimizeLegibility}
+main{max-width:1040px;margin:48px auto;padding:64px 76px;position:relative}header{padding:0 0 32px;margin:0 0 32px;border-bottom:1px solid var(--rule)}h1{font:600 clamp(32px,4vw,48px)/1.13 var(--heading);letter-spacing:-.025em;max-width:850px;margin:0 0 24px}header p{display:inline;margin-right:22px;font-size:13px;color:var(--muted)}
+h2{font:600 27px/1.2 var(--heading);letter-spacing:-.015em;margin:42px 0 20px;padding-top:20px;border-top:1px solid var(--rule);break-after:avoid}h3{break-after:avoid}p{margin:0 0 18px}li{margin:8px 0}ul,ol{padding-left:24px}strong{font-weight:650}a{color:var(--accent);text-underline-offset:3px;text-decoration-thickness:1px;overflow-wrap:anywhere}code{font-family:ui-monospace,Consolas,monospace;font-size:.82em;padding:2px 4px;background:var(--band);border-radius:3px;overflow-wrap:anywhere}
+figure{margin:28px 0;break-inside:avoid}img{display:block;max-width:100%;height:auto;margin:24px auto;border:1px solid var(--rule);border-radius:4px;background:white}table{border-collapse:collapse;width:100%;font-size:13px;line-height:1.5;margin:24px 0;border-top:2px solid var(--accent);border-bottom:1px solid var(--rule)}th{text-align:left;font-weight:650;background:var(--band);padding:12px 10px;border-bottom:1px solid var(--rule);vertical-align:top}td{padding:12px 10px;vertical-align:top;border-bottom:1px solid var(--rule)}tr:nth-child(even) td{background:var(--band)}th p,td p{margin:0}thead{display:table-header-group}tr{break-inside:avoid}blockquote{margin:24px 0;padding:18px 24px;border-left:3px solid var(--accent);background:var(--band)}blockquote p:last-child{margin-bottom:0}ul.task-list{list-style:none}input{accent-color:var(--accent)}
+@media(max-width:760px){main{margin:0;padding:32px 22px}h1{font-size:34px}h2{font-size:25px}table{font-size:11px}td,th{padding:9px 5px}body{font-size:15px}}
+@media print{@page{size:A4;margin:17mm 16mm 18mm}html{scroll-behavior:auto}body{font-size:10pt;line-height:1.48;background:var(--paper)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}main{max-width:none;margin:0;padding:0;border:0!important;box-shadow:none!important;background:none!important}main::before,main::after{display:none!important}header{padding-bottom:20px;margin-bottom:22px}h1{font-size:29pt;max-width:none}h2{font-size:17pt;margin-top:25px;padding-top:13px;margin-bottom:12px}header p{font-size:9pt}p{margin-bottom:11px}li{margin:5px 0}table{font-size:8.1pt;line-height:1.4;margin:16px 0}td,th{padding:7px 6px}img{max-height:215mm;object-fit:contain;margin:18px auto}p{orphans:3;widows:3}a{text-decoration:none}section{break-inside:auto}}
+
+:root{--ink:#1f2b26;--muted:#3a453f;--paper:#f3ecde;--rule:#c6b68e;--accent:#873c24;--band:#e9e3d3;--body:"Schibsted",system-ui,sans-serif;--heading:"Fraunces",Georgia,serif}body{background-color:#dccdb0;background-image:radial-gradient(ellipse at 12% 10%,#f8f2dfbb,transparent 65%),repeating-linear-gradient(105deg,#61512b07 0 1px,transparent 1px 7px)}main{background:linear-gradient(120deg,#faf6e9,#f0e7d1);box-shadow:0 10px 50px #3c321928;border:1px solid #c6b68e70;border-radius:2px}main::before{content:"";position:absolute;inset:16px;border:1px solid #9b865d40;pointer-events:none}header{border-bottom:1px solid #8b723b}h2{color:#274931}header + p{font-size:20px;line-height:1.55;max-width:820px}h2::before{content:"";display:inline-block;width:7px;height:7px;border:1px solid #9b763b;transform:rotate(45deg);margin-right:14px;vertical-align:middle}table{border-top-color:#96723c}img{box-shadow:0 4px 14px #3c321910}body main section:first-of-type h2{margin-top:30px}
+@media print{header + p{font-size:12pt}main{background:var(--paper)}h2::before{width:5px;height:5px;margin-right:9px}}
+
+pre{background:var(--band);padding:14px 16px;overflow-x:auto;font-size:12.5px;line-height:1.5;border-radius:3px;border:1px solid var(--rule)}pre code{background:none;padding:0;font-size:inherit}@media print{pre{font-size:7.6pt;white-space:pre-wrap}}</style></head><body><header class="site-bar">
+  <div class="bar-inner">
+    <a class="home" href="/" aria-label="Markus Walker, home"><img src="/brand/mw-mark.svg" alt="" width="44" height="44"></a>
+    <nav aria-label="Main navigation"><a href="/projects/">Projects</a></nav>
+    <a class="pdf" href="/assets/docs/Markus_Walker_LLM_Gateway.pdf" download>Download PDF</a>
+  </div>
+</header>
+<main>
+<header id="title-block-header">
+<h1 class="title">A Local Gateway for Headless Claude and Codex</h1>
+<p class="author">M Walker</p>
+<p class="date">10 October 2026</p>
+</header>
+<p>I built a personal gateway that gives every agent I write one OpenAI-compatible endpoint. Role aliases decide whether a call goes to headless Claude Code, headless Codex or an API model, and every call leaves a proof record.</p>
+<section><h2 id="at-a-glance">At a glance</h2>
+<p>The gateway is LiteLLM 1.104.0 on 127.0.0.1, hash pinned, with two custom providers I wrote: one runs <code>claude -p</code> and the other <code>codex exec</code>, both on my own logins. Every model call in my Offerings Atlas went through it, 302 of them on 10 October 2026 alone, at no marginal cost.</p>
+</section>
+<section><h2 id="why">Why</h2>
+<p>I wanted the agents in my projects to call models the way production code would: one API, structured output, a role name instead of a model name. I did not want to pay API rates for every experiment while I build, and I did not want a coding assistant's tools, memory or instructions leaking into calls that are meant to be a clean judgement.</p>
+<figure class="figure-svg"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 560" role="img" aria-labelledby="t d">
+  <title id="t">How the LLM gateway routes a call</title>
+  <desc id="d">Agents and scripts call one OpenAI-compatible endpoint on 127.0.0.1 port 4000 with a role alias such as judge. LiteLLM maps the role to a route: claude -p on the Claude subscription, codex exec on the ChatGPT login, or an API model. CLI routes run locked down with no tools, an empty working folder, one turn and no saved session, and pass the caller's JSON schema to the CLI. Every CLI call appends a proof record with prompt hashes, models used, tokens and the raw output.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 1L9 5L0 9" fill="none" stroke="#1f2b26" stroke-width="1.4" stroke-opacity=".7"/>
+    </marker>
+    <style>
+      .edge { fill:none; stroke:#1f2b26; stroke-width:1.4; stroke-opacity:.55; }
+      .edge-red { fill:none; stroke:#873c24; stroke-width:1.4; stroke-opacity:.7; }
+      .edge-soft { fill:none; stroke:#1f2b26; stroke-width:1; stroke-opacity:.35; stroke-dasharray:3 6; }
+      .orbit { fill:none; stroke:#1f2b26; stroke-width:.7; stroke-opacity:.35; stroke-dasharray:2 5; }
+      .hub { fill:#fbf7ee; stroke:#1f2b26; stroke-width:1.5; }
+      .ring { fill:none; stroke:#873c24; stroke-width:2; }
+      .core { fill:#873c24; }
+      .dot { fill:#274931; fill-opacity:.75; }
+      .label { font:600 17px 'Schibsted Grotesk', system-ui, sans-serif; fill:#1f2b26; }
+      .sub { font:400 13.5px 'Schibsted Grotesk', system-ui, sans-serif; fill:#3a453f; }
+      .mono { font:400 12.5px ui-monospace, Consolas, monospace; fill:#3a453f; }
+      .tag { font:600 11px 'Schibsted Grotesk', system-ui, sans-serif; fill:#873c24; letter-spacing:.08em; }
+      .band { fill:#e9e3d3; fill-opacity:.55; stroke:#c6b68e; }
+    </style>
+<meta name="description" content="A personal LiteLLM gateway that gives agents one OpenAI-compatible endpoint and routes calls to headless Claude Code and Codex sessions on my own subscriptions, with JSON-schema output and a proof record per call.">
+<meta name="author" content="M. Walker">
+<link rel="canonical" href="https://www.markuswalker.com/assets/docs/Markus_Walker_LLM_Gateway">
+<meta property="og:title" content="A Local Gateway for Headless Claude and Codex | M. Walker">
+<meta property="og:description" content="A personal LiteLLM gateway that gives agents one OpenAI-compatible endpoint and routes calls to headless Claude Code and Codex sessions on my own subscriptions, with JSON-schema output and a proof record per call.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://www.markuswalker.com/assets/docs/Markus_Walker_LLM_Gateway">
+<meta property="og:image" content="https://www.markuswalker.com/art/og-image.jpg">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<meta name="theme-color" content="#F3ECDE">
+<style data-site-theme>
+@font-face { font-family: 'Schibsted Grotesk'; font-style: normal; font-weight: 400 900; font-display: swap; src: url('/fonts/schibsted-grotesk-var.woff2') format('woff2'); }
+@font-face { font-family: 'Fraunces'; font-weight: 400; font-display: swap; src: url('/fonts/fraunces-regular.woff2') format('woff2'); }
+@font-face { font-family: 'Fraunces'; font-weight: 600; font-display: swap; src: url('/fonts/fraunces-semibold.woff2') format('woff2'); }
+
+:root {
+  --body: 'Schibsted Grotesk', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --heading: 'Fraunces', Georgia, 'Times New Roman', serif;
+  --sans: var(--body); --ink: #1F2B26; --raised: #FBF7EE; --gilt: #7F6025; --accent-sage: #274931;
+}
+li::marker { color: var(--gilt); }
+.figure-svg { margin: 24px 0; }
+.figure-svg a { display: block; cursor: zoom-in; }
+.figure-svg svg { display: block; width: 100%; height: auto; border: 1px solid var(--rule); border-radius: 4px; box-shadow: 0 4px 14px #3c321910; }
+
+@media screen {
+  /* the notebook wall behind the leaf, as on the project pages */
+  body {
+    background-color: #ad9d82;
+    background-image:
+      radial-gradient(ellipse 80% 75% at 50% 40%, rgba(120, 92, 56, 0) 55%, rgba(92, 68, 38, .38) 100%),
+      linear-gradient(rgb(198, 198, 196), rgb(198, 198, 196)),
+      url('/art/library/m2-worked-parchment.webp');
+    background-size: auto, auto, 100% auto;
+    background-position: center, center, center top;
+    background-repeat: no-repeat, no-repeat, repeat-y;
+    background-blend-mode: multiply, multiply, normal;
+  }
+  /* the article as a cream folio leaf with an inner hairline */
+  main {
+    margin: clamp(1.25rem, 4vw, 3rem) auto clamp(2rem, 5vw, 4rem);
+    border: 0; border-radius: 0;
+    background: url('/paper.svg') center / 180px 180px, var(--raised);
+    box-shadow: 0 1px 2px rgba(31, 43, 38, .08), 0 8px 28px rgba(31, 43, 38, .10);
+  }
+  main::before { inset: 5px; border-color: rgba(140, 106, 42, .34); }
+  @media (max-width: 760px) { main { margin: .625rem .625rem 2rem; } }
+
+  /* the article's header and img rules must not reach the site bar */
+  header.site-bar { padding: 0; margin: 0; }
+  .site-bar img { margin: 0; border: 0; border-radius: 0; background: none; box-shadow: none; }
+
+  /* the site bar: the MW mark home, Projects, and the PDF */
+  .site-bar { background: color-mix(in srgb, var(--raised) 90%, transparent); border-bottom: 1px solid #7D7566; }
+  .site-bar .bar-inner { display: flex; align-items: center; gap: 1rem; width: min(80rem, 100% - 2rem); min-height: 4rem; margin-inline: auto; padding-top: env(safe-area-inset-top, 0px); }
+  .site-bar .home { display: inline-flex; align-items: center; min-height: 44px; }
+  .site-bar .home img { display: block; width: 44px; height: 44px; }
+  .site-bar nav { display: flex; margin-left: auto; }
+  .site-bar nav a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 .7rem; border-radius: 4px; color: var(--ink); font: 500 .95rem/1 var(--sans); text-decoration: none; }
+  .site-bar nav a:hover { background: rgba(31, 43, 38, .07); }
+  .site-bar .pdf { display: inline-flex; align-items: center; min-height: 44px; padding: 7px 12px; border: 1.5px solid #8A3A1E; border-radius: 4px; background: #8A3A1E; color: #FFFFFF; font: 600 14px/1.2 var(--sans); text-decoration: none; }
+  .site-bar .pdf:hover { filter: brightness(1.08); }
+  .site-bar a:focus-visible { outline: 2.5px solid var(--accent); outline-offset: 3px; }
+}
+
+@media print { .site-bar { display: none; } }
+</style>
+
+  </defs>
+  <rect width="1200" height="560" fill="#faf6e9"/>
+
+  <!-- callers -->
+  <circle class="dot" cx="92" cy="140" r="4"/><circle class="dot" cx="92" cy="230" r="4"/><circle class="dot" cx="92" cy="320" r="4"/>
+  <text class="tag" x="60" y="98">CALLERS</text>
+  <text class="label" x="108" y="146">Evaluator agent</text>
+  <text class="label" x="108" y="236">Questionnaire</text>
+  <text class="label" x="108" y="326">Any script</text>
+  <text class="mono" x="108" y="166">model="judge"</text>
+  <text class="mono" x="108" y="256">model="claude-cli-sonnet"</text>
+  <text class="mono" x="108" y="346">response_format: json_schema</text>
+  <path class="edge" marker-end="url(#arrow)" d="M290 150Q380 180 452 222"/>
+  <path class="edge" marker-end="url(#arrow)" d="M320 234Q390 236 448 238"/>
+  <path class="edge" marker-end="url(#arrow)" d="M320 326Q390 296 452 256"/>
+
+  <!-- gateway -->
+  <circle class="orbit" cx="520" cy="240" r="70"/>
+  <circle class="ring" cx="520" cy="240" r="24"/>
+  <circle class="core" cx="520" cy="240" r="12"/>
+  <text class="tag" x="440" y="350">ONE LOCAL ENDPOINT</text>
+  <text class="label" x="440" y="372">LiteLLM on 127.0.0.1:4000</text>
+  <text class="sub" x="440" y="392">A local password, role aliases,</text>
+  <text class="sub" x="440" y="410">a hash-pinned install</text>
+
+  <!-- routes -->
+  <path class="edge-red" marker-end="url(#arrow)" d="M592 222Q680 140 790 128"/>
+  <path class="edge" marker-end="url(#arrow)" d="M594 240Q690 240 790 240"/>
+  <path class="edge-soft" marker-end="url(#arrow)" d="M592 258Q680 340 790 352"/>
+
+  <circle class="hub" cx="812" cy="128" r="12"/>
+  <text class="tag" x="836" y="108">SUBSCRIPTION ROUTE</text>
+  <text class="label" x="836" y="130">claude -p, headless</text>
+  <text class="sub" x="836" y="150">Haiku or Sonnet, schema passed to --json-schema</text>
+
+  <circle class="hub" cx="812" cy="240" r="12"/>
+  <text class="tag" x="836" y="220">SUBSCRIPTION ROUTE, EXPERIMENTAL</text>
+  <text class="label" x="836" y="242">codex exec, headless</text>
+  <text class="sub" x="836" y="262">The second model family, schema to --output-schema</text>
+
+  <circle class="hub" cx="812" cy="352" r="12"/>
+  <text class="tag" x="836" y="332">API ROUTE, FOR HOSTED RUNS</text>
+  <text class="label" x="836" y="354">An API model</text>
+  <text class="sub" x="836" y="374">Moving a role here is one line of config</text>
+
+  <!-- lockdown band -->
+  <rect class="band" x="40" y="452" width="1120" height="76" rx="6"/>
+  <text class="tag" x="62" y="476">EVERY CLI CALL</text>
+  <text class="label" x="62" y="498">No tools, empty working folder, one turn, no saved session, API keys stripped</text>
+  <text class="sub" x="62" y="517">Then one proof record: prompt and schema hashes, models used, CLI version, tokens, duration and raw output</text>
+</svg></figure>
+</section>
+<section><h2 id="how-it-works">How it works</h2>
+<p>Callers ask for a role such as <code>judge</code>. One line of configuration maps the role to a route, so moving the judge from Haiku on my subscription to an API model for a hosted run is a one-line change. A JSON schema in the request goes straight to the CLI's own schema flag, so the caller gets valid JSON back or a clear error.</p>
+<p>Each CLI call is locked down:</p>
+<ul>
+<li>no tools and no MCP servers, with a permission mode that cannot prompt</li>
+<li>an empty temporary working folder, one turn and no saved session</li>
+<li>Claude Code's own system prompt replaced, so no memory, project instructions or skills reach the model</li>
+<li>API keys stripped from the child process, so the call bills the subscription and not an account</li>
+</ul>
+<p>Each call then writes one proof record: hashes of the system prompt, the prompt and the schema, the model requested and the models actually used, the CLI version and login method, tokens, duration, the tool's notional cost and the raw output.</p>
+</section>
+<section><h2 id="in-use">In use</h2>
+<table>
+<thead>
+<tr><th>Measure</th><th>Value</th></tr>
+</thead>
+<tbody>
+<tr><td>Calls through the gateway on 10 October 2026</td><td>302</td></tr>
+<tr><td>Sonnet judge call on a real knowledge base cell</td><td>about 6 seconds and 14,500 input tokens</td></tr>
+<tr><td>Haiku judge call on a test case</td><td>about 5 seconds and 2,800 input tokens</td></tr>
+</tbody>
+</table>
+<p>Two practical lessons came out of running it hard. Several Claude sessions refreshing the same login at once can make a call fail for a few seconds, so callers retry with backoff. And Codex loads its home folder's instructions even with user configuration ignored, so the gateway supports a separate Codex home with its own login.</p>
+</section>
+<section><h2 id="limits">Limits</h2>
+<ul>
+<li>It is personal tooling for my own machine. The subscription routes bind to 127.0.0.1 and serve only me.</li>
+<li>Hosted or shared use should move to API keys, which the configuration already supports.</li>
+<li>OpenAI recommends API keys for automation, so I treat the Codex route as experimental.</li>
+</ul>
+<p>Figures come from the gateway's own proof log as of 10 October 2026.</p>
+</section>
+</main></body></html>

@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="index,follow,max-image-preview:large">
+  <meta name="color-scheme" content="light">
+  <meta name="theme-color" content="#F3ECDE">
+  <title>A local gateway for headless Claude and Codex | Markus Walker</title>
+  <meta name="description" content="A personal LiteLLM gateway that gives agents one OpenAI-compatible endpoint and routes calls to headless Claude Code and Codex sessions on my own subscriptions, with JSON-schema output and a proof record per call.">
+  <link rel="canonical" href="https://www.markuswalker.com/projects/llm-gateway/">
+  <meta name="author" content="Markus Walker">
+  <meta property="og:site_name" content="Markus Walker">
+  <meta property="og:title" content="A local gateway for headless Claude and Codex | Markus Walker">
+  <meta property="og:description" content="A personal LiteLLM gateway that gives agents one OpenAI-compatible endpoint and routes calls to headless Claude Code and Codex sessions on my own subscriptions, with JSON-schema output and a proof record per call.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://www.markuswalker.com/projects/llm-gateway/">
+  <meta property="og:locale" content="en_AU">
+  <meta property="og:image" content="https://www.markuswalker.com/art/og-image.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "TechArticle",
+      "@id": "https://www.markuswalker.com/projects/llm-gateway/#work",
+      "name": "A local gateway for headless Claude and Codex",
+      "headline": "A local gateway for headless Claude and Codex",
+      "description": "A personal LiteLLM gateway that gives agents one OpenAI-compatible endpoint and routes calls to headless Claude Code and Codex sessions on my own subscriptions, with JSON-schema output and a proof record per call.",
+      "url": "https://www.markuswalker.com/projects/llm-gateway/",
+      "author": {
+        "@id": "https://www.markuswalker.com/#person"
+      },
+      "dateModified": "2026-10-10",
+      "inLanguage": "en-AU",
+      "isPartOf": {
+        "@id": "https://www.markuswalker.com/#website"
+      },
+      "encoding": [
+        {
+          "@type": "MediaObject",
+          "contentUrl": "https://www.markuswalker.com/assets/docs/Markus_Walker_LLM_Gateway",
+          "encodingFormat": "text/html"
+        },
+        {
+          "@type": "MediaObject",
+          "contentUrl": "https://www.markuswalker.com/assets/docs/Markus_Walker_LLM_Gateway.pdf",
+          "encodingFormat": "application/pdf"
+        }
+      ]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://www.markuswalker.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Projects",
+          "item": "https://www.markuswalker.com/projects/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "A local gateway for headless Claude and Codex",
+          "item": "https://www.markuswalker.com/projects/llm-gateway/"
+        }
+      ]
+    }
+  ]
+}
+  </script>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="preload" href="/fonts/schibsted-grotesk-var.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/fraunces-semibold.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/site/styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="monogram" href="/" aria-label="Markus Walker, home">MW<span class="ink-period">.</span></a>
+      <nav class="site-nav" aria-label="Main navigation">
+        <a href="/#/experience">Experience</a>
+        <a href="/projects/" aria-current="page">Projects</a>
+        <a href="/#/writing">Writing</a>
+        <a href="/#/capabilities">Capabilities</a>
+        <a href="/#/approach">Approach</a>
+        <a href="/#/contact">Contact</a>
+      </nav>
+      <a class="button button-small resume-link" href="/Markus_Walker_Resume.pdf" download>Résumé / CV</a>
+    </div>
+  </header>
+  <main id="main" tabindex="-1">
+    <article class="section project-page">
+      <img class="sketch" src="/site/art/folio-armillary-atom.webp" alt="" aria-hidden="true">
+      <div class="wrap">
+        <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> <span aria-hidden="true">/</span> <a href="/projects/">Projects</a> <span aria-hidden="true">/</span> <span aria-current="page">A local gateway for headless Claude and Codex</span></nav>
+        <p class="eyebrow">Personal tooling</p>
+        <h1 class="page-title">A local gateway for headless Claude and Codex</h1>
+        <p class="project-date"><strong>October 2026.</strong></p>
+        <ul class="links links-row"><li><a class="button" href="/assets/docs/Markus_Walker_LLM_Gateway" target="_blank" rel="noopener">Read the full article <span aria-hidden="true">↗</span></a></li><li><a class="button button-quiet" href="/assets/docs/Markus_Walker_LLM_Gateway.pdf" target="_blank" rel="noopener">Download PDF <span aria-hidden="true">↗</span></a></li></ul>
+        <p class="lede narrow">I built a personal gateway that gives every agent I write one OpenAI-compatible endpoint. Role aliases decide whether a call goes to headless Claude Code, headless Codex or an API model, and every call leaves a proof record.</p>
+        <div class="page-body">
+          <p>It is LiteLLM on 127.0.0.1, hash pinned, with two custom providers I wrote: one runs <code>claude -p</code> and the other <code>codex exec</code>, both on my own logins. Every model call in the Offerings Atlas went through it, 302 of them on 10 October 2026 alone, at no marginal cost.</p>
+          <h2>How a call is locked down</h2>
+          <ul class="reading-list">
+            <li><strong>No tools.</strong> No tools and no MCP servers, with a permission mode that cannot prompt.</li>
+            <li><strong>No state.</strong> An empty temporary working folder, one turn and no saved session.</li>
+            <li><strong>No leakage.</strong> Claude Code's own system prompt is replaced, so no memory, project instructions or skills reach the model.</li>
+            <li><strong>No API bill.</strong> API keys are stripped from the child process, so the call bills the subscription and not an account.</li>
+            <li><strong>Proof.</strong> Every call writes a record: prompt and schema hashes, models used, CLI version, tokens, duration and the raw output.</li>
+          </ul>
+          <p class="small-note">Personal tooling for my own machine. The subscription routes serve only me, and hosted or shared use should move to API keys. OpenAI recommends API keys for automation, so I treat the Codex route as experimental.</p>
+        </div>
+        <h2 class="subhead">More projects</h2>
+        <ul class="more-projects">
+          <li><a href="/projects/offerings-atlas/">An agent-run knowledge base for AI agent controls</a> <span>Knowledge base case study, October 2026</span></li>
+          <li><a href="/projects/governed-ai-agent/">Building a governed AI agent on an open knowledge base</a> <span>Agent build case study, September 2026</span></li>
+          <li><a href="/projects/claude-cowork-controls-cheat-sheet/">Securing Claude Cowork: controls, gaps and safer defaults</a> <span>Practitioner reference, Version 1.4</span></li>
+          <li><a href="/projects/runner-claude-study-game/">Runner: Claude study game</a> <span>Study game, July to September 2026</span></li>
+          <li><a href="/projects/distinguishing-ai-driven-attacks/">Human, script or AI? Spotting AI-driven attacks in the SOC</a> <span>SOC advisory white paper, Version 5</span></li>
+          <li><a href="/projects/mcp-access-governance/">AI and MCP access governance</a> <span>Portfolio proof of concept, May to July 2026</span></li>
+          <li><a href="/projects/resynth/">RESYNTH research pipeline</a> <span>Open-source tool, First released June 2026</span></li>
+          <li><a href="/projects/aws-security-architecture-case-study/">AWS security architecture case study</a> <span>Fictional case study, April 2026</span></li>
+          <li><a href="/projects/incident-response-planning/">Incident response planning portfolio</a> <span>Planning portfolio, April 2026</span></li>
+        </ul>
+      </div>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-inner">
+      <p>© 2026 Markus Walker</p>
+      <a class="text-link" href="/">markuswalker.com <span aria-hidden="true">→</span></a>
+    </div>
+  </footer>
+
+  <script src="/site/runner-egg.js" defer></script>
+</body>
+</html>
