@@ -1,8 +1,8 @@
 # Markus Walker
 
-> AI engineer based in Brisbane, Australia. I deliver AI solutions from start to finish, secure by design, backed by thirteen years in IT and OT infrastructure. Looking for forward deployed engineer (FDE), AI engineer, applied AI engineer, AI solutions engineer or architect, AI security engineer and AI platform engineer roles, fully remote. Hybrid or relocation considered for an exceptional opportunity.
+> Independent AI engineer based in Brisbane, Australia. I scope, build and deploy AI solutions end to end: agents, the knowledge they work from and the controls around them. Grounded in thirteen years across cybersecurity, IT infrastructure and operational technology.
 
-Current role: Senior Engineer, Secure AI. Clearance: current AGSVA Baseline, eligible for NV1 and NV2.
+Clearance: current AGSVA Baseline, eligible for NV1 and NV2.
 
 ## Profile
 
@@ -36,7 +36,8 @@ Each project has its own page and was accurate at the time of writing. Index: ht
 
 ## Experience
 
-- Senior Engineer, Secure AI, June 2026 to present
+- Independent AI engineer, from October 2026
+- Senior Engineer, Secure AI, CyberCX, part of Accenture, June to September 2026, then Accenture in October 2026
 - Independent practitioner and professional development, 2025 to 2026
 - IT Field Engineer, Tata Consultancy Services, May 2019 to August 2025: IT and OT for Shell QGC and QCLNG operations across more than twenty remote Queensland sites
 - Earlier roles, 2005 to 2019: gas project site roles in Queensland, and networked lighting and audio systems in the USA
