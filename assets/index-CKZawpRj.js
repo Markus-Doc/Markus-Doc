@@ -21,7 +21,7 @@ const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["assets/codex-YdDN870n.
         <div><dt>Now</dt><dd>Independent AI engineer<span>Contract and practitioner work, from Brisbane</span></dd></div>
         <div><dt>Focus</dt><dd>AI solutions, end to end<span>Agents, governed knowledge and controls</span></dd></div>
         <div><dt>Background</dt><dd>Cybersecurity, infrastructure and OT<span>Thirteen years, the last two in AI</span></dd></div>
-        <div><dt>Clearance</dt><dd>AGSVA Baseline<span>Eligible for NV1 and NV2</span></dd></div>
+        <div><dt>Clearance</dt><dd>Eligible for NV1 and NV2</dd></div>
       </dl>`},{id:`experience`,kind:`hub`,num:`02`,meta:`13 years`,title:`Experience`,label:`Experience`,kicker:`Résumé`,summary:`IT and OT infrastructure, then cloud and cybersecurity. Now AI engineering and Secure AI.`,body:`
       <p class="lede">IT and OT infrastructure from breaking ground to operations, then cloud engineering and cybersecurity. Now I build and secure AI systems, from LLMs to agents, and since October 2026 I've worked independently. Each step has been about making technology hold up where it runs.</p>
       <h3>Skills</h3>
@@ -35,7 +35,7 @@ const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["assets/codex-YdDN870n.
       <h3>Certifications and education</h3>
       ${s([`Claude Certified Associate: Foundations, Anthropic Claude Partner Network, 2026`,`Certificate IV in Cyber Security (22603VIC), TAFE Queensland, March 2026`,`AWS Certified Solutions Architect, Associate, 2025`,`Oracle Cloud Infrastructure, three certifications including Generative AI Professional, 2025`,`University studies in audio engineering, St. Louis, USA`])}
       <h3>Clearance</h3>
-      <p>Current AGSVA Baseline clearance, eligible for NV1 and NV2.</p>
+      <p>Eligible for NV1 and NV2.</p>
       <p><a class="button" href="${e}" download>Download résumé PDF <span aria-hidden="true">↓</span></a></p>`},{id:`role-secure-ai`,kind:`leaf`,meta:`June to October 2026`,parent:`experience`,title:`Secure AI engineering`,label:`Secure AI engineer`,kicker:`June to October 2026`,summary:`CyberCX, then Accenture`,body:`
       <p class="where">Senior Engineer, Secure AI at CyberCX, part of Accenture, from June to September 2026, then Accenture in October 2026.</p>
       ${s([`Delivered secure AI solutions end to end, from use-case assessment and architecture through build, security controls and handover.`,`Deployed sovereign AI environments on Azure: virtual machines built from golden images, Azure AI Foundry with Azure OpenAI models hosted in an Australian region, and device management and access controls that restrict each machine to the approved models.`,`Built knowledge bases for people and AI agents, and AI-assisted document generation workflows with reusable skills, agents and review steps.`,`Built custom AI plugins and agentic workflows, distributed as versioned releases through a GitHub Enterprise marketplace.`,`Presented workshops on frontier AI and security, and advised on MCP governance, secure SDLC and enterprise AI adoption.`,`Wrote AI security guidance and white papers for enterprise teams, turning research into advice they can act on.`])}`},{id:`role-independent`,kind:`leaf`,meta:`2025 to 2026`,parent:`experience`,title:`Independent practitioner and professional development`,label:`Independent practice`,kicker:`2025 to 2026`,summary:`Contract work, study and certification`,body:`

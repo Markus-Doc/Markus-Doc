@@ -2,7 +2,7 @@
 
 > Independent AI engineer based in Brisbane, Australia. I scope, build and deploy AI solutions end to end: agents, the knowledge they work from and the controls around them. Grounded in thirteen years across cybersecurity, IT infrastructure and operational technology.
 
-Clearance: current AGSVA Baseline, eligible for NV1 and NV2.
+Clearance: eligible for NV1 and NV2.
 
 ## Profile
 
