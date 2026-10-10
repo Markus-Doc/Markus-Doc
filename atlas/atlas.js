@@ -33,6 +33,7 @@
     byControl = new Map(D.controls.map(c => [c.id, c]));
     byPlatform = new Map(D.platforms.map(p => [p.id, p]));
     byGroup = new Map(D.groups.map(g => [g.id, g]));
+    $('reserved-count').textContent = String((D.reserved || []).length);
     $('atlas-scope').textContent = `This page holds ${D.platforms.length} of the atlas's ${D.atlas_totals.platforms} platforms and tools, across all ${D.controls.length} controls: ${D.records.length} records out of ${D.atlas_totals.cells.toLocaleString('en-AU')} researched cells, so most of what the atlas knows is not here.`;
     const m = $('maturity');
     for (const s of D.stages) m.append(new Option(`${s.id.toUpperCase()}: ${s.name}`, s.id));
@@ -44,6 +45,12 @@
       stack.append(el('p', { class: 'group-name' }, esc(g.name)));
       for (const p of D.platforms.filter(x => x.group === g.id)) {
         const lab = el('label', { class: 'chip' }, `<input type="checkbox" name="stack" value="${esc(p.id)}"> ${esc(shortName(p.name))}`);
+        stack.append(lab);
+      }
+      // Platforms in the full atlas that this demo sample leaves out: visible, greyed and not selectable.
+      for (const r of (D.reserved || []).filter(x => x.group === g.id)) {
+        const lab = el('label', { class: 'chip reserved', title: 'Reserved for the full version of the atlas, not part of this demo sample.' },
+          `<input type="checkbox" disabled aria-disabled="true"> ${esc(shortName(r.name))}<span class="visually-hidden"> (full version only)</span>`);
         stack.append(lab);
       }
     }
