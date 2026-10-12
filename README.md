@@ -1,6 +1,6 @@
 # Markus Walker
 
-Independent AI engineer, end to end, grounded in cybersecurity. I take agentic AI from
+AI engineer, end to end, grounded in cybersecurity. I take agentic AI from
 project commencement to full deliverables, with a Secure AI approach at every layer.
 Based in Brisbane.
 
