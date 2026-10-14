@@ -81,7 +81,7 @@
   };
   const MANAGED = new Set(['c7-10', 'c7-2', 'c7-9', 'c7-3']);
   const POLICY_FIRST = new Set(['c1-3', 'c5-1']);
-  let D, G, byRecord, byControl, byPlatform, byGroup, runToken = 0, lastRun = null;
+  let D, G, byRecord, byControl, byPlatform, byGroup, runToken = 0, lastRun = null, lastNet = null;
 
   const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
   const plain = s => String(s ?? '').replace(/\[([^\]]*)\]\([^)]*\)/g, '$1').replace(/`/g, '').replace(/\s+/g, ' ').trim();
@@ -95,7 +95,7 @@
   const list = a => a.length < 2 ? a.join('') : a.slice(0, -1).join(', ') + ' and ' + a[a.length - 1];
 
   async function load() {
-    [D, G] = await Promise.all([fetch('/atlas/atlas-sample.json?v=20261014b').then(r => r.json()), fetch('/atlas/atlas-gaps.json?v=20261014b').then(r => r.json())]);
+    [D, G] = await Promise.all([fetch('/atlas/atlas-sample.json?v=20261014c').then(r => r.json()), fetch('/atlas/atlas-gaps.json?v=20261014c').then(r => r.json())]);
     byRecord = new Map(D.records.map(r => [r.id, r]));
     byControl = new Map(D.controls.map(c => [c.id, c]));
     byPlatform = new Map(D.platforms.map(p => [p.id, p]));
@@ -123,6 +123,13 @@
     const presets = $('concern-presets');
     PRESETS.forEach((text, i) => presets.append(el('label', { class: 'chip' }, `<input type="checkbox" name="concern" value="${i}"${i < 2 || i === 3 ? ' checked' : ''}> ${esc(text)}`)));
     $('atlas-form').addEventListener('submit', e => { e.preventDefault(); runLive(); });
+    $('term').addEventListener('click', ev => {
+      const b = ev.target.closest('button.wl'); if (!b || !lastNet) return;
+      const id = b.dataset.id;
+      if (b.dataset.kind === 'record' && byRecord.has(id)) showRecord(byRecord.get(id));
+      else if (b.dataset.kind === 'control') { const n = lastNet.nodes.get(`c:${id}`); if (n) showControl(n.assessed); }
+      else if (b.dataset.kind === 'offering') { const n = lastNet.nodes.get(`o:${id}`); if (n) showOffering(n.offering); }
+    });
     $('example').addEventListener('click', runExample);
     drawEmpty();
   }
@@ -252,7 +259,7 @@
     const nodes = new Map(), edges = [];
     const add = (key, kind, label, extra = {}) => { if (!nodes.has(key)) nodes.set(key, { key, kind, label, ...extra }); return nodes.get(key); };
     const link = (a, b, cls, step) => { if (!edges.some(e => e.a === a && e.b === b)) edges.push({ a, b, cls, step }); };
-    routes.forEach((r, i) => add(`q${i}`, 'concern', `${i + 1}. ${r.concern.length > 60 ? r.concern.slice(0, 58).replace(/\s+\S*$/, '') + '...' : r.concern}`, { title: r.concern }));
+    routes.forEach((r, i) => add(`q${i}`, 'concern', `${i + 1}. ${r.concern.length > 60 ? r.concern.slice(0, 58).replace(/\s+\S*$/, '') + '...' : r.concern}`, { title: r.concern, route: r }));
     const fromConcern = new Map();
     routes.forEach((r, i) => r.controls.forEach(c => { if (!fromConcern.has(c)) fromConcern.set(c, []); fromConcern.get(c).push(i); }));
     assessed.forEach((a, ai) => {
@@ -356,6 +363,46 @@
     if (line) flush();
   }
 
+  // ---------- the traversal terminal ----------
+  // Streams each hop as the walk runs: what was visited, why, and the record behind it. Wiki
+  // links open the record or control. Capped so a full scan cannot grow the page.
+  let t0 = 0;
+  const TERM_MAX = 600;
+  const wl = (kind, id, text) => `<button type="button" class="wl" data-kind="${kind}" data-id="${esc(id)}">[[${esc(text)}]]</button>`;
+  const kv = (k, v, cls = '') => `<span class="k">${esc(k)}=</span><span class="v ${cls}">${esc(v)}</span>`;
+  function term(html, cls = '') {
+    const box = $('term'); if (!box) return;
+    const ms = t0 ? ((performance.now() - t0) / 1000).toFixed(2).padStart(5, '0') : '00.00';
+    box.append(el('div', { class: `ln ${cls}` }, `<span class="ts">[+${ms}s]</span> ${html}`));
+    while (box.childElementCount > TERM_MAX) box.firstElementChild.remove();
+    box.scrollTop = box.scrollHeight;
+  }
+  function hop(e, net) {
+    const a = net.nodes.get(e.a), b = net.nodes.get(e.b);
+    if (a.kind === 'concern') {
+      const r = a.route, c = e.b.slice(2);
+      const why = r.hits?.length ? `matched ${r.hits.map(h => `"${h}"`).join(', ')}` : r.fallback ? 'no keyword matched, fell back' : 'routed by the model';
+      return `<span class="op route">route</span> q${e.a.slice(1)} &rarr; ${wl('control', c, `controls/${c}|${byControl.get(c)?.name || c}`)} <span class="why"># ${esc(why)}</span>`;
+    }
+    if (a.kind === 'control' && (b.kind === 'platform' || b.kind === 'alt')) {
+      const c = e.a.slice(2), pid = e.b.slice(2), r = byRecord.get(`${pid}--${c}`);
+      if (!r) return null;
+      const g = gapOf(r), alt = b.kind === 'alt';
+      const vcls = { supported: 'ok', partial: 'warn', 'not-addressed': 'bad', unresolved: 'bad' }[r.verdict];
+      const src = r.sources?.[0] ? kv('src', host(r.sources[0])) : kv('src', 'none recorded', 'dim');
+      return `<span class="op ${alt ? 'alt' : 'read'}">${alt ? 'alt ' : 'read'}</span> ${wl('record', r.id, `columns/${pid}/${c}`)} ${kv('verdict', r.verdict, vcls)} ${kv('basis', r.basis)}${g ? ' ' + kv('gap', g.label, g.kind === 'out-of-scope' ? 'dim' : 'bad') : ''} ${src}${alt ? ' <span class="why"># nothing in your stack fully covers it</span>' : ''}`;
+    }
+    if (a.kind === 'control' && b.kind === 'fill') {
+      const as = a.assessed, f = as.fills.find(x => `f:${x.type}` === e.b);
+      return `<span class="op fill">fill</span> ${wl('control', as.c, `controls/${as.c}|${as.cap.name}`)} &rarr; ${esc(FILL[f.type].name.toLowerCase())}${f.primary ? ' <span class="v ok">recommended</span>' : ''} <span class="why"># ${esc(as.status === 'partial' ? 'covered in part' : 'not covered')}</span>`;
+    }
+    if (b.kind === 'offering') {
+      const o = b.offering;
+      return `<span class="op plan">plan</span> ${esc(FILL[e.a.slice(2)]?.name.toLowerCase() || e.a)} &rarr; ${wl('offering', o.id, `workstreams/${o.id}|${o.name}`)} ${kv('covers', String(o.closes.length))}${o.size ? ' ' + kv('size', o.size.toLowerCase()) : ''}`;
+    }
+    return null;
+  }
+
   // ---------- output ----------
   const log = html => { const li = el('li', {}, html); $('trace-log').append(li); li.scrollIntoView({ block: 'nearest' }); };
 
@@ -366,12 +413,13 @@
       const es = net.edges.filter(e => e.step === s);
       const starts = new Set(es.map(e => e.a));
       if (s === 1) net.N.filter(n => n.kind === 'concern').forEach(n => T.light(n.key)); else starts.forEach(k => T.light(k));
+      term(`<span class="stage">## stage ${s}: ${['', 'route concerns to controls', 'read records for your stack', 'find alternatives and ways to fill', 'group routes into workstreams'][s]} (${es.length} hops)</span>`);
       log({ 1: 'Routed each concern to the controls it is about.', 2: 'Read the records for every platform you run against those controls, and sorted each gap into out of scope or a real gap.',
             3: 'For each open control, looked for alternatives in the sample and the ways the gap could be filled.', 4: 'Grouped the ways to fill each gap into the workstreams of an engagement.' }[s]);
       const batch = es.length > 60 ? 10 : 4;
       for (let i = 0; i < es.length; i += batch) {
         if (token !== runToken) return false;
-        await Promise.all(es.slice(i, i + batch).map(e => T.edge(e).then(() => T.light(e.b))));
+        await Promise.all(es.slice(i, i + batch).map(e => { const line = hop(e, net); if (line) term(line); return T.edge(e).then(() => T.light(e.b)); }));
       }
       await wait(160);
     }
@@ -540,11 +588,19 @@
     const offer = offerings(assessed, maturity);
     const shown = $('full-scan').checked ? assessed.filter(a => routes.some(r => r.controls.includes(a.c)) || a.status !== 'covered').slice(0, 18) : assessed;
     const net = network(routes, shown, { ...offer, rows: offer.rows }, stackIds);
-    const T = drawNetwork(net);
+    const T = drawNetwork(net); lastNet = net;
+    $('term').innerHTML = ''; t0 = performance.now();
+    term(`<span class="cmd">$ atlas walk --stack ${esc(stackIds.join(','))} --maturity ${esc(maturity)} --concerns ${routes.length}${$('full-scan').checked ? ' --full-scan' : ''}${model ? ' --replay client-a' : ''}</span>`);
+    term(`load atlas-sample.json ${kv('platforms', String(D.platforms.length))} ${kv('controls', String(D.controls.length))} ${kv('records', String(D.records.length))}`);
+    term(`load atlas-gaps.json ${kv('scope_lists', String(Object.keys(G.scope).length))} ${kv('labelled_gaps', String(Object.keys(G.gap_status).length))} ${kv('observed', String(Object.keys(G.experiment).length))} <span class="why"># decision 0011</span>`);
+    term(`graph ${kv('nodes', String(net.N.length))} ${kv('edges', String(net.edges.length))}`);
     log(model ? `Model-written run: ${esc(D.example.models.router)} routed the concerns.` : `Matched ${routes.filter(r => !r.fallback).length} of ${routes.length} concerns by keyword.`);
     if (!await walk(net, T, token)) return;
     const all = answers.flatMap(a => a.claims), passed = all.filter(c => (c.check || c.citation_check) === 'pass').length;
     log(`Checked ${all.length} citations against the records they came from: ${passed} passed.`);
+    term(`<span class="op read">check</span> citations ${kv('total', String(all.length))} ${kv('pass', String(passed), passed === all.length ? 'ok' : 'warn')}`);
+    const cnt = s => assessed.filter(a => a.status === s).length;
+    term(`<span class="op plan">done</span> ${kv('covered', String(cnt('covered')), 'ok')} ${kv('partial', String(cnt('partial')), 'warn')} ${kv('gaps', String(cnt('gap')), 'bad')} ${kv('workstreams', String(offer.rows.length))}`, 'end');
     lastRun = { assessed, stackIds };
     const res = $('results');
     res.append(report(assessed, offer, stackIds));

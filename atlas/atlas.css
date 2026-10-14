@@ -192,3 +192,30 @@ button.link { font: inherit; background: none; border: 0; padding: 0; color: var
 .offer-item .also { font-size: 12.5px; color: var(--quiet); }
 .fills li.primary span:not(.fill-tag):not(.rec) { font-weight: 600; }
 .rec { font: 600 11px/1.5 var(--font-body); color: #1F4A2A; background: #DCE7DA; border: 1px solid #A9C4AA; border-radius: 999px; padding: 0 6px; margin-left: .3rem; white-space: nowrap; }
+
+/* The traversal terminal: a fixed-size log of every hop. Contrast checked on the dark ground. */
+.term-wrap { margin-top: 1rem; border: 1px solid #1F2B26; border-radius: 6px; overflow: hidden; background: #1F2B26; box-shadow: var(--shadow); }
+.term-head { margin: 0; padding: .35rem .7rem; background: #2C3A34; color: #C9D3CD; font: 600 11.5px/1.4 ui-monospace, Consolas, 'Cascadia Mono', monospace; letter-spacing: .04em; display: flex; align-items: center; gap: .35rem; }
+.term-head .dot { width: .55rem; height: .55rem; border-radius: 50%; background: #5E6E66; display: inline-block; }
+.term { height: 16rem; overflow: auto; padding: .55rem .75rem; font: 12.5px/1.55 ui-monospace, Consolas, 'Cascadia Mono', 'Courier New', monospace; color: #E8E2D4; overscroll-behavior: contain; }
+.term:focus-visible { outline: 2px solid #9CC8E8; outline-offset: -2px; }
+.term .ln { white-space: pre-wrap; overflow-wrap: anywhere; }
+.term .ts { color: #A9B5AE; }
+.term .cmd { color: #FFFFFF; font-weight: 600; }
+.term .stage { color: #E9C46A; font-weight: 600; }
+.term .op { display: inline-block; min-width: 3.4em; font-weight: 600; }
+.term .op.route { color: #F2A38A; }
+.term .op.read { color: #8FD19E; }
+.term .op.alt { color: #C6B4F0; }
+.term .op.fill { color: #9CC8E8; }
+.term .op.plan { color: #E9C46A; }
+.term .k { color: #A9B5AE; }
+.term .v { color: #E8E2D4; }
+.term .v.ok { color: #8FD19E; }
+.term .v.warn { color: #E9C46A; }
+.term .v.bad { color: #F2A38A; }
+.term .v.dim, .term .ln.dim { color: #A9B5AE; }
+.term .why { color: #A9B5AE; font-style: italic; }
+.term .wl { font: inherit; color: #9CC8E8; background: none; border: 0; padding: 0; cursor: pointer; text-decoration: underline; text-decoration-color: rgba(156, 200, 232, .45); text-underline-offset: 2px; }
+.term .wl:hover, .term .wl:focus-visible { color: #FFFFFF; text-decoration-color: #FFFFFF; outline: none; }
+.term .ln.end { color: #FFFFFF; border-top: 1px dashed #5E6E66; margin-top: .3rem; padding-top: .3rem; }
