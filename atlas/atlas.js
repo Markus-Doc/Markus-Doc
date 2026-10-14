@@ -95,7 +95,7 @@
   const list = a => a.length < 2 ? a.join('') : a.slice(0, -1).join(', ') + ' and ' + a[a.length - 1];
 
   async function load() {
-    [D, G] = await Promise.all([fetch('/atlas/atlas-sample.json').then(r => r.json()), fetch('/atlas/atlas-gaps.json').then(r => r.json())]);
+    [D, G] = await Promise.all([fetch('/atlas/atlas-sample.json?v=20261014b').then(r => r.json()), fetch('/atlas/atlas-gaps.json?v=20261014b').then(r => r.json())]);
     byRecord = new Map(D.records.map(r => [r.id, r]));
     byControl = new Map(D.controls.map(c => [c.id, c]));
     byPlatform = new Map(D.platforms.map(p => [p.id, p]));
