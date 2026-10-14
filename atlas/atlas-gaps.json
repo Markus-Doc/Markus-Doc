@@ -10,6 +10,10 @@
    "status": "accepted",
    "out_of_scope": []
   },
+  "hugging-face": {
+   "status": "accepted",
+   "out_of_scope": []
+  },
   "aws": {
    "status": "accepted",
    "out_of_scope": []
@@ -19,6 +23,16 @@
    "out_of_scope": []
   },
   "azure": {
+   "status": "accepted",
+   "out_of_scope": []
+  },
+  "microsoft-copilot-studio": {
+   "status": "accepted",
+   "out_of_scope": [
+    "c6-7"
+   ]
+  },
+  "servicenow": {
    "status": "accepted",
    "out_of_scope": []
   },
@@ -32,6 +46,14 @@
    ]
   },
   "github": {
+   "status": "accepted",
+   "out_of_scope": []
+  },
+  "databricks": {
+   "status": "accepted",
+   "out_of_scope": []
+  },
+  "snowflake": {
    "status": "accepted",
    "out_of_scope": []
   },
@@ -94,6 +116,27 @@
     "c5-3"
    ]
   },
+  "zscaler-ai-security": {
+   "status": "accepted",
+   "out_of_scope": [
+    "c4-2",
+    "c4-3",
+    "c1-3",
+    "c1-4",
+    "c2-1",
+    "c2-2",
+    "c2-3",
+    "c2-4",
+    "c2-5",
+    "c2-6",
+    "c5-1",
+    "c5-3",
+    "c5-4",
+    "c6-6",
+    "c6-8",
+    "c6-9"
+   ]
+  },
   "microsoft-purview": {
    "status": "accepted",
    "out_of_scope": [
@@ -121,6 +164,42 @@
     "c6-8"
    ]
   },
+  "crowdstrike-falcon-aidr": {
+   "status": "accepted",
+   "out_of_scope": []
+  },
+  "onetrust": {
+   "status": "accepted",
+   "out_of_scope": [
+    "c4-3",
+    "c1-1",
+    "c2-1",
+    "c2-2",
+    "c2-3",
+    "c2-4",
+    "c2-5",
+    "c2-6",
+    "c3-4",
+    "c5-4",
+    "c7-4",
+    "c7-5",
+    "c7-6",
+    "c7-10"
+   ]
+  },
+  "promptfoo": {
+   "status": "accepted",
+   "out_of_scope": [
+    "c2-1",
+    "c2-3",
+    "c2-4",
+    "c2-5",
+    "c2-6",
+    "c3-4",
+    "c5-4",
+    "c7-8"
+   ]
+  },
   "litellm": {
    "status": "accepted",
    "out_of_scope": [
@@ -134,6 +213,10 @@
    ]
   },
   "kong-ai-gateway": {
+   "status": "accepted",
+   "out_of_scope": []
+  },
+  "uipath": {
    "status": "accepted",
    "out_of_scope": []
   },
@@ -154,44 +237,95 @@
     "c6-9",
     "c6-12"
    ]
+  },
+  "elastic": {
+   "status": "proposed",
+   "out_of_scope": []
+  },
+  "nvidia": {
+   "status": "proposed",
+   "out_of_scope": [
+    "c7-9",
+    "c6-2",
+    "c6-3",
+    "c6-4",
+    "c6-6",
+    "c6-7",
+    "c6-9",
+    "c6-12"
+   ]
+  },
+  "macquarie-technology-group": {
+   "status": "proposed",
+   "out_of_scope": []
   }
  },
  "gap_status": {
-  "google-cloud--c7-10": "unchecked",
   "claude-code--c3-4": "unchecked",
-  "claude-code--c7-3": "unchecked",
-  "claude-code--c7-10": "unchecked",
   "claude-code--c6-2": "unchecked",
   "claude-code--c6-6": "unchecked",
-  "microsoft-entra-agent-id--c1-1": "unchecked",
-  "microsoft-entra-agent-id--c1-3": "unchecked",
-  "microsoft-entra-agent-id--c3-1": "unchecked",
-  "microsoft-entra-agent-id--c7-5": "unchecked",
-  "microsoft-entra-agent-id--c6-7": "unchecked",
-  "okta-ai-agents--c7-5": "unchecked",
-  "okta-ai-agents--c6-8": "unchecked",
-  "wiz--c4-2": "unchecked",
-  "wiz--c4-3": "unchecked",
-  "wiz--c1-1": "unchecked",
-  "wiz--c1-2": "unchecked",
-  "wiz--c1-4": "unchecked",
-  "wiz--c3-1": "unchecked",
-  "wiz--c3-2": "unchecked",
-  "wiz--c3-3": "unchecked",
-  "wiz--c5-4": "unchecked",
-  "wiz--c6-5": "unchecked",
-  "wiz--c6-8": "unchecked",
-  "wiz--c6-12": "unchecked",
-  "microsoft-purview--c4-3": "unchecked",
-  "microsoft-purview--c1-1": "unchecked",
-  "litellm--c1-1": "unchecked",
-  "litellm--c2-4": "unchecked",
-  "litellm--c2-5": "unchecked",
-  "litellm--c2-6": "unchecked",
-  "litellm--c5-1": "unchecked",
-  "litellm--c5-2": "unchecked",
-  "litellm--c7-9": "unchecked",
-  "litellm--c6-9": "unchecked",
+  "claude-code--c7-10": "unchecked",
+  "claude-code--c7-3": "unchecked",
+  "crowdstrike-falcon-aidr--c1-3": "unchecked",
+  "crowdstrike-falcon-aidr--c2-1": "unchecked",
+  "crowdstrike-falcon-aidr--c2-2": "unchecked",
+  "crowdstrike-falcon-aidr--c2-3": "unchecked",
+  "crowdstrike-falcon-aidr--c2-4": "unchecked",
+  "crowdstrike-falcon-aidr--c2-5": "unchecked",
+  "crowdstrike-falcon-aidr--c2-6": "unchecked",
+  "crowdstrike-falcon-aidr--c3-4": "unchecked",
+  "crowdstrike-falcon-aidr--c4-4": "unchecked",
+  "crowdstrike-falcon-aidr--c5-1": "unchecked",
+  "crowdstrike-falcon-aidr--c5-4": "unchecked",
+  "crowdstrike-falcon-aidr--c5-5": "unchecked",
+  "crowdstrike-falcon-aidr--c6-11": "unchecked",
+  "crowdstrike-falcon-aidr--c6-2": "unchecked",
+  "crowdstrike-falcon-aidr--c6-5": "unchecked",
+  "crowdstrike-falcon-aidr--c6-7": "unchecked",
+  "crowdstrike-falcon-aidr--c6-8": "unchecked",
+  "crowdstrike-falcon-aidr--c6-9": "unchecked",
+  "crowdstrike-falcon-aidr--c7-3": "unchecked",
+  "crowdstrike-falcon-aidr--c7-8": "unchecked",
+  "databricks--c6-7": "unchecked",
+  "databricks--c6-9": "confirmed",
+  "databricks--c7-10": "unchecked",
+  "databricks--c7-6": "unchecked",
+  "databricks--c7-9": "unchecked",
+  "elastic--c1-1": "unchecked",
+  "elastic--c2-3": "unchecked",
+  "elastic--c3-1": "unchecked",
+  "elastic--c3-4": "unchecked",
+  "elastic--c5-5": "unchecked",
+  "elastic--c6-12": "unchecked",
+  "elastic--c6-2": "unchecked",
+  "elastic--c6-3": "unchecked",
+  "elastic--c6-4": "unchecked",
+  "elastic--c6-5": "unchecked",
+  "elastic--c6-7": "unchecked",
+  "elastic--c6-8": "unchecked",
+  "elastic--c6-9": "unchecked",
+  "elastic--c7-10": "unchecked",
+  "elastic--c7-3": "unchecked",
+  "elastic--c7-5": "unchecked",
+  "elastic--c7-6": "unchecked",
+  "elastic--c7-9": "unchecked",
+  "google-cloud--c7-10": "unchecked",
+  "hugging-face--c1-1": "unchecked",
+  "hugging-face--c1-3": "unchecked",
+  "hugging-face--c2-4": "unchecked",
+  "hugging-face--c2-6": "unchecked",
+  "hugging-face--c3-2": "unchecked",
+  "hugging-face--c3-4": "unchecked",
+  "hugging-face--c4-4": "unchecked",
+  "hugging-face--c5-1": "unchecked",
+  "hugging-face--c5-2": "unchecked",
+  "hugging-face--c5-5": "unchecked",
+  "hugging-face--c6-3": "unchecked",
+  "hugging-face--c6-4": "unchecked",
+  "hugging-face--c6-7": "unchecked",
+  "hugging-face--c6-9": "unchecked",
+  "hugging-face--c7-10": "unchecked",
+  "hugging-face--c7-9": "unchecked",
   "kong-ai-gateway--c1-1": "unchecked",
   "kong-ai-gateway--c1-3": "unchecked",
   "kong-ai-gateway--c2-1": "unchecked",
@@ -200,18 +334,13 @@
   "kong-ai-gateway--c2-5": "unchecked",
   "kong-ai-gateway--c2-6": "unchecked",
   "kong-ai-gateway--c5-1": "unchecked",
-  "kong-ai-gateway--c7-3": "unchecked",
-  "kong-ai-gateway--c7-4": "unchecked",
-  "kong-ai-gateway--c7-6": "unchecked",
-  "kong-ai-gateway--c7-9": "unchecked",
-  "kong-ai-gateway--c7-10": "unchecked",
   "kong-ai-gateway--c6-5": "unchecked",
   "kong-ai-gateway--c6-7": "unchecked",
   "kong-ai-gateway--c6-9": "unchecked",
-  "langfuse--c4-1": "unchecked",
-  "langfuse--c4-2": "unchecked",
-  "langfuse--c4-3": "unchecked",
-  "langfuse--c4-4": "unchecked",
+  "kong-ai-gateway--c7-10": "unchecked",
+  "kong-ai-gateway--c7-3": "unchecked",
+  "kong-ai-gateway--c7-6": "unchecked",
+  "kong-ai-gateway--c7-9": "unchecked",
   "langfuse--c1-1": "unchecked",
   "langfuse--c1-2": "unchecked",
   "langfuse--c1-3": "unchecked",
@@ -223,28 +352,127 @@
   "langfuse--c3-1": "unchecked",
   "langfuse--c3-2": "unchecked",
   "langfuse--c3-3": "unchecked",
-  "langfuse--c7-8": "unchecked",
-  "langfuse--c7-10": "unchecked",
+  "langfuse--c4-1": "unchecked",
+  "langfuse--c4-2": "unchecked",
+  "langfuse--c4-3": "unchecked",
+  "langfuse--c4-4": "unchecked",
+  "langfuse--c6-11": "unchecked",
   "langfuse--c6-2": "unchecked",
   "langfuse--c6-6": "unchecked",
-  "langfuse--c6-11": "unchecked"
+  "langfuse--c7-10": "unchecked",
+  "langfuse--c7-8": "unchecked",
+  "litellm--c1-1": "unchecked",
+  "litellm--c2-4": "unchecked",
+  "litellm--c2-5": "unchecked",
+  "litellm--c2-6": "unchecked",
+  "litellm--c5-1": "unchecked",
+  "litellm--c5-2": "unchecked",
+  "litellm--c6-9": "unchecked",
+  "litellm--c7-9": "unchecked",
+  "macquarie-technology-group--c1-1": "unchecked",
+  "macquarie-technology-group--c1-2": "unchecked",
+  "macquarie-technology-group--c1-3": "unchecked",
+  "macquarie-technology-group--c1-4": "unchecked",
+  "macquarie-technology-group--c2-1": "unchecked",
+  "macquarie-technology-group--c2-4": "unchecked",
+  "macquarie-technology-group--c2-5": "unchecked",
+  "macquarie-technology-group--c2-6": "unchecked",
+  "macquarie-technology-group--c3-2": "unchecked",
+  "macquarie-technology-group--c3-3": "unchecked",
+  "macquarie-technology-group--c3-4": "unchecked",
+  "macquarie-technology-group--c4-1": "unchecked",
+  "macquarie-technology-group--c4-2": "unchecked",
+  "macquarie-technology-group--c4-3": "unchecked",
+  "macquarie-technology-group--c4-4": "unchecked",
+  "macquarie-technology-group--c5-1": "unchecked",
+  "macquarie-technology-group--c5-2": "unchecked",
+  "macquarie-technology-group--c5-3": "unchecked",
+  "macquarie-technology-group--c5-5": "unchecked",
+  "macquarie-technology-group--c6-1": "unchecked",
+  "macquarie-technology-group--c6-12": "unchecked",
+  "macquarie-technology-group--c6-2": "unchecked",
+  "macquarie-technology-group--c6-3": "unchecked",
+  "macquarie-technology-group--c6-4": "unchecked",
+  "macquarie-technology-group--c6-5": "unchecked",
+  "macquarie-technology-group--c6-6": "unchecked",
+  "macquarie-technology-group--c6-8": "unchecked",
+  "macquarie-technology-group--c6-9": "unchecked",
+  "macquarie-technology-group--c7-1": "unchecked",
+  "macquarie-technology-group--c7-10": "unchecked",
+  "macquarie-technology-group--c7-3": "unchecked",
+  "macquarie-technology-group--c7-5": "unchecked",
+  "macquarie-technology-group--c7-6": "unchecked",
+  "macquarie-technology-group--c7-9": "unchecked",
+  "microsoft-copilot-studio--c6-9": "unchecked",
+  "microsoft-copilot-studio--c7-10": "unchecked",
+  "microsoft-copilot-studio--c7-3": "unchecked",
+  "microsoft-copilot-studio--c7-6": "unchecked",
+  "microsoft-entra-agent-id--c1-1": "unchecked",
+  "microsoft-entra-agent-id--c1-3": "unchecked",
+  "microsoft-entra-agent-id--c3-1": "unchecked",
+  "microsoft-entra-agent-id--c6-7": "unchecked",
+  "microsoft-entra-agent-id--c7-5": "unchecked",
+  "microsoft-purview--c1-1": "unchecked",
+  "microsoft-purview--c4-3": "unchecked",
+  "nvidia--c1-4": "unchecked",
+  "nvidia--c4-1": "unchecked",
+  "nvidia--c5-5": "unchecked",
+  "nvidia--c6-1": "unchecked",
+  "nvidia--c6-5": "unchecked",
+  "nvidia--c7-5": "unchecked",
+  "nvidia--c7-6": "unchecked",
+  "nvidia--c7-8": "unchecked",
+  "okta-ai-agents--c6-8": "unchecked",
+  "okta-ai-agents--c7-5": "unchecked",
+  "onetrust--c3-1": "unchecked",
+  "onetrust--c4-2": "unchecked",
+  "onetrust--c4-4": "unchecked",
+  "onetrust--c6-10": "unchecked",
+  "promptfoo--c1-1": "unchecked",
+  "promptfoo--c1-3": "unchecked",
+  "promptfoo--c1-4": "unchecked",
+  "promptfoo--c2-2": "unchecked",
+  "promptfoo--c4-1": "unchecked",
+  "promptfoo--c4-2": "unchecked",
+  "promptfoo--c4-3": "unchecked",
+  "promptfoo--c4-4": "unchecked",
+  "promptfoo--c6-1": "unchecked",
+  "promptfoo--c6-10": "unchecked",
+  "promptfoo--c6-2": "unchecked",
+  "promptfoo--c6-6": "unchecked",
+  "promptfoo--c7-4": "unchecked",
+  "promptfoo--c7-9": "unchecked",
+  "servicenow--c3-4": "unchecked",
+  "servicenow--c7-10": "unchecked",
+  "snowflake--c3-4": "unchecked",
+  "snowflake--c6-4": "unchecked",
+  "snowflake--c6-7": "unchecked",
+  "snowflake--c6-9": "unchecked",
+  "snowflake--c7-10": "unchecked",
+  "snowflake--c7-5": "unchecked",
+  "snowflake--c7-6": "unchecked",
+  "uipath--c5-5": "unchecked",
+  "uipath--c6-9": "unchecked",
+  "uipath--c7-10": "unchecked",
+  "uipath--c7-6": "unchecked",
+  "uipath--c7-9": "unchecked"
  },
  "experiment": {
   "litellm--c7-4": {
    "label": "disputed",
    "found": "LiteLLM's harness documents a Docker sandbox for code you do not trust, so runtime assurance is partly covered."
   },
-  "wiz--c5-4": {
+  "crowdstrike-falcon-aidr--c6-9": {
    "label": "disputed",
-   "found": "Wiz documents behavioural anomaly baselines on its runtime sensor, a partial match for infrastructure anomaly detection."
+   "found": "Falcon Cloud Security suppression rules record an accept-risk reason and an expiry date, but nothing was found on approval or review."
   },
-  "wiz--c3-1": {
+  "databricks--c6-9": {
    "label": "likely",
-   "found": "Blind research found no model gateway in Wiz and called it outside the product's category."
+   "found": "Blind research found policy exemptions and audit logs in Unity Catalog, but no recording, approval, expiry or review of exceptions."
   },
-  "kong-ai-gateway--c7-4": {
-   "label": "likely",
-   "found": "Blind research found no runtime assurance in Kong AI Gateway and called it outside the product's category."
+  "elastic--c6-8": {
+   "label": "disputed",
+   "found": "Kibana 9.5 added version history with restore for Elastic Workflows, a partial match, though Agent Builder agents still have none."
   }
  },
  "experiment_rates": {
