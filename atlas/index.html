@@ -7,12 +7,12 @@
   <meta name="color-scheme" content="light">
   <meta name="theme-color" content="#F3ECDE">
   <title>Ask the Atlas | Markus Walker</title>
-  <meta name="description" content="An interactive questionnaire over a sample of the Offerings Atlas. Name your maturity, your stack and your concerns about AI agents, and watch it walk the knowledge base to a cited answer.">
+  <meta name="description" content="Name your stack and your concerns about AI agents. Ask the Atlas walks a sample of the Offerings Atlas as a network and shows what your stack covers, where the gaps are, the ways to close them and the engagement that would.">
   <link rel="canonical" href="https://www.markuswalker.com/atlas/">
   <meta name="author" content="Markus Walker">
   <meta property="og:site_name" content="Markus Walker">
   <meta property="og:title" content="Ask the Atlas | Markus Walker">
-  <meta property="og:description" content="An interactive questionnaire over a sample of the Offerings Atlas, showing how it walks the knowledge base to a cited answer.">
+  <meta property="og:description" content="See what your AI agent stack covers, where the gaps are and how to fill them, from a sample of the Offerings Atlas.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://www.markuswalker.com/atlas/">
   <meta property="og:image" content="https://www.markuswalker.com/art/og-image.jpg">
@@ -45,7 +45,7 @@
         <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> <span aria-hidden="true">/</span> <a href="/projects/">Projects</a> <span aria-hidden="true">/</span> <a href="/projects/ask-the-atlas/">Ask the Atlas</a> <span aria-hidden="true">/</span> <span aria-current="page">Try it</span></nav>
         <p class="eyebrow">Interactive capstone</p>
         <h1 class="page-title">Ask the Atlas</h1>
-        <p class="lede narrow">Tell it where you are with AI agents, what you run and what worries you. It routes each concern to the controls it is about, walks the knowledge base for your stack, and builds an answer in which every citation is checked against the record it came from.</p>
+        <p class="lede narrow">Tell it where you are with AI agents, what you run and what worries you. It walks the knowledge base as a network, from your concerns to the controls they touch and the platforms you run. Then it tells you what your stack covers, which gaps are real, the ways each one could be closed, and the engagement I would propose to close them.</p>
         <aside class="atlas-sample-note" aria-label="About this sample">
           <p class="sample-kicker">A select sample, not the full atlas</p>
           <p id="atlas-scope">Loading the public sample of the atlas.</p>
@@ -69,6 +69,8 @@
           <label class="atlas-label" for="concern-own">Or in your own words, one per line</label>
           <textarea id="concern-own" rows="3" placeholder="For example: how do we stop prompt injection through our MCP tools?"></textarea>
 
+          <label class="chip scan-chip"><input type="checkbox" id="full-scan"> Also scan the rest of the 44 controls</label>
+
           <div class="atlas-actions">
             <button type="submit" class="button" id="run">Walk the knowledge base</button>
             <button type="button" class="button button-quiet" id="example">Show the model-written Client A run</button>
@@ -79,23 +81,24 @@
         <section class="atlas-out" aria-labelledby="out-title">
           <h2 id="out-title" class="atlas-h2">How it walked the knowledge base</h2>
           <p class="trace-hint">Scroll the graph sideways to follow each path.</p>
-          <div class="trace-tabs" id="trace-tabs" role="group" aria-label="Show the traversal for one concern"></div>
           <div class="trace-wrap">
             <div class="trace-scroll"><svg id="trace" class="trace" role="img" aria-labelledby="trace-title trace-desc" viewBox="0 0 960 420">
               <title id="trace-title">Traversal of the knowledge base</title>
-              <desc id="trace-desc">Concerns on the left lead to controls, then to records for each platform, then to the sources those records cite.</desc>
+              <desc id="trace-desc">Concerns lead to controls, controls to the platforms you run and to alternatives, open controls to the ways they can be closed, and those to the workstreams of an engagement. The report below the graph gives the same result as text.</desc>
             </svg></div>
-            <ol class="trace-legend" aria-hidden="true">
-              <li>Concern</li><li>Control</li><li>Record in your stack</li><li>Alternative</li><li>Source</li>
-            </ol>
+            <ul class="trace-legend" aria-hidden="true">
+              <li class="k-concern">Concern</li><li class="k-control">Control</li><li class="k-platform">Platform you run</li><li class="k-alt">Alternative</li><li class="k-fill">Way to fill</li><li class="k-offering">Workstream</li>
+              <li class="edge-key e-sup">covers</li><li class="edge-key e-par">in part</li><li class="edge-key e-gap">real gap</li><li class="edge-key e-out">out of scope</li>
+            </ul>
           </div>
           <ol class="trace-log" id="trace-log" aria-live="polite"></ol>
+          <div id="results"></div>
           <div id="answers"></div>
           <aside class="record-card" id="record-card" hidden></aside>
         </section>
       </div>
 
-      <p class="small-note atlas-foot">A public sample of the <a href="/projects/offerings-atlas/">Offerings Atlas</a>, which is closed source for now. Verdicts describe documented capability, not tested deployments. Routing in this live version uses keywords and the answers are assembled from records without a model; the Client A run shows the full model-written version. Not advice about any vendor's current product.</p>
+      <p class="small-note atlas-foot">A public sample of the <a href="/projects/offerings-atlas/">Offerings Atlas</a>, which is closed source for now. Verdicts describe documented capability, not tested deployments. Gap labels follow the atlas's own rules: out of scope comes from owner-accepted scope lists, and most real gaps are still unchecked. The absence-check ladder is a simulation seeded with the rates from the atlas's first blind check, except where that check observed the cell. Routing in this live version uses keywords and the answers are assembled from records without a model. The Client A run shows the full model-written version. The workstreams and the path to a statement of work are indicative. Not advice about any vendor's current product.</p>
     </div>
   </main>
 

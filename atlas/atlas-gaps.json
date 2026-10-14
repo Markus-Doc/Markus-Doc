@@ -1,0 +1,260 @@
+{
+ "generated_on": "2026-10-14",
+ "note": "Gap logic for the Ask the Atlas sample, from the atlas on 14 Oct 2026 under decision 0011: per-platform scope lists, gap labels and the experiment 002 absence checks that fall inside the sample.",
+ "scope": {
+  "anthropic": {
+   "status": "accepted",
+   "out_of_scope": []
+  },
+  "openai": {
+   "status": "accepted",
+   "out_of_scope": []
+  },
+  "aws": {
+   "status": "accepted",
+   "out_of_scope": []
+  },
+  "google-cloud": {
+   "status": "accepted",
+   "out_of_scope": []
+  },
+  "azure": {
+   "status": "accepted",
+   "out_of_scope": []
+  },
+  "claude-code": {
+   "status": "accepted",
+   "out_of_scope": [
+    "c7-8",
+    "c6-5",
+    "c6-7",
+    "c6-9"
+   ]
+  },
+  "github": {
+   "status": "accepted",
+   "out_of_scope": []
+  },
+  "microsoft-entra-agent-id": {
+   "status": "accepted",
+   "out_of_scope": [
+    "c2-1",
+    "c2-2",
+    "c2-3",
+    "c2-4",
+    "c2-5",
+    "c2-6",
+    "c5-1",
+    "c5-3",
+    "c5-4",
+    "c7-3",
+    "c7-4",
+    "c7-6",
+    "c7-8",
+    "c7-10",
+    "c6-4",
+    "c6-9",
+    "c6-10"
+   ]
+  },
+  "okta-ai-agents": {
+   "status": "accepted",
+   "out_of_scope": [
+    "c1-1",
+    "c2-1",
+    "c2-2",
+    "c2-3",
+    "c2-4",
+    "c2-5",
+    "c2-6",
+    "c3-1",
+    "c5-1",
+    "c5-3",
+    "c5-4",
+    "c7-3",
+    "c7-4",
+    "c7-8",
+    "c7-10",
+    "c6-4",
+    "c6-9",
+    "c6-10"
+   ]
+  },
+  "wiz": {
+   "status": "accepted",
+   "out_of_scope": [
+    "c2-1",
+    "c2-2",
+    "c2-3",
+    "c2-4",
+    "c2-5",
+    "c2-6",
+    "c3-4",
+    "c5-1",
+    "c5-3"
+   ]
+  },
+  "microsoft-purview": {
+   "status": "accepted",
+   "out_of_scope": [
+    "c4-1",
+    "c4-2",
+    "c4-4",
+    "c1-3",
+    "c1-4",
+    "c2-1",
+    "c2-2",
+    "c2-3",
+    "c2-4",
+    "c2-5",
+    "c2-6",
+    "c3-4",
+    "c5-3",
+    "c5-4",
+    "c7-3",
+    "c7-4",
+    "c7-5",
+    "c7-6",
+    "c7-10",
+    "c6-2",
+    "c6-5",
+    "c6-8"
+   ]
+  },
+  "litellm": {
+   "status": "accepted",
+   "out_of_scope": [
+    "c2-3",
+    "c7-3",
+    "c7-4",
+    "c7-8",
+    "c7-10",
+    "c6-5",
+    "c6-7"
+   ]
+  },
+  "kong-ai-gateway": {
+   "status": "accepted",
+   "out_of_scope": []
+  },
+  "langfuse": {
+   "status": "accepted",
+   "out_of_scope": [
+    "c2-3",
+    "c2-5",
+    "c3-4",
+    "c7-3",
+    "c7-4",
+    "c7-5",
+    "c7-6",
+    "c7-9",
+    "c6-3",
+    "c6-4",
+    "c6-7",
+    "c6-9",
+    "c6-12"
+   ]
+  }
+ },
+ "gap_status": {
+  "google-cloud--c7-10": "unchecked",
+  "claude-code--c3-4": "unchecked",
+  "claude-code--c7-3": "unchecked",
+  "claude-code--c7-10": "unchecked",
+  "claude-code--c6-2": "unchecked",
+  "claude-code--c6-6": "unchecked",
+  "microsoft-entra-agent-id--c1-1": "unchecked",
+  "microsoft-entra-agent-id--c1-3": "unchecked",
+  "microsoft-entra-agent-id--c3-1": "unchecked",
+  "microsoft-entra-agent-id--c7-5": "unchecked",
+  "microsoft-entra-agent-id--c6-7": "unchecked",
+  "okta-ai-agents--c7-5": "unchecked",
+  "okta-ai-agents--c6-8": "unchecked",
+  "wiz--c4-2": "unchecked",
+  "wiz--c4-3": "unchecked",
+  "wiz--c4-4": "unchecked",
+  "wiz--c1-1": "unchecked",
+  "wiz--c1-2": "unchecked",
+  "wiz--c1-3": "unchecked",
+  "wiz--c1-4": "unchecked",
+  "wiz--c3-1": "unchecked",
+  "wiz--c3-2": "unchecked",
+  "wiz--c3-3": "unchecked",
+  "wiz--c5-4": "unchecked",
+  "wiz--c6-2": "unchecked",
+  "wiz--c6-5": "unchecked",
+  "wiz--c6-8": "unchecked",
+  "wiz--c6-10": "unchecked",
+  "wiz--c6-12": "unchecked",
+  "microsoft-purview--c4-3": "unchecked",
+  "microsoft-purview--c1-1": "unchecked",
+  "litellm--c1-1": "unchecked",
+  "litellm--c2-4": "unchecked",
+  "litellm--c2-5": "unchecked",
+  "litellm--c2-6": "unchecked",
+  "litellm--c5-1": "unchecked",
+  "litellm--c5-2": "unchecked",
+  "litellm--c7-9": "unchecked",
+  "litellm--c6-9": "unchecked",
+  "kong-ai-gateway--c1-1": "unchecked",
+  "kong-ai-gateway--c1-3": "unchecked",
+  "kong-ai-gateway--c2-1": "unchecked",
+  "kong-ai-gateway--c2-3": "unchecked",
+  "kong-ai-gateway--c2-4": "unchecked",
+  "kong-ai-gateway--c2-5": "unchecked",
+  "kong-ai-gateway--c2-6": "unchecked",
+  "kong-ai-gateway--c5-1": "unchecked",
+  "kong-ai-gateway--c7-3": "unchecked",
+  "kong-ai-gateway--c7-4": "unchecked",
+  "kong-ai-gateway--c7-6": "unchecked",
+  "kong-ai-gateway--c7-9": "unchecked",
+  "kong-ai-gateway--c7-10": "unchecked",
+  "kong-ai-gateway--c6-5": "unchecked",
+  "kong-ai-gateway--c6-7": "unchecked",
+  "kong-ai-gateway--c6-9": "unchecked",
+  "langfuse--c4-1": "unchecked",
+  "langfuse--c4-2": "unchecked",
+  "langfuse--c4-3": "unchecked",
+  "langfuse--c4-4": "unchecked",
+  "langfuse--c1-1": "unchecked",
+  "langfuse--c1-2": "unchecked",
+  "langfuse--c1-3": "unchecked",
+  "langfuse--c1-4": "unchecked",
+  "langfuse--c2-1": "unchecked",
+  "langfuse--c2-2": "unchecked",
+  "langfuse--c2-4": "unchecked",
+  "langfuse--c2-6": "unchecked",
+  "langfuse--c3-1": "unchecked",
+  "langfuse--c3-2": "unchecked",
+  "langfuse--c3-3": "unchecked",
+  "langfuse--c7-8": "unchecked",
+  "langfuse--c7-10": "unchecked",
+  "langfuse--c6-2": "unchecked",
+  "langfuse--c6-6": "unchecked",
+  "langfuse--c6-11": "unchecked"
+ },
+ "experiment": {
+  "litellm--c7-4": {
+   "label": "disputed",
+   "found": "LiteLLM's harness documents a Docker sandbox for code you do not trust, so runtime assurance is partly covered."
+  },
+  "wiz--c5-4": {
+   "label": "disputed",
+   "found": "Wiz documents behavioural anomaly baselines on its runtime sensor, a partial match for infrastructure anomaly detection."
+  },
+  "wiz--c3-1": {
+   "label": "likely",
+   "found": "Blind research found no model gateway in Wiz and called it outside the product's category."
+  },
+  "kong-ai-gateway--c7-4": {
+   "label": "likely",
+   "found": "Blind research found no runtime assurance in Kong AI Gateway and called it outside the product's category."
+  }
+ },
+ "experiment_rates": {
+  "held": 0.67,
+  "disputed": 0.29,
+  "insufficient": 0.04,
+  "source": "Experiment 002, 24 not-addressed cells, blind research, 14 Oct 2026"
+ }
+}
