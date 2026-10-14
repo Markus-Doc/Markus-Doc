@@ -1,6 +1,6 @@
 {
  "generated_on": "2026-10-14",
- "note": "Gap logic for the Ask the Atlas sample, from the atlas on 14 Oct 2026 under decision 0011: per-platform scope lists, gap labels and the experiment 002 absence checks that fall inside the sample.",
+ "note": "Gap logic for the Ask the Atlas sample, from the atlas release 1 on 14 Oct 2026 under decision 0011: per-platform scope lists, gap labels and the experiment 002 absence checks that fall inside the sample.",
  "scope": {
   "anthropic": {
    "status": "accepted",
@@ -172,19 +172,15 @@
   "okta-ai-agents--c6-8": "unchecked",
   "wiz--c4-2": "unchecked",
   "wiz--c4-3": "unchecked",
-  "wiz--c4-4": "unchecked",
   "wiz--c1-1": "unchecked",
   "wiz--c1-2": "unchecked",
-  "wiz--c1-3": "unchecked",
   "wiz--c1-4": "unchecked",
   "wiz--c3-1": "unchecked",
   "wiz--c3-2": "unchecked",
   "wiz--c3-3": "unchecked",
   "wiz--c5-4": "unchecked",
-  "wiz--c6-2": "unchecked",
   "wiz--c6-5": "unchecked",
   "wiz--c6-8": "unchecked",
-  "wiz--c6-10": "unchecked",
   "wiz--c6-12": "unchecked",
   "microsoft-purview--c4-3": "unchecked",
   "microsoft-purview--c1-1": "unchecked",
@@ -256,5 +252,10 @@
   "disputed": 0.29,
   "insufficient": 0.04,
   "source": "Experiment 002, 24 not-addressed cells, blind research, 14 Oct 2026"
+ },
+ "also_in": {
+  "wiz": [
+   "observability"
+  ]
  }
 }

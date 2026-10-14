@@ -101,11 +101,12 @@
   const sv = (tag, attrs = {}) => { const e = document.createElementNS(SVG, tag); for (const [k, v] of Object.entries(attrs)) e.setAttribute(k, v); return e; };
   const wait = ms => reduced ? Promise.resolve() : new Promise(r => setTimeout(r, ms));
   const shortName = n => n.replace(/\s*\(.*\)$/, '');
+  const syncAliases = () => document.querySelectorAll('input.alias').forEach(a => { a.checked = !!document.querySelector(`input[name="stack"][value="${CSS.escape(a.dataset.for)}"]`)?.checked; });
   const pname = id => shortName(byPlatform.get(id)?.name || id);
   const list = a => a.length < 2 ? a.join('') : a.slice(0, -1).join(', ') + ' and ' + a[a.length - 1];
 
   async function load() {
-    [D, G] = await Promise.all([fetch('/atlas/atlas-sample.json?v=20261014d').then(r => r.json()), fetch('/atlas/atlas-gaps.json?v=20261014d').then(r => r.json())]);
+    [D, G] = await Promise.all([fetch('/atlas/atlas-sample.json?v=20261014e').then(r => r.json()), fetch('/atlas/atlas-gaps.json?v=20261014e').then(r => r.json())]);
     byRecord = new Map(D.records.map(r => [r.id, r]));
     byControl = new Map(D.controls.map(c => [c.id, c]));
     byPlatform = new Map(D.platforms.map(p => [p.id, p]));
@@ -123,6 +124,12 @@
       for (const p of D.platforms.filter(x => x.group === g.id)) {
         stack.append(el('label', { class: 'chip' }, `<input type="checkbox" name="stack" value="${esc(p.id)}"> ${esc(shortName(p.name))}`));
       }
+      // A platform the atlas also places in this group: a linked chip that ticks the same platform.
+      for (const [pid, extra] of Object.entries(G.also_in || {})) {
+        if (!extra.includes(g.id) || !byPlatform.has(pid)) continue;
+        stack.append(el('label', { class: 'chip alias', title: `Also in ${byGroup.get(byPlatform.get(pid).group)?.name || ''}` },
+          `<input type="checkbox" class="alias" data-for="${esc(pid)}"> ${esc(shortName(byPlatform.get(pid).name))}<span class="visually-hidden"> (same platform as above)</span>`));
+      }
       // Platforms in the full atlas that this demo sample leaves out: visible, greyed and not selectable.
       for (const r of (D.reserved || []).filter(x => x.group === g.id)) {
         stack.append(el('label', { class: 'chip reserved', title: 'Reserved for the full version of the atlas, not part of this demo sample.' },
@@ -130,6 +137,13 @@
       }
     }
     for (const id of ['claude-code', 'okta-ai-agents', 'wiz', 'langfuse']) { const box = stack.querySelector(`input[value="${id}"]`); if (box) box.checked = true; }
+    stack.addEventListener('change', ev => {
+      const b = ev.target; if (!b.matches('input[type="checkbox"]')) return;
+      const id = b.classList.contains('alias') ? b.dataset.for : b.value;
+      const main = stack.querySelector(`input[name="stack"][value="${CSS.escape(id)}"]`); if (main) main.checked = b.checked;
+      syncAliases();
+    });
+    syncAliases();
     const presets = $('concern-presets');
     PRESETS.forEach((text, i) => presets.append(el('label', { class: 'chip' }, `<input type="checkbox" name="concern" value="${i}"${i < 2 || i === 3 ? ' checked' : ''}> ${esc(text)}`)));
     $('atlas-form').addEventListener('submit', e => { e.preventDefault(); runLive(); });
@@ -640,6 +654,7 @@
   }
 
   function runLive() {
+    syncAliases();
     const stackIds = [...document.querySelectorAll('input[name="stack"]:checked')].map(b => b.value);
     const concerns = [...document.querySelectorAll('input[name="concern"]:checked')].map(b => PRESETS[+b.value])
       .concat($('concern-own').value.split('\n').map(s => s.trim()).filter(Boolean)).slice(0, 6);
@@ -652,7 +667,7 @@
   function runExample() {
     const ex = D.example;
     $('maturity').value = ex.maturity; $('maturity').dispatchEvent(new Event('change'));
-    document.querySelectorAll('input[name="stack"]').forEach(b => { b.checked = ex.stack.includes(b.value); });
+    document.querySelectorAll('input[name="stack"]').forEach(b => { b.checked = ex.stack.includes(b.value); }); syncAliases();
     const routes = ex.concerns.map(c => ({ concern: c.concern, controls: c.controls, groups: c.groups, hits: [] }));
     const recs = ex.concerns.map(c => c.records.map(id => byRecord.get(id) && { ...byRecord.get(id), role: ex.stack.includes(id.split('--')[0]) ? 'in_stack' : 'alternative' }).filter(Boolean));
     run(routes, recs, ex.stack, ex.maturity, true, ex.concerns.map(c => ({ summary: c.summary, claims: c.claims, unknowns: c.unknowns, next_steps: c.next_steps })));

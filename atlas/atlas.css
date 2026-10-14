@@ -230,3 +230,4 @@ button.link { font: inherit; background: none; border: 0; padding: 0; color: var
 .scenario:hover { background: #F6F0E2; }
 .scenario:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .report-head { margin: 0 0 .6rem; font-size: 15.5px; }
+.chip.alias { border-style: dashed; }
