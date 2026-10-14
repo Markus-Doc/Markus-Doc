@@ -21,7 +21,7 @@
   <link rel="preload" href="/fonts/schibsted-grotesk-var.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/fonts/fraunces-semibold.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="/site/styles.css">
-  <link rel="stylesheet" href="/atlas/atlas.css?v=20261014c">
+  <link rel="stylesheet" href="/atlas/atlas.css?v=20261014d">
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -55,13 +55,18 @@
 
       <div class="atlas-grid">
         <form class="atlas-form" id="atlas-form" aria-labelledby="form-title">
+          <div class="scenario-box">
+            <p class="atlas-label">Start from a typical enterprise stack</p>
+            <div class="scenarios" id="scenarios"></div>
+            <p class="atlas-hint">Each one fills in the form below and runs a full scan. Or set your own.</p>
+          </div>
           <h2 id="form-title" class="atlas-h2"><span class="step-no">1</span> Where you are</h2>
           <label class="atlas-label" for="maturity">Maturity stage</label>
           <select id="maturity" name="maturity"></select>
           <p class="atlas-hint" id="maturity-hint"></p>
 
           <h2 class="atlas-h2"><span class="step-no">2</span> What you run</h2>
-          <p class="atlas-hint reserved-note">Greyed platforms are in the full atlas and reserved for the full version, not this demo (<span id="reserved-count">0</span> shown).</p>
+          <p class="atlas-hint reserved-note">Each platform appears once, under its main group, and is checked against all 44 controls, so a security tool still counts for observability where it covers it. Greyed platforms are in the full atlas and reserved for the full version, not this demo (<span id="reserved-count">0</span> shown).</p>
           <fieldset class="stack" id="stack"><legend class="visually-hidden">Platforms and tools in your stack</legend></fieldset>
 
           <h2 class="atlas-h2"><span class="step-no">3</span> What worries you</h2>
@@ -113,7 +118,7 @@
     </div>
   </footer>
 
-  <script src="/atlas/atlas.js?v=20261014c" defer></script>
+  <script src="/atlas/atlas.js?v=20261014d" defer></script>
   <script src="/site/runner-egg.js" defer></script>
 </body>
 </html>

@@ -18,6 +18,16 @@
     'How do we detect and stop prompt injection attacks against our agents?',
     'What audit evidence will we have of what an agent did?',
   ];
+  const SCENARIOS = [
+    { name: 'Security tools bought, no gateway', stack: ['wiz', 'okta-ai-agents'], concerns: [1, 4, 5], maturity: 'm3',
+      note: 'Posture and identity are in place, but nothing sits in the path of model and tool traffic.' },
+    { name: 'A gateway and tracing, little else', stack: ['litellm', 'langfuse'], concerns: [0, 3, 2], maturity: 'm2',
+      note: 'A team-built platform: traffic is routed and traced, but identity, approval and governance are thin.' },
+    { name: 'Model API and coding agents', stack: ['openai', 'github', 'claude-code'], concerns: [4, 5, 1], maturity: 'm1',
+      note: 'Developers move fast on vendor tools, and most controls are covered only in part.' },
+    { name: 'All in on Microsoft', stack: ['azure', 'microsoft-entra-agent-id', 'microsoft-purview'], concerns: [0, 2, 3], maturity: 'm4',
+      note: 'One vendor covers a lot, so the gaps are in the detail of each partial control.' },
+  ];
   const VERDICT = { supported: 'Supported', partial: 'Partial', 'not-addressed': 'Not addressed', unresolved: 'Unresolved' };
   const RANK = { supported: 0, partial: 1, unresolved: 2, 'not-addressed': 3 };
   const LABEL = {
@@ -95,7 +105,7 @@
   const list = a => a.length < 2 ? a.join('') : a.slice(0, -1).join(', ') + ' and ' + a[a.length - 1];
 
   async function load() {
-    [D, G] = await Promise.all([fetch('/atlas/atlas-sample.json?v=20261014c').then(r => r.json()), fetch('/atlas/atlas-gaps.json?v=20261014c').then(r => r.json())]);
+    [D, G] = await Promise.all([fetch('/atlas/atlas-sample.json?v=20261014d').then(r => r.json()), fetch('/atlas/atlas-gaps.json?v=20261014d').then(r => r.json())]);
     byRecord = new Map(D.records.map(r => [r.id, r]));
     byControl = new Map(D.controls.map(c => [c.id, c]));
     byPlatform = new Map(D.platforms.map(p => [p.id, p]));
@@ -131,6 +141,19 @@
       else if (b.dataset.kind === 'offering') { const n = lastNet.nodes.get(`o:${id}`); if (n) showOffering(n.offering); }
     });
     $('example').addEventListener('click', runExample);
+    const sc = $('scenarios');
+    SCENARIOS.forEach(s => {
+      const b = el('button', { type: 'button', class: 'scenario' }, `<strong>${esc(s.name)}</strong><span>${esc(s.note)}</span>`);
+      b.addEventListener('click', () => {
+        $('maturity').value = s.maturity; $('maturity').dispatchEvent(new Event('change'));
+        document.querySelectorAll('input[name="stack"]').forEach(x => { x.checked = s.stack.includes(x.value); });
+        document.querySelectorAll('input[name="concern"]').forEach(x => { x.checked = s.concerns.includes(+x.value); });
+        $('concern-own').value = ''; $('full-scan').checked = true;
+        runLive();
+        $('out-title').scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'start' });
+      });
+      sc.append(b);
+    });
     drawEmpty();
   }
 
@@ -463,8 +486,10 @@
   function report(assessed, offer, stackIds) {
     const box = el('section', { class: 'report', 'aria-labelledby': 'report-title' });
     const n = s => assessed.filter(a => a.status === s).length;
+    const toClose = n('partial') + n('gap');
     box.innerHTML = `<h2 id="report-title" class="atlas-h2">What your stack covers</h2>
-      <p class="report-sum"><span class="sum s-covered"><strong>${n('covered')}</strong> covered</span><span class="sum s-partial"><strong>${n('partial')}</strong> in part</span><span class="sum s-gap"><strong>${n('gap')}</strong> gaps</span><span class="sum-note">across the ${assessed.length} controls your concerns${$('full-scan').checked ? ' and the full scan' : ''} reached, for ${esc(list(stackIds.map(pname)))}.</span></p>`;
+      <p class="report-head">${toClose ? `<strong>${toClose} of ${assessed.length} controls have a gap to close.</strong> ${n('gap') ? `${n('gap')} ${n('gap') > 1 ? 'are' : 'is'} not covered at all, and ${n('partial')} ${n('partial') === 1 ? 'is' : 'are'} only partly covered.` : `All ${n('partial')} are partly covered, so something in your stack touches them but leaves part of the control open.`}` : `<strong>All ${assessed.length} controls are covered.</strong>`}</p>
+      <p class="report-sum"><span class="sum s-covered"><strong>${n('covered')}</strong> covered</span><span class="sum s-partial"><strong>${n('partial')}</strong> partly covered</span><span class="sum s-gap"><strong>${n('gap')}</strong> not covered</span><span class="sum-note">across the ${assessed.length} controls your concerns${$('full-scan').checked ? ' and the full scan' : ''} reached, for ${esc(list(stackIds.map(pname)))}.</span></p>`;
     const covered = assessed.filter(a => a.status === 'covered');
     if (covered.length) {
       box.append(el('h3', { class: 'report-h3' }, 'Covered'));
@@ -473,13 +498,13 @@
       ul.querySelectorAll('button').forEach((b, i) => b.addEventListener('click', () => showControl(covered[i])));
       box.append(ul);
     }
-    const open = assessed.filter(a => a.status !== 'covered');
+    const open = assessed.filter(a => a.status !== 'covered').sort((a, b) => (a.status === 'partial') - (b.status === 'partial'));
     if (open.length) {
       box.append(el('h3', { class: 'report-h3' }, 'Gaps to fill, and how'));
       for (const a of open) {
         const card = el('article', { class: `gap-card s-${a.status}` });
         const gl = a.gaps.map(g => `${esc(pname(g.rec.p))} ${labelTag(g.label)}`).join(' ');
-        card.innerHTML = `<header><h4>${esc(a.cap.name)}</h4><span class="tag ${a.status === 'partial' ? 'partial' : 'not-addressed'}">${a.status === 'partial' ? `In part, by ${esc(list(a.par.map(x => pname(x.p))))}` : 'Not covered'}</span></header>
+        card.innerHTML = `<header><h4>${esc(a.cap.name)}</h4><span class="tag ${a.status === 'partial' ? 'partial' : 'not-addressed'}">${a.status === 'partial' ? `Partly covered, by ${esc(list(a.par.map(x => pname(x.p))))}` : 'Not covered by anything you run'}</span></header>
           <p class="cat">${esc(a.cap.category)}: ${esc(a.cap.definition)}</p>
           ${gl ? `<p class="gap-labels">${gl}</p>` : ''}
           <ol class="fills">${a.fills.map(f => `<li${f.primary ? ' class="primary"' : ''}>${fillTag(f.type)} <span>${esc(f.text)}</span>${f.primary ? ' <span class="rec">Recommended</span>' : ''}</li>`).join('')}</ol>`;
