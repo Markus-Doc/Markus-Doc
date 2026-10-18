@@ -22,3 +22,9 @@ https://:project.markus-doc.pages.dev/*
 
 https://markus-doc.pages.dev/*
   X-Robots-Tag: noindex
+
+/atlas-preview/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/atlas-preview/data/*
+  Cache-Control: public, max-age=0, must-revalidate
