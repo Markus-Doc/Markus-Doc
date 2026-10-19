@@ -28,3 +28,10 @@ https://markus-doc.pages.dev/*
 
 /atlas-preview/data/*
   Cache-Control: public, max-age=0, must-revalidate
+
+# AI Stack Check preview (renamed from the Atlas preview on 19 Oct 2026). Short cache while it changes daily.
+/stack-check/assets/*
+  Cache-Control: public, max-age=300, must-revalidate
+
+/stack-check/data/*
+  Cache-Control: public, max-age=0, must-revalidate
