@@ -48,10 +48,16 @@ https://markus-doc.pages.dev/*
 /readiness-check/index.html
   Cache-Control: no-cache
 
+/readiness-check/landscape.html
+  Cache-Control: no-cache
+
 /readiness-check/css/*
   Cache-Control: public, max-age=300, must-revalidate
 
 /readiness-check/js/*
+  Cache-Control: public, max-age=300, must-revalidate
+
+/readiness-check/vendor/*
   Cache-Control: public, max-age=300, must-revalidate
 
 /readiness-check/data/*
