@@ -69,3 +69,20 @@ https://markus-doc.pages.dev/*
 /readiness-check/data/*
   Cache-Control: public, max-age=0, must-revalidate
 # END readiness-check
+
+# BEGIN company (company home page, added 21 Oct 2026)
+/company/*
+  X-Robots-Tag: noindex
+  Referrer-Policy: no-referrer
+  Cross-Origin-Opener-Policy: same-origin
+  Cross-Origin-Resource-Policy: same-origin
+
+/company/
+  Cache-Control: no-cache
+
+/company/index.html
+  Cache-Control: no-cache
+
+/company/company.css
+  Cache-Control: public, max-age=0, must-revalidate
+# END company
