@@ -35,3 +35,25 @@ https://markus-doc.pages.dev/*
 /stack-check/*
   X-Robots-Tag: noindex, nofollow
   Referrer-Policy: no-referrer
+
+# BEGIN readiness-check (managed by tools/publish_site.py, edit there)
+/readiness-check/*
+  Cross-Origin-Opener-Policy: same-origin
+  Cross-Origin-Resource-Policy: same-origin
+  X-Robots-Tag: noindex
+
+/readiness-check/
+  Cache-Control: no-cache
+
+/readiness-check/index.html
+  Cache-Control: no-cache
+
+/readiness-check/css/*
+  Cache-Control: public, max-age=300, must-revalidate
+
+/readiness-check/js/*
+  Cache-Control: public, max-age=300, must-revalidate
+
+/readiness-check/data/*
+  Cache-Control: public, max-age=0, must-revalidate
+# END readiness-check
