@@ -85,4 +85,7 @@ https://markus-doc.pages.dev/*
 
 /company/company.css
   Cache-Control: public, max-age=0, must-revalidate
+
+/company/nav.js
+  Cache-Control: public, max-age=0, must-revalidate
 # END company
