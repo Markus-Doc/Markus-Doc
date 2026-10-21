@@ -295,6 +295,10 @@ main:focus { outline: none; }
 .site-footer { border-top: 1px solid var(--rule); padding: 1.5rem 0; font-size: .875rem; color: var(--quiet); }
 .footer-inner { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .5rem 1.5rem; }
 .footer-inner p { margin: 0; }
+.footer-tools { margin-bottom: 1.25rem; }
+.footer-tools-label { margin: 0 0 .35rem; font-weight: 600; color: var(--ink); }
+.footer-tools ul { list-style: none; margin: 0; padding: 0; display: grid; gap: .35rem; }
+.footer-tools a { color: var(--ink); font-weight: 600; text-underline-offset: .2em; }
 .site-footer .text-link { font-size: .875rem; color: var(--ink); }
 
 /* The Runner project page carries two gameplay captures */
