@@ -34,6 +34,11 @@ Each project has its own page and was accurate at the time of writing. Index: ht
 - [AWS security architecture case study](https://www.markuswalker.com/projects/aws-security-architecture-case-study/): fictional planning case study (April 2026)
 - [Incident response planning portfolio](https://www.markuswalker.com/projects/incident-response-planning/): structured around NIST SP 800-61 (April 2026)
 
+## Tools
+
+- [AI Stack Check](https://www.markuswalker.com/stack-check/): name the AI tools you use and see the security gaps, with the vendor evidence.
+- [AU Readiness Check](https://www.markuswalker.com/readiness-check/): see which Australian governance frameworks likely apply to your business and how ready you look.
+
 ## Experience
 
 - Security Transformation Specialist, Accenture, September to October 2026
