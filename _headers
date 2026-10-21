@@ -51,14 +51,17 @@ https://markus-doc.pages.dev/*
 /readiness-check/landscape.html
   Cache-Control: no-cache
 
+/readiness-check/*.html
+  Cache-Control: no-cache
+
 /readiness-check/css/*
-  Cache-Control: public, max-age=300, must-revalidate
+  Cache-Control: public, max-age=0, must-revalidate
 
 /readiness-check/js/*
-  Cache-Control: public, max-age=300, must-revalidate
+  Cache-Control: public, max-age=0, must-revalidate
 
 /readiness-check/vendor/*
-  Cache-Control: public, max-age=300, must-revalidate
+  Cache-Control: public, max-age=0, must-revalidate
 
 /readiness-check/assets/*
   Cache-Control: public, max-age=86400
