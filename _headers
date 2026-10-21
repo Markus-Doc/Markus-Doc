@@ -60,6 +60,9 @@ https://markus-doc.pages.dev/*
 /readiness-check/vendor/*
   Cache-Control: public, max-age=300, must-revalidate
 
+/readiness-check/assets/*
+  Cache-Control: public, max-age=86400
+
 /readiness-check/data/*
   Cache-Control: public, max-age=0, must-revalidate
 # END readiness-check
