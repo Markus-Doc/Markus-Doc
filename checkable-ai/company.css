@@ -81,6 +81,18 @@ main{padding-bottom:24px}
   .hero-text{grid-column:1;grid-row:1;gap:24px;padding:48px clamp(24px,4vw,64px) 56px max(24px,calc((100vw - 1320px)/2 + 16px))}
   .hero h1{font-size:clamp(44px,4vw,70px);max-width:15ch}
 }
+/* Proof card on the quiet side of the art. Live HTML, not baked into the image. Desktop only. */
+.hero-card{display:none}
+@media (min-width:1400px){
+  .hero-card{display:grid;gap:12px;position:absolute;z-index:2;right:clamp(24px,3vw,56px);top:clamp(24px,5vh,56px);width:min(330px,36%);padding:20px 22px;
+    background:color-mix(in srgb,var(--surface) 82%,transparent);-webkit-backdrop-filter:blur(10px) saturate(1.1);backdrop-filter:blur(10px) saturate(1.1);
+    border:1px solid color-mix(in srgb,var(--line) 70%,transparent);border-top:3px solid var(--accent);box-shadow:var(--shadow)}
+  .hero-card-kicker{margin:0;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+  .hero-card ul{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+  .hero-card li{display:grid;grid-template-columns:5.4rem 1fr;gap:12px;align-items:baseline;font-size:15px;line-height:1.4;color:var(--ink)}
+  .hero-card b{font-family:var(--serif);font-size:21px;font-weight:600;line-height:1;color:var(--accent)}
+  .hero-card a{font-weight:600;font-size:15px}
+}
 .ctas{display:flex;flex-wrap:wrap;gap:12px 20px;align-items:center;margin:0}
 .ctas-end{margin-top:18px}
 .btn{background:var(--accent);color:var(--on-accent);font-weight:700;padding:12px 22px;text-decoration:none;min-height:44px;display:inline-flex;align-items:center}
