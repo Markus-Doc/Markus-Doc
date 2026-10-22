@@ -1,0 +1,8 @@
+Company home page: rights and licences
+
+Hero image (img/hero-800.webp, img/hero-1200.webp, img/hero-1672.webp)
+Generated with ChatGPT image generation for this site, 21 October 2026. No people pictured.
+
+Fonts (fonts/)
+Fraunces and Schibsted Grotesk, used under the SIL Open Font License 1.1.
+Licence texts: fonts/fraunces-OFL.txt and fonts/schibstedgrotesk-OFL.txt.

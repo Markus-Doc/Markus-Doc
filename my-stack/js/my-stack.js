@@ -9,9 +9,9 @@
   const kb = { platforms: {}, list: [], groups: {}, capabilities: 0, loaded: false }
 
   const MODE = {
-    memory: ['Not saved yet', 'It is gone when you close or reload this page. Pick one of the three ways below to keep it.'],
-    device: ['Kept in this browser only', 'If you clear your browser data, use another browser or change device, you lose it.'],
-    account: ['Saved to your account', 'It follows you to every tool, on any device where you sign in.']
+    memory: ['Not saved yet', 'Gone when you close this page.'],
+    device: ['In this browser', 'Lost if you clear browser data or change device.'],
+    account: ['In your account', 'Follows you to every tool and device.']
   }
   const STATUS = [['', 'Status not set'], ['in-use', 'In use'], ['trialling', 'Trialling'], ['planned', 'Planned']]
   const ACCOUNT = [['', 'Plan not set'], ['personal', 'Personal plans'], ['business', 'Business plan'], ['enterprise', 'Enterprise plan'], ['api', 'API or cloud account'], ['unsure', 'Not sure']]
@@ -97,15 +97,17 @@
     $('ms-mode').textContent = s.state === 'checking' ? 'Checking your account' : MODE[mode][0]
     $('ms-mode-help').textContent = MODE[mode][1]
     const inAccount = mode === 'account'
+    const draft = accountsDraft()
     $('ms-signed-in').hidden = !inAccount
-    $('ms-signed-out').hidden = inAccount || (P.account && P.account.available === false)
+    $('ms-signed-out').hidden = inAccount || draft
+    $('ms-draft').hidden = inAccount || !draft
     $('ms-email').textContent = s.email || 'your account'
     $('ms-sync-state').textContent = s.saving ? 'Saving.' : s.error ? s.error : s.lastSync ? 'Saved.' : ''
     const device = $('ms-device')
     device.setAttribute('aria-pressed', String(mode === 'device'))
-    device.textContent = mode === 'device' ? 'Remove it from this browser' : 'Keep in this browser only'
+    device.textContent = mode === 'device' ? 'Remove from this browser' : 'Keep in this browser'
     device.disabled = inAccount
-    say($('ms-device-msg'), inAccount ? 'Your stack is saved to your account, so we do not also keep it in this browser.' : '')
+    say($('ms-device-msg'), inAccount ? 'Saved to your account, so we do not also keep it here.' : '')
   }
 
   function authForm(formId, action) {
@@ -125,22 +127,34 @@
         form.reset()
         say(msg, '')
         status('')
+        showAuth(null)
         $('ms-signout').focus()
       }).catch(err => say(msg, err.message, true)).finally(() => { button.disabled = false })
     })
   }
 
+  // Accounts are off (greyed out with a Draft tag) on the live site until ACCOUNTS_LIVE is switched on in profile.js.
+  function accountsDraft() { return !!(P.account && (P.account.draft === true || P.account.available === false)) }
+
+  // The sign-up and sign-in forms stay folded until one of the two buttons opens them. A second press folds it.
   function showAuth(which) {
     const signup = which === 'signup'
+    const signin = which === 'signin'
     $('ms-signup-form').hidden = !signup
-    $('ms-signin-form').hidden = signup
-    $('ms-show-signup').setAttribute('aria-pressed', String(signup))
-    $('ms-show-signin').setAttribute('aria-pressed', String(!signup))
+    $('ms-signin-form').hidden = !signin
+    $('ms-concept').hidden = !signup && !signin
+    $('ms-show-signup').setAttribute('aria-expanded', String(signup))
+    $('ms-show-signin').setAttribute('aria-expanded', String(signin))
+  }
+  function toggleAuth(which, focusId) {
+    const open = $('ms-show-' + which).getAttribute('aria-expanded') === 'true'
+    showAuth(open ? null : which)
+    if (!open) $(focusId).focus()
   }
 
   function wireSave() {
-    $('ms-show-signup').addEventListener('click', () => { showAuth('signup'); $('ms-signup-email').focus() })
-    $('ms-show-signin').addEventListener('click', () => { showAuth('signin'); $('ms-signin-email').focus() })
+    $('ms-show-signup').addEventListener('click', () => toggleAuth('signup', 'ms-signup-email'))
+    $('ms-show-signin').addEventListener('click', () => toggleAuth('signin', 'ms-signin-email'))
     authForm('ms-signup-form', 'signUp')
     authForm('ms-signin-form', 'signIn')
     $('ms-signout').addEventListener('click', () => {
@@ -155,23 +169,22 @@
       const f = e.target.files && e.target.files[0]
       e.target.value = ''
       if (!f) return
-      P.upload(f).then(r => say($('ms-file-msg'), 'Loaded your stack' + (r.dropped.length ? '. We left out ' + plural(r.dropped.length, 'entry', 'entries') + ' we could not use.' : '.')))
+      P.upload(f).then(r => say($('ms-file-msg'), 'Loaded your list' + (r.dropped.length ? '. We left out ' + plural(r.dropped.length, 'entry', 'entries') + ' we could not use.' : '.')))
         .catch(err => say($('ms-file-msg'), err.message, true))
     })
     $('ms-device').addEventListener('click', () => {
       const on = P.mode() === 'device'
       P.setMode(on ? 'memory' : 'device')
-        .then(m => say($('ms-device-msg'), m === 'device' ? 'Kept in this browser only.' : 'Removed from this browser. It stays on this page until you close it.'))
+        .then(m => say($('ms-device-msg'), m === 'device' ? 'Kept in this browser.' : 'Removed from this browser. It stays on this page until you close it.'))
         .catch(e => say($('ms-device-msg'), e.message, true))
     })
     $('ms-clear').addEventListener('click', () => {
-      if (!window.confirm('Clear your stack? This removes every platform and answer from where it is saved.')) return
+      if (!window.confirm('Clear your list? This removes every platform and answer from where it is saved.')) return
       try { P.clear(); status('') } catch (e) { status(e.message) }
     })
-    if (P.account && P.account.available === false) {
-      $('ms-accounts-soon').hidden = false
-      $('ms-signed-out').hidden = true
-    } else if (window.location.hash === '#account') showAuth('signup')
+    $('ms-draft-tag').hidden = !accountsDraft()
+    $('account').classList.toggle('is-draft', accountsDraft())
+    if (!accountsDraft() && window.location.hash === '#account') showAuth('signup')
   }
 
   // ---- Platforms
@@ -186,9 +199,10 @@
       return
     }
     const have = P.get().stack.platforms.map(p => p.id)
-    const hits = kb.list.filter(p => have.indexOf(p.id) === -1 && (p.name.toLowerCase().indexOf(q) !== -1 || p.id.indexOf(q) !== -1))
-      .sort((a, b) => (b.checked - a.checked) || (a.name.toLowerCase().indexOf(q) - b.name.toLowerCase().indexOf(q)) || a.name.localeCompare(b.name))
-      .slice(0, 10)
+    // Names, ids and common product words (Claude, ChatGPT, Copilot) through the shared helper, best match first.
+    const found = typeof P.searchPlatforms === 'function' ? P.searchPlatforms(q, kb.list)
+      : kb.list.filter(p => p.name.toLowerCase().indexOf(q) !== -1 || p.id.indexOf(q) !== -1)
+    const hits = found.filter(p => have.indexOf(p.id) === -1).slice(0, 10)
     if (!hits.length) {
       list.appendChild(el('li', { class: 'ms-note', text: 'No platform matches "' + q + '". Add it by name under "Tools we do not cover yet".' }))
       return
@@ -392,7 +406,7 @@
     const note = $('ms-migrated')
     if (from.length) {
       const names = from.map(k => k === 'readiness-check-progress-v1' ? 'the AU Frameworks Check' : k === '#stack' ? 'the link you followed' : 'the agent controls self-assessment')
-      note.textContent = 'We started your list from answers you gave ' + names.join(' and ') + ' in this browser. Check it, then pick a way to keep it.'
+      note.textContent = 'We started your list from answers you gave ' + names.join(' and ') + ' in this browser. Check it, then keep it.'
       note.hidden = false
     }
   }
