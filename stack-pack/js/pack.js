@@ -111,7 +111,7 @@
 
   function renderPicker() {
     const idx = state.index
-    $('sp-picker-intro').textContent = 'Choose from the ' + idx.platforms.length + ' platforms in our free data. Set the plan you are on where you know it, because a personal plan gives your business far fewer controls than an enterprise one.'
+    $('sp-picker-intro').textContent = 'Choose from the ' + idx.platforms.length + ' platforms in our free data. Set your plan where you know it. A personal plan has far fewer controls than an enterprise one.'
     const groups = $('sp-groups')
     groups.textContent = ''
     for (const g of idx.groups) {
@@ -121,7 +121,7 @@
       for (const id of ids) {
         const p = state.platforms[id]
         const box = el('input', { type: 'checkbox', id: 'sp-opt-' + id, value: id, onchange: e => toggle(id, e.target.checked) })
-        list.append(el('li', { 'data-name': (p.name + ' ' + id).toLowerCase() }, el('label', { for: 'sp-opt-' + id }, box, el('span', { text: p.name }))))
+        list.append(el('li', { 'data-name': (p.name + ' ' + id).toLowerCase(), 'data-id': id }, el('label', { for: 'sp-opt-' + id }, box, el('span', { text: p.name }))))
       }
       groups.append(el('fieldset', { class: 'sp-group' }, el('legend', { text: g.name }), list))
     }
@@ -135,15 +135,18 @@
 
   function filter() {
     const q = $('sp-search').value.trim().toLowerCase()
+    // Product words (Claude, ChatGPT, Copilot) find their KB platform through the shared alias search.
+    const search = window.MWProfile && typeof window.MWProfile.searchPlatforms === 'function' ? window.MWProfile.searchPlatforms : null
+    const aliased = search && q.length > 1 ? new Set(search(q, state.index).map(p => p.id)) : null
     let shown = 0
     for (const li of document.querySelectorAll('#sp-groups li')) {
-      const hit = !q || li.dataset.name.includes(q)
+      const hit = !q || li.dataset.name.includes(q) || (aliased && aliased.has(li.dataset.id))
       li.hidden = !hit
       if (hit) shown++
     }
     for (const fs of document.querySelectorAll('#sp-groups fieldset')) fs.hidden = !fs.querySelector('li:not([hidden])')
     $('sp-search-count').textContent = q ? plural(shown, 'platform') + ' match.' : ''
-    const more = q.length > 1 ? (state.index.more_platforms || []).filter(p => p.name.toLowerCase().includes(q)).slice(0, 5) : []
+    const more = q.length > 1 ? (state.index.more_platforms || []).filter(p => p.name.toLowerCase().includes(q) || (aliased && aliased.has(p.id))).slice(0, 5) : []
     const note = $('sp-more-note')
     note.hidden = !more.length
     if (more.length) {
@@ -320,7 +323,7 @@
 
     sheet.append(el('ul', { class: 'sp-key', 'aria-label': 'Key to the control strips' },
       ['S', 'P', 'N', 'O'].map(ch => el('li', {}, el('i', { class: 'v-' + STATUS[ch].cls, 'aria-hidden': 'true' }), STATUS[ch].label))))
-    sheet.append(el('p', { class: 'rc-note sp-sheet-foot', text: 'From public vendor documentation only, not testing of any account, tenant or region. Each strip shows our 46 controls in order. The vendor questions pack below has the question for every gap, with sources.' }))
+    sheet.append(el('p', { class: 'rc-note sp-sheet-foot', text: 'From public vendor documentation only, not testing of any account, tenant or region. Each strip shows our 46 controls in order.' }))
   }
 
   function card(s) {
@@ -395,7 +398,7 @@
       el('div', {},
         el('p', { class: 'rc-eyebrow', text: 'Vendor questions' }),
         el('h2', { id: 'sp-questions-title', tabindex: '-1', text: plural(totalQ, 'question') + ' to send your vendors' }),
-        el('p', { class: 'rc-note', text: 'Each question comes with what the vendor already publishes, so you only ask about what is missing. Questions we suggest asking first come first.' })),
+        el('p', { class: 'rc-note', text: 'Each question shows what the vendor already publishes. Priority questions come first.' })),
       el('div', { class: 'sp-actions sp-noprint' },
         el('button', { type: 'button', class: 'rc-secondary', onclick: () => download('stack-pack-vendor-questions.md', packs.map(markdown).join('\n\n---\n\n'), 'text/markdown') }, 'Download all (Markdown)'),
         el('button', { type: 'button', class: 'rc-secondary', onclick: () => download('stack-pack-vendor-questions.txt', packs.map(plainText).join('\n\n' + '='.repeat(60) + '\n\n'), 'text/plain') }, 'Download all (plain text)'),

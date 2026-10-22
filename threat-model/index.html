@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="icon" href="assets/favicon-16.png" sizes="16x16" type="image/png">
+  <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNiAxNiI+PHN0eWxlPi5se2ZpbGw6I2ZmZmZmZjtzdHJva2U6IzkxM2IyYn0uc3tmaWxsOiM5MTNiMmJ9Lmt7ZmlsbDojZmZmZmZmfS5oLC50e2ZpbGw6bm9uZTtzdHJva2UtbGluZWNhcDpyb3VuZDtzdHJva2UtbGluZWpvaW46cm91bmR9Lmh7c3Ryb2tlOiNmZmZmZmZ9LnR7c3Ryb2tlOiM5MTNiMmJ9QG1lZGlhIChwcmVmZXJzLWNvbG9yLXNjaGVtZTpkYXJrKXsubHtmaWxsOiMxZTI0Mjc7c3Ryb2tlOiNmMWFjOTF9LnN7ZmlsbDojZjFhYzkxfS5re2ZpbGw6IzFlMjQyN30uaCwudHtmaWxsOm5vbmU7c3Ryb2tlLWxpbmVjYXA6cm91bmQ7c3Ryb2tlLWxpbmVqb2luOnJvdW5kfS5oe3N0cm9rZTojMWUyNDI3fS50e3N0cm9rZTojZjFhYzkxfX08L3N0eWxlPjxyZWN0IGNsYXNzPSJsIiB4PSIwLjUiIHk9IjEuNSIgd2lkdGg9IjgiIGhlaWdodD0iOCIgc3Ryb2tlLXdpZHRoPSIxIi8+PHJlY3QgY2xhc3M9InMiIHg9IjQiIHk9IjUiIHdpZHRoPSIxMiIgaGVpZ2h0PSIxMSIvPjxwYXRoIGNsYXNzPSJrIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik02IDloMXYtMWgzdjFoMXY1aC0xdi0yaC0zdjJoLTF6TTcgOXYyaDN2LTJ6TTEyIDhoM3YxaC0xdjRoMXYxaC0zdi0xaDF2LTRoLTF6Ii8+PHBhdGggY2xhc3M9ImgiIHN0cm9rZS13aWR0aD0iNC4yIiBkPSJNOC40IDIuOWwyLjUgMi41IDQuMy01Ii8+PHBhdGggY2xhc3M9InQiIHN0cm9rZS13aWR0aD0iMi4xIiBkPSJNOC40IDIuOWwyLjUgMi41IDQuMy01Ii8+PC9zdmc+DQo=" sizes="any" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' https://static.cloudflareinsights.com; style-src 'self'; connect-src 'self' https://cloudflareinsights.com; img-src 'self' data: blob:; font-src 'self'; form-action 'none'; base-uri 'none'">
+  <meta name="referrer" content="no-referrer">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="description" content="Threat Model Starter, a free tool that matches your AI tools and agents to the OWASP Top 10 for LLM Applications and the OWASP Top 10 for Agentic Applications. It runs in your browser and your answers stay there unless you choose to save them to your account.">
+  <title>Threat Model Starter | Checkable AI</title>
+  <link rel="stylesheet" href="css/tokens.css?v=052c0bc6a1">
+  <link rel="stylesheet" href="css/threat.css?v=e344b3a73b">
+  <script src="js/theme.js?v=0a8f61f931"></script>
+  <script src="js/nav.js?v=4f89736078" defer></script>
+  <script src="/tools-shared/profile/profile.js"></script>
+  <script src="/tools-shared/profile/profile-bar.js" defer></script>
+  <script src="js/profile-fallback.js?v=2f36fc4b8e" defer></script>
+  <script src="js/model.js?v=1a606384e5" defer></script>
+  <script src="js/app.js?v=127d937cfc" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to the tool</a>
+  <header class="rc-header">
+    <a class="rc-brand" href="./" id="tm-home"><span class="rc-mark" aria-hidden="true"><svg viewBox="0 0 64 64" focusable="false"><rect class="rc-mark-ground" stroke="currentColor" x="5" y="8" width="36" height="36" stroke-width="4"/><rect fill="currentColor" x="18" y="24" width="38" height="38"/><circle class="rc-mark-ground" cx="49" cy="15" r="15.5"/><circle fill="currentColor" cx="49" cy="15" r="12"/><path class="rc-mark-halo" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="3.6" d="M43.5 15.5 47.6 19.6 55 10.6"/></svg></span>Threat Model Starter<span class="rc-tag">Preview</span></a>
+    <nav class="tools-nav" aria-label="Site">
+  <ul class="tools-nav-list">
+    <li class="tools-nav-item"><a class="tools-nav-top" href="/checkable-ai/">Checkable AI</a></li>
+    <li class="tools-nav-group">
+      <details class="tools-nav-menu">
+        <summary class="tools-nav-top">AI Stack Check</summary>
+        <ul class="tools-nav-sub">
+          <li><a href="/stack-check/">Run the check</a></li>
+          <li><a href="/stack-check/how-it-works/">How it works</a></li>
+          <li><a href="/stack-check/atlas/">Knowledge base</a></li>
+          <li><a href="/stack-check/open-problems/">Open problems</a></li>
+          <li><a href="/trust/">Trust</a></li>
+          <li><a href="/stack-check/report/">In-depth report</a></li>
+        </ul>
+      </details>
+    </li>
+    <li class="tools-nav-group">
+      <details class="tools-nav-menu">
+        <summary class="tools-nav-top">AU Frameworks Check</summary>
+        <ul class="tools-nav-sub">
+          <li><a href="/readiness-check/">Run the check</a></li>
+          <li><a href="/readiness-check/landscape.html">Frameworks map</a></li>
+          <li><a href="/readiness-check/#rc-how">How it works</a></li>
+          <li><a href="/readiness-check/#rc-next">What to do next</a></li>
+        </ul>
+      </details>
+    </li>
+    <li class="tools-nav-group">
+      <details class="tools-nav-menu">
+        <summary class="tools-nav-top is-current">More tools</summary>
+        <ul class="tools-nav-sub">
+          <li><a href="/my-stack/">My stack</a></li>
+          <li><a href="/stack-pack/">Stack pack</a></li>
+          <li><a href="/ai-register/">AI register</a></li>
+          <li><a href="/ai-policy/">AI use policy</a></li>
+          <li><a href="/shadow-ai/">Shadow AI check</a></li>
+          <li><a href="/threat-model/" aria-current="page">Threat model starter</a></li>
+          <li><a href="/ai-sdlc/">AI SDLC check</a></li>
+        </ul>
+      </details>
+    </li>
+    <li class="tools-nav-group">
+      <details class="tools-nav-menu">
+        <summary class="tools-nav-top">Services</summary>
+        <ul class="tools-nav-sub">
+          <li><a href="/stack-check/services/">All services</a></li>
+          <li><a href="/stack-check/services/#check">Check</a></li>
+          <li><a href="/stack-check/services/#test">Test</a></li>
+          <li><a href="/stack-check/services/#govern">Govern</a></li>
+          <li><a href="/stack-check/services/#build">Build</a></li>
+          <li><a href="/stack-check/services/#embed">Embed</a></li>
+        </ul>
+      </details>
+    </li>
+    <li class="tools-nav-item"><a class="tools-nav-top" href="/stack-check/about/">About</a></li>
+  </ul>
+</nav>
+    <button id="theme-toggle" class="theme-toggle" type="button" aria-pressed="false" title="Switch between light and dark mode">
+      <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M20.7 14.4A8.5 8.5 0 0 1 9.6 3.3a.8.8 0 0 0-1-1A10 10 0 1 0 21.7 15.4a.8.8 0 0 0-1-1z"/></svg>
+      <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4.5" fill="currentColor"/><path stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M12 1.5v2.5M12 20v2.5M1.5 12H4M20 12h2.5M4.6 4.6l1.8 1.8M17.6 17.6l1.8 1.8M4.6 19.4l1.8-1.8M17.6 6.4l1.8-1.8"/></svg>
+      <span id="theme-label">Dark mode</span>
+    </button>
+  </header>
+
+  <main id="main" tabindex="-1">
+    <div id="tm-status" class="rc-status" role="alert"></div>
+
+    <section class="tm-intro" aria-labelledby="tm-title">
+      <h1 id="tm-title" tabindex="-1">Threat model starter</h1>
+      <p class="rc-lede">We match your AI tools and agents to the OWASP risk lists for LLM and agentic applications, and say why each risk applies and what to do first.</p>
+      <p class="tm-privacy"><strong>Your answers never leave your browser</strong> unless you sign in and choose to save them to your account.</p>
+    </section>
+
+    <div id="mw-profile-bar" class="mw-profile-bar" data-mw-profile-bar data-tool="threat-model"></div>
+
+    <section class="tm-section tm-no-print" id="tm-inputs" aria-labelledby="tm-inputs-title">
+      <h2 id="tm-inputs-title">Your tools and agents</h2>
+      <p id="tm-from" class="tm-from" aria-live="polite"></p>
+      <fieldset class="tm-q">
+        <legend>Add tool types</legend>
+        <div id="tm-types" class="tm-options"></div>
+      </fieldset>
+      <details class="tm-add">
+      <summary>Add an agent</summary>
+      <form id="tm-agent-form" class="tm-agent-form" novalidate>
+        <label class="tm-field">Its job<select id="tm-role"></select></label>
+        <label class="tm-field">Human oversight<select id="tm-oversight"></select></label>
+        <label class="tm-field">Identity it uses<select id="tm-identity"></select></label>
+        <fieldset class="tm-q tm-wide">
+          <legend>What it can reach</legend>
+          <div id="tm-tools" class="tm-options"></div>
+        </fieldset>
+        <div class="tm-wide rc-actions"><button type="submit" class="rc-secondary">Add agent</button></div>
+      </form>
+      </details>
+      <ul id="tm-agents" class="tm-agents" aria-label="Agents added on this page"></ul>
+    </section>
+
+    <section class="tm-section" id="tm-result" aria-labelledby="tm-result-title" aria-live="polite"></section>
+  </main>
+  <footer class="rc-footer">
+    <p class="rc-footer-note">A starting point from your own inputs, not a full threat model or a security test. OWASP lists checked on <span id="tm-asat">22 October 2026</span>.</p>
+    <p>Checkable AI. Copyright (c) 2026 Markus Walker.</p>
+  </footer>
+</body>
+</html>

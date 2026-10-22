@@ -1,0 +1,139 @@
+/* AI use policy builder tokens: a copy of the AU Frameworks Check tokens.css (readiness-check/css/tokens.css,
+   22 Oct 2026) by way of shadow-ai/css/tokens.css. Keep in step with that file. */
+
+:root {
+  color-scheme: light;
+
+  /* Type, as the Stack Check's public pages set it */
+  --font-display:Georgia,'Times New Roman',serif;
+  --font-heading:var(--font-display);
+  --font-signature:var(--font-display);
+  --font-reading:Georgia,'Times New Roman',serif;
+  --font-utility:'Candara','Trebuchet MS',sans-serif;
+  --font-footer:Georgia,serif;
+
+  /* Type scale (rem at a 16px root). Body copy is 1.0625rem on 1.6 */
+  --text-xs:.75rem;      /* banner, tag, scale labels */
+  --text-sm:.8125rem;    /* eyebrow */
+  --text-note:.875rem;   /* notes, stat labels, theme button */
+  --text-ui:.9375rem;    /* stepper, Stack Check notes */
+  --text-base:1rem;      /* nav, buttons, choices */
+  --text-body:1.0625rem; /* reading copy, question titles */
+  --text-lede:1.125rem;
+  --text-brand:1.3125rem;
+  --text-h4:1.125rem;
+  --text-h3:1.75rem;     /* block heads, How it works */
+  --text-h2:1.875rem;    /* step heads */
+  --text-stat:46px;      /* stats strip figures */
+  --text-hero:clamp(2.625rem,4.1vw,3.625rem);
+  --text-verdict:clamp(1.75rem,3vw,2.125rem);
+  --leading-body:1.6;
+  --leading-tight:1.2;
+
+  /* Layout */
+  --page-max:1280px;
+  --content-max:1200px;
+  --gutter:40px;
+  --page-top:38px;
+  --page-bottom:64px;
+  --section-gap:32px;
+  --radius:0;
+  --rule:1px solid var(--line);
+  --rule-strong:2px solid var(--ink);
+  --tap:44px;
+
+  /* Colour, light (the default, and always works) */
+  --paper:#ffffff; --paper-edge:#f3f4f3; --paper-end:#ffffff; --raised:#f7f8f7; --surface:#ffffff;
+  --field-bg:#ffffff; --well-bg:#f0f2f1; --soft-bg:#edf1f1; --band-bg:#edf1f1; --head-bg:#edf1f1; --nav-bg:#ffffff; --stat-top:#ffffff;
+  --group-a:#ffffff; --group-b:#f7f8f8;
+  --ink:#252b2d; --muted:#566268; --line:#d0d6d6; --compact-line:#b6c0d0; --notice-line:#d7b8aa;
+  --accent:#913b2b; --accent-hover:#742d20; --on-accent:#ffffff;
+  --teal:#913b2b; --teal-soft:#f8eae5; --on-teal:#ffffff; --focus:#165b9a;
+  --hover-bg:#f4e9e4; --hover-line:#913b2b; --backdrop:#141c2673; --shadow:none;
+  --bad-line:#a14d37; --col-p1:#141c26; --col-other:#4b5563;
+  --error-bg:#fff0eb; --error-fg:#8a3b28; --error-line:#e4bfb2;
+  --warn-bg:#f2e8d4; --warn-line:#d6c7a8; --warn-fg:#66502c;
+  --v-sup-bg:#e4efe9; --v-sup-fg:#24553f; --v-sup-line:#8eb5a0;
+  --v-par-bg:#f5edda; --v-par-fg:#6e5014; --v-par-line:#c9ae70;
+  --v-na-bg:#f4e5e2; --v-na-fg:#883c32; --v-na-line:#c89b91;
+  --v-unr-bg:#e8eef4; --v-unr-fg:#36566c; --v-unr-line:#a0b4c2;
+  --v-unk-fg:#586265; --v-unk-line:#bdc7ca;
+  --st-draft-bg:#e2e8e3; --st-draft-fg:#36594d; --st-reviewed-bg:#d9e5d3; --st-reviewed-fg:#285145;
+  --st-overdue-bg:#f0dcd0; --st-overdue-fg:#853b2f; --st-historical-bg:#f0e2c9; --st-historical-fg:#725324;
+  --st-unanswered-bg:#ece7db; --st-unanswered-fg:#536058;
+  /* Readiness only */
+  --line-strong:#a9b3b4; --seg-off:#e3e8e8;
+  /* The measured grid drawn over framed photos: the paper colour, part transparent. It follows
+     the theme because --paper does. */
+  --frame-grid:color-mix(in srgb, var(--paper) 42%, transparent);
+  /* The chevron steps' cascade, mixed from the accent and the surface so dark mode follows. Steps
+     1 to 3 carry --ink (at least 7:1 in both themes), step 4 is the full accent with its own text. */
+  --step-1:color-mix(in srgb, var(--accent) 8%, var(--surface));
+  --step-2:color-mix(in srgb, var(--accent) 20%, var(--surface));
+  --step-3:color-mix(in srgb, var(--accent) 36%, var(--surface));
+  --step-4:var(--accent); --on-step-4:var(--on-accent);
+  --nav-shadow:0 12px 32px color-mix(in srgb, var(--ink) 16%, transparent);
+  --b0-fg:#883c32; --b0-bar:#c48a7f;
+  --b1-fg:#86461a; --b1-bar:#d39a68;
+  --b2-fg:#6e5014; --b2-bar:#c9ae70;
+  --b3-fg:#36566c; --b3-bar:#8ba8bf;
+  --b4-fg:#24553f; --b4-bar:#5f9a7c;
+}
+@media (max-width:900px) { :root { --gutter:28px; } }
+@media (max-width:680px) { :root { --gutter:20px; --page-top:28px; --page-bottom:40px; } }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --paper:#0e131a; --paper-edge:#0b0f15; --paper-end:#11171f; --raised:#19212c; --surface:#151c25;
+    --field-bg:#11171f; --well-bg:#131a23; --soft-bg:#17202b; --band-bg:#18202a; --head-bg:#1a222d; --nav-bg:#131a23; --stat-top:#1a222d;
+    --group-a:#151d27; --group-b:#19202a;
+    --ink:#e6eaf0; --muted:#a8b3c2; --line:#2c3644; --compact-line:#3a4860; --notice-line:#323f52;
+    --accent:#f1ac91; --accent-hover:#ffc7af; --on-accent:#0a1122;
+    --teal:#8db1ff; --teal-soft:#1b2740; --on-teal:#0a1122; --focus:#ffd166;
+    --hover-bg:#1e293a; --hover-line:#3c4b63; --backdrop:#000000a6; --shadow:0 18px 60px #00000080;
+    --bad-line:#d87a66; --col-p1:#f1f4f8; --col-other:#a8b3c2;
+    --error-bg:#3a1f1a; --error-fg:#f6bcae; --error-line:#6b3b31;
+    --warn-bg:#33291a; --warn-line:#5c4a2a; --warn-fg:#ead3a3;
+    --v-sup-bg:#1e3a26; --v-sup-fg:#ace0b8; --v-sup-line:#336041;
+    --v-par-bg:#3b3016; --v-par-fg:#efd48f; --v-par-line:#645123;
+    --v-na-bg:#3d2522; --v-na-fg:#f3b6aa; --v-na-line:#643d36;
+    --v-unr-bg:#232d3d; --v-unr-fg:#b9cbe8; --v-unr-line:#3c4c66;
+    --v-unk-fg:#a3aea9; --v-unk-line:#3d4a44;
+    --st-draft-bg:#22312b; --st-draft-fg:#abd6c5; --st-reviewed-bg:#1f372c; --st-reviewed-fg:#a3dcbc;
+    --st-overdue-bg:#3e2521; --st-overdue-fg:#f4b2a3; --st-historical-bg:#3a2f1c; --st-historical-fg:#ecd096;
+    --st-unanswered-bg:#2a302d; --st-unanswered-fg:#c6d0cb;
+    --line-strong:#465468; --seg-off:#25303e;
+    --b0-fg:#f3b6aa; --b0-bar:#b9685a;
+    --b1-fg:#f2c49b; --b1-bar:#c2834f;
+    --b2-fg:#efd48f; --b2-bar:#b39443;
+    --b3-fg:#b9cbe8; --b3-bar:#6f8fc0;
+    --b4-fg:#ace0b8; --b4-bar:#4f9a68;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --paper:#0e131a; --paper-edge:#0b0f15; --paper-end:#11171f; --raised:#19212c; --surface:#151c25;
+  --field-bg:#11171f; --well-bg:#131a23; --soft-bg:#17202b; --band-bg:#18202a; --head-bg:#1a222d; --nav-bg:#131a23; --stat-top:#1a222d;
+  --group-a:#151d27; --group-b:#19202a;
+  --ink:#e6eaf0; --muted:#a8b3c2; --line:#2c3644; --compact-line:#3a4860; --notice-line:#323f52;
+  --accent:#f1ac91; --accent-hover:#ffc7af; --on-accent:#0a1122;
+  --teal:#8db1ff; --teal-soft:#1b2740; --on-teal:#0a1122; --focus:#ffd166;
+  --hover-bg:#1e293a; --hover-line:#3c4b63; --backdrop:#000000a6; --shadow:0 18px 60px #00000080;
+  --bad-line:#d87a66; --col-p1:#f1f4f8; --col-other:#a8b3c2;
+  --error-bg:#3a1f1a; --error-fg:#f6bcae; --error-line:#6b3b31;
+  --warn-bg:#33291a; --warn-line:#5c4a2a; --warn-fg:#ead3a3;
+  --v-sup-bg:#1e3a26; --v-sup-fg:#ace0b8; --v-sup-line:#336041;
+  --v-par-bg:#3b3016; --v-par-fg:#efd48f; --v-par-line:#645123;
+  --v-na-bg:#3d2522; --v-na-fg:#f3b6aa; --v-na-line:#643d36;
+  --v-unr-bg:#232d3d; --v-unr-fg:#b9cbe8; --v-unr-line:#3c4c66;
+  --v-unk-fg:#a3aea9; --v-unk-line:#3d4a44;
+  --st-draft-bg:#22312b; --st-draft-fg:#abd6c5; --st-reviewed-bg:#1f372c; --st-reviewed-fg:#a3dcbc;
+  --st-overdue-bg:#3e2521; --st-overdue-fg:#f4b2a3; --st-historical-bg:#3a2f1c; --st-historical-fg:#ecd096;
+  --st-unanswered-bg:#2a302d; --st-unanswered-fg:#c6d0cb;
+  --line-strong:#465468; --seg-off:#25303e;
+  --b0-fg:#f3b6aa; --b0-bar:#b9685a;
+  --b1-fg:#f2c49b; --b1-bar:#c2834f;
+  --b2-fg:#efd48f; --b2-bar:#b39443;
+  --b3-fg:#b9cbe8; --b3-bar:#6f8fc0;
+  --b4-fg:#ace0b8; --b4-bar:#4f9a68;
+}
