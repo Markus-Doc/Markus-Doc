@@ -214,14 +214,14 @@
         h('div', { class: 'sa-plan' }, planCol(30, res.actions[30]), planCol(90, res.actions[90]))),
       h('section', { class: 'sa-section', 'aria-labelledby': 'sa-kb-title' },
         h('h2', { id: 'sa-kb-title', text: 'Your AI tools in our knowledge base' }),
-        h('p', { class: 'rc-note', text: 'The account type decides the controls more than the vendor does. These facts come from the AI Stack Check knowledge base, which records each vendor’s published terms.' }),
+        h('p', { class: 'rc-note', text: 'The account type decides the controls more than the vendor does. These facts are vendors’ published terms, from the AI Stack Check knowledge base.' }),
         kbBlock,
         h('p', {}, 'Next: list these tools in the ', h('a', { href: '/ai-register/' }, 'AI register'), ', and get the questions to ask each vendor in your ', h('a', { href: '/stack-pack/' }, 'stack pack'), '.')),
       h('p', { class: 'rc-disclaimer' }, h('strong', { text: 'A self-check, not legal advice.' }), 'The result comes from your own answers and the rules shown with each risk. Privacy Act notes say where a principle is relevant, not whether you comply. For advice on your obligations, speak to a privacy lawyer.'),
       h('p', { class: 'sa-privacy sa-no-print' }, h('strong', { text: 'Your answers stay in your browser' }), '. Use the stack bar to keep them for next time.'),
       h('section', { class: 'sa-enquiry sa-no-print', 'aria-labelledby': 'sa-enq-title' },
         h('h2', { id: 'sa-enq-title', text: 'Want help closing these gaps?' }),
-        h('p', { text: 'We can work through your result with you and set up the approved list, the business accounts and the policy. Tell us what you need and we will reply by email.' }),
+        h('p', { text: 'We can work through your result and set up the approved list, business accounts and policy. Tell us what you need and we reply by email.' }),
         h('p', {}, h('a', { class: 'rc-button', href: ENQUIRY }, 'Send us an enquiry')))].filter(Boolean))
 
     placeBar('result')

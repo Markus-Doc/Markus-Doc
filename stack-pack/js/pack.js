@@ -111,7 +111,7 @@
 
   function renderPicker() {
     const idx = state.index
-    $('sp-picker-intro').textContent = 'Choose from the ' + idx.platforms.length + ' platforms in our free data. Set the plan you are on where you know it, because a personal plan gives your business far fewer controls than an enterprise one.'
+    $('sp-picker-intro').textContent = 'Choose from the ' + idx.platforms.length + ' platforms in our free data. Set your plan where you know it. A personal plan has far fewer controls than an enterprise one.'
     const groups = $('sp-groups')
     groups.textContent = ''
     for (const g of idx.groups) {
@@ -323,7 +323,7 @@
 
     sheet.append(el('ul', { class: 'sp-key', 'aria-label': 'Key to the control strips' },
       ['S', 'P', 'N', 'O'].map(ch => el('li', {}, el('i', { class: 'v-' + STATUS[ch].cls, 'aria-hidden': 'true' }), STATUS[ch].label))))
-    sheet.append(el('p', { class: 'rc-note sp-sheet-foot', text: 'From public vendor documentation only, not testing of any account, tenant or region. Each strip shows our 46 controls in order. The vendor questions pack below has the question for every gap, with sources.' }))
+    sheet.append(el('p', { class: 'rc-note sp-sheet-foot', text: 'From public vendor documentation only, not testing of any account, tenant or region. Each strip shows our 46 controls in order.' }))
   }
 
   function card(s) {
@@ -398,7 +398,7 @@
       el('div', {},
         el('p', { class: 'rc-eyebrow', text: 'Vendor questions' }),
         el('h2', { id: 'sp-questions-title', tabindex: '-1', text: plural(totalQ, 'question') + ' to send your vendors' }),
-        el('p', { class: 'rc-note', text: 'Each question comes with what the vendor already publishes, so you only ask about what is missing. Questions we suggest asking first come first.' })),
+        el('p', { class: 'rc-note', text: 'Each question shows what the vendor already publishes. Priority questions come first.' })),
       el('div', { class: 'sp-actions sp-noprint' },
         el('button', { type: 'button', class: 'rc-secondary', onclick: () => download('stack-pack-vendor-questions.md', packs.map(markdown).join('\n\n---\n\n'), 'text/markdown') }, 'Download all (Markdown)'),
         el('button', { type: 'button', class: 'rc-secondary', onclick: () => download('stack-pack-vendor-questions.txt', packs.map(plainText).join('\n\n' + '='.repeat(60) + '\n\n'), 'text/plain') }, 'Download all (plain text)'),

@@ -89,12 +89,11 @@
   </header>
 
   <main id="main" tabindex="-1" data-index="/stack-check/data/index.json">
-    <noscript><p class="rc-disclaimer"><strong>This page needs JavaScript.</strong> Your list of AI tools is built and kept in your browser, so the page cannot work without it.</p></noscript>
+    <noscript><p class="rc-disclaimer"><strong>This page needs JavaScript.</strong> Your list is built and kept in your browser.</p></noscript>
 
     <section class="ms-hero" aria-labelledby="ms-title">
-      <p class="rc-eyebrow">One list for every tool</p>
       <h1 id="ms-title">List your AI tools once. Every tool picks them up.</h1>
-      <p class="ms-lede">The AI Stack Check, AU Frameworks Check, stack pack, AI register and shadow AI check all start from this list.</p>
+      <p class="ms-lede">Used by the AI Stack Check, AU Frameworks Check, stack pack, AI register and shadow AI check.</p>
       <p class="ms-privacy"><strong>It stays in your browser</strong> unless you save it to an account. Platform names and banded answers only, no results, names or secrets.</p>
       <p id="ms-migrated" class="ms-note" hidden></p>
       <div id="ms-status" class="rc-status" role="alert"></div>
@@ -123,7 +122,7 @@
             <div class="ms-row">
               <button type="button" class="rc-secondary" disabled aria-disabled="true" aria-describedby="ms-draft-line">Create an account</button>
             </div>
-            <p id="ms-draft-line" class="ms-hint">Free accounts are in draft. They open once our security checks are done. For now, download the file or keep it in this browser.</p>
+            <p id="ms-draft-line" class="ms-hint">Accounts open once our security checks are done.</p>
           </div>
 
           <div id="ms-signed-out">
@@ -131,7 +130,7 @@
               <button id="ms-show-signup" type="button" class="rc-secondary" aria-expanded="false" aria-controls="ms-signup-form">Create an account</button>
               <button id="ms-show-signin" type="button" class="rc-secondary" aria-expanded="false" aria-controls="ms-signin-form">Sign in</button>
             </div>
-            <p id="ms-concept" class="ms-concept" hidden><strong>Early version.</strong> No password reset or email check yet, so use a password you use nowhere else. We store your email, a salted password hash and your list. To delete your account, email markus@markuswalker.com and we delete it within 30 days.</p>
+            <p id="ms-concept" class="ms-concept" hidden><strong>Early version.</strong> No password reset or email check yet, so use a password unique to this site. We store your email, a salted password hash and your list. To delete your account, email markus@markuswalker.com and we delete it within 30 days.</p>
             <form id="ms-signup-form" class="ms-form" novalidate aria-labelledby="ms-show-signup" hidden>
               <label for="ms-signup-email">Email</label>
               <input id="ms-signup-email" name="email" type="email" autocomplete="email" maxlength="254" required spellcheck="false">
@@ -176,26 +175,26 @@
     <section id="stack" class="ms-section" aria-labelledby="ms-stack-title">
       <div class="ms-section-head">
         <h2 id="ms-stack-title">Your AI platforms</h2>
-        <p>Pick from our knowledge base. Add anything else by name below.</p>
+        <p>Pick from our knowledge base or add by name.</p>
       </div>
       <div class="ms-picker">
         <label for="ms-find">Find a platform</label>
         <input id="ms-find" type="search" autocomplete="off" spellcheck="false" placeholder="For example Microsoft 365 Copilot, Claude, Bedrock" aria-describedby="ms-find-help" aria-controls="ms-results">
-        <p id="ms-find-help" class="ms-hint">Type two or more letters, then choose Add.</p>
+        <p id="ms-find-help" class="ms-hint">Type two or more letters.</p>
         <ul id="ms-results" class="ms-results" aria-live="polite"></ul>
       </div>
       <h3 class="ms-sub">On your list <span id="ms-count" class="ms-count"></span></h3>
       <p id="ms-empty" class="ms-note">Nothing added yet.</p>
       <ul id="ms-platforms" class="ms-platforms"></ul>
 
-      <h3 class="ms-sub">Tools we do not cover yet</h3>
+      <h3 class="ms-sub">Tools not in our knowledge base</h3>
       <form id="ms-unlisted-form" class="ms-inline-form" novalidate>
         <label for="ms-unlisted">Name of the tool</label>
         <div class="ms-inline">
           <input id="ms-unlisted" type="text" maxlength="60" autocomplete="off" aria-describedby="ms-unlisted-help">
           <button type="submit" class="rc-secondary">Add tool</button>
         </div>
-        <p id="ms-unlisted-help" class="ms-hint">Product names only, up to 20 tools. We drop anything that looks like an email, phone number or key.</p>
+        <p id="ms-unlisted-help" class="ms-hint">Product names only, up to 20. We drop anything that looks like an email, phone number or key.</p>
         <p class="ms-form-msg" role="status" aria-live="polite"></p>
       </form>
       <ul id="ms-unlisted-list" class="ms-chips"></ul>
@@ -204,7 +203,7 @@
     <section id="context" class="ms-section" aria-labelledby="ms-context-title">
       <div class="ms-section-head">
         <h2 id="ms-context-title">Questions every tool asks</h2>
-        <p>Answer once. Skip any you are unsure of.</p>
+        <p>Skip any you are unsure of.</p>
       </div>
       <div id="ms-context-fields" class="ms-fields"></div>
     </section>
@@ -216,7 +215,7 @@
       </div>
       <div id="ms-business-fields" class="ms-fields"></div>
       <div class="ms-field">
-        <label for="ms-label">A short name for this setup <span class="ms-hint">(optional, for example "Our practice")</span></label>
+        <label for="ms-label">Name this setup <span class="ms-hint">(optional, for example "Our practice")</span></label>
         <input id="ms-label" type="text" maxlength="80" autocomplete="off">
       </div>
     </section>
@@ -224,14 +223,13 @@
     <section id="tools" class="ms-section" aria-labelledby="ms-tools-title">
       <div class="ms-section-head">
         <h2 id="ms-tools-title">What applies in each tool</h2>
-        <p>Each tool reads your list and works out results fresh from the knowledge base.</p>
       </div>
       <ul id="ms-tools" class="ms-tools"></ul>
     </section>
 
     <section class="ms-section ms-end" aria-labelledby="ms-end-title">
-      <h2 id="ms-end-title">Want us to look at your AI setup with you?</h2>
-      <p>We read what each vendor documents for your platforms and tell you what to switch on, in writing.</p>
+      <h2 id="ms-end-title">Want us to review your AI setup?</h2>
+      <p>We check what each vendor documents and tell you in writing what to switch on.</p>
       <div class="rc-actions">
         <a class="rc-button" href="/stack-check/?from=profile#ck-enquiry">Ask about a review</a>
         <button id="ms-clear" type="button" class="rc-link">Clear your list</button>

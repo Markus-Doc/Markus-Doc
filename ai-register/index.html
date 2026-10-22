@@ -20,7 +20,7 @@
   <script src="js/profile-fallback.js?v=7c70fac37e" defer></script>
   <script src="/tools-shared/profile/profile-bar.js" defer></script>
   <script src="js/model.js?v=7febb1dcb8" defer></script>
-  <script src="js/app.js?v=86608cc031" defer></script>
+  <script src="js/app.js?v=d208cadb4e" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to the register</a>
@@ -95,12 +95,12 @@
     <section class="ar-hero" aria-labelledby="ar-title">
       <p class="ar-eyebrow">Free tool</p>
       <h1 id="ar-title">AI register</h1>
-      <p class="ar-lede">List the AI tools and agents your business uses, who owns each one, what data it touches and how risky it is. The columns follow the Australian Government's free AI register template, and we fill in what each vendor documents from our knowledge base.</p>
-      <p class="ar-privacy" id="ar-privacy"><strong>Your register stays in your browser.</strong> Nothing you enter leaves it. Purpose notes and other typed text never go into your saved profile or your account. They stay on this device.</p>
+      <p class="ar-lede">List your AI tools and agents, who owns each, the data it touches and its risk, in the Australian Government's free AI register template. We fill in what each vendor documents.</p>
+      <p class="ar-privacy" id="ar-privacy"><strong>Your register stays in your browser.</strong> Nothing you enter leaves it. Typed text, such as purpose notes, never goes into your saved profile or account.</p>
     </section>
 
     <div class="ar-profile" id="ar-profile-bar" data-mw-profile-bar aria-label="Your AI tools"></div>
-    <p class="ar-note ar-fallback-note" id="ar-fallback-note" hidden>Saving your stack is not available right now, so the register lasts until you close or reload this page. Download the CSV before you leave.</p>
+    <p class="ar-note ar-fallback-note" id="ar-fallback-note" hidden>Saving is not available right now, so the register lasts until you close or reload. Download the CSV before you leave.</p>
 
     <div id="ar-status" class="ar-status" role="alert"></div>
 
@@ -115,7 +115,7 @@
       </div>
       <p class="ar-note" id="ar-prefill-note" hidden></p>
       <div class="ar-empty" id="ar-empty">
-        <p>No AI tools in your register yet. Add the tools your team uses, or <a href="/stack-check/">run the AI Stack Check</a> first and your stack fills the register for you.</p>
+        <p>No AI tools yet. Add them, or <a href="/stack-check/">run the AI Stack Check</a> first and your stack fills the register.</p>
       </div>
       <div class="ar-table-wrap" id="ar-table-wrap" role="region" aria-labelledby="ar-register-title" tabindex="0" hidden>
         <table class="ar-table" id="ar-table">
@@ -145,7 +145,7 @@
 
     <section class="ar-panel" id="ar-picker" aria-labelledby="ar-picker-title" hidden>
       <h2 id="ar-picker-title" tabindex="-1">Add an AI tool</h2>
-      <p class="ar-note">Search the platforms in our knowledge base. Pick one to bring in what its vendor documents.</p>
+      <p class="ar-note">Pick a platform to bring in what its vendor documents.</p>
       <label class="ar-label" for="ar-search">Platform or product name</label>
       <input type="search" id="ar-search" class="ar-input" autocomplete="off" spellcheck="false" aria-describedby="ar-search-hint" aria-controls="ar-results">
       <p class="ar-hint" id="ar-search-hint">Type at least two letters.</p>
@@ -156,7 +156,7 @@
           <input type="text" id="ar-unlisted-name" class="ar-input" maxlength="60" autocomplete="off" aria-describedby="ar-unlisted-hint">
           <button type="button" class="ar-secondary" id="ar-unlisted-add">Add by name</button>
         </div>
-        <p class="ar-hint" id="ar-unlisted-hint">A product name only, up to 60 characters. We cannot fill vendor facts for tools outside our knowledge base.</p>
+        <p class="ar-hint" id="ar-unlisted-hint">Product name only, up to 60 characters. We have no vendor facts for tools outside our knowledge base.</p>
       </div>
       <div class="ar-actions"><button type="button" class="ar-secondary" id="ar-picker-close">Close</button></div>
     </section>
@@ -169,21 +169,21 @@
 
     <section class="ar-section" id="ar-downloads" aria-labelledby="ar-downloads-title">
       <h2 id="ar-downloads-title">Download your register</h2>
-      <p>Both files are built in your browser. Nothing is uploaded.</p>
+      <p>Built in your browser. Nothing is uploaded.</p>
       <ul class="ar-downloads">
         <li>
           <strong>Spreadsheet (CSV)</strong>
-          <span>The template's twelve columns first, then the hosting, agent and vendor facts we add. Opens in Excel, Numbers or Google Sheets. Your purpose notes are included, because the file is yours.</span>
+          <span>The template's twelve columns, then our hosting, agent and vendor facts. Opens in Excel, Numbers or Google Sheets. Includes your purpose notes.</span>
           <button type="button" class="rc-button" id="ar-csv">Download CSV</button>
         </li>
         <li>
           <strong>AI bill of materials (CycloneDX 1.6 JSON)</strong>
-          <span>A vendor-level inventory of the services, agents and model families in your register, for procurement, auditors or your security team. It records what each vendor documents, not a test of your setup, and it leaves out model hashes, datasets and infrastructure. Typed notes are left out.</span>
+          <span>A vendor-level inventory of your services, agents and model families for procurement, auditors or security. What vendors document, not a test of your setup. No model hashes, datasets, infrastructure or typed notes.</span>
           <button type="button" class="rc-button" id="ar-bom">Download AI BOM</button>
         </li>
         <li>
           <strong>Print</strong>
-          <span>A printable copy of the register table, landscape.</span>
+          <span>The register table, landscape.</span>
           <button type="button" class="ar-secondary" id="ar-print">Print the register</button>
         </li>
       </ul>
@@ -191,34 +191,34 @@
 
     <section class="ar-section" id="ar-columns" aria-labelledby="ar-columns-title">
       <h2 id="ar-columns-title">The columns</h2>
-      <p>The Guidance for AI Adoption from the National AI Centre includes a free AI register template. We use its twelve columns, in its order, and its own choices for status and screening outcome. Where we can, we offer picklists instead of free text, so your register can be saved with your profile without storing what you typed.</p>
+      <p>The twelve columns of the National AI Centre's free template (Guidance for AI Adoption), in its order, with its status and screening choices. Picklists keep what you type out of your saved profile.</p>
       <div class="ar-table-wrap ar-table-wrap--plain" role="region" aria-labelledby="ar-columns-title" tabindex="0">
         <table class="ar-table ar-table--plain">
           <thead><tr><th scope="col">Template column</th><th scope="col">How we fill it</th></tr></thead>
           <tbody>
-            <tr><th scope="row">Name and version</th><td>The platform and hosting route from our knowledge base, or the name you give. Vendors rarely pin a model version for hosted tools, so we do not guess one.</td></tr>
-            <tr><th scope="row">Owner</th><td>A role, not a person's name. Add the person in your own copy.</td></tr>
+            <tr><th scope="row">Name and version</th><td>From our knowledge base, or your own name. Vendors rarely pin a model version for hosted tools, so we do not guess one.</td></tr>
+            <tr><th scope="row">Owner</th><td>A role, not a person's name.</td></tr>
             <tr><th scope="row">Status</th><td>Pilot, Operational or Decommissioned, as in the template.</td></tr>
-            <tr><th scope="row">Source</th><td>The vendor from our knowledge base. For agents, who built it and which platform it runs on.</td></tr>
+            <tr><th scope="row">Source</th><td>The vendor. For agents, who built it and the platform it runs on.</td></tr>
             <tr><th scope="row">Purpose/business goals</th><td>Your own words, kept on this device only.</td></tr>
-            <tr><th scope="row">Intended use case(s)</th><td>Picked from a list of common uses.</td></tr>
-            <tr><th scope="row">Known limitations and prohibited use</th><td>Picked from common rules, such as no personal information or a person checks every output.</td></tr>
-            <tr><th scope="row">Any foreseeable misuse</th><td>Picked from common misuse, such as staff using a personal account.</td></tr>
-            <tr><th scope="row">Data sources and type</th><td>Banded data categories and data types.</td></tr>
-            <tr><th scope="row">Registered date</th><td>The day you add the row. You can change it.</td></tr>
-            <tr><th scope="row">Screening outcome</th><td>Normal, Elevated or Unacceptable, as in the template. We suggest Normal or Elevated from your answers. The government's AI screening tool gives the formal result.</td></tr>
+            <tr><th scope="row">Intended use case(s)</th><td>Picked from common uses.</td></tr>
+            <tr><th scope="row">Known limitations and prohibited use</th><td>Picked from common rules, such as no personal information.</td></tr>
+            <tr><th scope="row">Any foreseeable misuse</th><td>Picked from common misuse, such as personal accounts.</td></tr>
+            <tr><th scope="row">Data sources and type</th><td>Banded categories and types.</td></tr>
+            <tr><th scope="row">Registered date</th><td>The day you add the row, editable.</td></tr>
+            <tr><th scope="row">Screening outcome</th><td>Normal, Elevated or Unacceptable, as in the template. We suggest Normal or Elevated. The government's AI screening tool gives the formal result.</td></tr>
             <tr><th scope="row">Key stakeholders affected</th><td>Picked from a list.</td></tr>
           </tbody>
         </table>
       </div>
-      <p>We add columns the template leaves to you: who uses each tool, the hosting route and region, the account type, a review date, and what the vendor documents for six controls a register reader asks about first. Agents get their own rows, with the identity they act under, the tools they can call and the human oversight in place. The AICD and UTS AI governance checklist for SME and NFP directors puts an AI register first in its list for boards.</p>
+      <p>We add users, hosting route and region, account type, review date and vendor facts for six key controls. Agent rows add the identity they act under, the tools they can call and their human oversight. The AICD and UTS AI governance checklist for SME and NFP directors lists an AI register first for boards.</p>
     </section>
 
     <section class="ar-section ar-next" id="ar-next" aria-labelledby="ar-next-title">
       <h2 id="ar-next-title">What to do next</h2>
-      <p>Give each row an owner, set a review date, and check every Elevated row before you widen its use. If you want help with the Elevated rows, the vendor gaps or a full AI governance setup, write to us.</p>
+      <p>Give each row an owner and review date. Check every Elevated row before you widen its use. We can help with those rows, vendor gaps or a full AI governance setup.</p>
       <p><a class="rc-button" href="/stack-check/?from=ai-register#ck-enquiry">Discuss your register with us</a></p>
-      <p class="ar-note">Want to know what your vendors document in depth? The <a href="/stack-check/">AI Stack Check</a> compares 46 controls across your stack, and the <a href="/readiness-check/">AU Frameworks Check</a> shows which Australian rules apply to your business.</p>
+      <p class="ar-note">The <a href="/stack-check/">AI Stack Check</a> compares 46 controls across your stack. The <a href="/readiness-check/">AU Frameworks Check</a> shows which Australian rules apply to you.</p>
     </section>
   </main>
 

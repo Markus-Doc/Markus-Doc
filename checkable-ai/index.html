@@ -11,9 +11,10 @@
   <meta name="description" content="An AI security and cloud practice for Australian small and mid-sized businesses. Free checks, testing, governance, build work and engineers inside your team.">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' fill='%238f3a2b'/%3E%3Cpath d='M4 12V4h1.6l2.4 4.2L10.4 4H12v8h-1.6V7.2L8 11.2 5.6 7.2V12z' fill='%23fbfaf8'/%3E%3C/svg%3E" type="image/svg+xml">
   <link rel="preload" href="fonts/fraunces-regular.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="company.css?v=3">
+  <link rel="stylesheet" href="company.css?v=7">
   <script src="nav.js?v=2" defer></script>
   <script src="/site-art/rotator.js" defer></script>
+  <script src="tools-slider.js?v=3" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -30,6 +31,7 @@
               <li><a href="/stack-check/how-it-works/">How it works</a></li>
               <li><a href="/stack-check/atlas/">Knowledge base</a></li>
               <li><a href="/stack-check/open-problems/">Open problems</a></li>
+              <li><a href="/trust/">Trust</a></li>
               <li><a href="/stack-check/report/">In-depth report</a></li>
             </ul>
           </details>
@@ -80,7 +82,51 @@
   <main id="main">
     <div class="hero">
       <div class="hero-art">
-        <img class="hero-img" data-art-slot="company" src="/site-art/main-splash-1280.webp" srcset="/site-art/main-splash-640.webp 640w, /site-art/main-splash-960.webp 960w, /site-art/main-splash-1280.webp 1280w, /site-art/main-splash-1672.webp 1672w, /site-art/main-splash-1920.webp 1920w, /site-art/main-splash-2560.webp 2560w" sizes="(min-width: 900px) 56vw, 100vw" width="1672" height="941" fetchpriority="high" decoding="async" alt="A block of smoky glass with faint circuitry inside throws a network of light points and fine lines across a linen table, beside a rust leather notebook, a brass fountain pen and brass pins joined by rust thread.">
+        <img class="hero-img" data-art-slot="company" src="/site-art/main-splash-dusk-1280.webp" srcset="/site-art/main-splash-dusk-640.webp 640w, /site-art/main-splash-dusk-960.webp 960w, /site-art/main-splash-dusk-1280.webp 1280w, /site-art/main-splash-dusk-1672.webp 1672w, /site-art/main-splash-dusk-1920.webp 1920w, /site-art/main-splash-dusk-2560.webp 2560w" sizes="(min-width: 900px) 56vw, 100vw" width="1672" height="941" fetchpriority="high" decoding="async" alt="A single shaft of late sun passes through a clear glass cube on a dark walnut desk and spreads a fine network of light points across the wood, with a rust leather notebook and a brass fountain pen soft in the shadows behind.">
+        <aside class="hero-card ts" aria-roledescription="carousel" aria-label="Our free tools">
+          <div class="ts-head"><p class="hero-card-kicker">Free tools</p><div class="ts-ctl"><p class="ts-count" aria-hidden="true"><span class="ts-now">1</span> / 7</p><button type="button" class="ts-pause" aria-label="Pause the slides"></button></div></div>
+          <div class="ts-track" tabindex="0" aria-label="Free tools, use the arrow keys to move between them">
+            <article class="ts-slide" id="ts-1" role="group" aria-roledescription="slide" aria-label="1 of 7: AI Stack Check">
+              <h3>AI Stack Check</h3>
+              <ul><li><b>46</b><span>security controls checked for each AI vendor</span></li><li><b>Quoted</b><span>each result shows the vendor's own words as evidence</span></li></ul>
+              <a href="/stack-check/">Run the AI Stack Check</a>
+            </article>
+            <article class="ts-slide" id="ts-2" role="group" aria-roledescription="slide" aria-label="2 of 7: AU Frameworks Check">
+              <h3>AU Frameworks Check</h3>
+              <ul><li><b>Rules</b><span>which Australian AI and data rules apply to you</span></li><li><b>Plan</b><span>how ready you are, with a 30, 90 and 180 day plan</span></li></ul>
+              <a href="/readiness-check/">Run the AU Frameworks Check</a>
+            </article>
+            <article class="ts-slide" id="ts-3" role="group" aria-roledescription="slide" aria-label="3 of 7: Shadow AI Check">
+              <h3>Shadow AI Check</h3>
+              <ul><li><b>Staff</b><span>how your people use AI outside the tools you approved</span></li><li><b>First</b><span>what to fix first</span></li></ul>
+              <a href="/shadow-ai/">Run the Shadow AI Check</a>
+            </article>
+            <article class="ts-slide" id="ts-4" role="group" aria-roledescription="slide" aria-label="4 of 7: AI register">
+              <h3>AI register</h3>
+              <ul><li><b>Owner</b><span>each AI tool and agent with its owner, data, purpose and risk</span></li><li><b>Export</b><span>CSV or a CycloneDX AI BOM, in the government template's columns</span></li></ul>
+              <a href="/ai-register/">Build your AI register</a>
+            </article>
+            <article class="ts-slide" id="ts-5" role="group" aria-roledescription="slide" aria-label="5 of 7: Stack pack">
+              <h3>Stack pack</h3>
+              <ul><li><b>1 page</b><span>what each AI platform you use documents</span></li><li><b>Ask</b><span>the questions to send each vendor, pre-answered</span></li></ul>
+              <a href="/stack-pack/">Get your stack pack</a>
+            </article>
+            <article class="ts-slide" id="ts-6" role="group" aria-roledescription="slide" aria-label="6 of 7: My stack">
+              <h3>My stack</h3>
+              <ul><li><b>Once</b><span>list the AI tools your business uses</span></li><li><b>Shared</b><span>every free tool picks them up</span></li></ul>
+              <a href="/my-stack/">Set up my stack</a>
+            </article>
+            <article class="ts-slide" id="ts-7" role="group" aria-roledescription="slide" aria-label="7 of 7: Knowledge base">
+              <h3>Knowledge base</h3>
+              <ul><li><b>Source</b><span>every finding with the vendor's words and a link</span></li><li><b>Dated</b><span>the date we checked it, so you can check it too</span></li></ul>
+              <a href="/stack-check/atlas/">Open the knowledge base</a>
+            </article>
+          </div>
+          <button type="button" class="ts-arrow ts-prev" aria-label="Previous tool"></button>
+          <button type="button" class="ts-arrow ts-next" aria-label="Next tool"></button>
+          <div class="ts-dots"><button type="button" class="ts-dot" aria-label="Show AI Stack Check" aria-controls="ts-1" aria-current="true"></button><button type="button" class="ts-dot" aria-label="Show AU Frameworks Check" aria-controls="ts-2"></button><button type="button" class="ts-dot" aria-label="Show Shadow AI Check" aria-controls="ts-3"></button><button type="button" class="ts-dot" aria-label="Show AI register" aria-controls="ts-4"></button><button type="button" class="ts-dot" aria-label="Show Stack pack" aria-controls="ts-5"></button><button type="button" class="ts-dot" aria-label="Show My stack" aria-controls="ts-6"></button><button type="button" class="ts-dot" aria-label="Show Knowledge base" aria-controls="ts-7"></button></div>
+          <p class="ts-foot">All free. They run in your browser.</p>
+        </aside>
       </div>
       <div class="hero-text">
         <p class="eyebrow">AI security for Australian businesses</p>

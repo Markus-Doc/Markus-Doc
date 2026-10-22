@@ -345,7 +345,7 @@
     if (r.kind === 'agent') return
     const f = M.kbFacts(r, state.kb)
     if (!f.covered) {
-      box.append(el('h3', {}, 'What the vendor documents'), el('p', {}, 'This tool is outside our knowledge base, so we cannot fill in vendor facts. Ask the vendor where your data is stored and processed, whether it is used for training, and what admin and audit controls you get.'))
+      box.append(el('h3', {}, 'What the vendor documents'), el('p', {}, 'This tool is outside our knowledge base, so we have no vendor facts. Ask the vendor where your data is stored and processed, whether it is used for training, and what admin and audit controls you get.'))
       return
     }
     const dl = el('dl', {})
