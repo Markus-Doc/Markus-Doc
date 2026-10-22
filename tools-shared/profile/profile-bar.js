@@ -79,11 +79,11 @@
       ? el('a', { class: 'mwp-btn mwp-btn--main', href: opts.myStackUrl + '#account' , text: 'Create a free account' })
       : el('a', { class: 'mwp-btn', href: opts.myStackUrl, text: 'Edit your stack' })
     const signUpHint = el('span', { class: 'mwp-hint', text: accountsOn
-      ? 'Your stack follows you to every tool and device, and you can edit it as your AI use grows or shrinks.'
-      : 'Free accounts are coming soon, so your stack can follow you to every tool and device. For now, download the file to keep it.' })
+      ? 'Your list follows you to every tool and device, and you can edit it as your AI use grows or shrinks.'
+      : 'Free accounts are coming soon, so your list can follow you to every tool and device. For now, download the file to keep it.' })
     const signedIn = el('span', { class: 'mwp-hint' })
     const signOut = el('button', { class: 'mwp-btn', type: 'button', text: 'Sign out', on: { click: () => {
-      P.account.signOut().then(() => say('Signed out. We cleared your stack from this page.')).catch(e => say(e.message, true))
+      P.account.signOut().then(() => say('Signed out. We cleared your AI tools from this page.')).catch(e => say(e.message, true))
     } } })
     const download = el('button', { class: 'mwp-btn', type: 'button', text: 'Download file', on: { click: () => {
       try { P.download(); say('Saved stack-profile.json to your downloads.') } catch (e) { say(e.message, true) }
@@ -107,13 +107,13 @@
     const primary = el('div', { class: 'mwp-primary' }, [signUp, signUpHint, signedIn, signOut])
     const bar = el('section', { class: 'mwp-bar', 'aria-labelledby': id }, [
       el('div', { class: 'mwp-head' }, [
-        el('h2', { class: 'mwp-title', id: id, text: 'Your stack' }),
+        el('h2', { class: 'mwp-title', id: id, text: 'Your AI tools' }),
         el('p', { class: 'mwp-summary' }, [summaryText, modeTag]),
         el('a', { class: 'mwp-edit', href: opts.myStackUrl, text: 'View and edit your stack' })
       ]),
-      el('div', { class: 'mwp-options', role: 'group', 'aria-label': 'Ways to keep your stack' }, [primary, download, upload, file, device]),
+      el('div', { class: 'mwp-options', role: 'group', 'aria-label': 'Ways to keep your list' }, [primary, download, upload, file, device]),
       warn,
-      el('p', { class: 'mwp-privacy', text: accountsOn ? 'Your stack stays in your browser unless you sign in and choose to save it to your account.' : 'Your stack stays in your browser. We never receive it.' }),
+      el('p', { class: 'mwp-privacy', text: accountsOn ? 'Your list stays in your browser unless you sign in and choose to save it to your account.' : 'Your list stays in your browser. We never receive it.' }),
       msg
     ])
     host.replaceChildren(bar)

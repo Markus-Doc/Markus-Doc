@@ -98,7 +98,7 @@
         d.answers = d.answers || {}
         d.answers[TOOL] = { version: ANSWERS_VERSION, include_out_of_scope: state.includeOut }
       })
-    } catch (e) { status('We could not save your stack to the profile: ' + e.message) }
+    } catch (e) { status('We could not save your platforms to the profile: ' + e.message) }
   }
 
   function validAccount(id, account) {
@@ -170,7 +170,7 @@
     if (!state.stack.length) {
       wrap.append(el('p', { class: 'rc-note', text: 'No platforms chosen yet. Open "Add platforms" below, or load your stack profile.' }))
     } else {
-      const list = el('ul', { class: 'sp-chips', 'aria-label': 'Platforms in your stack' })
+      const list = el('ul', { class: 'sp-chips', 'aria-label': 'Your chosen platforms' })
       for (const s of state.stack) {
         const p = state.platforms[s.id]
         const types = (p.procurement || {}).account_types || []
@@ -187,7 +187,7 @@
       wrap.append(list)
     }
     const extra = []
-    if (state.other.length) extra.push(plural(state.other.length, 'platform') + ' in your stack profile ' + (state.other.length === 1 ? 'is' : 'are') + ' not in our free data, so ' + (state.other.length === 1 ? 'it is' : 'they are') + ' left out of the pack.')
+    if (state.other.length) extra.push(plural(state.other.length, 'platform') + ' in your saved profile ' + (state.other.length === 1 ? 'is' : 'are') + ' not in our free data, so ' + (state.other.length === 1 ? 'it is' : 'they are') + ' left out of the pack.')
     if (state.unlisted.length) extra.push('Not in our knowledge base: ' + state.unlisted.join(', ') + '.')
     if (extra.length) wrap.append(el('p', { class: 'rc-note', text: extra.join(' ') }))
   }
@@ -311,8 +311,8 @@
       el('p', {}, el('strong', { text: 'Together your ' + plural(state.stack.length, 'platform') + ' document ' + covered.size + ' of our ' + total + ' controls, fully or in part. ' }),
         (total - covered.size) + ' are not documented by any of them.'),
       openFirst.length
-        ? el('p', {}, 'Ask about these first, because no platform in your stack documents them: ', el('span', { text: openFirst.map(r => r.cap.name).join(', ') + '.' }))
-        : el('p', { text: 'Every control we suggest asking about first is documented by at least one platform in your stack.' })))
+        ? el('p', {}, 'Ask about these first, because no platform you picked documents them: ', el('span', { text: openFirst.map(r => r.cap.name).join(', ') + '.' }))
+        : el('p', { text: 'Every control we suggest asking about first is documented by at least one of your platforms.' })))
 
     const grid = el('div', { class: 'sp-cards' + (state.stack.length > 3 ? ' sp-many' : '') })
     for (const s of state.stack) grid.append(card(s))
@@ -403,7 +403,7 @@
 
     const box = el('input', { type: 'checkbox', id: 'sp-include-out', checked: state.includeOut, onchange: e => { state.includeOut = e.target.checked; writeProfile(); renderQuestions(); $('sp-include-out').focus() } })
     pack.append(el('p', { class: 'sp-toggle sp-noprint' }, el('label', { for: 'sp-include-out' }, box,
-      ' Also ask about controls outside what a platform is built to do (' + plural(totalOut, 'control') + ' across your stack)')))
+      ' Also ask about controls outside what a platform is built to do (' + plural(totalOut, 'control') + ' across your platforms)')))
     pack.append(el('p', { class: 'sp-copy-status', id: 'sp-copy-status', role: 'status', 'aria-live': 'polite' }))
 
     for (const x of packs) pack.append(vendorBlock(x))
@@ -562,12 +562,12 @@
     } })
     const device = el('input', { type: 'checkbox', id: 'sp-device', checked: window.MWProfile.mode() === 'device', onchange: e => window.MWProfile.setMode(e.target.checked ? 'device' : 'memory') })
     mount.append(
-      el('p', {}, el('strong', { text: 'Keep your stack for next time.' }), ' It is in this page only until you choose.'),
+      el('p', {}, el('strong', { text: 'Keep your AI tools for next time.' }), ' It is in this page only until you choose.'),
       el('div', { class: 'sp-actions' },
         el('button', { type: 'button', class: 'rc-secondary', onclick: () => window.MWProfile.download() }, 'Download your stack'),
         el('button', { type: 'button', class: 'rc-secondary', onclick: () => file.click() }, 'Upload your previous stack'), file),
       el('p', { class: 'sp-toggle' }, el('label', { for: 'sp-device' }, device, ' Remember it in this browser only')),
-      el('p', { class: 'rc-note', text: 'Clearing site data or changing device loses a stack kept in the browser. A downloaded file works on any device and in our other tools.' }))
+      el('p', { class: 'rc-note', text: 'Clearing site data or changing device loses a list kept in the browser. A downloaded file works on any device and in our other tools.' }))
   }
 
   // ---------- Start ----------

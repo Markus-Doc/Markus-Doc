@@ -112,3 +112,15 @@ footer.rc-footer .rc-footer-note { color:var(--muted); }
   .theme-toggle { margin-left:auto; min-width:44px; min-height:44px; padding:0 10px; }
   .theme-toggle #theme-label { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap; }
 }
+
+/* Desktop header (22 Oct 2026): an icon-only theme button keeps brand, nav and button on one line, and below 1180px the nav takes its own row. */
+@media (min-width:721px) {
+  .theme-toggle { padding:8px 11px; }
+  .theme-toggle #theme-label { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap; }
+  .tools-nav-list { column-gap:18px; }
+  .rc-tag, .ck-tag { display:none; }
+}
+@media (min-width:721px) and (max-width:1179px) {
+  .tools-nav { order:3; flex-basis:100%; }
+  .theme-toggle { margin-left:auto; }
+}

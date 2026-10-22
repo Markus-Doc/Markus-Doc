@@ -61,7 +61,7 @@
       if (M.answersBytes(state.answers) > ANSWERS_BUDGET) { status('Your register is too large to save with your stack. Download the CSV to keep a full copy, or remove some rows.'); return }
       P.setAnswers(M.TOOL_ID, M.compactAnswers(state.answers), M.ANSWERS_VERSION)
     }
-    catch (e) { status('We could not save the register to your stack. Download the CSV to keep a copy.') }
+    catch (e) { status('We could not save the register to your profile. Download the CSV to keep a copy.') }
     finally { state.saving = false }
   }
   // A KB tool added here also joins the shared stack, so other tools see it.
@@ -389,8 +389,8 @@
     // Device-only text first, clearly marked.
     const device = el('div', { class: 'ar-device' },
       el('p', {}, el('strong', {}, 'Kept on this device only. '), notesPersist()
-        ? 'What you type here stays in this browser. It never goes into your saved stack, your account or the AI BOM.'
-        : 'What you type here lasts until you close this page. It never goes into your saved stack, your account or the AI BOM. Keep your stack on this device or in an account to keep these notes on this device.'),
+        ? 'What you type here stays in this browser. It never goes into your saved profile, your account or the AI BOM.'
+        : 'What you type here lasts until you close this page. It never goes into your saved profile, your account or the AI BOM. Keep your stack on this device or in an account to keep these notes on this device.'),
       isAgent ? textField('text', 'Agent name', n.name, v => changeNote(id, 'name', v), 'A short name your team uses, up to 60 characters.', M.NAME_MAX) : null,
       textField('area', 'Purpose and business goals', n.purpose, v => changeNote(id, 'purpose', v), 'Why this ' + (isAgent ? 'agent' : 'tool') + ' exists and what it aims to achieve. Leave out personal details.', M.NOTE_MAX),
       textField('area', 'Notes', n.notes, v => changeNote(id, 'notes', v), 'Anything else for your own copy. Included in the CSV, left out of the AI BOM.', M.NOTE_MAX))
@@ -503,7 +503,7 @@
     save()
     const msg = $('ar-prefill-note')
     msg.hidden = false
-    msg.textContent = 'We added ' + plural(added.length, 'tool') + ' from your stack. Check each row and set its owner, purpose and screening outcome.'
+    msg.textContent = 'We added ' + plural(added.length, 'tool') + ' from your AI setup. Check each row and set its owner, purpose and screening outcome.'
   }
   function mountBar() {
     const host = $('ar-profile-bar')

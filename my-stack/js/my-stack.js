@@ -273,7 +273,7 @@
       if (before >= P.LIMITS.unlisted) { say(msg, 'You can add up to ' + P.LIMITS.unlisted + ' tools by name.', true); return }
       edit(d => { d.stack.unlisted.push(name) })
       const after = P.get().stack.unlisted
-      if (after.length === before) say(msg, after.some(x => x.toLowerCase() === name.toLowerCase()) ? 'That tool is already in your stack.' : 'We could not add that. Use the product name only.', true)
+      if (after.length === before) say(msg, after.some(x => x.toLowerCase() === name.toLowerCase()) ? 'That tool is already on your list.' : 'We could not add that. Use the product name only.', true)
       else { say(msg, 'Added ' + after[after.length - 1] + '.'); input.value = '' }
     })
   }
@@ -360,7 +360,7 @@
         ? (ids.length === 1 ? 'One printable page for your platform' : 'One printable page for each of your ' + ids.length + ' platforms') + ', with the questions to ask each vendor.'
         : 'Add platforms to get one page for each.' },
       { name: 'AI register', href: '/ai-register/', what: ids.length + others
-        ? 'Starts with ' + plural(ids.length + others, 'row', 'rows') + ', one for each platform and tool in your stack.'
+        ? 'Starts with ' + plural(ids.length + others, 'row', 'rows') + ', one for each platform and tool you listed.'
         : 'Add platforms and tools to pre-fill your register.' },
       { name: 'Shadow AI check', href: '/shadow-ai/', what: (() => {
         const n = personalPlanCount(p)
@@ -392,7 +392,7 @@
     const note = $('ms-migrated')
     if (from.length) {
       const names = from.map(k => k === 'readiness-check-progress-v1' ? 'the AU Frameworks Check' : k === '#stack' ? 'the link you followed' : 'the agent controls self-assessment')
-      note.textContent = 'We started your stack from answers you gave ' + names.join(' and ') + ' in this browser. Check it, then pick a way to keep it.'
+      note.textContent = 'We started your list from answers you gave ' + names.join(' and ') + ' in this browser. Check it, then pick a way to keep it.'
       note.hidden = false
     }
   }
@@ -409,12 +409,12 @@
       kb.capabilities = Array.isArray(data.capabilities) ? data.capabilities.length : 0
       kb.loaded = true
     } catch (e) {
-      status('We could not load the platform list from the knowledge base. Your stack is safe, and you can still add tools by name.')
+      status('We could not load the platform list from the knowledge base. Your list is safe, and you can still add tools by name.')
     }
   }
 
   function start() {
-    if (!P || !P.real) { status('The stack library did not load, so this page cannot work. Please reload.'); return }
+    if (!P || !P.real) { status('The profile library did not load, so this page cannot work. Please reload.'); return }
     wireSave()
     wireUnlisted()
     $('ms-find').addEventListener('input', renderResults)

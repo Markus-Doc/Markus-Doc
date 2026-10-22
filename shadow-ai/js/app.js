@@ -189,10 +189,10 @@
           h('thead', {}, h('tr', {}, h('th', { text: 'Platform' }), h('th', { text: 'Where it came from' }), h('th', { text: 'Account types sold' }), h('th', { text: 'What that account gives you' }))),
           h('tbody', {}, kb.map(p => h('tr', {},
             h('td', { text: p.name }),
-            h('td', { 'data-label': 'Where it came from', text: p.inStack ? 'Your saved stack' + (p.account ? ', ' + p.account + ' account' : '') : 'Staff use, not in your stack' }),
+            h('td', { 'data-label': 'Where it came from', text: p.inStack ? 'Your saved stack' + (p.account ? ', ' + p.account + ' account' : '') : 'Staff use, not on your saved list' }),
             h('td', { 'data-label': 'Account types sold' }, p.accountTypes.map(t => h('span', { class: 'sa-tag', text: t })), p.shadow ? h('span', { class: 'sa-tag is-shadow', text: 'Sells a personal plan' }) : null),
-            h('td', { 'data-label': 'What that account gives you' }, p.controls ? [h('strong', { text: (p.inStack ? p.shownTypeName + '. ' : 'If staff use the ' + p.shownTypeName.toLowerCase() + ': ') }), p.controls] : 'Save which account type you use in your stack to see this.')))))
-      : h('p', { class: 'rc-note' }, INDEX ? 'Save your stack in the ' : 'Our knowledge base did not load, so vendor facts are missing. Save your stack in the ', h('a', { href: '/stack-check/' }, 'AI Stack Check'), ' and the platforms in it appear here with their account types and training defaults.')
+            h('td', { 'data-label': 'What that account gives you' }, p.controls ? [h('strong', { text: (p.inStack ? p.shownTypeName + '. ' : 'If staff use the ' + p.shownTypeName.toLowerCase() + ': ') }), p.controls] : 'Save which account type you use to see this.')))))
+      : h('p', { class: 'rc-note' }, INDEX ? 'Save your AI tools in the ' : 'Our knowledge base did not load, so vendor facts are missing. Save your AI tools in the ', h('a', { href: '/stack-check/' }, 'AI Stack Check'), ' and the platforms in it appear here with their account types and training defaults.')
 
     box.replaceChildren(...[
       h('div', { class: 'sa-print-meta' }, h('p', { class: 'rc-note', text: 'Shadow AI Check result, ' + today + '. Question bank ' + res.bank + ', rules ' + res.rules + '.' })),
@@ -213,7 +213,7 @@
         h('p', { class: 'rc-note', text: 'In the order your risks rank them. None of it needs new software.' }),
         h('div', { class: 'sa-plan' }, planCol(30, res.actions[30]), planCol(90, res.actions[90]))),
       h('section', { class: 'sa-section', 'aria-labelledby': 'sa-kb-title' },
-        h('h2', { id: 'sa-kb-title', text: 'Your stack in our knowledge base' }),
+        h('h2', { id: 'sa-kb-title', text: 'Your AI tools in our knowledge base' }),
         h('p', { class: 'rc-note', text: 'The account type decides the controls more than the vendor does. These facts come from the AI Stack Check knowledge base, which records each vendor’s published terms.' }),
         kbBlock,
         h('p', {}, 'Next: list these tools in the ', h('a', { href: '/ai-register/' }, 'AI register'), ', and get the questions to ask each vendor in your ', h('a', { href: '/stack-pack/' }, 'stack pack'), '.')),
@@ -257,7 +257,7 @@
   function profileBarFallback() {
     const bar = $('mw-profile-bar')
     if (!bar || bar.childElementCount) return
-    if (profile() && profile().fallback) bar.append(h('p', { class: 'sa-bar-fallback', text: 'Saving your stack is not available on this page right now. Your answers stay in this page until you leave it.' }))
+    if (profile() && profile().fallback) bar.append(h('p', { class: 'sa-bar-fallback', text: 'Saving is not available on this page right now. Your answers stay in this page until you leave it.' }))
   }
 
   document.addEventListener('DOMContentLoaded', async () => {
@@ -278,7 +278,7 @@
     start.disabled = false
     if (n) {
       start.textContent = n > filled.length ? 'Carry on with your saved answers' : 'Start the check'
-      $('sa-start-note').textContent = n + ' of ' + Q.questions.length + ' already answered from your saved stack profile. You can change any of them.'
+      $('sa-start-note').textContent = n + ' of ' + Q.questions.length + ' already answered from your saved profile. You can change any of them.'
     }
     start.addEventListener('click', () => { step = 0; renderStep(true) })
     $('sa-back').addEventListener('click', () => {
