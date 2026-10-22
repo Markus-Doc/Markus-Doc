@@ -143,34 +143,55 @@ ul.plain li{margin:4px 0}
   .tools-nav.has-toggle:not(.is-open){display:none}
 }
 
-/* Free tools slider in the hero card (W3C carousel pattern: no autoplay, arrows, dots, keyboard).
-   Without the script it is still a swipeable scroll-snap row. */
+/* Free tools slider in the hero card (W3C carousel pattern). Smoked glass over the photo with its own
+   light-on-dark palette, so it reads the same in light and dark mode. The active dot is a bar that
+   fills over the 6 second auto-advance and holds while the slider is paused. */
 @media (min-width:1400px){
-  .hero-card.ts{gap:10px;width:min(360px,38%);padding:18px 22px 16px}
-  .ts-head{display:flex;justify-content:space-between;align-items:baseline}
-  .ts-count{margin:0;font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+  .hero-card.ts{--g-ink:#f4ede5;--g-muted:rgba(244,237,229,.68);--g-faint:rgba(244,237,229,.2);--g-accent:#eaa385;
+    gap:14px;width:min(370px,38%);padding:22px 24px 16px;color:var(--g-ink);
+    background:linear-gradient(160deg,rgba(28,21,17,.58),rgba(16,12,10,.42));
+    -webkit-backdrop-filter:blur(14px) saturate(1.25);backdrop-filter:blur(14px) saturate(1.25);
+    border:1px solid rgba(244,237,229,.14);border-top:1px solid rgba(234,163,133,.55);border-radius:4px;
+    box-shadow:0 24px 60px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.06)}
+  .ts .hero-card-kicker{color:var(--g-accent);font-size:12px;letter-spacing:.14em}
+  .ts-head{display:flex;justify-content:space-between;align-items:center;padding-bottom:12px;border-bottom:1px solid var(--g-faint)}
+  .ts-ctl{display:flex;align-items:center;gap:4px}
+  .ts-count{margin:0;font-size:12px;letter-spacing:.06em;color:var(--g-muted);font-variant-numeric:tabular-nums}
+  .ts-now{color:var(--g-ink)}
   .ts-track{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;scrollbar-width:none;overscroll-behavior-x:contain}
   .ts-track::-webkit-scrollbar{display:none}
-  .ts-track:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
-  .ts-slide{flex:0 0 100%;scroll-snap-align:start;display:grid;gap:10px;align-content:start}
-  .ts-slide h3{font-size:24px;line-height:1.15;margin:0}
-  .ts-slide a{font-weight:600;font-size:15px}
-  .ts-arrow{position:absolute;top:50%;width:40px;height:40px;margin-top:-20px;border-radius:50%;border:1px solid var(--line);background:var(--surface);box-shadow:var(--shadow);cursor:pointer;display:grid;place-items:center;color:var(--ink)}
-  .ts-arrow::before{content:"";width:9px;height:9px;border-right:2px solid currentColor;border-bottom:2px solid currentColor}
-  .ts-prev{left:-20px}.ts-prev::before{transform:translateX(2px) rotate(135deg)}
-  .ts-next{right:-20px}.ts-next::before{transform:translateX(-2px) rotate(-45deg)}
-  .ts-arrow:hover{color:var(--accent);border-color:var(--accent)}
-  .ts-arrow:focus-visible,.ts-dot:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-  .ts-dots{display:flex;justify-content:center;gap:2px}
-  .ts-dot{width:24px;height:24px;padding:0;border:0;background:none;cursor:pointer;display:grid;place-items:center}
-  .ts-dot::before{content:"";width:8px;height:8px;border-radius:50%;background:color-mix(in srgb,var(--muted) 45%,transparent);transition:width .2s,background .2s}
-  .ts-dot[aria-current="true"]::before{width:22px;border-radius:4px;background:var(--accent)}
-  .ts-ctl{display:flex;align-items:center;gap:6px}
-  .ts-pause{width:28px;height:28px;padding:0;border:1px solid transparent;border-radius:50%;background:none;color:var(--muted);cursor:pointer;display:grid;place-items:center}
-  .ts-pause:hover{color:var(--accent);border-color:var(--line)}
-  .ts-pause:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-  .ts-pause::before{content:"";width:8px;height:10px;border-left:3px solid currentColor;border-right:3px solid currentColor;box-sizing:border-box}
-  .ts-pause.is-paused::before{width:0;height:0;border-style:solid;border-width:6px 0 6px 10px;border-color:transparent transparent transparent currentColor;margin-left:3px}
-  .ts-foot{margin:0;font-size:13px;color:var(--muted);text-align:center}
-  @media (prefers-reduced-motion:reduce){.ts-track{scroll-behavior:auto}.ts-dot::before{transition:none}}
+  .ts-track:focus-visible{outline:1px solid var(--g-accent);outline-offset:4px}
+  .ts-slide{flex:0 0 100%;scroll-snap-align:start;display:grid;gap:12px;align-content:start}
+  .ts-slide h3{font-family:var(--serif);font-size:27px;font-weight:600;line-height:1.1;letter-spacing:-.005em;margin:0;color:var(--g-ink);text-shadow:0 1px 12px rgba(0,0,0,.35)}
+  .ts .ts-slide ul{gap:8px}
+  .ts .ts-slide li{grid-template-columns:4.6rem 1fr;gap:12px;font-size:14.5px;line-height:1.45;color:var(--g-muted)}
+  .ts .ts-slide b{font-size:17px;color:var(--g-accent);font-weight:600}
+  .ts-go{display:inline-flex;align-items:center;gap:8px;justify-self:start;margin-top:2px;color:var(--g-ink);font-size:14.5px;font-weight:600;text-decoration:none;border-bottom:1px solid var(--g-accent);padding-bottom:2px}
+  .ts-go span{width:7px;height:7px;border-top:1.5px solid currentColor;border-right:1.5px solid currentColor;transform:rotate(45deg);transition:transform .2s}
+  .ts-go:hover{color:var(--g-accent)}
+  .ts-go:hover span{transform:translateX(3px) rotate(45deg)}
+  .ts-go:focus-visible{outline:1px solid var(--g-accent);outline-offset:3px}
+  .ts-bar{display:flex;align-items:center;justify-content:space-between;gap:8px;padding-top:12px;border-top:1px solid var(--g-faint)}
+  .ts-arrow{width:30px;height:30px;padding:0;border-radius:50%;border:1px solid var(--g-faint);background:transparent;color:var(--g-muted);cursor:pointer;display:grid;place-items:center;transition:color .2s,border-color .2s,background .2s}
+  .ts-arrow::before{content:"";width:6px;height:6px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor}
+  .ts-prev::before{transform:translateX(1.5px) rotate(135deg)}
+  .ts-next::before{transform:translateX(-1.5px) rotate(-45deg)}
+  .ts-arrow:hover{color:var(--g-ink);border-color:rgba(244,237,229,.5);background:rgba(244,237,229,.06)}
+  .ts-arrow:focus-visible,.ts-dot:focus-visible,.ts-pause:focus-visible{outline:1px solid var(--g-accent);outline-offset:2px}
+  .ts-dots{display:flex;align-items:center}
+  .ts-dot{width:18px;height:24px;padding:0;border:0;background:none;cursor:pointer;display:grid;place-items:center;position:relative}
+  .ts-dot::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--g-faint);transition:width .25s,background .25s}
+  .ts-dot:hover::before{background:var(--g-muted)}
+  .ts-dot[aria-current="true"]{width:36px}
+  .ts-dot[aria-current="true"]::before{width:28px;height:3px;border-radius:2px}
+  .ts-dot[aria-current="true"]::after{content:"";position:absolute;left:4px;top:calc(50% - 1.5px);height:3px;width:28px;border-radius:2px;background:var(--g-accent);transform-origin:left;transform:scaleX(0);animation:ts-fill 6s linear forwards}
+  .ts.is-held .ts-dot[aria-current="true"]::after{animation-play-state:paused}
+  .ts.is-stopped .ts-dot[aria-current="true"]::after{animation:none;transform:scaleX(1)}
+  @keyframes ts-fill{to{transform:scaleX(1)}}
+  .ts-pause{width:26px;height:26px;padding:0;border:0;border-radius:50%;background:none;color:var(--g-muted);cursor:pointer;display:grid;place-items:center}
+  .ts-pause:hover{color:var(--g-ink)}
+  .ts-pause::before{content:"";width:7px;height:9px;border-left:2px solid currentColor;border-right:2px solid currentColor;box-sizing:border-box}
+  .ts-pause.is-paused::before{width:0;height:0;border-style:solid;border-width:5px 0 5px 8px;border-color:transparent transparent transparent currentColor;margin-left:2px}
+  @media (prefers-reduced-motion:reduce){.ts-track{scroll-behavior:auto}.ts-dot::before{transition:none}.ts-dot[aria-current="true"]::after{animation:none;transform:scaleX(1)}}
 }
+
