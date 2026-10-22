@@ -24,6 +24,9 @@
     dots.forEach(function (d, k) { if (k === i) d.setAttribute('aria-current', 'true'); else d.removeAttribute('aria-current'); });
     slides.forEach(function (s, k) { s.setAttribute('aria-hidden', k === i ? 'false' : 'true'); s.inert = k !== i; });
     if (now) now.textContent = i + 1;
+    // Restart the fill bar on the active dot.
+    var d = dots[i];
+    if (d) { d.removeAttribute('aria-current'); void d.offsetWidth; d.setAttribute('aria-current', 'true'); }
   }
 
   var DELAY = 6000;
@@ -33,6 +36,8 @@
 
   function tick() {
     stop();
+    root.classList.toggle('is-stopped', paused);
+    root.classList.toggle('is-held', !paused && (hovered || focused || document.hidden));
     if (paused || hovered || focused || document.hidden) return;
     timer = setTimeout(function () { go(current + 1); tick(); }, DELAY);
   }
