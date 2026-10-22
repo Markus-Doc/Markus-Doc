@@ -426,8 +426,8 @@
       "file": "img/81-photoreal-b.jpg",
       "title": "Photoreal B: dusk macro, glass cube light network on walnut",
       "kind": "generated",
-      "status": "live",
-      "used_on": "/checkable-ai/",
+      "status": "approved",
+      "used_on": "",
       "source": "Generated in the owner's ChatGPT account, 22 Oct 2026 (OpenAI terms assign output rights to the user)",
       "licence": "Owned"
     },
@@ -478,6 +478,16 @@
       "kind": "generated",
       "status": "approved",
       "used_on": "",
+      "source": "Generated in the owner's ChatGPT account, 22 Oct 2026 (OpenAI terms assign output rights to the user)",
+      "licence": "Owned"
+    },
+    {
+      "n": 87,
+      "file": "img/87-photoreal-b2.jpg",
+      "title": "Photoreal B2: dusk macro with pins and thread on the light network",
+      "kind": "generated",
+      "status": "live",
+      "used_on": "/checkable-ai/",
       "source": "Generated in the owner's ChatGPT account, 22 Oct 2026 (OpenAI terms assign output rights to the user)",
       "licence": "Owned"
     }

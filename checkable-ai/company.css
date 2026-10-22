@@ -195,3 +195,15 @@ ul.plain li{margin:4px 0}
   @media (prefers-reduced-motion:reduce){.ts-track{scroll-behavior:auto}.ts-dot::before{transition:none}.ts-dot[aria-current="true"]::after{animation:none;transform:scaleX(1)}}
 }
 
+
+/* Liquid glass trial: liquid-glass.js adds .is-liquid only where the SVG refraction filter works
+   (Chromium). Clearer tint so the bent edges show, a specular rim and a soft sheen. */
+@media (min-width:1400px){
+  .hero-card.ts.is-liquid{border-radius:22px;border:0;
+    background:linear-gradient(160deg,rgba(30,22,17,.34),rgba(14,10,8,.26));
+    -webkit-backdrop-filter:url(#liquid-glass) blur(2.5px) saturate(1.6) brightness(1.06);backdrop-filter:url(#liquid-glass) blur(2.5px) saturate(1.6) brightness(1.06);
+    box-shadow:inset 1.5px 1.5px 0 rgba(255,255,255,.42),inset -1px -1px 0 rgba(255,255,255,.14),inset 0 0 22px rgba(255,255,255,.07),0 24px 60px rgba(0,0,0,.38)}
+  .hero-card.ts.is-liquid::before{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+    background:linear-gradient(135deg,rgba(255,255,255,.16) 0%,rgba(255,255,255,0) 32%,rgba(255,255,255,0) 70%,rgba(255,255,255,.06) 100%)}
+  .hero-card.ts.is-liquid .ts-slide li,.hero-card.ts.is-liquid .ts-count{text-shadow:0 1px 8px rgba(0,0,0,.55)}
+}
