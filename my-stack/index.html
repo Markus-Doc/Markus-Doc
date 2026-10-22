@@ -7,18 +7,18 @@
   <link rel="icon" href="/stack-check/assets/favicon-32.png" sizes="32x32" type="image/png">
   <link rel="icon" href="/stack-check/assets/favicon-16.png" sizes="16x16" type="image/png">
   <link rel="apple-touch-icon" href="/stack-check/assets/apple-touch-icon.png">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'self' data: blob:; font-src 'self'; form-action 'none'; base-uri 'none'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' https://static.cloudflareinsights.com; style-src 'self'; connect-src 'self' https://cloudflareinsights.com; img-src 'self' data: blob:; font-src 'self'; form-action 'none'; base-uri 'none'">
   <meta name="referrer" content="no-referrer">
   <meta name="robots" content="noindex,nofollow">
-  <meta name="description" content="Your AI stack in one place. List the AI platforms and tools your business uses once, and every one of our free tools picks it up. It stays in your browser unless you choose to save it.">
+  <meta name="description" content="List the AI platforms and tools your business uses once, and every one of our free tools picks them up. It stays in your browser unless you choose to save it.">
   <title>My stack | Checkable AI</title>
-  <link rel="stylesheet" href="css/site.css?v=9867dbf306">
-  <link rel="stylesheet" href="/tools-shared/profile/profile.css?v=a6c4b7ef51">
-  <link rel="stylesheet" href="css/my-stack.css?v=24f192a184">
+  <link rel="stylesheet" href="css/site.css?v=cc1eb3d1c5">
+  <link rel="stylesheet" href="/tools-shared/profile/profile.css?v=02f1915b08">
+  <link rel="stylesheet" href="css/my-stack.css?v=201dd81d58">
   <script src="js/theme.js?v=0a8f61f931"></script>
-  <script src="js/nav.js?v=f6a386b064" defer></script>
-  <script src="/tools-shared/profile/profile.js?v=b81d116b9b" defer></script>
-  <script src="js/my-stack.js?v=c16be26051" defer></script>
+  <script src="js/nav.js?v=4f89736078" defer></script>
+  <script src="/tools-shared/profile/profile.js?v=324ddf9b25" defer></script>
+  <script src="js/my-stack.js?v=40132f73c6" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to your AI tools</a>
@@ -89,45 +89,46 @@
 
     <section class="ms-hero" aria-labelledby="ms-title">
       <p class="rc-eyebrow">One list for every tool</p>
-      <h1 id="ms-title">List your AI stack once. Every tool picks it up.</h1>
-      <p class="ms-lede">Add the AI platforms and tools your business uses, answer a few shared questions, and the AI Stack Check, AU Frameworks Check, stack pack, AI register and shadow AI check all start from it. Edit it as your AI use grows or shrinks and see what changes.</p>
-      <p class="ms-privacy"><strong>Your list stays in your browser</strong> unless you create an account and save it there. It holds only what you pick here: platform names, banded answers and a short optional label. No results, no names of people, no secrets.</p>
+      <h1 id="ms-title">List your AI tools once. Every tool picks them up.</h1>
+      <p class="ms-lede">The AI Stack Check, AU Frameworks Check, stack pack, AI register and shadow AI check all start from this list.</p>
+      <p class="ms-privacy"><strong>It stays in your browser</strong> unless you save it to an account. Platform names and banded answers only, no results, names or secrets.</p>
       <p id="ms-migrated" class="ms-note" hidden></p>
       <div id="ms-status" class="rc-status" role="alert"></div>
     </section>
 
-    <section id="save" class="ms-section" aria-labelledby="ms-save-title">
-      <div class="ms-section-head">
-        <h2 id="ms-save-title">Keep your stack</h2>
-        <p class="ms-mode-line">Right now: <strong id="ms-mode">Not saved yet</strong>. <span id="ms-mode-help">It is gone when you close or reload this page.</span></p>
+    <section id="save" class="ms-section ms-save" aria-labelledby="ms-save-title">
+      <div class="ms-save-head">
+        <h2 id="ms-save-title">Keep your list</h2>
+        <p class="ms-mode-line">Right now: <strong id="ms-mode">Not saved yet</strong>. <span id="ms-mode-help">Gone when you close this page.</span></p>
       </div>
       <div class="ms-options">
-        <article id="account" class="ms-option ms-option--main" aria-labelledby="ms-account-title">
-          <p class="ms-option-step">Recommended</p>
-          <h3 id="ms-account-title">Sign up and it follows you</h3>
-          <p>One free account covers every one of our tools. Your list is there on your work computer, your laptop and after you clear your browser, and you can edit it any time to see what applies.</p>
+        <article id="account" class="ms-option" aria-labelledby="ms-account-title">
+          <h3 id="ms-account-title">Free account <span id="ms-draft-tag" class="ms-draft" hidden>Draft</span></h3>
+          <p class="ms-option-line">Follows you to every tool and device.</p>
 
           <div id="ms-signed-in" hidden>
-            <p class="ms-signed-line">Signed in as <strong id="ms-email"></strong>. Changes save to your account as you make them. <span id="ms-sync-state" class="ms-note"></span></p>
-            <div class="rc-actions">
-              <button id="ms-sync" type="button" class="rc-secondary">Load the latest from your account</button>
+            <p class="ms-signed-line">Signed in as <strong id="ms-email"></strong>. <span id="ms-sync-state" class="ms-note"></span></p>
+            <div class="ms-row">
+              <button id="ms-sync" type="button" class="rc-secondary">Load latest</button>
               <button id="ms-signout" type="button" class="rc-secondary">Sign out</button>
             </div>
-            <p class="ms-note">Signing out clears your list from this page, so nothing is left on a shared computer.</p>
+            <p class="ms-hint">Signing out clears your list from this page.</p>
           </div>
 
-          <p id="ms-accounts-soon" class="ms-note" hidden>Free accounts are coming soon. Until then, download your file or keep it in this browser.</p>
+          <div id="ms-draft" hidden>
+            <div class="ms-row">
+              <button type="button" class="rc-secondary" disabled aria-disabled="true" aria-describedby="ms-draft-line">Create an account</button>
+            </div>
+            <p id="ms-draft-line" class="ms-hint">Free accounts are in draft. They open once our security checks are done. For now, download the file or keep it in this browser.</p>
+          </div>
 
           <div id="ms-signed-out">
-            <div class="ms-concept" role="note">
-              <strong>Early version.</strong>
-              <span>There is no password reset or email check yet, so use a password you have not used anywhere else and can remember. We store your email, a salted hash of your password and your list of AI tools, nothing more. To delete your account, email markus@markuswalker.com and we delete it within 30 days.</span>
+            <div class="ms-row ms-auth-switch" role="group" aria-label="Create an account or sign in">
+              <button id="ms-show-signup" type="button" class="rc-secondary" aria-expanded="false" aria-controls="ms-signup-form">Create an account</button>
+              <button id="ms-show-signin" type="button" class="rc-secondary" aria-expanded="false" aria-controls="ms-signin-form">Sign in</button>
             </div>
-            <div class="ms-auth-switch" role="group" aria-label="Create an account or sign in">
-              <button id="ms-show-signup" type="button" class="ms-tab" aria-pressed="true" aria-controls="ms-signup-form">Create an account</button>
-              <button id="ms-show-signin" type="button" class="ms-tab" aria-pressed="false" aria-controls="ms-signin-form">Sign in</button>
-            </div>
-            <form id="ms-signup-form" class="ms-form" novalidate aria-labelledby="ms-show-signup">
+            <p id="ms-concept" class="ms-concept" hidden><strong>Early version.</strong> No password reset or email check yet, so use a password you use nowhere else. We store your email, a salted password hash and your list. To delete your account, email markus@markuswalker.com and we delete it within 30 days.</p>
+            <form id="ms-signup-form" class="ms-form" novalidate aria-labelledby="ms-show-signup" hidden>
               <label for="ms-signup-email">Email</label>
               <input id="ms-signup-email" name="email" type="email" autocomplete="email" maxlength="254" required spellcheck="false">
               <label for="ms-signup-password">Password <span class="ms-hint">(at least 10 characters)</span></label>
@@ -143,29 +144,25 @@
               <button type="submit" class="rc-button">Sign in</button>
               <p class="ms-form-msg" role="status" aria-live="polite"></p>
             </form>
-            <p class="ms-note">If you already have a list on this page when you sign in, we add it to the one in your account. Nothing is removed.</p>
           </div>
         </article>
 
         <article class="ms-option" aria-labelledby="ms-file-title">
-          <p class="ms-option-step">Or</p>
-          <h3 id="ms-file-title">Download it as a file</h3>
-          <p>Save <code>stack-profile.json</code> and upload it next time, on any device. The file never passes through us.</p>
-          <div class="rc-actions">
-            <button id="ms-download" type="button" class="rc-secondary">Download your stack</button>
-            <button id="ms-upload" type="button" class="rc-secondary">Upload your previous stack</button>
+          <h3 id="ms-file-title">File</h3>
+          <p class="ms-option-line">Save <code>stack-profile.json</code> and upload it next time. It never passes through us.</p>
+          <div class="ms-row">
+            <button id="ms-download" type="button" class="rc-secondary">Download file</button>
+            <button id="ms-upload" type="button" class="rc-secondary">Upload previous file</button>
             <input id="ms-upload-file" type="file" accept=".json,application/json" hidden tabindex="-1" aria-hidden="true">
           </div>
           <p id="ms-file-msg" class="ms-form-msg" role="status" aria-live="polite"></p>
         </article>
 
         <article class="ms-option" aria-labelledby="ms-device-title">
-          <p class="ms-option-step">Or</p>
-          <h3 id="ms-device-title">Keep it in this browser only</h3>
-          <p>We keep it in this browser's storage, so it is there next time you open any of our tools here.</p>
-          <p class="ms-warn"><strong>If you clear your browser data, use another browser or change device, you lose it.</strong></p>
-          <div class="rc-actions">
-            <button id="ms-device" type="button" class="rc-secondary" aria-pressed="false">Keep in this browser only</button>
+          <h3 id="ms-device-title">This browser</h3>
+          <p class="ms-option-line ms-warn-line">Lost if you clear browser data or change device.</p>
+          <div class="ms-row">
+            <button id="ms-device" type="button" class="rc-secondary" aria-pressed="false">Keep in this browser</button>
           </div>
           <p id="ms-device-msg" class="ms-form-msg" role="status" aria-live="polite"></p>
         </article>
@@ -175,7 +172,7 @@
     <section id="stack" class="ms-section" aria-labelledby="ms-stack-title">
       <div class="ms-section-head">
         <h2 id="ms-stack-title">Your AI platforms</h2>
-        <p>Pick from the platforms in our knowledge base. Add anything we do not cover by name below.</p>
+        <p>Pick from our knowledge base. Add anything else by name below.</p>
       </div>
       <div class="ms-picker">
         <label for="ms-find">Find a platform</label>
@@ -194,7 +191,7 @@
           <input id="ms-unlisted" type="text" maxlength="60" autocomplete="off" aria-describedby="ms-unlisted-help">
           <button type="submit" class="rc-secondary">Add tool</button>
         </div>
-        <p id="ms-unlisted-help" class="ms-hint">Product names only, up to 60 characters and 20 tools. We drop anything that looks like an email, phone number or key.</p>
+        <p id="ms-unlisted-help" class="ms-hint">Product names only, up to 20 tools. We drop anything that looks like an email, phone number or key.</p>
         <p class="ms-form-msg" role="status" aria-live="polite"></p>
       </form>
       <ul id="ms-unlisted-list" class="ms-chips"></ul>
@@ -203,7 +200,7 @@
     <section id="context" class="ms-section" aria-labelledby="ms-context-title">
       <div class="ms-section-head">
         <h2 id="ms-context-title">Questions every tool asks</h2>
-        <p>Answer these once. Leave any you are unsure of, and a tool will ask when it needs it.</p>
+        <p>Answer once. Skip any you are unsure of.</p>
       </div>
       <div id="ms-context-fields" class="ms-fields"></div>
     </section>
@@ -211,7 +208,7 @@
     <section id="business" class="ms-section" aria-labelledby="ms-business-title">
       <div class="ms-section-head">
         <h2 id="ms-business-title">About your business</h2>
-        <p>Bands only. We never ask for exact turnover, an ABN or an address.</p>
+        <p>Bands only. No exact turnover, ABN or address.</p>
       </div>
       <div id="ms-business-fields" class="ms-fields"></div>
       <div class="ms-field">
@@ -223,7 +220,7 @@
     <section id="tools" class="ms-section" aria-labelledby="ms-tools-title">
       <div class="ms-section-head">
         <h2 id="ms-tools-title">What applies in each tool</h2>
-        <p>Each tool reads your list when you open it on this site. Results are worked out fresh each time from the knowledge base, so they never go stale in your file.</p>
+        <p>Each tool reads your list and works out results fresh from the knowledge base.</p>
       </div>
       <ul id="ms-tools" class="ms-tools"></ul>
     </section>
@@ -233,13 +230,13 @@
       <p>We read what each vendor documents for your platforms and tell you what to switch on, in writing.</p>
       <div class="rc-actions">
         <a class="rc-button" href="/stack-check/?from=profile#ck-enquiry">Ask about a review</a>
-        <button id="ms-clear" type="button" class="rc-link">Clear your stack</button>
+        <button id="ms-clear" type="button" class="rc-link">Clear your list</button>
       </div>
     </section>
   </main>
 
   <footer class="rc-footer">
-    <p class="rc-footer-note">Your stack is a list you make. It is not a finding, an audit or advice.</p>
+    <p class="rc-footer-note">This is a list you make. It is not a finding, an audit or advice.</p>
     <p>Checkable AI. Copyright (c) 2026 Markus Walker. <a href="/stack-check/">AI Stack Check</a>.</p>
   </footer>
 </body>

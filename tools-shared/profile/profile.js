@@ -7,11 +7,19 @@
 // It holds inputs only: the stack, shared context answers, banded business facts and each tool's own answers.
 // Never results, people's names, emails, secrets, prompts or free text beyond the short label and tool names.
 //
-// Where it lives is the user's choice, promoted in this order: an account (dev preview concept, /api/), a
+// Where it lives is the user's choice, promoted in this order: an account (/api/, switched by ACCOUNTS_LIVE below), a
 // downloaded file, or this browser only (localStorage key mw-stack-profile-v1). Before they choose it lives in
 // memory and is gone on reload. Every storage call is wrapped, so blocked storage only means no saving.
 ;(function (root) {
   if (root.MWProfile && root.MWProfile.real) return
+
+  // ACCOUNTS_LIVE is the one switch for free accounts on the live site (www.markuswalker.com).
+  //   false (draft): accounts work on dev hosts only (*.pages.dev, localhost, 127.0.0.1). The live site shows the
+  //                  account option greyed out with a Draft tag, and `node tools/deploy.mjs <target> --live`
+  //                  leaves the /api/ functions and wrangler.toml out of the live copy.
+  //   true:          accounts work on the live site too. Read docs/profile-security-gaps.md first, then deploy
+  //                  with --live so the functions and wrangler.toml go out with it.
+  const ACCOUNTS_LIVE = false
 
   // SCHEMA-CORE START (kept identical in functions/lib/schema.js, checked by tests/schema-sync.test.mjs)
   const FORMAT = 'markuswalker.stack-profile'
@@ -261,9 +269,12 @@
   const API = '/api'
   const BUILD = '2026.10.22'
   const SAVE_DELAY = 600
-  // Accounts run on the live site (owner go-ahead 22 Oct 2026), the dev preview and local test servers. Any
-  // other host (a copy, a mirror) offers the file and this browser only.
-  const ACCOUNTS = /(^|\.)markuswalker\.com$|(^|\.)pages\.dev$|^localhost$|^127\.0\.0\.1$/.test((root.location && root.location.hostname) || '')
+  // Accounts always run on the dev preview and local test servers. On the live site they run only when
+  // ACCOUNTS_LIVE is true. Any other host (a copy, a mirror) never runs them.
+  const HOST = (root.location && root.location.hostname) || ''
+  const DEV_HOST = /(^|\.)pages\.dev$|^localhost$|^127\.0\.0\.1$/.test(HOST)
+  const LIVE_HOST = /(^|\.)markuswalker\.com$/.test(HOST)
+  const ACCOUNTS = DEV_HOST || (ACCOUNTS_LIVE && LIVE_HOST)
 
   const listeners = []
   const statusListeners = []
@@ -389,6 +400,71 @@
   // ---------------------------------------------------------------------------------------------------------
   // Account (dev preview concept). The session is an HttpOnly cookie this script never sees.
 
+  // Common product words people type, mapped to KB platform ids in the order we list them. Only ids that
+  // exist in /stack-check/data/index.json. Names and ids still match on their own, so this only adds words
+  // a platform's name does not contain (Claude for Anthropic, ChatGPT for OpenAI, Bedrock for AWS).
+  const ALIASES = {
+    'claude': ['anthropic', 'claude-enterprise', 'claude-code'],
+    'anthropic': ['anthropic', 'claude-enterprise', 'claude-code'],
+    'chatgpt': ['openai', 'chatgpt-enterprise', 'openai-codex'],
+    'openai': ['openai', 'chatgpt-enterprise', 'openai-codex', 'azure'],
+    'gpt': ['openai', 'chatgpt-enterprise', 'azure'],
+    'codex': ['openai-codex'],
+    'copilot': ['windows-m365', 'github', 'microsoft-copilot-studio'],
+    'microsoft copilot': ['windows-m365', 'microsoft-copilot-studio'],
+    'm365': ['windows-m365'],
+    'office': ['windows-m365'],
+    'github copilot': ['github'],
+    'gemini': ['google-gemini', 'google-antigravity', 'google-cloud'],
+    'google': ['google-gemini', 'google-cloud', 'google-antigravity'],
+    'vertex': ['google-cloud'],
+    'bedrock': ['aws'],
+    'aws': ['aws', 'amazon-connect'],
+    'amazon': ['aws', 'amazon-connect'],
+    'azure openai': ['azure'],
+    'azure': ['azure'],
+    'cursor': ['cursor'],
+    'perplexity': ['perplexity-enterprise', 'perplexity-comet-enterprise'],
+    'comet': ['perplexity-enterprise', 'perplexity-comet-enterprise'],
+    'llama': ['meta-ai-models'],
+    'meta': ['meta-ai-models'],
+    'mistral': ['mistral'],
+    'le chat': ['mistral'],
+    'grok': ['xai-grok'],
+    'xai': ['xai-grok']
+  }
+
+  // Ranks platforms for a typed query. `index` is the KB index.json (platforms then more_platforms) or an array
+  // of { id, name } objects. Returns the matching platform objects, best first: alias hits in alias order, then
+  // names that start with the query, words that start with it, names that contain it, and ids that contain it.
+  function searchPlatforms(query, index) {
+    const q = String(query || '').trim().toLowerCase().replace(/\s+/g, ' ')
+    if (q.length < 2 || !index) return []
+    const list = Array.isArray(index) ? index : [].concat(index.platforms || [], index.more_platforms || [])
+    const rank = {}
+    for (const key of Object.keys(ALIASES)) {
+      const exact = key === q
+      if (!exact && key.indexOf(q) !== 0 && q.indexOf(key + ' ') !== 0) continue
+      ALIASES[key].forEach((id, i) => {
+        const score = (exact ? 1000 : 900) - i * 10
+        if (!(rank[id] >= score)) rank[id] = score
+      })
+    }
+    const out = []
+    list.forEach((p, order) => {
+      if (!p || typeof p.id !== 'string') return
+      const name = String(p.name || '').toLowerCase()
+      let score = rank[p.id] || 0
+      if (name.indexOf(q) === 0) score = Math.max(score, 500)
+      else if ((' ' + name).indexOf(' ' + q) !== -1) score = Math.max(score, 400)
+      else if (name.indexOf(q) !== -1) score = Math.max(score, 300)
+      else if (p.id.indexOf(q) !== -1) score = Math.max(score, 200)
+      if (score) out.push({ p: p, score: score, order: order })
+    })
+    out.sort((a, b) => (b.score - a.score) || (a.order - b.order))
+    return out.map(x => x.p)
+  }
+
   async function api(method, path, body, extra) {
     let res
     try {
@@ -465,6 +541,10 @@
     return current
   }
 
+  function draftError() {
+    return Object.assign(new Error('Free accounts are in draft. For now, download the file or keep it in this browser.'), { code: 'draft' })
+  }
+
   async function enterAccount(email, mergeLocal) {
     const previous = mode
     mode = 'account'
@@ -482,12 +562,15 @@
 
   const accountApi = {
     available: ACCOUNTS,
+    draft: !ACCOUNTS,
     status: statusSnapshot,
     async signUp(email, password) {
+      if (!ACCOUNTS) throw draftError()
       const data = await api('POST', '/signup', { email: email, password: password })
       return enterAccount(data.email, true)
     },
     async signIn(email, password) {
+      if (!ACCOUNTS) throw draftError()
       const data = await api('POST', '/signin', { email: email, password: password })
       return enterAccount(data.email, true)
     },
@@ -534,6 +617,9 @@
     SCHEMA_VERSION: SCHEMA_VERSION,
     LIMITS: LIMITS,
     ENUMS: ENUMS,
+    ALIASES: ALIASES,
+    ACCOUNTS_LIVE: ACCOUNTS_LIVE,
+    searchPlatforms: searchPlatforms,
     DEVICE_KEY: DEVICE_KEY,
     get() { return copy(current) },
     set: set,
@@ -562,6 +648,7 @@
       if (['memory', 'device', 'account'].indexOf(next) === -1) throw new Error('Unknown save mode: ' + next)
       if (next === mode) return mode
       if (next === 'account') {
+        if (!ACCOUNTS) throw draftError()
         if (account.state !== 'signed-in') throw Object.assign(new Error('Sign up or sign in first to save your stack to an account.'), { code: 'signed-out' })
         mode = 'account'
         removeKey(DEVICE_KEY)
@@ -627,6 +714,7 @@
   // Start up
 
   function start() {
+    if (readKey(ACCOUNT_FLAG) === '1' && !ACCOUNTS) removeKey(ACCOUNT_FLAG)
     if (readKey(ACCOUNT_FLAG) === '1') {
       mode = 'account'
       account.state = 'checking'

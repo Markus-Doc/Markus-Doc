@@ -119,3 +119,14 @@ ul.plain li{margin:4px 0}
 .tool .art{aspect-ratio:16/9;margin:-18px -20px 10px;width:calc(100% + 40px);max-width:none}
 
 .foot{color:var(--muted);font-size:14px;padding-top:20px;padding-bottom:40px}
+
+/* Phone menu (22 Oct 2026): at 720px and under nav.js puts a Menu button before the nav that shows and hides it, so the header is one row. With no script the nav stays in view. */
+.tools-nav-toggle{display:none}
+@media (max-width:720px){
+  .brand{margin-right:auto;min-width:0}
+  .tools-nav-toggle{order:2;display:inline-flex;align-items:center;gap:.5rem;min-height:44px;padding:0 .75rem;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:600 .875rem/1.6 var(--sans);cursor:pointer}
+  .tools-nav-toggle::before{content:"";width:16px;height:2px;background:currentColor;box-shadow:0 -5px 0 currentColor,0 5px 0 currentColor}
+  .tools-nav-toggle:hover{background:var(--hover-bg)}
+  .tools-nav-toggle[aria-expanded="true"]{border-color:var(--accent);box-shadow:inset 0 -2px 0 var(--accent)}
+  .tools-nav.has-toggle:not(.is-open){display:none}
+}
