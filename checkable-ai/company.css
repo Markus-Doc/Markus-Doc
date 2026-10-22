@@ -165,6 +165,12 @@ ul.plain li{margin:4px 0}
   .ts-dot{width:24px;height:24px;padding:0;border:0;background:none;cursor:pointer;display:grid;place-items:center}
   .ts-dot::before{content:"";width:8px;height:8px;border-radius:50%;background:color-mix(in srgb,var(--muted) 45%,transparent);transition:width .2s,background .2s}
   .ts-dot[aria-current="true"]::before{width:22px;border-radius:4px;background:var(--accent)}
+  .ts-ctl{display:flex;align-items:center;gap:6px}
+  .ts-pause{width:28px;height:28px;padding:0;border:1px solid transparent;border-radius:50%;background:none;color:var(--muted);cursor:pointer;display:grid;place-items:center}
+  .ts-pause:hover{color:var(--accent);border-color:var(--line)}
+  .ts-pause:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .ts-pause::before{content:"";width:8px;height:10px;border-left:3px solid currentColor;border-right:3px solid currentColor;box-sizing:border-box}
+  .ts-pause.is-paused::before{width:0;height:0;border-style:solid;border-width:6px 0 6px 10px;border-color:transparent transparent transparent currentColor;margin-left:3px}
   .ts-foot{margin:0;font-size:13px;color:var(--muted);text-align:center}
   @media (prefers-reduced-motion:reduce){.ts-track{scroll-behavior:auto}.ts-dot::before{transition:none}}
 }
