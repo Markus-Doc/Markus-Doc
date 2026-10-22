@@ -62,15 +62,25 @@ summary.tools-nav-top::after{content:"";flex:none;width:.4rem;height:.4rem;borde
 
 /* Page */
 h1,h2,h3{font-family:var(--serif);font-weight:600;text-wrap:balance;margin:0;line-height:1.15}
-main{padding-top:20px;padding-bottom:24px}
+main{padding-bottom:24px}
 
-.hero{display:grid}
-.hero-img{display:block;width:100%;height:auto;aspect-ratio:1672/941;object-fit:cover;filter:var(--img-filter);background:var(--line)}
-.hero-text{display:grid;gap:14px;padding-top:28px}
-.eyebrow{color:var(--accent);font-weight:700;font-size:16px;margin:0}
-.hero h1{font-size:clamp(34px,5.6vw,62px);line-height:1.06;max-width:17ch}
-.hero-body{display:grid;gap:18px;padding-block:24px 36px;border-bottom:2px solid var(--ink)}
-.lede{font-size:clamp(18px,2vw,21px);max-width:60ch;margin:0}
+/* First screen: text on the page colour at left, the art bleeding off the right edge and fading into
+   the page at its left edge. Phones get the art as a band above the text. */
+.hero{display:grid;border-bottom:2px solid var(--ink)}
+.hero-art{position:relative;overflow:hidden;background:var(--line)}
+.hero-img{display:block;width:100%;height:100%;aspect-ratio:4/3;object-fit:cover;object-position:12% 55%;filter:var(--img-filter)}
+.hero-text{display:grid;gap:20px;align-content:center;padding:28px max(16px,env(safe-area-inset-right,0px)) 40px max(16px,env(safe-area-inset-left,0px))}
+.eyebrow{color:var(--accent);font-weight:700;font-size:15px;letter-spacing:.08em;text-transform:uppercase;margin:0}
+.hero h1{font-size:clamp(38px,8vw,48px);line-height:1.04;letter-spacing:-.01em;max-width:14ch}
+.lede{font-size:clamp(17px,1.35vw,20px);line-height:1.55;max-width:46ch;margin:0;color:var(--muted)}
+@media (min-width:900px){
+  .hero{grid-template-columns:minmax(0,46fr) minmax(0,54fr);min-height:clamp(560px,calc(100svh - 90px),900px)}
+  .hero-art{grid-column:2;grid-row:1}
+  .hero-art::before{content:"";position:absolute;inset:0 auto 0 0;width:9%;z-index:1;background:linear-gradient(90deg,var(--bg),transparent);pointer-events:none}
+  .hero-img{position:absolute;inset:0;aspect-ratio:auto}
+  .hero-text{grid-column:1;grid-row:1;gap:24px;padding:48px clamp(24px,4vw,64px) 56px max(24px,calc((100vw - 1320px)/2 + 16px))}
+  .hero h1{font-size:clamp(44px,4vw,70px);max-width:15ch}
+}
 .ctas{display:flex;flex-wrap:wrap;gap:12px 20px;align-items:center;margin:0}
 .ctas-end{margin-top:18px}
 .btn{background:var(--accent);color:var(--on-accent);font-weight:700;padding:12px 22px;text-decoration:none;min-height:44px;display:inline-flex;align-items:center}

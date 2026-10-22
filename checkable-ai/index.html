@@ -11,7 +11,7 @@
   <meta name="description" content="An AI security and cloud practice for Australian small and mid-sized businesses. Free checks, testing, governance, build work and engineers inside your team.">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' fill='%238f3a2b'/%3E%3Cpath d='M4 12V4h1.6l2.4 4.2L10.4 4H12v8h-1.6V7.2L8 11.2 5.6 7.2V12z' fill='%23fbfaf8'/%3E%3C/svg%3E" type="image/svg+xml">
   <link rel="preload" href="fonts/fraunces-regular.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="company.css?v=2">
+  <link rel="stylesheet" href="company.css?v=3">
   <script src="nav.js?v=1" defer></script>
   <script src="/site-art/rotator.js" defer></script>
 </head>
@@ -74,19 +74,20 @@
     </nav>
   </header>
 
-  <main id="main" class="wrap">
+  <main id="main">
     <div class="hero">
-      <img class="hero-img" data-art-slot="company" src="/site-art/main-splash-1280.webp" srcset="/site-art/main-splash-640.webp 640w, /site-art/main-splash-960.webp 960w, /site-art/main-splash-1280.webp 1280w, /site-art/main-splash-1672.webp 1672w, /site-art/main-splash-1920.webp 1920w, /site-art/main-splash-2560.webp 2560w" sizes="(min-width: 1072px) 1040px, calc(100vw - 32px)" width="1672" height="941" fetchpriority="high" decoding="async" alt="A block of smoky glass with faint circuitry inside throws a network of light points and fine lines across a linen table, beside a rust leather notebook, a brass fountain pen and brass pins joined by rust thread.">
+      <div class="hero-art">
+        <img class="hero-img" data-art-slot="company" src="/site-art/main-splash-1280.webp" srcset="/site-art/main-splash-640.webp 640w, /site-art/main-splash-960.webp 960w, /site-art/main-splash-1280.webp 1280w, /site-art/main-splash-1672.webp 1672w, /site-art/main-splash-1920.webp 1920w, /site-art/main-splash-2560.webp 2560w" sizes="(min-width: 900px) 56vw, 100vw" width="1672" height="941" fetchpriority="high" decoding="async" alt="A block of smoky glass with faint circuitry inside throws a network of light points and fine lines across a linen table, beside a rust leather notebook, a brass fountain pen and brass pins joined by rust thread.">
+      </div>
       <div class="hero-text">
         <p class="eyebrow">AI security for Australian businesses</p>
         <h1>Use AI with confidence. We make it safe to.</h1>
+        <p class="lede">We are an AI security and cloud practice. We come from large enterprise security and cloud work, and our passion is helping small and mid-sized businesses get AI right. That means knowing what their tools really do with their data, which rules apply, and what to fix first.</p>
+        <div class="ctas"><a class="btn" href="#tools">Start with a free check</a><a class="link" href="#do">See what we do</a></div>
       </div>
     </div>
-    <div class="hero-body">
-      <p class="lede">We are an AI security and cloud practice. We come from large enterprise security and cloud work, and our passion is helping small and mid-sized businesses get AI right. That means knowing what their tools really do with their data, which rules apply, and what to fix first.</p>
-      <div class="ctas"><a class="btn" href="#tools">Start with a free check</a><a class="link" href="#do">See what we do</a></div>
-    </div>
 
+    <div class="wrap">
     <section id="do" aria-labelledby="do-h">
       <h2 id="do-h">What we do</h2>
       <p class="intro">Five kinds of work, from a free check to an engineer inside your team.</p>
@@ -153,6 +154,7 @@
         </div>
       </div>
     </section>
+    </div>
   </main>
 
   <footer class="wrap foot">Checkable AI. Copyright (c) 2026 Markus Walker. Our work is advisory. It is not an audit, a certification or legal advice.</footer>
