@@ -1,0 +1,227 @@
+{
+  "format": "markuswalker.shadow-ai.questions",
+  "version": "bank-1",
+  "as_at": "2026-10-22",
+  "sections": [
+    { "id": "business", "title": "Your business", "intro": "Two questions so we can tell which privacy rules are likely to reach you." },
+    { "id": "tools", "title": "What staff use", "intro": "Answer for what actually happens, not what the rules say should happen." },
+    { "id": "data", "title": "What goes in", "intro": "Think about what staff paste, upload or record into AI tools in a normal week." },
+    { "id": "rules", "title": "Rules and ownership", "intro": "What the business has written down, who owns it and what staff have been shown." },
+    { "id": "visibility", "title": "Visibility", "intro": "How you would know, and what you can switch off." }
+  ],
+  "questions": [
+    {
+      "id": "headcount",
+      "section": "business",
+      "type": "single",
+      "text": "How many people work in the business, including contractors who use your systems?",
+      "options": [
+        { "value": "1-19", "label": "1 to 19" },
+        { "value": "20-199", "label": "20 to 199" },
+        { "value": "200-plus", "label": "200 or more" }
+      ]
+    },
+    {
+      "id": "privacy",
+      "section": "business",
+      "type": "single",
+      "text": "Does the Privacy Act 1988 cover your business?",
+      "help": "Most businesses with annual turnover of A$3 million or less are outside it. Health service providers, businesses that trade in personal information and Commonwealth contractors are covered at any size, and there are other exceptions. The AU Frameworks Check works this out in detail.",
+      "options": [
+        { "value": "over-3m", "label": "Yes, our turnover is over A$3 million" },
+        { "value": "any-size", "label": "Yes, at any size: we provide a health service, trade in personal information or hold a Commonwealth contract" },
+        { "value": "not-covered", "label": "No, our turnover is A$3 million or less and none of those apply" },
+        { "value": "unsure", "label": "Not sure" }
+      ]
+    },
+    {
+      "id": "tools",
+      "section": "tools",
+      "type": "multi",
+      "text": "Which AI tools do staff use for work, approved or not?",
+      "help": "Pick every one you know or suspect is in use. AI built into software you already pay for counts too.",
+      "options": [
+        { "value": "chatgpt", "label": "ChatGPT", "kb": ["openai"] },
+        { "value": "claude", "label": "Claude", "kb": ["anthropic"] },
+        { "value": "gemini", "label": "Google Gemini", "kb": ["google-gemini"] },
+        { "value": "copilot", "label": "Microsoft Copilot", "kb": ["windows-m365"] },
+        { "value": "coding", "label": "Coding assistants such as GitHub Copilot, Cursor or Claude Code", "kb": ["github", "cursor", "claude-code", "openai-codex"] },
+        { "value": "perplexity", "label": "Perplexity", "kb": ["perplexity-enterprise"] },
+        { "value": "deepseek", "label": "DeepSeek", "kb": ["deepseek"] },
+        { "value": "grok", "label": "Grok", "kb": ["xai-grok"] },
+        { "value": "meta", "label": "Meta AI", "kb": ["meta-ai-models"] },
+        { "value": "mistral", "label": "Mistral Le Chat", "kb": ["mistral"] },
+        { "value": "embedded", "label": "AI features inside software we already use, such as writing, design or notes tools" },
+        { "value": "extensions", "label": "AI browser extensions or meeting note-taker bots" },
+        { "value": "none", "label": "None that we know of", "exclusive": true },
+        { "value": "unsure", "label": "Not sure", "exclusive": true }
+      ]
+    },
+    {
+      "id": "accounts",
+      "section": "tools",
+      "type": "single",
+      "text": "When staff use these tools for work, which accounts do they sign in with?",
+      "help": "A personal account is one a person signs up for with any email, free or paid. A business account sits in a workspace the business pays for and administers.",
+      "options": [
+        { "value": "business", "label": "Business or enterprise accounts the business pays for and administers" },
+        { "value": "mixed", "label": "A mix of business accounts and staff's own accounts" },
+        { "value": "personal", "label": "Mostly staff's own free or paid accounts" },
+        { "value": "unsure", "label": "Not sure" }
+      ]
+    },
+    {
+      "id": "selfpaid",
+      "section": "tools",
+      "type": "single",
+      "text": "Do staff pay for AI subscriptions themselves?",
+      "options": [
+        { "value": "expensed", "label": "Yes, and some claim them as expenses" },
+        { "value": "own-pocket", "label": "Yes, some pay out of their own pocket" },
+        { "value": "no", "label": "No" },
+        { "value": "unsure", "label": "Not sure" }
+      ]
+    },
+    {
+      "id": "notetakers",
+      "section": "tools",
+      "type": "single",
+      "text": "Do AI note-takers or recording bots join your calls and meetings?",
+      "options": [
+        { "value": "approved", "label": "Yes, one tool the business set up" },
+        { "value": "unapproved", "label": "Yes, staff add their own" },
+        { "value": "no", "label": "No" },
+        { "value": "unsure", "label": "Not sure" }
+      ]
+    },
+    {
+      "id": "data",
+      "section": "data",
+      "type": "multi",
+      "text": "Which of these could staff be putting into AI tools?",
+      "options": [
+        { "value": "customer-pi", "label": "Customer or client personal information, such as names, contact details or case notes" },
+        { "value": "health", "label": "Health information" },
+        { "value": "financial", "label": "Financial details, such as bank, card or tax file numbers" },
+        { "value": "staff", "label": "Staff records" },
+        { "value": "code", "label": "Source code, passwords or API keys" },
+        { "value": "confidential", "label": "Confidential business information, such as contracts, pricing or plans" },
+        { "value": "none", "label": "None of these, as far as we know", "exclusive": true },
+        { "value": "unsure", "label": "Not sure", "exclusive": true }
+      ]
+    },
+    {
+      "id": "contracts",
+      "section": "data",
+      "type": "single",
+      "text": "Do client contracts or confidentiality agreements limit where you can send client information?",
+      "options": [
+        { "value": "yes", "label": "Yes, most of them" },
+        { "value": "some", "label": "Some of them" },
+        { "value": "no", "label": "No" },
+        { "value": "unsure", "label": "Not sure" }
+      ]
+    },
+    {
+      "id": "policy",
+      "section": "rules",
+      "type": "single",
+      "text": "Do you have a written AI use policy?",
+      "options": [
+        { "value": "current", "label": "Yes, and staff have read and accepted it" },
+        { "value": "unshared", "label": "Yes, but not all staff have seen it, or it is out of date" },
+        { "value": "draft", "label": "It is in draft" },
+        { "value": "none", "label": "No" }
+      ]
+    },
+    {
+      "id": "approved",
+      "section": "rules",
+      "type": "single",
+      "text": "Is there a list of the AI tools staff may use, and for what?",
+      "options": [
+        { "value": "written", "label": "Yes, a written list we keep current" },
+        { "value": "informal", "label": "Informally, people know what is allowed" },
+        { "value": "none", "label": "No" }
+      ]
+    },
+    {
+      "id": "requests",
+      "section": "rules",
+      "type": "single",
+      "text": "If someone wants a new AI tool, how do they get it approved?",
+      "options": [
+        { "value": "quick", "label": "There is a set way and we answer within about a week" },
+        { "value": "slow", "label": "There is a set way, but it is slow" },
+        { "value": "none", "label": "There is no set way" }
+      ]
+    },
+    {
+      "id": "owner",
+      "section": "rules",
+      "type": "single",
+      "text": "Is one person responsible for how the business uses AI?",
+      "options": [
+        { "value": "yes", "label": "Yes, a named person" },
+        { "value": "shared", "label": "It is shared or unclear" },
+        { "value": "no", "label": "No" }
+      ]
+    },
+    {
+      "id": "training",
+      "section": "rules",
+      "type": "single",
+      "text": "Have staff been shown what they may and may not put into AI tools?",
+      "options": [
+        { "value": "all", "label": "Yes, all staff in the last 12 months" },
+        { "value": "some", "label": "Some staff, or longer ago" },
+        { "value": "none", "label": "No" }
+      ]
+    },
+    {
+      "id": "detect",
+      "section": "visibility",
+      "type": "single",
+      "text": "If someone used an AI tool the business has not approved, how would you find out?",
+      "options": [
+        { "value": "controls", "label": "Our network, device or browser controls block or flag it" },
+        { "value": "reviews", "label": "We review expense claims, sign-ups or sign-in logs" },
+        { "value": "ask", "label": "Only if they told us" },
+        { "value": "unknown", "label": "We would not find out" }
+      ]
+    },
+    {
+      "id": "register",
+      "section": "visibility",
+      "type": "single",
+      "text": "Do you keep a register of the AI tools in use, with an owner and the data each one handles?",
+      "options": [
+        { "value": "current", "label": "Yes, and it is current" },
+        { "value": "stale", "label": "Yes, but it is out of date" },
+        { "value": "none", "label": "No" }
+      ]
+    },
+    {
+      "id": "settings",
+      "section": "visibility",
+      "type": "single",
+      "text": "For the business AI accounts you have, have you checked the training, retention and sharing settings?",
+      "options": [
+        { "value": "checked", "label": "Yes, on every account" },
+        { "value": "unchecked", "label": "Not yet, or only on some" },
+        { "value": "no-business", "label": "We have no business AI accounts" }
+      ]
+    },
+    {
+      "id": "leavers",
+      "section": "visibility",
+      "type": "single",
+      "text": "When someone leaves, can you remove their access to AI tools and the work data in them?",
+      "options": [
+        { "value": "yes", "label": "Yes, we switch off their business accounts" },
+        { "value": "partly", "label": "For some tools only" },
+        { "value": "no", "label": "No, or the work sits in their own accounts" }
+      ]
+    }
+  ]
+}

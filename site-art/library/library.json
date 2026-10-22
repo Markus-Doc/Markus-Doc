@@ -1,0 +1,425 @@
+{
+  "note": "Image library for the business website. Numbers match the review gallery. Rejected and Grok images are left out on the owner's word (22 Oct 2026). Live feature images and history: /site-art/ and site/manifest.json in the private repo Markus-Doc/site-art.",
+  "images": [
+    {
+      "n": 1,
+      "file": "img/01-main-splash.jpg",
+      "title": "Main splash: smoky glass block with faint circuitry throwing a light network, notebook, pen, pinned thread",
+      "kind": "generated",
+      "status": "live",
+      "used_on": "/company/",
+      "source": "Generated in the owner's ChatGPT account, 22 Oct 2026 (OpenAI terms assign output rights to the user)",
+      "licence": "Owned"
+    },
+    {
+      "n": 2,
+      "file": "img/02-stack-check.jpg",
+      "title": "Stack Check: glass slab stack, one rust slab out of line, light network",
+      "kind": "generated",
+      "status": "live",
+      "used_on": "/stack-check/",
+      "source": "Generated in the owner's ChatGPT account, 22 Oct 2026 (OpenAI terms assign output rights to the user)",
+      "licence": "Owned"
+    },
+    {
+      "n": 3,
+      "file": "img/03-au-frameworks.jpg",
+      "title": "AU Frameworks: pop-up paper frames in a leather book, thread network, glass light",
+      "kind": "generated",
+      "status": "live",
+      "used_on": "/readiness-check/",
+      "source": "Generated in the owner's ChatGPT account, 22 Oct 2026 (OpenAI terms assign output rights to the user)",
+      "licence": "Owned"
+    },
+    {
+      "n": 4,
+      "file": "img/04-composite-monolith.jpg",
+      "title": "Composite: glass monolith on the red outback plain",
+      "kind": "generated",
+      "status": "candidate",
+      "used_on": "",
+      "source": "Generated in the owner's ChatGPT account, 22 Oct 2026 (OpenAI terms assign output rights to the user)",
+      "licence": "Owned"
+    },
+    {
+      "n": 5,
+      "file": "img/05-composite-fogstack.jpg",
+      "title": "Composite: glass slab stack in a sea of fog",
+      "kind": "generated",
+      "status": "candidate",
+      "used_on": "",
+      "source": "Generated in the owner's ChatGPT account, 22 Oct 2026 (OpenAI terms assign output rights to the user)",
+      "licence": "Owned"
+    },
+    {
+      "n": 6,
+      "file": "img/06-composite-headland.jpg",
+      "title": "Composite: paper-frame cathedral on a coastal headland",
+      "kind": "generated",
+      "status": "liked",
+      "used_on": "",
+      "source": "Generated in the owner's ChatGPT account, 22 Oct 2026 (OpenAI terms assign output rights to the user)",
+      "licence": "Owned"
+    },
+    {
+      "n": 43,
+      "file": "img/43-unsplash.jpg",
+      "title": "Two people in a white hall strung with a web of laser lines",
+      "kind": "photo",
+      "status": "favourite",
+      "used_on": "",
+      "source": "https://unsplash.com/photos/man-and-woman-standing-near-laser-light-AR9k5pHP0IQ",
+      "licence": "Unsplash License (free commercial use, no credit required)"
+    },
+    {
+      "n": 44,
+      "file": "img/44-unsplash.jpg",
+      "title": "A face lit by a warm projected pattern",
+      "kind": "photo",
+      "status": "approved",
+      "used_on": "",
+      "source": "https://unsplash.com/photos/woman-with-black-and-white-face-paint-TtIvMUx1098",
+      "licence": "Unsplash License (free commercial use, no credit required)"
+    },
+    {
+      "n": 45,
+      "file": "img/45-unsplash.jpg",
+      "title": "A man's face crossed by a band of prism light",
+      "kind": "photo",
+      "status": "approved",
+      "used_on": "",
+      "source": "https://unsplash.com/photos/closeup-photo-of-mans-face-with-light-reflections-gBFw56Pb240",
+      "licence": "Unsplash License (free commercial use, no credit required)"
+    },
+    {
+      "n": 46,
+      "file": "img/46-unsplash.jpg",
+      "title": "A face in warm light with projected lines",
+      "kind": "photo",
+      "status": "approved",
+      "used_on": "",
+      "source": "https://unsplash.com/photos/woman-with-green-eyes-took-selfie-FCwm0sIENYg",
+      "licence": "Unsplash License (free commercial use, no credit required)"
+    },
+    {
+      "n": 47,
+      "file": "img/47-unsplash.jpg",
+      "title": "Two people before a wall-sized map of connecting lines",
+      "kind": "photo",
+      "status": "liked",
+      "used_on": "",
+      "source": "https://unsplash.com/photos/a-couple-of-people-standing-in-front-of-a-wall-OWkXt1ikC5g",
+      "licence": "Unsplash License (free commercial use, no credit required)"
+    },
+    {
+      "n": 48,
+      "file": "img/48-unsplash.jpg",
+      "title": "A hand drawing a diagram on glass",
+      "kind": "photo",
+      "status": "approved",
+      "used_on": "",
+      "source": "https://unsplash.com/photos/hand-drawing-a-diagram-on-a-whiteboard-ajTN690FnUg",
+      "licence": "Unsplash License (free commercial use, no credit required)"
+    },
+    {
+      "n": 50,
+      "file": "img/50-unsplash.jpg",
+      "title": "A person at a wall of pinned pages",
+      "kind": "photo",
+      "status": "approved",
+      "used_on": "",
+      "source": "https://unsplash.com/photos/man-in-black-crew-neck-t-shirt-wearing-black-sunglasses-gKxBDRmD9VI",
+      "licence": "Unsplash License (free commercial use, no credit required)"
+    },
+    {
+      "n": 52,
+      "file": "img/52-unsplash.jpg",
+      "title": "Hands pointing at graphs on a glass screen",
+      "kind": "photo",
+      "status": "approved",
+      "used_on": "",
+      "source": "https://unsplash.com/photos/person-holding-black-smartphone-in-front-of-mirror-likFdgumjWM",
+      "licence": "Unsplash License (free commercial use, no credit required)"
+    },
+    {
+      "n": 53,
+      "file": "img/53-unsplash.jpg",
+      "title": "Mapping a system on a whiteboard",
+      "kind": "photo",
+      "status": "approved",
+      "used_on": "",
+      "source": "https://unsplash.com/photos/woman-in-white-and-red-polka-dot-long-sleeve-shirt-2Q3Ivd-HsaM",
+      "licence": "Unsplash License (free commercial use, no credit required)"
+    },
+    {
+      "n": 54,
+      "file": "img/54-unsplash.jpg",
+      "title": "A hand joining nodes on a whiteboard",
+      "kind": "photo",
+      "status": "approved",
+      "used_on": "",
+      "source": "https://unsplash.com/photos/person-writing-on-white-board-iW9oP7Ljkbg",
+      "licence": "Unsplash License (free commercial use, no credit required)"
+    },
+    {
+      "n": 55,
+      "file": "img/55-unsplash.jpg",
+      "title": "A marker over a whiteboard diagram",
+      "kind": "photo",
+      "status": "approved",
+      "used_on": "",
+      "source": "https://unsplash.com/photos/person-in-black-and-white-striped-long-sleeve-shirt-holding-white-pen-IzLoifsGL1A",
+      "licence": "Unsplash License (free commercial use, no credit required)"
+    },
+    {
+      "n": 56,
+      "file": "img/56-unsplash.jpg",
+      "title": "Working late under a warm desk lamp",
+      "kind": "photo",
+      "status": "liked",
+      "used_on": "",
+      "source": "https://unsplash.com/photos/man-working-late-on-his-phone-at-desk-HoMZWoPRv9c",
+      "licence": "Unsplash License (free commercial use, no credit required)"
+    },
+    {
+      "n": 57,
+      "file": "img/57-unsplash.jpg",
+      "title": "Working late at a screen in a dark office",
+      "kind": "photo",
+      "status": "approved",
+      "used_on": "",
+      "source": "https://unsplash.com/photos/woman-working-late-at-a-computer-in-an-office-5rG70Pk9vjs",
+      "licence": "Unsplash License (free commercial use, no credit required)"
+    },
+    {
+      "n": 58,
+      "file": "img/58-unsplash.jpg",
+      "title": "A hand reaching into prism light",
+      "kind": "photo",
+      "status": "approved",
+      "used_on": "",
+      "source": "https://unsplash.com/photos/a-persons-hand-with-a-rainbow-light-in-the-background-RVANu8Z9HNg",
+      "licence": "Unsplash License (free commercial use, no credit required)"
+    },
+    {
+      "n": 59,
+      "file": "img/59-unsplash.jpg",
+      "title": "A hand reaching toward streaks of light",
+      "kind": "photo",
+      "status": "approved",
+      "used_on": "",
+      "source": "https://unsplash.com/photos/person-holding-smartphone-in-front-of-purple-and-pink-light-b6yhlasdry0",
+      "licence": "Unsplash License (free commercial use, no credit required)"
+    },
+    {
+      "n": 60,
+      "file": "img/60-unsplash.jpg",
+      "title": "Two silhouettes before a large screen",
+      "kind": "photo",
+      "status": "approved",
+      "used_on": "",
+      "source": "https://unsplash.com/photos/silhouette-of-man-and-woman-sitting-on-ottoman-erCPgyXNlto",
+      "licence": "Unsplash License (free commercial use, no credit required)"
+    },
+    {
+      "n": 61,
+      "file": "img/61-composite-mainstreet.jpg",
+      "title": "Composite: main street of small businesses at blue hour (network too faint)",
+      "kind": "generated",
+      "status": "candidate",
+      "used_on": "",
+      "source": "Generated in the owner's ChatGPT account, 22 Oct 2026 (OpenAI terms assign output rights to the user)",
+      "licence": "Owned"
+    },
+    {
+      "n": 62,
+      "file": "img/62-double-exposure-owner.jpg",
+      "title": "Double exposure: business owner profile with a pin-and-thread network inside",
+      "kind": "generated",
+      "status": "liked",
+      "used_on": "",
+      "source": "Generated in the owner's ChatGPT account, 22 Oct 2026 (OpenAI terms assign output rights to the user)",
+      "licence": "Owned"
+    },
+    {
+      "n": 63,
+      "file": "img/63-double-exposure-tradie.jpg",
+      "title": "Double exposure: bearded business owner with a workshop and thread network inside",
+      "kind": "generated",
+      "status": "new",
+      "used_on": "",
+      "source": "Generated in the owner's ChatGPT account, 22 Oct 2026 (OpenAI terms assign output rights to the user)",
+      "licence": "Owned"
+    },
+    {
+      "n": 64,
+      "file": "img/64-unsplash.jpg",
+      "title": "People sitting inside a vast web of black thread in a white hall",
+      "kind": "photo",
+      "status": "new",
+      "used_on": "",
+      "source": "https://unsplash.com/photos/group-of-people-sitting-on-floor-R84Oy89aNKs",
+      "licence": "Unsplash License (free commercial use, no credit required)"
+    },
+    {
+      "n": 65,
+      "file": "img/65-unsplash.jpg",
+      "title": "People resting under a thread installation, white gallery",
+      "kind": "photo",
+      "status": "new",
+      "used_on": "",
+      "source": "https://unsplash.com/photos/man-sitting-on-ground-j1-h6T7A5Lo",
+      "licence": "Unsplash License (free commercial use, no credit required)"
+    },
+    {
+      "n": 66,
+      "file": "img/66-unsplash.jpg",
+      "title": "Red and white lines zig-zagging across a gallery wall",
+      "kind": "photo",
+      "status": "new",
+      "used_on": "",
+      "source": "https://unsplash.com/photos/white-and-red-metal-frame-B15n8RaJVo4",
+      "licence": "Unsplash License (free commercial use, no credit required)"
+    },
+    {
+      "n": 67,
+      "file": "img/67-unsplash.jpg",
+      "title": "A timber room strung with threads and hanging forms",
+      "kind": "photo",
+      "status": "new",
+      "used_on": "",
+      "source": "https://unsplash.com/photos/a-room-with-a-window-and-many-flowers-JobCAisEV44",
+      "licence": "Unsplash License (free commercial use, no credit required)"
+    },
+    {
+      "n": 68,
+      "file": "img/68-unsplash.jpg",
+      "title": "People in a white gallery beside a rainbow string-light installation",
+      "kind": "photo",
+      "status": "new",
+      "used_on": "",
+      "source": "https://unsplash.com/photos/people-stnading-in-room-ZLBzMGle-nE",
+      "licence": "Unsplash License (free commercial use, no credit required)"
+    },
+    {
+      "n": 69,
+      "file": "img/69-unsplash.jpg",
+      "title": "Four people studying a wall of framed pages",
+      "kind": "photo",
+      "status": "new",
+      "used_on": "",
+      "source": "https://unsplash.com/photos/three-men-and-woman-standing-while-looking-at-bulletin-board-Oqv_bQbZgS8",
+      "licence": "Unsplash License (free commercial use, no credit required)"
+    },
+    {
+      "n": 70,
+      "file": "img/70-unsplash.jpg",
+      "title": "A hand tracing a route across a transit map",
+      "kind": "photo",
+      "status": "new",
+      "used_on": "",
+      "source": "https://unsplash.com/photos/person-holding-white-printer-paper-yhNVwsKTSaI",
+      "licence": "Unsplash License (free commercial use, no credit required)"
+    },
+    {
+      "n": 71,
+      "file": "img/71-unsplash.jpg",
+      "title": "Double exposure: a head silhouette with tiny figures on a shore inside",
+      "kind": "photo",
+      "status": "new",
+      "used_on": "",
+      "source": "https://unsplash.com/photos/three-person-on-shore-during-daytime-Jq5Q5s7DvIA",
+      "licence": "Unsplash License (free commercial use, no credit required)"
+    },
+    {
+      "n": 72,
+      "file": "img/72-unsplash.jpg",
+      "title": "Double exposure: a man's face and city traffic lights",
+      "kind": "photo",
+      "status": "new",
+      "used_on": "",
+      "source": "https://unsplash.com/photos/double-exposure-of-mans-face-and-traffic-lights-FeH3E1Ofy7c",
+      "licence": "Unsplash License (free commercial use, no credit required)"
+    },
+    {
+      "n": 73,
+      "file": "img/73-unsplash.jpg",
+      "title": "A woman in the dark with warm points of light, golden tones",
+      "kind": "photo",
+      "status": "new",
+      "used_on": "",
+      "source": "https://unsplash.com/photos/a-woman-holds-flowers-in-golden-light-F9GZcx1_mW4",
+      "licence": "Unsplash License (free commercial use, no credit required)"
+    },
+    {
+      "n": 74,
+      "file": "img/74-unsplash.jpg",
+      "title": "Double exposure: a profile layered with a palm tree",
+      "kind": "photo",
+      "status": "new",
+      "used_on": "",
+      "source": "https://unsplash.com/photos/silhouette-man-with-layered-palm-tree-photograph-i76LC1sJdoI",
+      "licence": "Unsplash License (free commercial use, no credit required)"
+    },
+    {
+      "n": 75,
+      "file": "img/75-unsplash.jpg",
+      "title": "Double exposure: silhouettes over a city skyline at dusk",
+      "kind": "photo",
+      "status": "new",
+      "used_on": "",
+      "source": "https://unsplash.com/photos/silhouette-of-man-holding-camera-on-glass-window-Ujqyjlr_CBQ",
+      "licence": "Unsplash License (free commercial use, no credit required)"
+    },
+    {
+      "n": 76,
+      "file": "img/76-unsplash.jpg",
+      "title": "Two people working at a timber table, warm lamp light",
+      "kind": "photo",
+      "status": "new",
+      "used_on": "",
+      "source": "https://unsplash.com/photos/woman-in-blue-denim-jacket-using-macbook-pro-on-brown-wooden-table-rEmIk4Yxy6o",
+      "licence": "Unsplash License (free commercial use, no credit required)"
+    },
+    {
+      "n": 77,
+      "file": "img/77-unsplash.jpg",
+      "title": "A woman working late at her desk",
+      "kind": "photo",
+      "status": "new",
+      "used_on": "",
+      "source": "https://unsplash.com/photos/a-woman-sitting-at-a-desk-in-front-of-a-computer-ZQEZSXWbkwE",
+      "licence": "Unsplash License (free commercial use, no credit required)"
+    },
+    {
+      "n": 78,
+      "file": "img/78-unsplash.jpg",
+      "title": "Two colleagues working late at the office",
+      "kind": "photo",
+      "status": "new",
+      "used_on": "",
+      "source": "https://unsplash.com/photos/two-colleagues-working-late-at-the-office-yluvXzbyqAU",
+      "licence": "Unsplash License (free commercial use, no credit required)"
+    },
+    {
+      "n": 79,
+      "file": "img/79-unsplash.jpg",
+      "title": "An engineer working at a server rack in low light",
+      "kind": "photo",
+      "status": "new",
+      "used_on": "",
+      "source": "https://unsplash.com/photos/man-in-black-and-white-plaid-dress-shirt-zBLtU0zbJcU",
+      "licence": "Unsplash License (free commercial use, no credit required)"
+    },
+    {
+      "n": 80,
+      "file": "img/80-double-exposure-pair.jpg",
+      "title": "Double exposure: two colleagues facing each other, one shared thread network linking them",
+      "kind": "generated",
+      "status": "new",
+      "used_on": "",
+      "source": "Generated in the owner's ChatGPT account, 22 Oct 2026 (OpenAI terms assign output rights to the user)",
+      "licence": "Owned"
+    }
+  ]
+}

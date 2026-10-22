@@ -1,0 +1,572 @@
+{
+  "format": "markuswalker.shadow-ai.rules",
+  "version": "rules-1",
+  "as_at": "2026-10-22",
+  "notes": "Each rule fires when its condition matches the answers. Points add up to the exposure level. A floor lifts the level to at least that band. Every rule and action names its basis from the sources list: one of our decisions, the AI Stack Check knowledge base, or a primary source URL. Condition forms: {q, in:[...]} for a single answer, {q, any:[...]} for a multi answer, {all:[...]}, {any_of:[...]}.",
+  "levels": [
+    { "id": "low", "label": "Low", "min": 0, "summary": "Staff AI use looks mostly inside tools the business controls. Keep the list, the settings and the training current." },
+    { "id": "moderate", "label": "Moderate", "min": 6, "summary": "Some AI use is outside what the business can see or control. The gaps are fixable in a few weeks with no new software." },
+    { "id": "high", "label": "High", "min": 14, "summary": "Work, and possibly personal information, is going into AI accounts the business does not control or cannot see. Start with the 30 day actions." }
+  ],
+  "level_order": ["low", "moderate", "high"],
+  "privacy_covered": ["over-3m", "any-size"],
+  "sources": {
+    "d0024": {
+      "kind": "decision",
+      "title": "Our decision 0024: account types and a shadow AI flag beside the procurement model (21 October 2026)",
+      "note": "Personal, business, enterprise and API accounts give different controls. A personal plan loses the organisation's SSO, offboarding, retention, audit logs, training opt-out, contract and residency terms. Researched in our procurement models note of 21 October 2026."
+    },
+    "kb-account-types": {
+      "kind": "kb",
+      "title": "AI Stack Check knowledge base: account types and the controls each gives",
+      "url": "/stack-check/data/index.json",
+      "path": "procurement_account_types"
+    },
+    "kb-shadow-flag": {
+      "kind": "kb",
+      "title": "AI Stack Check knowledge base: shadow AI flag on each platform that sells a personal plan",
+      "url": "/stack-check/data/index.json",
+      "path": "platforms[].procurement.shadow_ai"
+    },
+    "oaic-ai": {
+      "kind": "source",
+      "title": "OAIC, Guidance on privacy and the use of commercially available AI products",
+      "url": "https://www.oaic.gov.au/privacy/privacy-guidance-for-organisations-and-government-agencies/guidance-on-privacy-and-the-use-of-commercially-available-ai-products"
+    },
+    "oaic-apps": {
+      "kind": "source",
+      "title": "OAIC, Australian Privacy Principles (APP 3 sensitive information, APP 8 cross-border disclosure, APP 11 security)",
+      "url": "https://www.oaic.gov.au/privacy/australian-privacy-principles"
+    },
+    "privacy-act": {
+      "kind": "source",
+      "title": "Privacy Act 1988 (Cth), including s 6D (small business exemption)",
+      "url": "https://www.legislation.gov.au/C2004A03712/latest/text"
+    },
+    "gaa": {
+      "kind": "source",
+      "title": "National AI Centre, Guidance for AI Adoption: essential AI practices",
+      "url": "https://www.ai.gov.au/staying-safe-and-responsible/essential-ai-practices"
+    },
+    "aicd": {
+      "kind": "source",
+      "title": "AICD and UTS Human Technology Institute, AI Governance Checklist for SME and NFP Directors (2024)",
+      "url": "https://aicd.com.au/content/dam/aicd/pdf/tools-resources/director-resources/ai-governance-checklist-sme-nfp-directors-web.pdf"
+    },
+    "openai-training": {
+      "kind": "source",
+      "title": "OpenAI, How your data is used to improve model performance",
+      "url": "https://openai.com/policies/how-your-data-is-used-to-improve-model-performance/"
+    },
+    "anthropic-consumer": {
+      "kind": "source",
+      "title": "Anthropic, Updates to our consumer terms",
+      "url": "https://www.anthropic.com/news/updates-to-our-consumer-terms"
+    },
+    "anthropic-tenant": {
+      "kind": "source",
+      "title": "Claude Help Centre article 13198485: restricting claude.ai to your organisation (anthropic-allowed-org-ids header)",
+      "url": "https://support.claude.com/en/articles/13198485"
+    },
+    "google-domains": {
+      "kind": "source",
+      "title": "Google Workspace Admin Help answer 1668854: allowing only listed domains (X-GoogApps-Allowed-Domains header)",
+      "url": "https://support.google.com/a/answer/1668854"
+    }
+  },
+  "rules": [
+    {
+      "id": "personal-accounts",
+      "kind": "risk",
+      "severity": "high",
+      "points": 4,
+      "when": { "q": "accounts", "in": ["personal", "mixed"] },
+      "title": "Work is going into staff's own AI accounts",
+      "risk": "A personal plan gives the business no admin console, single sign-on, audit log, retention setting, contract or residency choice. Training on chats is the person's own setting: on by default for ChatGPT, and a choice the person makes for Claude. The work stays with the person after they leave.",
+      "actions": ["a-business-accounts", "a-approved-list", "a-tenant-restrict"],
+      "basis": ["d0024", "kb-account-types", "openai-training", "anthropic-consumer"]
+    },
+    {
+      "id": "personal-info-personal-accounts",
+      "kind": "risk",
+      "severity": "high",
+      "points": 3,
+      "floor": "high",
+      "when": { "all": [
+        { "q": "accounts", "in": ["personal", "mixed", "unsure"] },
+        { "q": "data", "any": ["customer-pi", "health", "financial", "staff"] }
+      ] },
+      "title": "Personal information may be going into accounts the business does not control",
+      "risk": "The OAIC recommends that organisations do not enter personal information, and especially sensitive information, into publicly available AI chatbots and tools. Once it is in a personal account, the business cannot see it, set how long it is kept or delete it.",
+      "privacy": {
+        "covered": "If the Privacy Act covers you, APP 11 requires reasonable steps to protect personal information from misuse and unauthorised disclosure. Information in an account the business does not control is hard to show as protected.",
+        "not_covered": "The Privacy Act may not cover you, but client contracts and the statutory tort for serious invasions of privacy (where intentional or reckless) apply to businesses of any size.",
+        "unsure": "If the Privacy Act covers you, APP 11 requires reasonable steps to protect personal information. Check whether it does before relying on the small business exemption."
+      },
+      "actions": ["a-stop-personal-info", "a-business-accounts", "a-training"],
+      "basis": ["oaic-ai", "oaic-apps", "privacy-act", "d0024"]
+    },
+    {
+      "id": "overseas",
+      "kind": "risk",
+      "severity": "medium",
+      "points": 2,
+      "when": { "all": [
+        { "q": "data", "any": ["customer-pi", "health", "financial", "staff"] },
+        { "q": "accounts", "in": ["personal", "mixed", "unsure"] }
+      ] },
+      "title": "Personal information may be stored and processed outside Australia",
+      "risk": "A personal plan has no data residency option at all. Business and enterprise plans differ by vendor: some store data in Australia for eligible workspaces, many do not. Without knowing which accounts staff use, you cannot say where the information went.",
+      "privacy": {
+        "covered": "If the Privacy Act covers you, APP 8 applies before personal information is disclosed to an overseas recipient: you take reasonable steps so it is handled to the APP standard, and you can remain accountable for what that recipient does.",
+        "not_covered": "The Privacy Act may not cover you, but check client contracts for limits on sending their information overseas.",
+        "unsure": "If the Privacy Act covers you, APP 8 applies before personal information goes to an overseas recipient."
+      },
+      "actions": ["a-data-location", "a-business-accounts"],
+      "basis": ["d0024", "oaic-apps", "oaic-ai"]
+    },
+    {
+      "id": "health",
+      "kind": "risk",
+      "severity": "high",
+      "points": 2,
+      "when": { "q": "data", "any": ["health"] },
+      "title": "Health information is sensitive information",
+      "risk": "Health information is sensitive information under the Privacy Act, and health service providers are covered at any size. The OAIC expects consent before sensitive information is used with AI, including photos and recordings that reveal health details.",
+      "actions": ["a-sensitive-consent", "a-stop-personal-info"],
+      "basis": ["oaic-ai", "oaic-apps", "privacy-act"]
+    },
+    {
+      "id": "code-secrets",
+      "kind": "risk",
+      "severity": "medium",
+      "points": 2,
+      "when": { "q": "data", "any": ["code"] },
+      "title": "Source code or secrets may be in AI tools",
+      "risk": "Code, passwords and API keys pasted into a personal plan fall under that person's training and retention settings, not the business's. Business and API accounts do not train on your data by default, which makes them the safer route for coding assistants.",
+      "actions": ["a-business-accounts", "a-check-settings"],
+      "basis": ["kb-account-types", "d0024"]
+    },
+    {
+      "id": "client-contracts",
+      "kind": "risk",
+      "severity": "medium",
+      "points": 2,
+      "when": { "all": [
+        { "q": "contracts", "in": ["yes", "some", "unsure"] },
+        { "q": "accounts", "in": ["personal", "mixed", "unsure"] }
+      ] },
+      "title": "Client contracts may limit where their information goes",
+      "risk": "A personal account carries no contract or data processing terms between your business and the vendor. If a client contract limits who you share their information with, work in a personal account may already be outside it.",
+      "actions": ["a-business-accounts", "a-data-location"],
+      "basis": ["d0024"]
+    },
+    {
+      "id": "notetakers",
+      "kind": "risk",
+      "severity": "medium",
+      "points": 2,
+      "when": { "q": "notetakers", "in": ["unapproved", "unsure"] },
+      "title": "Recording bots may be capturing calls with an unchecked vendor",
+      "risk": "Note-takers record and transcribe what customers and staff say, then hold it with their vendor. The OAIC expects you to check an AI product's privacy and security risks, and who can access the information, before you use it.",
+      "actions": ["a-notetaker", "a-approved-list"],
+      "basis": ["oaic-ai"]
+    },
+    {
+      "id": "self-paid",
+      "kind": "risk",
+      "severity": "low",
+      "points": 1,
+      "when": { "q": "selfpaid", "in": ["expensed", "own-pocket"] },
+      "title": "Staff are paying for their own AI subscriptions",
+      "risk": "A subscription a person buys is a personal plan, even when the business reimburses it. The business gets none of the admin, retention or contract controls of a business plan. Expense claims are also a simple way to find out which tools are in use.",
+      "actions": ["a-ask-staff", "a-business-accounts"],
+      "basis": ["d0024", "kb-account-types"]
+    },
+    {
+      "id": "no-policy",
+      "kind": "risk",
+      "severity": "medium",
+      "points": 2,
+      "when": { "q": "policy", "in": ["none", "draft"] },
+      "title": "There is no AI use policy staff have accepted",
+      "risk": "Without a written policy, staff decide for themselves what is acceptable. The national Guidance for AI Adoption and the AICD checklist for SME directors both start with an AI policy.",
+      "actions": ["a-policy"],
+      "basis": ["gaa", "aicd"]
+    },
+    {
+      "id": "policy-unshared",
+      "kind": "risk",
+      "severity": "low",
+      "points": 1,
+      "when": { "q": "policy", "in": ["unshared"] },
+      "title": "The AI policy has not reached everyone",
+      "risk": "A policy staff have not seen does not change what they do. A policy that predates the tools they now use will not name them.",
+      "actions": ["a-policy"],
+      "basis": ["gaa"]
+    },
+    {
+      "id": "no-approved-list",
+      "kind": "risk",
+      "severity": "medium",
+      "points": 2,
+      "when": { "q": "approved", "in": ["none"] },
+      "title": "Staff have no list of approved AI tools",
+      "risk": "Without a list, every tool is a judgement call by the person using it. The OAIC expects due diligence before an AI product is adopted, which a list records.",
+      "actions": ["a-approved-list"],
+      "basis": ["oaic-ai", "gaa"]
+    },
+    {
+      "id": "informal-list",
+      "kind": "risk",
+      "severity": "low",
+      "points": 1,
+      "when": { "q": "approved", "in": ["informal"] },
+      "title": "The approved tools are known only informally",
+      "risk": "An informal list drifts and new staff never learn it. Writing it down takes an hour and gives you something to point to.",
+      "actions": ["a-approved-list"],
+      "basis": ["oaic-ai", "gaa"]
+    },
+    {
+      "id": "no-request-route",
+      "kind": "risk",
+      "severity": "low",
+      "points": 1,
+      "when": { "q": "requests", "in": ["slow", "none"] },
+      "title": "There is no quick way to ask for a new tool",
+      "risk": "Without a clear and timely route, a new tool goes into use before anyone screens it for risk, and the approved list falls behind.",
+      "actions": ["a-request-route"],
+      "basis": ["gaa"]
+    },
+    {
+      "id": "no-owner",
+      "kind": "risk",
+      "severity": "medium",
+      "points": 2,
+      "when": { "q": "owner", "in": ["no"] },
+      "title": "Nobody is responsible for how the business uses AI",
+      "risk": "The national Guidance for AI Adoption starts with a senior person accountable for AI use. Without one, the list, the settings and the training have no owner.",
+      "actions": ["a-name-owner"],
+      "basis": ["gaa"]
+    },
+    {
+      "id": "shared-owner",
+      "kind": "risk",
+      "severity": "low",
+      "points": 1,
+      "when": { "q": "owner", "in": ["shared"] },
+      "title": "Responsibility for AI use is shared or unclear",
+      "risk": "Shared ownership tends to mean nobody updates the list or answers requests. Name one person, even if others help.",
+      "actions": ["a-name-owner"],
+      "basis": ["gaa"]
+    },
+    {
+      "id": "no-training",
+      "kind": "risk",
+      "severity": "medium",
+      "points": 2,
+      "when": { "q": "training", "in": ["none"] },
+      "title": "Staff have not been shown what is safe to put into AI tools",
+      "risk": "The OAIC's guidance on AI products recommends that staff know not to enter personal information, especially sensitive information, into public AI tools. That only happens if someone tells them.",
+      "privacy": {
+        "covered": "If the Privacy Act covers you, APP 11.3 (from 11 December 2024) names organisational measures, and staff training is one.",
+        "not_covered": "",
+        "unsure": "If the Privacy Act covers you, APP 11.3 names organisational measures, and staff training is one."
+      },
+      "actions": ["a-training"],
+      "basis": ["oaic-ai", "oaic-apps"]
+    },
+    {
+      "id": "partial-training",
+      "kind": "risk",
+      "severity": "low",
+      "points": 1,
+      "when": { "q": "training", "in": ["some"] },
+      "title": "Only some staff have been shown safe AI use",
+      "risk": "New starters and anyone missed earlier are the people most likely to sign up for their own tools.",
+      "actions": ["a-training"],
+      "basis": ["oaic-ai"]
+    },
+    {
+      "id": "blind",
+      "kind": "risk",
+      "severity": "medium",
+      "points": 3,
+      "when": { "q": "detect", "in": ["unknown"] },
+      "title": "You would not see unapproved AI use",
+      "risk": "Without any check, the first sign of shadow AI is usually a problem. OpenAI, Anthropic, Google and Microsoft each publish a way for a web proxy or device policy to allow only your organisation's accounts, but each needs a business or enterprise plan and some network setup.",
+      "actions": ["a-ask-staff", "a-tenant-restrict"],
+      "basis": ["d0024", "anthropic-tenant", "google-domains"]
+    },
+    {
+      "id": "ask-only",
+      "kind": "risk",
+      "severity": "low",
+      "points": 2,
+      "when": { "q": "detect", "in": ["ask"] },
+      "title": "You rely on staff telling you",
+      "risk": "Asking works when staff know what counts as an AI tool and do not fear blame. It misses AI features switched on inside other software.",
+      "actions": ["a-ask-staff", "a-tenant-restrict"],
+      "basis": ["d0024", "aicd"]
+    },
+    {
+      "id": "no-register",
+      "kind": "risk",
+      "severity": "medium",
+      "points": 2,
+      "when": { "q": "register", "in": ["none"] },
+      "title": "There is no register of AI tools in use",
+      "risk": "The AICD checklist for SME directors puts an AI inventory or register first, including AI built into existing products. The national Guidance for AI Adoption asks for the same.",
+      "actions": ["a-register"],
+      "basis": ["aicd", "gaa"]
+    },
+    {
+      "id": "stale-register",
+      "kind": "risk",
+      "severity": "low",
+      "points": 1,
+      "when": { "q": "register", "in": ["stale"] },
+      "title": "The AI register is out of date",
+      "risk": "A register that misses the tools staff actually use gives false comfort. Update it from what staff tell you.",
+      "actions": ["a-register"],
+      "basis": ["gaa"]
+    },
+    {
+      "id": "settings-unchecked",
+      "kind": "risk",
+      "severity": "medium",
+      "points": 2,
+      "when": { "q": "settings", "in": ["unchecked"] },
+      "title": "Settings on business accounts have not been checked",
+      "risk": "The OAIC expects you to check whether a vendor can access or train on what you put in, and to turn that off where needed. Business plans differ in retention, sharing and connector settings even where training is off by default.",
+      "actions": ["a-check-settings"],
+      "basis": ["oaic-ai", "kb-account-types"]
+    },
+    {
+      "id": "leavers",
+      "kind": "risk",
+      "severity": "medium",
+      "points": 2,
+      "when": { "q": "leavers", "in": ["no"] },
+      "title": "Work leaves with the people who leave",
+      "risk": "Personal accounts have no offboarding: the chats, files and outputs stay with the person. Business plans with single sign-on or user provisioning let you switch access off on the day.",
+      "actions": ["a-leavers", "a-business-accounts"],
+      "basis": ["d0024", "kb-account-types"]
+    },
+    {
+      "id": "leavers-partly",
+      "kind": "risk",
+      "severity": "low",
+      "points": 1,
+      "when": { "q": "leavers", "in": ["partly"] },
+      "title": "Offboarding misses some AI tools",
+      "risk": "Any AI tool not on the offboarding checklist keeps a former staff member's access and their work history.",
+      "actions": ["a-leavers"],
+      "basis": ["d0024"]
+    },
+    {
+      "id": "embedded",
+      "kind": "risk",
+      "severity": "low",
+      "points": 1,
+      "when": { "q": "tools", "any": ["embedded", "extensions"] },
+      "title": "AI built into other software and browser add-ons counts too",
+      "risk": "AI features switched on inside writing, design, notes or meeting tools send content to a vendor the same way a chatbot does. The AICD checklist names AI incorporated in existing products as part of the register.",
+      "actions": ["a-register", "a-check-settings"],
+      "basis": ["aicd", "gaa"]
+    },
+    {
+      "id": "unsure-tools",
+      "kind": "risk",
+      "severity": "medium",
+      "points": 2,
+      "when": { "any_of": [
+        { "q": "tools", "any": ["unsure"] },
+        { "q": "accounts", "in": ["unsure"] }
+      ] },
+      "title": "You are not sure which tools or accounts staff use",
+      "risk": "This is the most common answer, and the cheapest gap to close. A short, no-blame question to staff tells you most of what you need.",
+      "actions": ["a-ask-staff", "a-register"],
+      "basis": ["gaa", "aicd"]
+    },
+    {
+      "id": "unsure-data",
+      "kind": "risk",
+      "severity": "medium",
+      "points": 2,
+      "when": { "q": "data", "any": ["unsure"] },
+      "title": "You are not sure what information goes into AI tools",
+      "risk": "Until you know, assume customer information is among it. The OAIC expects you to know what personal information you put into AI products and where it goes.",
+      "actions": ["a-ask-staff", "a-stop-personal-info"],
+      "basis": ["oaic-ai"]
+    },
+    {
+      "id": "privacy-unsure",
+      "kind": "risk",
+      "severity": "low",
+      "points": 0,
+      "when": { "q": "privacy", "in": ["unsure"] },
+      "title": "Check whether the Privacy Act covers you",
+      "risk": "Whether APP 8 and APP 11 apply depends on it. Turnover alone does not decide it: health providers, businesses that trade in personal information and Commonwealth contractors are covered at any size.",
+      "actions": ["a-frameworks-check"],
+      "basis": ["privacy-act"]
+    },
+    {
+      "id": "good-accounts",
+      "kind": "strength",
+      "points": 0,
+      "when": { "q": "accounts", "in": ["business"] },
+      "title": "Staff work in business accounts the business administers",
+      "basis": ["d0024", "kb-account-types"]
+    },
+    {
+      "id": "good-policy",
+      "kind": "strength",
+      "points": 0,
+      "when": { "all": [ { "q": "policy", "in": ["current"] }, { "q": "approved", "in": ["written"] } ] },
+      "title": "A current policy and a written list of approved tools",
+      "basis": ["gaa"]
+    },
+    {
+      "id": "good-training",
+      "kind": "strength",
+      "points": 0,
+      "when": { "q": "training", "in": ["all"] },
+      "title": "All staff shown safe AI use in the last 12 months",
+      "basis": ["oaic-ai"]
+    },
+    {
+      "id": "good-visibility",
+      "kind": "strength",
+      "points": 0,
+      "when": { "q": "detect", "in": ["controls", "reviews"] },
+      "title": "You have a way to spot unapproved tools",
+      "basis": ["d0024"]
+    },
+    {
+      "id": "good-register",
+      "kind": "strength",
+      "points": 0,
+      "when": { "q": "register", "in": ["current"] },
+      "title": "A current AI register",
+      "basis": ["aicd", "gaa"]
+    }
+  ],
+  "actions": [
+    {
+      "id": "a-ask-staff",
+      "horizon": 30,
+      "title": "Ask staff which AI tools and accounts they use",
+      "detail": "A short, no-blame question: which tools, which account, and what kind of information goes in. Check expense claims for AI subscriptions as well. This fills the register.",
+      "basis": ["gaa", "d0024"]
+    },
+    {
+      "id": "a-approved-list",
+      "horizon": 30,
+      "title": "Write down the approved AI tools and what each may be used for",
+      "detail": "One page: tool, account type, who may use it, and what information may go in. Start with the tools staff already use, so the list matches reality.",
+      "basis": ["oaic-ai", "gaa"]
+    },
+    {
+      "id": "a-stop-personal-info",
+      "horizon": 30,
+      "title": "Tell staff not to put personal information into personal AI accounts or public chatbots",
+      "detail": "Say it plainly in an email today, then put it in the policy and the training. Name customer, health, financial and staff information.",
+      "basis": ["oaic-ai"]
+    },
+    {
+      "id": "a-business-accounts",
+      "horizon": 30,
+      "title": "Move work onto business accounts for the tools staff already use",
+      "detail": "Business plans give a workspace you administer and no training on business data by default. Ask staff to move work chats out of personal accounts and close them for work use.",
+      "basis": ["d0024", "kb-account-types"]
+    },
+    {
+      "id": "a-check-settings",
+      "horizon": 30,
+      "title": "Check training, retention, sharing and connector settings on every business AI account",
+      "detail": "Record what you set and the date. Re-check when the vendor changes its terms.",
+      "basis": ["oaic-ai", "kb-account-types"]
+    },
+    {
+      "id": "a-name-owner",
+      "horizon": 30,
+      "title": "Name one person responsible for AI use",
+      "detail": "They own the approved list, answer tool requests and keep the register current.",
+      "basis": ["gaa"]
+    },
+    {
+      "id": "a-sensitive-consent",
+      "horizon": 30,
+      "title": "Stop health information going into AI tools until consent and an approved tool are in place",
+      "detail": "Decide which approved tool may handle it, and how patients or clients are told and asked.",
+      "basis": ["oaic-ai", "oaic-apps"]
+    },
+    {
+      "id": "a-notetaker",
+      "horizon": 30,
+      "title": "Choose one approved note-taker and remove the others",
+      "detail": "Check where it stores recordings, who can see them and how long they are kept.",
+      "basis": ["oaic-ai"]
+    },
+    {
+      "id": "a-frameworks-check",
+      "horizon": 30,
+      "title": "Work out whether the Privacy Act covers you",
+      "detail": "The AU Frameworks Check asks the questions that decide it and shows which other rules apply.",
+      "link": "/readiness-check/",
+      "basis": ["privacy-act"]
+    },
+    {
+      "id": "a-policy",
+      "horizon": 90,
+      "title": "Publish a short AI use policy and have every staff member accept it",
+      "detail": "Cover approved tools, accounts, what information may go in, how to ask for a new tool and who to tell when something goes wrong.",
+      "basis": ["gaa", "aicd"]
+    },
+    {
+      "id": "a-training",
+      "horizon": 90,
+      "title": "Show every staff member what is safe to put into AI tools",
+      "detail": "Thirty minutes is enough to start: the approved list, the account to use, and real examples of information that must not go in. Repeat for new starters.",
+      "basis": ["oaic-ai", "oaic-apps"]
+    },
+    {
+      "id": "a-register",
+      "horizon": 90,
+      "title": "Start an AI register",
+      "detail": "List each AI tool, its owner, its account type, the data it handles and its purpose. Our free AI register pre-fills from your saved stack.",
+      "link": "/ai-register/",
+      "basis": ["aicd", "gaa"]
+    },
+    {
+      "id": "a-request-route",
+      "horizon": 90,
+      "title": "Set up a quick way to request a new AI tool",
+      "detail": "One form or inbox, a named person who answers, and a target of about a week. Approved requests go on the list and into the register.",
+      "basis": ["gaa"]
+    },
+    {
+      "id": "a-tenant-restrict",
+      "horizon": 90,
+      "title": "Allow only your organisation's accounts on work devices",
+      "detail": "OpenAI, Anthropic, Google and Microsoft each publish a header or tenant restriction that a web proxy or device policy can use to block personal accounts on their services. Each needs a business or enterprise plan, and the proxy methods need TLS inspection.",
+      "basis": ["d0024", "anthropic-tenant", "google-domains"]
+    },
+    {
+      "id": "a-leavers",
+      "horizon": 90,
+      "title": "Add AI accounts to your offboarding checklist",
+      "detail": "Switch off business AI accounts on the last day and transfer any shared projects. Prefer plans with single sign-on so one switch covers them.",
+      "basis": ["d0024", "kb-account-types"]
+    },
+    {
+      "id": "a-data-location",
+      "horizon": 90,
+      "title": "Find out where each approved tool stores and processes data",
+      "detail": "Record the country and the plan that gives it. Our stack pack lists what each vendor documents and the questions to ask where it is silent.",
+      "link": "/stack-pack/",
+      "basis": ["oaic-ai", "oaic-apps", "d0024"]
+    }
+  ]
+}
