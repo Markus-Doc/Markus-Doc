@@ -89,3 +89,13 @@ https://markus-doc.pages.dev/*
 /company/nav.js
   Cache-Control: public, max-age=0, must-revalidate
 # END company
+
+# BEGIN site-art (feature image library and ?art preview switcher, added 22 Oct 2026; source: private repo Markus-Doc/site-art)
+/site-art/*
+  X-Robots-Tag: noindex
+  Cache-Control: public, max-age=3600
+  Cross-Origin-Resource-Policy: same-origin
+
+/site-art/rotator.js
+  Cache-Control: public, max-age=0, must-revalidate
+# END site-art

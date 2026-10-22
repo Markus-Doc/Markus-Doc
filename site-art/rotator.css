@@ -1,0 +1,19 @@
+.art-rotator {
+  position: fixed; z-index: 1000;
+  left: max(12px, env(safe-area-inset-left, 0px)); right: max(12px, env(safe-area-inset-right, 0px));
+  bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+  max-width: 720px; margin: 0 auto;
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 12px; border-radius: 6px;
+  background: #1f1d1a; color: #f3efe8;
+  font: 500 14px/1.4 system-ui, sans-serif;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, .25);
+}
+.art-rotator p { flex: 1; min-width: 0; margin: 0; }
+.art-rotator button {
+  flex: none; padding: 8px 12px; border: 1px solid #8f3a2b; border-radius: 4px;
+  background: #8f3a2b; color: #fff; font: inherit; cursor: pointer;
+}
+.art-rotator button:first-child { background: transparent; color: #f3efe8; }
+.art-rotator button:focus-visible { outline: 2px solid #f3efe8; outline-offset: 2px; }
+@media (max-width: 480px) { .art-rotator { flex-wrap: wrap; } .art-rotator p { flex-basis: 100%; order: -1; } }
