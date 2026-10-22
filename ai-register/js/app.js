@@ -204,9 +204,12 @@
     if (q.length < 2) { $('ar-search-hint').textContent = 'Type at least two letters.'; return }
     const kb = state.kb
     const match = p => p.name.toLowerCase().includes(q) || p.id.includes(q)
-    const hits = [...kb.platforms.values()].filter(match).map(p => ({ p, detail: true }))
-      .concat([...kb.more.values()].filter(match).map(p => ({ p, detail: false })))
-      .sort((a, b) => (b.detail - a.detail) || (a.p.name.toLowerCase().indexOf(q) - b.p.name.toLowerCase().indexOf(q)) || a.p.name.localeCompare(b.p.name))
+    // The shared alias search ranks product words (Claude, ChatGPT, Copilot) to their KB platform first.
+    const hits = (P && typeof P.searchPlatforms === 'function'
+      ? P.searchPlatforms(q, [...kb.platforms.values(), ...kb.more.values()]).map(p => ({ p, detail: kb.platforms.has(p.id) }))
+      : [...kb.platforms.values()].filter(match).map(p => ({ p, detail: true }))
+        .concat([...kb.more.values()].filter(match).map(p => ({ p, detail: false })))
+        .sort((a, b) => (b.detail - a.detail) || (a.p.name.toLowerCase().indexOf(q) - b.p.name.toLowerCase().indexOf(q)) || a.p.name.localeCompare(b.p.name)))
       .slice(0, 12)
     $('ar-search-hint').textContent = kb.index ? (hits.length ? hits.length + (hits.length === 12 ? ' or more' : '') + ' matches. Use the arrow keys to move through them.' : 'No match. Add it by name below.') : 'Our knowledge base did not load. Add the tool by name below.'
     for (const h of hits) {
