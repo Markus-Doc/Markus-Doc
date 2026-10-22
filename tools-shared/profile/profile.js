@@ -261,9 +261,9 @@
   const API = '/api'
   const BUILD = '2026.10.22'
   const SAVE_DELAY = 600
-  // Accounts are a concept on the dev preview (pages.dev) and local test servers only. The live site has no
-  // account database, so the tools offer the file and this browser there.
-  const ACCOUNTS = /(^|\.)pages\.dev$|^localhost$|^127\.0\.0\.1$/.test((root.location && root.location.hostname) || '')
+  // Accounts run on the live site (owner go-ahead 22 Oct 2026), the dev preview and local test servers. Any
+  // other host (a copy, a mirror) offers the file and this browser only.
+  const ACCOUNTS = /(^|\.)markuswalker\.com$|(^|\.)pages\.dev$|^localhost$|^127\.0\.0\.1$/.test((root.location && root.location.hostname) || '')
 
   const listeners = []
   const statusListeners = []
