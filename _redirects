@@ -10,3 +10,7 @@
 /AGENTS.md / 301
 /DEPLOYMENT.md / 301
 /README.md / 301
+
+# Company page renamed to the business name (22 Oct 2026)
+/company /checkable-ai/ 301
+/company/* /checkable-ai/:splat 301

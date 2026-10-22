@@ -70,23 +70,23 @@ https://markus-doc.pages.dev/*
   Cache-Control: public, max-age=0, must-revalidate
 # END readiness-check
 
-# BEGIN company (company home page, added 21 Oct 2026)
-/company/*
+# BEGIN company (company home page, at /checkable-ai/ since 22 Oct 2026, added 21 Oct 2026)
+/checkable-ai/*
   X-Robots-Tag: noindex
   Referrer-Policy: no-referrer
   Cross-Origin-Opener-Policy: same-origin
   Cross-Origin-Resource-Policy: same-origin
 
-/company/
+/checkable-ai/
   Cache-Control: no-cache
 
-/company/index.html
+/checkable-ai/index.html
   Cache-Control: no-cache
 
-/company/company.css
+/checkable-ai/company.css
   Cache-Control: public, max-age=0, must-revalidate
 
-/company/nav.js
+/checkable-ai/nav.js
   Cache-Control: public, max-age=0, must-revalidate
 # END company
 
