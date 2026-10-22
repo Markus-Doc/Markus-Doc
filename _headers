@@ -88,6 +88,9 @@ https://markus-doc.pages.dev/*
 
 /checkable-ai/nav.js
   Cache-Control: public, max-age=0, must-revalidate
+
+/checkable-ai/tools-slider.js
+  Cache-Control: public, max-age=0, must-revalidate
 # END company
 
 # BEGIN site-art (feature image library and ?art preview switcher, added 22 Oct 2026; source: private repo Markus-Doc/site-art)
