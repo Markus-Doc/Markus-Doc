@@ -6,8 +6,8 @@
       "file": "img/01-main-splash.jpg",
       "title": "Main splash: smoky glass block with faint circuitry throwing a light network, notebook, pen, pinned thread",
       "kind": "generated",
-      "status": "live",
-      "used_on": "/company/",
+      "status": "approved",
+      "used_on": "",
       "source": "Generated in the owner's ChatGPT account, 22 Oct 2026 (OpenAI terms assign output rights to the user)",
       "licence": "Owned"
     },
@@ -417,6 +417,66 @@
       "title": "Double exposure: two colleagues facing each other, one shared thread network linking them",
       "kind": "generated",
       "status": "new",
+      "used_on": "",
+      "source": "Generated in the owner's ChatGPT account, 22 Oct 2026 (OpenAI terms assign output rights to the user)",
+      "licence": "Owned"
+    },
+    {
+      "n": 81,
+      "file": "img/81-photoreal-b.jpg",
+      "title": "Photoreal B: dusk macro, glass cube light network on walnut",
+      "kind": "generated",
+      "status": "live",
+      "used_on": "/checkable-ai/",
+      "source": "Generated in the owner's ChatGPT account, 22 Oct 2026 (OpenAI terms assign output rights to the user)",
+      "licence": "Owned"
+    },
+    {
+      "n": 82,
+      "file": "img/82-photoreal-a.jpg",
+      "title": "Photoreal A: overhead flat-lay, light trail across linen",
+      "kind": "generated",
+      "status": "approved",
+      "used_on": "",
+      "source": "Generated in the owner's ChatGPT account, 22 Oct 2026 (OpenAI terms assign output rights to the user)",
+      "licence": "Owned"
+    },
+    {
+      "n": 83,
+      "file": "img/83-photoreal-c1.jpg",
+      "title": "Photoreal C1: hands building a pin-and-thread network, close",
+      "kind": "generated",
+      "status": "approved",
+      "used_on": "",
+      "source": "Generated in the owner's ChatGPT account, 22 Oct 2026 (OpenAI terms assign output rights to the user)",
+      "licence": "Owned"
+    },
+    {
+      "n": 84,
+      "file": "img/84-photoreal-c2.jpg",
+      "title": "Photoreal C2: hands building a pin-and-thread network, wider",
+      "kind": "generated",
+      "status": "approved",
+      "used_on": "",
+      "source": "Generated in the owner's ChatGPT account, 22 Oct 2026 (OpenAI terms assign output rights to the user)",
+      "licence": "Owned"
+    },
+    {
+      "n": 85,
+      "file": "img/85-photoreal-p2.jpg",
+      "title": "Photoreal: window light, rust notebook, glass cube",
+      "kind": "generated",
+      "status": "approved",
+      "used_on": "",
+      "source": "Generated in the owner's ChatGPT account, 22 Oct 2026 (OpenAI terms assign output rights to the user)",
+      "licence": "Owned"
+    },
+    {
+      "n": 86,
+      "file": "img/86-photoreal-p1.jpg",
+      "title": "Photoreal: window light, brown notebook, glass cube",
+      "kind": "generated",
+      "status": "approved",
       "used_on": "",
       "source": "Generated in the owner's ChatGPT account, 22 Oct 2026 (OpenAI terms assign output rights to the user)",
       "licence": "Owned"
