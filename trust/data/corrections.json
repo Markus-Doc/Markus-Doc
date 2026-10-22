@@ -1,0 +1,8 @@
+{
+  "schema": "checkable-ai.corrections/1",
+  "counting_from": "2026-10-22",
+  "updated": "2026-10-22",
+  "outside_corrections": 0,
+  "note": "Counts findings we changed because someone outside our team reported them, after the report passed the same checks as any finding. Starts at zero on 22 October 2026. Our own agent and owner changes are not counted here.",
+  "entries": []
+}

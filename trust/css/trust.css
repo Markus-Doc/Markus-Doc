@@ -1,0 +1,24 @@
+/* Trust page. Uses the tokens in tokens.css and the shared chrome in site.css. Two columns of short
+   sections on desktop, one column on phones. */
+
+.tr-intro { display:flex; flex-direction:column; gap:16px; }
+.tr-intro .rc-lede { max-width:68ch; }
+.tr-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:32px 48px; }
+.tr-section { display:flex; flex-direction:column; gap:10px; padding-top:1.4rem; border-top:var(--rule-strong); min-width:0; }
+.tr-section h2 { margin:0; font:400 var(--text-h3)/1.25 var(--font-display); }
+.tr-section h2:not(:first-child) { margin-top:1.2rem; }
+.tr-section h3 { margin:.4rem 0 0; font:600 var(--text-base)/1.4 var(--font-utility); }
+.tr-section ul,.tr-section ol { margin:0; padding-left:1.3rem; display:flex; flex-direction:column; gap:.45rem; }
+.tr-section li strong { font-family:var(--font-utility); }
+.tr-wide { grid-column:1 / -1; }
+.tr-checks { padding:.75rem 1rem; border-left:4px solid var(--accent); background:var(--raised); font-size:var(--text-ui); }
+.tr-checks p { margin:.25rem 0; }
+.tr-count { display:flex; align-items:baseline; gap:16px; padding:14px 16px; border:var(--rule); border-top:3px solid var(--accent); background:var(--surface); }
+.tr-count-figure { font:400 3rem/1 var(--font-display); color:var(--accent); }
+.tr-count p { margin:0; }
+.tr-list:empty { display:none; }
+.tr-mail { font-family:var(--font-utility); font-weight:600; }
+
+@media (max-width:860px) {
+  .tr-grid { grid-template-columns:minmax(0,1fr); gap:28px; }
+}
