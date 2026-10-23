@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <link rel="icon" href="/free/stack-check/assets/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="icon" href="/free/stack-check/assets/favicon-16.png" sizes="16x16" type="image/png">
+  <link rel="apple-touch-icon" href="/free/stack-check/assets/apple-touch-icon.png">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' https://static.cloudflareinsights.com; style-src 'self'; connect-src 'self' https://cloudflareinsights.com; img-src 'self' data: blob:; font-src 'self'; form-action 'none'; base-uri 'none'">
+  <meta name="referrer" content="no-referrer">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="description" content="AI register, a free tool for Australian businesses. List the AI tools and agents you use, with owner, data, purpose and risk, in the columns of the government's AI register template. Download it as CSV or a CycloneDX AI BOM. It runs in your browser.">
+  <title>AI register | Checkable AI</title>
+  <link rel="stylesheet" href="css/tokens.css?v=5cd91449b6">
+  <link rel="stylesheet" href="css/register.css?v=0dfc35eedb">
+  <script src="js/theme.js?v=0a8f61f931"></script>
+  <script src="js/nav.js?v=4f89736078" defer></script>
+  <script src="/free/tools-shared/profile/profile.js" defer></script>
+  <script src="js/profile-fallback.js?v=7c70fac37e" defer></script>
+  <script src="/free/tools-shared/profile/profile-bar.js" defer></script>
+  <script src="js/model.js?v=7febb1dcb8" defer></script>
+  <script src="js/app.js?v=d208cadb4e" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to the register</a>
+  <div class="rc-banner" role="status" aria-label="How recently the knowledge was updated"><p id="ar-banner-line"></p></div>
+  <header class="rc-header">
+    <a class="rc-brand" href="./"><span class="rc-mark" aria-hidden="true"><svg viewBox="0 0 64 64" focusable="false"><rect class="rc-mark-ground" stroke="currentColor" x="5" y="8" width="36" height="36" stroke-width="4"/><rect fill="currentColor" x="18" y="24" width="38" height="38"/><path class="rc-mark-ground" d="M24 33h28v4H24zM24 41h28v4H24zM24 49h20v4H24z"/><circle class="rc-mark-ground" cx="49" cy="15" r="15.5"/><circle fill="currentColor" cx="49" cy="15" r="12"/><path class="rc-mark-halo" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="3.6" d="M43.5 15.5 47.6 19.6 55 10.6"/></svg></span>AI register<span class="rc-tag">Preview</span></a>
+    <nav class="tools-nav" aria-label="Site">
+  <ul class="tools-nav-list">
+    <li class="tools-nav-item"><a class="tools-nav-top" href="/free/checkable-ai/">Checkable AI</a></li>
+    <li class="tools-nav-group">
+      <details class="tools-nav-menu">
+        <summary class="tools-nav-top">AI Stack Check</summary>
+        <ul class="tools-nav-sub">
+          <li><a href="/free/stack-check/">Run the check</a></li>
+          <li><a href="/free/stack-check/how-it-works/">How it works</a></li>
+          <li><a href="/free/stack-check/atlas/">Knowledge base</a></li>
+          <li><a href="/free/stack-check/open-problems/">Open problems</a></li>
+          <li><a href="/free/trust/">Trust</a></li>
+        </ul>
+      </details>
+    </li>
+    <li class="tools-nav-group">
+      <details class="tools-nav-menu">
+        <summary class="tools-nav-top">AU Frameworks Check</summary>
+        <ul class="tools-nav-sub">
+          <li><a href="/free/readiness-check/">Run the check</a></li>
+          <li><a href="/free/readiness-check/landscape.html">Frameworks map</a></li>
+          <li><a href="/free/readiness-check/#rc-how">How it works</a></li>
+          <li><a href="/free/readiness-check/#rc-next">What to do next</a></li>
+        </ul>
+      </details>
+    </li>
+    <li class="tools-nav-group">
+      <details class="tools-nav-menu">
+        <summary class="tools-nav-top is-current">More tools</summary>
+        <ul class="tools-nav-sub">
+          <li><a href="/free/my-stack/">My stack</a></li>
+          <li><a href="/free/stack-pack/">Stack pack</a></li>
+          <li><a href="/free/ai-register/" aria-current="page">AI register</a></li>
+          <li><a href="/free/ai-policy/">AI use policy</a></li>
+          <li><a href="/free/shadow-ai/">Shadow AI check</a></li>
+          <li><a href="/free/threat-model/">Threat model starter</a></li>
+          <li><a href="/free/ai-sdlc/">AI SDLC check</a></li>
+        </ul>
+      </details>
+    </li>
+    <li class="tools-nav-item"><a class="tools-nav-top" href="/free/stack-check/about/">About</a></li>
+  </ul>
+</nav>
+    <button id="theme-toggle" class="theme-toggle" type="button" aria-pressed="false" title="Switch between light and dark mode">
+      <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M20.7 14.4A8.5 8.5 0 0 1 9.6 3.3a.8.8 0 0 0-1-1A10 10 0 1 0 21.7 15.4a.8.8 0 0 0-1-1z"/></svg>
+      <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4.5" fill="currentColor"/><path stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M12 1.5v2.5M12 20v2.5M1.5 12H4M20 12h2.5M4.6 4.6l1.8 1.8M17.6 17.6l1.8 1.8M4.6 19.4l1.8-1.8M17.6 6.4l1.8-1.8"/></svg>
+      <span id="theme-label">Dark mode</span>
+    </button>
+  </header>
+
+  <main id="main" tabindex="-1" class="ar-main">
+    <section class="ar-hero" aria-labelledby="ar-title">
+      <p class="ar-eyebrow">Free tool</p>
+      <h1 id="ar-title">AI register</h1>
+      <p class="ar-lede">List your AI tools and agents, who owns each, the data it touches and its risk, in the Australian Government's free AI register template. We fill in what each vendor documents.</p>
+      <p class="ar-privacy" id="ar-privacy"><strong>Your register stays in your browser.</strong> Nothing you enter leaves it. Typed text, such as purpose notes, never goes into your saved profile or account.</p>
+    </section>
+
+    <div class="ar-profile" id="ar-profile-bar" data-mw-profile-bar aria-label="Your AI tools"></div>
+    <p class="ar-note ar-fallback-note" id="ar-fallback-note" hidden>Saving is not available right now, so the register lasts until you close or reload. Download the CSV before you leave.</p>
+
+    <div id="ar-status" class="ar-status" role="alert"></div>
+
+    <section class="ar-section" id="ar-register" aria-labelledby="ar-register-title">
+      <div class="ar-section-head">
+        <h2 id="ar-register-title">Your register</h2>
+        <p class="ar-count" id="ar-count" aria-live="polite"></p>
+      </div>
+      <div class="ar-toolbar">
+        <button type="button" class="rc-button" id="ar-add-tool">Add an AI tool</button>
+        <button type="button" class="ar-secondary" id="ar-add-agent">Add an AI agent</button>
+      </div>
+      <p class="ar-note" id="ar-prefill-note" hidden></p>
+      <div class="ar-empty" id="ar-empty">
+        <p>No AI tools yet. Add them, or <a href="/free/stack-check/">run the AI Stack Check</a> first and your stack fills the register.</p>
+      </div>
+      <div class="ar-table-wrap" id="ar-table-wrap" role="region" aria-labelledby="ar-register-title" tabindex="0" hidden>
+        <table class="ar-table" id="ar-table">
+          <caption class="visually-hidden">AI register, one row per AI tool or agent. Scroll sideways to see every column.</caption>
+          <thead>
+            <tr>
+              <th scope="col">Name and version</th>
+              <th scope="col">Owner</th>
+              <th scope="col">Status</th>
+              <th scope="col">Source</th>
+              <th scope="col">Purpose and use cases</th>
+              <th scope="col">Data</th>
+              <th scope="col">Who uses it</th>
+              <th scope="col">Hosting and region</th>
+              <th scope="col">Screening outcome</th>
+              <th scope="col">Registered</th>
+              <th scope="col">Review by</th>
+              <th scope="col">What the vendor documents</th>
+              <th scope="col" class="ar-col-actions"><span class="visually-hidden">Actions</span></th>
+            </tr>
+          </thead>
+          <tbody id="ar-rows"></tbody>
+        </table>
+      </div>
+      <p class="ar-note ar-scroll-hint" id="ar-scroll-hint" hidden>The table scrolls sideways.</p>
+    </section>
+
+    <section class="ar-panel" id="ar-picker" aria-labelledby="ar-picker-title" hidden>
+      <h2 id="ar-picker-title" tabindex="-1">Add an AI tool</h2>
+      <p class="ar-note">Pick a platform to bring in what its vendor documents.</p>
+      <label class="ar-label" for="ar-search">Platform or product name</label>
+      <input type="search" id="ar-search" class="ar-input" autocomplete="off" spellcheck="false" aria-describedby="ar-search-hint" aria-controls="ar-results">
+      <p class="ar-hint" id="ar-search-hint">Type at least two letters.</p>
+      <ul class="ar-results" id="ar-results" aria-label="Matching platforms"></ul>
+      <div class="ar-unlisted">
+        <label class="ar-label" for="ar-unlisted-name">Not in the list? Add it by name</label>
+        <div class="ar-inline">
+          <input type="text" id="ar-unlisted-name" class="ar-input" maxlength="60" autocomplete="off" aria-describedby="ar-unlisted-hint">
+          <button type="button" class="ar-secondary" id="ar-unlisted-add">Add by name</button>
+        </div>
+        <p class="ar-hint" id="ar-unlisted-hint">Product name only, up to 60 characters. We have no vendor facts for tools outside our knowledge base.</p>
+      </div>
+      <div class="ar-actions"><button type="button" class="ar-secondary" id="ar-picker-close">Close</button></div>
+    </section>
+
+    <section class="ar-panel" id="ar-editor" aria-labelledby="ar-editor-title" hidden>
+      <h2 id="ar-editor-title" tabindex="-1">Edit row</h2>
+      <div class="ar-facts" id="ar-facts"></div>
+      <form id="ar-form" novalidate></form>
+    </section>
+
+    <section class="ar-section" id="ar-downloads" aria-labelledby="ar-downloads-title">
+      <h2 id="ar-downloads-title">Download your register</h2>
+      <p>Built in your browser. Nothing is uploaded.</p>
+      <ul class="ar-downloads">
+        <li>
+          <strong>Spreadsheet (CSV)</strong>
+          <span>The template's twelve columns, then our hosting, agent and vendor facts. Opens in Excel, Numbers or Google Sheets. Includes your purpose notes.</span>
+          <button type="button" class="rc-button" id="ar-csv">Download CSV</button>
+        </li>
+        <li>
+          <strong>AI bill of materials (CycloneDX 1.6 JSON)</strong>
+          <span>A vendor-level inventory of your services, agents and model families for procurement, auditors or security. What vendors document, not a test of your setup. No model hashes, datasets, infrastructure or typed notes.</span>
+          <button type="button" class="rc-button" id="ar-bom">Download AI BOM</button>
+        </li>
+        <li>
+          <strong>Print</strong>
+          <span>The register table, landscape.</span>
+          <button type="button" class="ar-secondary" id="ar-print">Print the register</button>
+        </li>
+      </ul>
+    </section>
+
+    <section class="ar-section" id="ar-columns" aria-labelledby="ar-columns-title">
+      <h2 id="ar-columns-title">The columns</h2>
+      <p>The twelve columns of the National AI Centre's free template (Guidance for AI Adoption), in its order, with its status and screening choices. Picklists keep what you type out of your saved profile.</p>
+      <div class="ar-table-wrap ar-table-wrap--plain" role="region" aria-labelledby="ar-columns-title" tabindex="0">
+        <table class="ar-table ar-table--plain">
+          <thead><tr><th scope="col">Template column</th><th scope="col">How we fill it</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Name and version</th><td>From our knowledge base, or your own name. Vendors rarely pin a model version for hosted tools, so we do not guess one.</td></tr>
+            <tr><th scope="row">Owner</th><td>A role, not a person's name.</td></tr>
+            <tr><th scope="row">Status</th><td>Pilot, Operational or Decommissioned, as in the template.</td></tr>
+            <tr><th scope="row">Source</th><td>The vendor. For agents, who built it and the platform it runs on.</td></tr>
+            <tr><th scope="row">Purpose/business goals</th><td>Your own words, kept on this device only.</td></tr>
+            <tr><th scope="row">Intended use case(s)</th><td>Picked from common uses.</td></tr>
+            <tr><th scope="row">Known limitations and prohibited use</th><td>Picked from common rules, such as no personal information.</td></tr>
+            <tr><th scope="row">Any foreseeable misuse</th><td>Picked from common misuse, such as personal accounts.</td></tr>
+            <tr><th scope="row">Data sources and type</th><td>Banded categories and types.</td></tr>
+            <tr><th scope="row">Registered date</th><td>The day you add the row, editable.</td></tr>
+            <tr><th scope="row">Screening outcome</th><td>Normal, Elevated or Unacceptable, as in the template. We suggest Normal or Elevated. The government's AI screening tool gives the formal result.</td></tr>
+            <tr><th scope="row">Key stakeholders affected</th><td>Picked from a list.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>We add users, hosting route and region, account type, review date and vendor facts for six key controls. Agent rows add the identity they act under, the tools they can call and their human oversight. The AICD and UTS AI governance checklist for SME and NFP directors lists an AI register first for boards.</p>
+    </section>
+
+    <section class="ar-section ar-next" id="ar-next" aria-labelledby="ar-next-title">
+      <h2 id="ar-next-title">What to do next</h2>
+      <p>Give each row an owner and review date. Check every Elevated row before you widen its use.</p>
+      <p class="ar-note">The <a href="/free/stack-check/">AI Stack Check</a> compares 46 controls across your stack. The <a href="/free/readiness-check/">AU Frameworks Check</a> shows which Australian rules apply to you.</p>
+    </section>
+  </main>
+
+  <footer class="rc-footer">
+    <p class="rc-footer-note" id="ar-template-note">Template columns confirmed on 22 October 2026 from the official AI register template (Excel version, sheet "Template") linked from the Guidance for AI Adoption page on industry.gov.au, which now points to ai.gov.au. The template is published by the National AI Centre, Department of Industry, Science and Resources. We are not affiliated with the Australian Government.</p>
+    <p class="rc-footer-note" id="ar-kb-note">Vendor facts come from vendors' own documentation as recorded in our knowledge base. They are not a test of your accounts or settings.</p>
+    <p>Checkable AI. Copyright (c) 2026 Markus Walker. <a href="/free/stack-check/">AI Stack Check</a>.</p>
+  </footer>
+</body>
+</html>

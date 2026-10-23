@@ -16,3 +16,9 @@ In `portfolio-website`, on `dev`, run `node tools/deploy-dev.mjs --target <a che
 The tag `static-live-2026-09-26` is the last release of the plain HTML site on its own. The tag `interactive-live-2026-09-24` is the earlier orrery build. To switch production back, reset `main` to a tag, with Markus's approval.
 
 Check the published site, its downloads and `_redirects` after every release. Nothing is pushed without Markus's explicit go-ahead.
+
+## The free-only copy at /free/
+
+`free/` is a copy of the Checkable AI tools with every paid surface left out: no Services menu or pages, no in-depth report, intake or sample report, no AU Frameworks paid engagement, no pricing and no "ask us" sections. Its links stay inside `/free/`, and `_headers` marks it noindex. The entry is https://www.markuswalker.com/free/stack-check/. The live tools at `/stack-check/` and the rest are unchanged.
+
+It is generated, not edited by hand. In `offerings-atlas`, run `python tools/free_site.py --site <a checkout of this repository on main>`, then commit `free/`. The script stops without writing if a page has changed so that a removal step finds nothing, or if any paid link or wording is left. The daily AI Stack Check refresh updates `/stack-check/` only, so re-run the script when the copy should pick up newer data. To take the copy down, delete `free/` and its lines in `_headers` and `_redirects`.

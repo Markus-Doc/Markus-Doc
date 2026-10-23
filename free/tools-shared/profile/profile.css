@@ -1,0 +1,106 @@
+/* The "Your AI tools" bar (profile-bar.js) and shared profile pieces. It uses the host page's design tokens from
+   tokens.css when they exist (every tool copies them from the AU Frameworks Check) and falls back to the same
+   values, light and dark, when a page has none. Square corners, one brick accent, Candara for the interface. */
+
+.mwp-bar {
+  --mwp-ink: var(--ink, #252b2d);
+  --mwp-muted: var(--muted, #566268);
+  --mwp-line: var(--line, #d0d6d6);
+  --mwp-accent: var(--accent, #913b2b);
+  --mwp-accent-hover: var(--accent-hover, #742d20);
+  --mwp-on-accent: var(--on-accent, #ffffff);
+  --mwp-surface: var(--surface, #ffffff);
+  --mwp-raised: var(--raised, #f7f8f7);
+  --mwp-soft: var(--teal-soft, #f8eae5);
+  --mwp-link: var(--teal, #913b2b);
+  --mwp-focus: var(--focus, #165b9a);
+  --mwp-warn-bg: var(--warn-bg, #f2e8d4);
+  --mwp-warn-fg: var(--warn-fg, #66502c);
+  --mwp-warn-line: var(--warn-line, #d6c7a8);
+  --mwp-ok-bg: var(--v-sup-bg, #e4efe9);
+  --mwp-ok-fg: var(--v-sup-fg, #24553f);
+  --mwp-ok-line: var(--v-sup-line, #8eb5a0);
+  --mwp-err-fg: var(--error-fg, #8a3b28);
+  --mwp-font: var(--font-utility, 'Candara', 'Trebuchet MS', sans-serif);
+  box-sizing: border-box;
+  margin: 0 0 1.5rem;
+  border: 1px solid var(--mwp-line);
+  border-left: 4px solid var(--mwp-accent);
+  background: var(--mwp-raised);
+  color: var(--mwp-ink);
+  font: 400 .9375rem/1.5 var(--mwp-font);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .mwp-bar {
+    --mwp-ink: var(--ink, #e6eaf0); --mwp-muted: var(--muted, #a8b3c2); --mwp-line: var(--line, #2c3644);
+    --mwp-accent: var(--accent, #f1ac91); --mwp-accent-hover: var(--accent-hover, #ffc7af); --mwp-on-accent: var(--on-accent, #0a1122);
+    --mwp-surface: var(--surface, #151c25); --mwp-raised: var(--raised, #19212c); --mwp-soft: var(--teal-soft, #1b2740);
+    --mwp-link: var(--teal, #8db1ff); --mwp-focus: var(--focus, #ffd166);
+    --mwp-warn-bg: var(--warn-bg, #33291a); --mwp-warn-fg: var(--warn-fg, #ead3a3); --mwp-warn-line: var(--warn-line, #5c4a2a);
+    --mwp-ok-bg: var(--v-sup-bg, #1e3a26); --mwp-ok-fg: var(--v-sup-fg, #ace0b8); --mwp-ok-line: var(--v-sup-line, #336041);
+    --mwp-err-fg: var(--error-fg, #f6bcae);
+  }
+}
+:root[data-theme="dark"] .mwp-bar {
+  --mwp-ink: var(--ink, #e6eaf0); --mwp-muted: var(--muted, #a8b3c2); --mwp-line: var(--line, #2c3644);
+  --mwp-accent: var(--accent, #f1ac91); --mwp-accent-hover: var(--accent-hover, #ffc7af); --mwp-on-accent: var(--on-accent, #0a1122);
+  --mwp-surface: var(--surface, #151c25); --mwp-raised: var(--raised, #19212c); --mwp-soft: var(--teal-soft, #1b2740);
+  --mwp-link: var(--teal, #8db1ff); --mwp-focus: var(--focus, #ffd166);
+  --mwp-warn-bg: var(--warn-bg, #33291a); --mwp-warn-fg: var(--warn-fg, #ead3a3); --mwp-warn-line: var(--warn-line, #5c4a2a);
+  --mwp-ok-bg: var(--v-sup-bg, #1e3a26); --mwp-ok-fg: var(--v-sup-fg, #ace0b8); --mwp-ok-line: var(--v-sup-line, #336041);
+  --mwp-err-fg: var(--error-fg, #f6bcae);
+}
+.mwp-bar *, .mwp-bar *::before, .mwp-bar *::after { box-sizing: border-box; }
+.mwp-bar [hidden] { display: none !important; }
+
+/* One slim line: summary and save state on the left, Edit and "Save or load" on the right. */
+.mwp-bar { position: relative; padding: 6px 8px 6px 14px; }
+.mwp-line { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 4px 12px; min-height: 40px; }
+.mwp-summary { display: flex; flex-wrap: wrap; align-items: center; gap: 2px 8px; margin: 0; color: var(--mwp-ink); }
+.mwp-title { font-weight: 600; }
+.mwp-mode { display: inline-flex; align-items: center; padding: 0 8px; border: 1px solid var(--mwp-line); background: var(--mwp-surface); color: var(--mwp-muted); font-size: .8125rem; line-height: 1.7; white-space: nowrap; }
+.mwp-mode--account { border-color: var(--mwp-ok-line); background: var(--mwp-ok-bg); color: var(--mwp-ok-fg); }
+.mwp-mode--device { border-color: var(--mwp-warn-line); background: var(--mwp-warn-bg); color: var(--mwp-warn-fg); }
+.mwp-actions { display: flex; gap: 6px; margin-left: auto; }
+
+.mwp-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 40px; padding: 6px 12px;
+  border: 1px solid var(--mwp-line); background: var(--mwp-surface); color: var(--mwp-link);
+  font: 600 .9375rem/1.3 var(--mwp-font); text-decoration: none; cursor: pointer;
+}
+.mwp-btn:hover { background: var(--mwp-soft); color: var(--mwp-link); }
+.mwp-btn--main { border-color: var(--mwp-accent); background: var(--mwp-accent); color: var(--mwp-on-accent); }
+.mwp-btn--main:hover { border-color: var(--mwp-accent-hover); background: var(--mwp-accent-hover); color: var(--mwp-on-accent); }
+.mwp-btn[aria-pressed="true"] { border-color: var(--mwp-warn-line); background: var(--mwp-warn-bg); color: var(--mwp-warn-fg); }
+.mwp-btn:disabled, .mwp-btn[aria-disabled="true"] { opacity: .5; cursor: not-allowed; }
+.mwp-btn--main:disabled:hover { border-color: var(--mwp-accent); background: var(--mwp-accent); }
+.mwp-btn:focus-visible, .mwp-panel:focus-visible { outline: 3px solid var(--mwp-focus); outline-offset: 2px; }
+.mwp-caret { width: 12px; height: 12px; transition: transform .15s; }
+.mwp-toggle[aria-expanded="true"] { background: var(--mwp-soft); }
+.mwp-toggle[aria-expanded="true"] .mwp-caret { transform: rotate(180deg); }
+
+/* The "Save or load" panel, under the bar, right aligned. */
+.mwp-panel {
+  position: absolute; z-index: 30; top: calc(100% + 4px); right: -1px; width: min(30rem, calc(100% + 2px));
+  padding: 10px 14px 12px; border: 1px solid var(--mwp-line); border-top: 3px solid var(--mwp-accent);
+  background: var(--mwp-surface); box-shadow: 0 8px 24px rgba(0, 0, 0, .14);
+}
+.mwp-opt { padding: 8px 0; border-bottom: 1px solid var(--mwp-line); }
+.mwp-opt-title { display: flex; align-items: center; gap: 8px; margin: 0 0 6px; font-weight: 600; font-size: .875rem; color: var(--mwp-ink); }
+.mwp-opt-body { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; }
+.mwp-opt--draft .mwp-opt-title, .mwp-opt--draft .mwp-hint { opacity: .75; }
+.mwp-draft { padding: 0 6px; border: 1px solid var(--mwp-warn-line); background: var(--mwp-warn-bg); color: var(--mwp-warn-fg); font-size: .75rem; font-weight: 600; line-height: 1.6; text-transform: uppercase; letter-spacing: .05em; }
+.mwp-hint { flex-basis: 100%; color: var(--mwp-muted); font-size: .8125rem; line-height: 1.45; }
+.mwp-warn { color: var(--mwp-warn-fg); }
+.mwp-privacy { margin: 8px 0 0; color: var(--mwp-muted); font-size: .8125rem; }
+.mwp-msg { margin: 6px 0 0; font-size: .875rem; }
+.mwp-msg:empty { display: none; }
+.mwp-msg--error { color: var(--mwp-err-fg); }
+
+@media (max-width: 680px) {
+  .mwp-bar { padding: 6px 8px 6px 12px; }
+  .mwp-panel { left: -1px; right: -1px; width: auto; }
+  .mwp-opt-body .mwp-btn { flex: 1 1 auto; }
+}
+@media (prefers-reduced-motion: reduce) { .mwp-caret { transition: none; } }
+@media print { .mwp-bar { display: none !important; } }

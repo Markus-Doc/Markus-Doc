@@ -1,0 +1,206 @@
+{
+  "version": "1.0",
+  "checked": "2026-10-22",
+  "sections": [
+    { "id": "plan", "title": "Plan and design" },
+    { "id": "build", "title": "Build" },
+    { "id": "test", "title": "Test and change" },
+    { "id": "run", "title": "Run and respond" }
+  ],
+  "options": [
+    { "value": "yes", "label": "Yes, every time", "points": 2 },
+    { "value": "partly", "label": "Partly or sometimes", "points": 1 },
+    { "value": "no", "label": "No", "points": 0 },
+    { "value": "unsure", "label": "Not sure", "points": 0 },
+    { "value": "na", "label": "Not relevant to us", "points": null }
+  ],
+  "bands": [
+    { "id": "established", "min": 80, "label": "Established", "summary": "Most of the practices are in place. Keep them current as your models, prompts and providers change." },
+    { "id": "developing", "min": 50, "label": "Developing", "summary": "Some practices are in place, with gaps that matter. Close the high gaps first." },
+    { "id": "early", "min": 0, "label": "Early", "summary": "Few of the practices are in place yet. Start with the 30 day steps below." }
+  ],
+  "plan_now_max": 5,
+  "nist_practices": {
+    "PO.1": "Define Security Requirements for Software Development",
+    "PO.2": "Implement Roles and Responsibilities",
+    "PO.4": "Define and Use Criteria for Software Security Checks",
+    "PO.5": "Implement and Maintain Secure Environments for Software Development",
+    "PS.1": "Protect All Forms of Code and Data from Unauthorized Access and Tampering",
+    "PS.3": "Archive and Protect Each Software Release",
+    "PW.1": "Design Software to Meet Security Requirements and Mitigate Security Risks",
+    "PW.3": "Confirm the Integrity of Training, Testing, Fine-Tuning, and Aligning Data Before Use",
+    "PW.4": "Reuse Existing, Well-Secured Software When Feasible Instead of Duplicating Functionality",
+    "PW.5": "Create Source Code by Adhering to Secure Coding Practices",
+    "PW.7": "Review and/or Analyze Human-Readable Code to Identify Vulnerabilities and Verify Compliance with Security Requirements",
+    "PW.8": "Test Executable Code to Identify Vulnerabilities and Verify Compliance with Security Requirements",
+    "RV.1": "Identify and Confirm Vulnerabilities on an Ongoing Basis",
+    "RV.2": "Assess, Prioritize, and Remediate Vulnerabilities"
+  },
+  "aima_domains": {
+    "Governance": ["Strategy and Metrics", "Policy and Compliance", "Education and Guidance"],
+    "Data Management": ["Data Quality and Integrity", "Data Governance and Accountability", "Data Training"],
+    "Design": ["Threat Assessment", "Security Architecture", "Security Requirements"],
+    "Implementation": ["Secure Build", "Secure Deployment", "Defect Management"],
+    "Verification": ["Security Testing", "Requirement-based Testing", "Architecture Assessment"],
+    "Operations": ["Incident Management", "Event Management", "Operational Management"]
+  },
+  "sources": {
+    "nist": { "title": "NIST SP 800-218A, Secure Software Development Practices for Generative AI and Dual-Use Foundation Models: An SSDF Community Profile (July 2024)", "url": "https://csrc.nist.gov/pubs/sp/800/218/a/final" },
+    "aima": { "title": "OWASP AI Maturity Assessment (AIMA) Version 1.0, 11 August 2025", "url": "https://owasp.org/www-project-ai-maturity-assessment/" }
+  },
+  "questions": [
+    {
+      "id": "requirements", "section": "plan", "priority": "medium",
+      "text": "Do your written security requirements cover your AI features, such as which models are allowed, what data they may see and what they may do?",
+      "gap": "Security requirements do not cover AI features",
+      "ok": "Security requirements cover AI features",
+      "nist": ["PO.1.1", "PO.1.2"],
+      "aima": ["Design", "Security Requirements"],
+      "now": { "title": "Write one page of AI security requirements", "detail": "List the models and providers you allow, the data each AI feature may see and the actions it may take. Add it to your existing requirements." },
+      "next": { "title": "Check every AI feature against the requirements", "detail": "Review each live AI feature against the page and log the gaps as work items." }
+    },
+    {
+      "id": "roles", "section": "plan", "priority": "medium",
+      "text": "Is one person accountable for the security of each AI feature, and have the people who build them had training on AI-specific attacks?",
+      "gap": "No named owner or AI security training for builders",
+      "ok": "Each AI feature has an owner and builders are trained",
+      "nist": ["PO.2.1", "PO.2.2"],
+      "aima": ["Governance", "Education and Guidance"],
+      "now": { "title": "Name an owner for each AI feature", "detail": "Record the owner next to each feature in your register or backlog.", "link": "/free/ai-register/" },
+      "next": { "title": "Train the builders on AI attacks", "detail": "Run a short session for everyone who writes prompts, pipelines or agent code. Cover prompt injection, data leakage and excessive agent permissions, and repeat it each year." }
+    },
+    {
+      "id": "threat", "section": "plan", "priority": "high",
+      "text": "Before you build or change an AI feature, do you threat model it for AI-specific attacks such as prompt injection, poisoned data and leaks through model output?",
+      "gap": "AI features are not threat modelled",
+      "ok": "AI features are threat modelled",
+      "nist": ["PW.1.1"],
+      "aima": ["Design", "Threat Assessment"],
+      "now": { "title": "Threat model your highest risk AI feature", "detail": "Pick the feature with the most sensitive data or the most autonomy. Map its inputs, retrieved content, tools and outputs, and list how each could be abused." },
+      "next": { "title": "Make AI threat modelling part of design", "detail": "Add an AI threats section to your design template and require it for new features and for model or tool changes." }
+    },
+    {
+      "id": "bom", "section": "build", "priority": "medium",
+      "text": "Do you keep a record of the models, model versions, datasets, prompt templates and AI libraries each release uses?",
+      "gap": "No record of the models, data and prompts in each release",
+      "ok": "Each release records its models, data and prompts",
+      "nist": ["PS.3.2"],
+      "aima": ["Data Management", "Data Governance and Accountability"],
+      "now": { "title": "Start an AI bill of materials", "detail": "For each AI feature, list the model and version, provider, datasets, vector stores, prompt templates and AI libraries. A spreadsheet is enough to start." },
+      "next": { "title": "Produce the record with each release", "detail": "Generate the list from your build pipeline so it stays current, and keep it with the release." }
+    },
+    {
+      "id": "thirdparty", "section": "build", "priority": "high",
+      "text": "Before you adopt a third-party model, model API, embedding service or AI library, do you check its security, its terms on your data and where it came from?",
+      "gap": "Third-party models and AI libraries are not checked before use",
+      "ok": "Third-party models and AI libraries are checked before use",
+      "nist": ["PW.4.1", "PW.4.4"],
+      "aima": ["Implementation", "Secure Build"],
+      "now": { "title": "Review the providers you already use", "detail": "For each model provider and AI library, record the data terms, the retention and training settings, and the version you depend on.", "link": "/free/stack-pack/" },
+      "next": { "title": "Gate new AI components", "detail": "Require the same review before any new model, provider or AI library goes into a build, and scan downloaded model files before use." }
+    },
+    {
+      "id": "promptctl", "section": "build", "priority": "high",
+      "text": "Are system prompts, prompt templates, agent tool definitions and model settings kept in version control and reviewed before they change, the same as code?",
+      "gap": "Prompts and model settings change without version control or review",
+      "ok": "Prompts and model settings are versioned and reviewed",
+      "nist": ["PS.1.1", "PW.7.2"],
+      "aima": ["Implementation", "Secure Build"],
+      "now": { "title": "Move prompts and model settings into version control", "detail": "Take system prompts, templates, tool definitions and settings out of dashboards and databases and into your repository." },
+      "next": { "title": "Review prompt changes like code", "detail": "Require a second person to approve changes to prompts, tool definitions and model settings, with the same branch protection as code." }
+    },
+    {
+      "id": "data", "section": "build", "priority": "high", "na": true,
+      "text": "Is the data you fine-tune on, evaluate with or retrieve from (RAG) checked for tampering, poisoning and sensitive content before use, with its source recorded?",
+      "gap": "Fine-tuning, evaluation or retrieval data is not checked before use",
+      "ok": "Data is checked and its source recorded before use",
+      "nist": ["PW.3.1", "PW.3.2"],
+      "nist_note": "PW.3 covers training, testing, fine-tuning and aligning data. We apply it to retrieval data as well.",
+      "aima": ["Data Management", "Data Quality and Integrity"],
+      "now": { "title": "Record where each dataset and document source comes from", "detail": "List the sources for fine-tuning, evaluation and retrieval, who can add to them, and which have no known origin." },
+      "next": { "title": "Check data before it goes in", "detail": "Add checks for injected instructions, personal information and unexpected changes before data is used for fine-tuning or added to a retrieval index." }
+    },
+    {
+      "id": "access", "section": "build", "priority": "high",
+      "text": "Are model weights, fine-tuning data, vector stores and model provider API keys protected with least-privilege access and kept out of code?",
+      "gap": "Model keys, data or weights are not locked down",
+      "ok": "Model keys, data and weights have least-privilege access",
+      "nist": ["PS.1.1", "PS.1.2", "PS.1.3"],
+      "aima": ["Implementation", "Secure Deployment"],
+      "now": { "title": "Move model API keys into a secrets store", "detail": "Remove keys from code, notebooks and config files, rotate any that were exposed, and give each environment its own key." },
+      "next": { "title": "Tighten access to AI data and models", "detail": "Limit who and what can read or change vector stores, fine-tuning data and model files, and review the access list each quarter." }
+    },
+    {
+      "id": "io", "section": "build", "priority": "high",
+      "text": "Do you validate what goes into the model and what comes out, and limit what agents and tools are allowed to do?",
+      "help": "For example input filtering, encoding output before it is shown or run, tool allow lists and a person approving risky actions.",
+      "gap": "Model inputs, outputs and agent actions are not constrained",
+      "ok": "Model inputs, outputs and agent actions are constrained",
+      "nist": ["PW.5.1"],
+      "aima": ["Design", "Security Architecture"],
+      "now": { "title": "Limit what your agents and tools can do", "detail": "Give each AI feature the narrowest tool and data permissions it needs, and require a person to approve actions that send, pay, delete or publish." },
+      "next": { "title": "Treat model output as untrusted input", "detail": "Encode or validate output before it is shown, stored or run, and filter inputs and retrieved content for injected instructions." }
+    },
+    {
+      "id": "advtest", "section": "test", "priority": "high",
+      "text": "Before release, do you test AI features for attacks such as prompt injection, jailbreaks, data leakage and misuse of tools, not only for answer quality?",
+      "gap": "No adversarial testing before release",
+      "ok": "AI features are tested for attacks before release",
+      "nist": ["PW.8.1", "PW.8.2"],
+      "aima": ["Verification", "Security Testing"],
+      "now": { "title": "Run a first adversarial test", "detail": "Spend a day attacking your highest risk feature with known prompt injection and data leakage cases, and log what you find as defects." },
+      "next": { "title": "Automate the attack cases", "detail": "Turn the cases into an automated test set that runs in your pipeline, and add new cases when you find new issues." }
+    },
+    {
+      "id": "change", "section": "test", "priority": "high",
+      "text": "When you change a model, model version, prompt or data source, do you re-run security and quality evaluations against set pass criteria before it goes live?",
+      "gap": "AI changes go live without set pass criteria",
+      "ok": "AI changes pass set evaluations before going live",
+      "nist": ["PO.4.1", "PW.8.2"],
+      "aima": ["Verification", "Requirement-based Testing"],
+      "now": { "title": "Write down pass criteria for AI changes", "detail": "Agree the evaluations a model, prompt or data change must pass, and the results that block a release." },
+      "next": { "title": "Block releases that fail the criteria", "detail": "Run the evaluations automatically on every AI change, including model version updates from your provider, and stop the release when they fail." }
+    },
+    {
+      "id": "envs", "section": "test", "priority": "medium",
+      "text": "Are development, evaluation and production separated for your AI features, with production data and keys kept out of development and testing?",
+      "gap": "Production data or keys are used in development",
+      "ok": "Development, evaluation and production are separated",
+      "nist": ["PO.5.1"],
+      "aima": ["Implementation", "Secure Deployment"],
+      "now": { "title": "Take production data out of development", "detail": "Find where real customer data or production keys are used in notebooks, test prompts or development vector stores, and replace them." },
+      "next": { "title": "Separate the environments", "detail": "Give development, evaluation and production their own accounts, keys and data stores." }
+    },
+    {
+      "id": "monitor", "section": "run", "priority": "high",
+      "text": "In production, do you log and watch model inputs, outputs, tool calls and usage for misuse and unusual behaviour?",
+      "gap": "Model inputs, outputs and tool calls are not monitored",
+      "ok": "Model inputs, outputs and tool calls are monitored",
+      "nist": ["PO.5.3"],
+      "nist_note": "PO.5.3 is written for development environments. The AIMA Event Management practice covers production.",
+      "aima": ["Operations", "Event Management"],
+      "now": { "title": "Log AI inputs, outputs and tool calls", "detail": "Keep the logs behind access controls with a set retention period, and mask personal information you do not need." },
+      "next": { "title": "Alert on misuse", "detail": "Set alerts for spikes in usage or cost, injection patterns and unusual tool calls, and name who responds." }
+    },
+    {
+      "id": "report", "section": "run", "priority": "medium",
+      "text": "Can users and researchers report AI security issues to you, and do you triage and fix them, including issues in the model itself?",
+      "gap": "No route to report or fix AI security issues",
+      "ok": "AI security issues can be reported and are fixed",
+      "nist": ["RV.1.1", "RV.1.3"],
+      "aima": ["Operations", "Incident Management"],
+      "now": { "title": "Publish a way to report AI issues", "detail": "Add AI behaviour and model issues to your security contact page or vulnerability disclosure policy." },
+      "next": { "title": "Add AI to your incident process", "detail": "Define how you triage AI reports, who decides, and how you fix and confirm a model, prompt or data issue." }
+    },
+    {
+      "id": "rollback", "section": "run", "priority": "medium",
+      "text": "Can you quickly switch off an AI feature or roll back to an earlier model, prompt or data version, and have you agreed when you would?",
+      "gap": "No quick way to switch off or roll back an AI feature",
+      "ok": "AI features can be switched off or rolled back",
+      "nist": ["RV.2.2"],
+      "aima": ["Operations", "Operational Management"],
+      "now": { "title": "Add a switch to turn off each AI feature", "detail": "Make sure each AI feature can be turned off or moved to a fallback without a code release." },
+      "next": { "title": "Agree when to stop or roll back", "detail": "Write the conditions that trigger a stop or roll back, keep earlier model, prompt and index versions available, and test a roll back once." }
+    }
+  ]
+}

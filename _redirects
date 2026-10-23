@@ -14,3 +14,7 @@
 # Company page renamed to the business name (22 Oct 2026)
 /company /checkable-ai/ 301
 /company/* /checkable-ai/:splat 301
+
+# Free-only copy of the tools (grant reviewers): its entry is the AI Stack Check
+/free /free/stack-check/ 302
+/free/ /free/stack-check/ 302

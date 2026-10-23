@@ -105,3 +105,10 @@ https://markus-doc.pages.dev/*
 /site-art/rotator.js
   Cache-Control: public, max-age=0, must-revalidate
 # END site-art
+
+# BEGIN free (free-only copy of the tools for grant reviewers, built by tools/free_site.py in offerings-atlas, 23 Oct 2026)
+/free/*
+  X-Robots-Tag: noindex, nofollow
+  Referrer-Policy: no-referrer
+  Cache-Control: public, max-age=0, must-revalidate
+# END free
