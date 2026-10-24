@@ -235,7 +235,7 @@
   function linkText(href) {
     if (href.startsWith('/ai-register')) return 'Open the AI register.'
     if (href.startsWith('/stack-pack')) return 'Open your stack pack.'
-    if (href.startsWith('/readiness-check')) return 'Open the AU Frameworks Check.'
+    if (href.startsWith('https://checkableai.com/readiness-check')) return 'Open the AU Frameworks Check.'
     return 'Open.'
   }
 

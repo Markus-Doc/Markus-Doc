@@ -23,40 +23,6 @@ https://:project.markus-doc.pages.dev/*
 https://markus-doc.pages.dev/*
   X-Robots-Tag: noindex
 
-# BEGIN readiness-check (managed by tools/publish_site.py, edit there)
-/readiness-check/*
-  Cross-Origin-Opener-Policy: same-origin
-  Cross-Origin-Resource-Policy: same-origin
-  X-Robots-Tag: noindex
-
-/readiness-check/
-  Cache-Control: no-cache
-
-/readiness-check/index.html
-  Cache-Control: no-cache
-
-/readiness-check/landscape.html
-  Cache-Control: no-cache
-
-/readiness-check/*.html
-  Cache-Control: no-cache
-
-/readiness-check/css/*
-  Cache-Control: public, max-age=0, must-revalidate
-
-/readiness-check/js/*
-  Cache-Control: public, max-age=0, must-revalidate
-
-/readiness-check/vendor/*
-  Cache-Control: public, max-age=0, must-revalidate
-
-/readiness-check/assets/*
-  Cache-Control: public, max-age=86400
-
-/readiness-check/data/*
-  Cache-Control: public, max-age=0, must-revalidate
-# END readiness-check
-
 # BEGIN company (company home page, at /checkable-ai/ since 22 Oct 2026, added 21 Oct 2026)
 /checkable-ai/*
   X-Robots-Tag: noindex

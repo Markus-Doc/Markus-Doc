@@ -367,7 +367,7 @@
       { name: 'AI Stack Check', href: stackLink, what: checked.length
         ? 'Checks ' + (checked.length === 1 ? 'your 1 platform' : checked.length + ' of your platforms') + ' against ' + (kb.capabilities || 'our') + ' controls' + (checked.length > 8 ? '. The link carries the first 8.' : '.')
         : 'Add a platform from the knowledge base to check it.' },
-      { name: 'AU Frameworks Check', href: '/free/readiness-check/', what: bizAnswered || p.context.uses_ai
+      { name: 'AU Frameworks Check', href: 'https://checkableai.com/readiness-check/', what: bizAnswered || p.context.uses_ai
         ? 'Starts from your business details (' + bizAnswered + ' of 5 answered) and how you use AI.'
         : 'Answer "About your business" above and it starts from those.' },
       { name: 'Stack pack', href: '/free/stack-pack/', what: ids.length

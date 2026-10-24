@@ -22,7 +22,7 @@ Clearance: eligible for NV1 and NV2.
 
 Each project has its own page and was accurate at the time of writing. Index: https://www.markuswalker.com/projects/
 
-- [Ask the Atlas: an interactive questionnaire over the knowledge base](https://www.markuswalker.com/projects/ask-the-atlas/): an interactive questionnaire over a sample of the Offerings Atlas that shows how it walks the knowledge base to a cited answer (October 2026). [Try it](https://www.markuswalker.com/atlas/)
+- [Ask the Atlas: an interactive questionnaire over the knowledge base](https://www.markuswalker.com/projects/ask-the-atlas/): an interactive questionnaire over a sample of the Offerings Atlas that shows how it walks the knowledge base to a cited answer (October 2026). [Try it](https://checkableai.com/stack-check/)
 - [The Offerings Atlas: mapping what 166 AI platforms cover, and what they don't](https://www.markuswalker.com/projects/offerings-atlas/): a knowledge base of AI agent security controls across 151 platforms and tools that agents research, verify and keep current, with checkable provenance and an enterprise questionnaire (October 2026). [Full text](https://www.markuswalker.com/assets/docs/Markus_Walker_Offerings_Atlas)
 - [A local gateway for headless Claude and Codex](https://www.markuswalker.com/projects/llm-gateway/): a personal LiteLLM gateway that routes agent calls to headless Claude Code and Codex on my own subscriptions, with JSON-schema output and a proof record per call (October 2026). [Full text](https://www.markuswalker.com/assets/docs/Markus_Walker_LLM_Gateway)
 - [Building a governed AI agent on an open knowledge base](https://www.markuswalker.com/projects/governed-ai-agent/): a custom AI agent that runs in the cloud, draws everything it knows from an open knowledge base and can only act inside policy written as code (September 2026). [Full text](https://www.markuswalker.com/assets/docs/Markus_Walker_Governed_AI_Agent)
@@ -33,10 +33,6 @@ Each project has its own page and was accurate at the time of writing. Index: ht
 - [RESYNTH](https://www.markuswalker.com/projects/resynth/): open-source pipeline that consolidates several AI deep-research reports into one verified master document (June 2026)
 - [AWS security architecture case study](https://www.markuswalker.com/projects/aws-security-architecture-case-study/): fictional planning case study (April 2026)
 - [Incident response planning portfolio](https://www.markuswalker.com/projects/incident-response-planning/): structured around NIST SP 800-61 (April 2026)
-
-## Tools
-
-- [AU Readiness Check](https://www.markuswalker.com/readiness-check/): see which Australian governance frameworks likely apply to your business and how ready you look.
 
 ## Experience
 

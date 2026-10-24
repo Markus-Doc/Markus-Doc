@@ -514,7 +514,7 @@
       "horizon": 30,
       "title": "Work out whether the Privacy Act covers you",
       "detail": "The AU Frameworks Check asks the questions that decide it and shows which other rules apply.",
-      "link": "/free/readiness-check/",
+      "link": "https://checkableai.com/readiness-check/",
       "basis": ["privacy-act"]
     },
     {
