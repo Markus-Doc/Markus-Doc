@@ -36,7 +36,6 @@ Each project has its own page and was accurate at the time of writing. Index: ht
 
 ## Tools
 
-- [AI Stack Check](https://www.markuswalker.com/stack-check/): name the AI tools you use and see the security gaps, with the vendor evidence.
 - [AU Readiness Check](https://www.markuswalker.com/readiness-check/): see which Australian governance frameworks likely apply to your business and how ready you look.
 
 ## Experience

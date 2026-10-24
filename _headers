@@ -23,19 +23,6 @@ https://:project.markus-doc.pages.dev/*
 https://markus-doc.pages.dev/*
   X-Robots-Tag: noindex
 
-# AI Stack Check (offerings-atlas), released 19 Oct 2026. Short cache while the data refreshes daily.
-/stack-check/assets/*
-  Cache-Control: public, max-age=300, must-revalidate
-  Cross-Origin-Resource-Policy: same-origin
-
-/stack-check/data/*
-  Cache-Control: public, max-age=0, must-revalidate
-  Cross-Origin-Resource-Policy: same-origin
-
-/stack-check/*
-  X-Robots-Tag: noindex, nofollow
-  Referrer-Policy: no-referrer
-
 # BEGIN readiness-check (managed by tools/publish_site.py, edit there)
 /readiness-check/*
   Cross-Origin-Opener-Policy: same-origin

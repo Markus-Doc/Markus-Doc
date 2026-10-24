@@ -6,7 +6,7 @@
 // option. The KB index is read from /free/stack-check/data/ when present, and the page works without it.
 ;(function () {
   const TOOL = 'shadow-ai'
-  const ENQUIRY = '/free/stack-check/#ck-enquiry'
+  const ENQUIRY = 'https://checkableai.com/stack-check/#ck-enquiry'
   const E = window.ShadowAIEngine
   const $ = id => document.getElementById(id)
   let Q = null, R = null, INDEX = null
@@ -141,7 +141,7 @@
       const s = R.sources[id]
       if (!s) return null
       if (s.kind === 'decision') return h('li', { title: s.note || '' }, s.title)
-      if (s.kind === 'kb') return h('li', {}, h('a', { href: '/free/stack-check/atlas/' }, s.title))
+      if (s.kind === 'kb') return h('li', {}, h('a', { href: 'https://checkableai.com/stack-check/atlas/' }, s.title))
       return h('li', {}, h('a', { href: s.url, rel: 'noopener' }, s.title))
     }))
   }
@@ -192,7 +192,7 @@
             h('td', { 'data-label': 'Where it came from', text: p.inStack ? 'Your saved stack' + (p.account ? ', ' + p.account + ' account' : '') : 'Staff use, not on your saved list' }),
             h('td', { 'data-label': 'Account types sold' }, p.accountTypes.map(t => h('span', { class: 'sa-tag', text: t })), p.shadow ? h('span', { class: 'sa-tag is-shadow', text: 'Sells a personal plan' }) : null),
             h('td', { 'data-label': 'What that account gives you' }, p.controls ? [h('strong', { text: (p.inStack ? p.shownTypeName + '. ' : 'If staff use the ' + p.shownTypeName.toLowerCase() + ': ') }), p.controls] : 'Save which account type you use to see this.')))))
-      : h('p', { class: 'rc-note' }, INDEX ? 'Save your AI tools in the ' : 'Our knowledge base did not load, so vendor facts are missing. Save your AI tools in the ', h('a', { href: '/free/stack-check/' }, 'AI Stack Check'), ' and the platforms in it appear here with their account types and training defaults.')
+      : h('p', { class: 'rc-note' }, INDEX ? 'Save your AI tools in the ' : 'Our knowledge base did not load, so vendor facts are missing. Save your AI tools in the ', h('a', { href: 'https://checkableai.com/stack-check/' }, 'AI Stack Check'), ' and the platforms in it appear here with their account types and training defaults.')
 
     box.replaceChildren(...[
       h('div', { class: 'sa-print-meta' }, h('p', { class: 'rc-note', text: 'Shadow AI Check result, ' + today + '. Question bank ' + res.bank + ', rules ' + res.rules + '.' })),

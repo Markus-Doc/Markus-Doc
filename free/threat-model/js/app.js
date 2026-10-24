@@ -7,7 +7,7 @@
 // /free/stack-check/data/ for platform names and groups, and the page works without it.
 ;(function () {
   const M = window.TMModel
-  const ENQUIRY = '/free/stack-check/#ck-enquiry'
+  const ENQUIRY = 'https://checkableai.com/stack-check/#ck-enquiry'
   const $ = id => document.getElementById(id)
   let KB = M.buildKb(null)
   let indexLoaded = null   // null until the fetch has been tried
@@ -76,7 +76,7 @@
     const toolsN = rows.length - agentsN
     const el = $('tm-from')
     if (!stackN && !rows.length) {
-      el.replaceChildren('Nothing is saved yet. Pick a few tool types or add an agent below, or save your tools in the ', h('a', { href: '/free/stack-check/' }, 'AI Stack Check'), ' and your agents in the ', h('a', { href: '/free/ai-register/' }, 'AI register'), '.')
+      el.replaceChildren('Nothing is saved yet. Pick a few tool types or add an agent below, or save your tools in the ', h('a', { href: 'https://checkableai.com/stack-check/' }, 'AI Stack Check'), ' and your agents in the ', h('a', { href: '/free/ai-register/' }, 'AI register'), '.')
       return
     }
     const parts = []

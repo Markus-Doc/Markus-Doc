@@ -152,7 +152,7 @@
     if (more.length) {
       note.textContent = ''
       note.append(more.map(p => p.name).join(', ') + (more.length === 1 ? ' is' : ' are') + ' in our full knowledge base but not in the free data. ',
-        el('a', { href: '/stack-check/?from=stack-pack#ck-enquiry', text: 'Ask us' }), ' and we can include ' + (more.length === 1 ? 'it' : 'them') + ' in a review.')
+        el('a', { href: 'https://checkableai.com/stack-check/?from=stack-pack#ck-enquiry', text: 'Ask us' }), ' and we can include ' + (more.length === 1 ? 'it' : 'them') + ' in a review.')
     }
   }
 

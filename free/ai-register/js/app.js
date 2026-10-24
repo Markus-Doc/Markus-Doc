@@ -370,7 +370,7 @@
       add('Documented controls', 'This platform is in our catalogue, but its detail is not in the free version.')
     }
     box.append(el('h3', {}, 'What the vendor documents'), dl,
-      el('p', { class: 'ar-note' }, 'From vendor documentation as at ' + fmtDate(state.kb.asAt) + '. Not a test of your accounts or settings. ', el('a', { href: '/free/stack-check/atlas/' }, 'See the knowledge base'), '.'))
+      el('p', { class: 'ar-note' }, 'From vendor documentation as at ' + fmtDate(state.kb.asAt) + '. Not a test of your accounts or settings. ', el('a', { href: 'https://checkableai.com/stack-check/atlas/' }, 'See the knowledge base'), '.'))
   }
 
   function renderSuggestion(r) {

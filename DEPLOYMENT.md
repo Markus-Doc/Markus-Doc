@@ -19,6 +19,10 @@ Check the published site, its downloads and `_redirects` after every release. No
 
 ## The free-only copy at /free/
 
-`free/` is a copy of the Checkable AI tools with every paid surface left out: no Services menu or pages, no in-depth report, intake or sample report, no AU Frameworks paid engagement, no pricing and no "ask us" sections. Its links stay inside `/free/`, and `_headers` marks it noindex. The entry is https://www.markuswalker.com/free/stack-check/. The live tools at `/stack-check/` and the rest are unchanged.
+`free/` is a copy of the Checkable AI tools with every paid surface left out: no Services menu or pages, no in-depth report, intake or sample report, no AU Frameworks paid engagement, no pricing and no "ask us" sections. Its links stay inside `/free/`, and `_headers` marks it noindex. The entry is https://www.markuswalker.com/free/checkable-ai/.
 
-It is generated, not edited by hand. In `offerings-atlas`, run `python tools/free_site.py --site <a checkout of this repository on main>`, then commit `free/`. The script stops without writing if a page has changed so that a removal step finds nothing, or if any paid link or wording is left. The daily AI Stack Check refresh updates `/stack-check/` only, so re-run the script when the copy should pick up newer data. To take the copy down, delete `free/` and its lines in `_headers` and `_redirects`.
+It is generated, not edited by hand. In `offerings-atlas`, run `python tools/free_site.py --site <a checkout of this repository on main>`, then commit `free/`. The script stops without writing if a page has changed so that a removal step finds nothing, or if any paid link or wording is left. To take the copy down, delete `free/` and its lines in `_headers` and `_redirects`.
+
+## AI Stack Check removed, 24 October 2026
+
+The AI Stack Check and Stack Watch, with their knowledge base data, came off this site and out of this repository's history on 24 October 2026 (owner decision). The Stack Check now lives at https://checkableai.com/stack-check/ and links here point there. The daily refresh in `offerings-atlas` no longer publishes here (its `deploy/site-target.json`). My stack, Stack pack and the AI register read `/stack-check/data/`, which is gone, so they run without vendor data. Do not run `tools/free_site.py` or the site-tools deploy against this repository again without the owner's word, since both put Stack Check pages back.

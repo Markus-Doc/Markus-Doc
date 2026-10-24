@@ -362,7 +362,7 @@
     const checked = ids.filter(id => kb.platforms[id] && kb.platforms[id].checked)
     const others = p.stack.unlisted.length
     const bizAnswered = Object.keys(p.business).length
-    const stackLink = '/stack-check/' + (checked.length ? '#stack=' + checked.slice(0, 8).join(',') : '')
+    const stackLink = 'https://checkableai.com/stack-check/' + (checked.length ? '#stack=' + checked.slice(0, 8).join(',') : '')
     const tools = [
       { name: 'AI Stack Check', href: stackLink, what: checked.length
         ? 'Checks ' + (checked.length === 1 ? 'your 1 platform' : checked.length + ' of your platforms') + ' against ' + (kb.capabilities || 'our') + ' controls' + (checked.length > 8 ? '. The link carries the first 8.' : '.')

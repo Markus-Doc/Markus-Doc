@@ -6,7 +6,7 @@
 ;(function () {
   const TOOL = 'ai-sdlc'
   const VERSION = '1.0'
-  const ENQUIRY = '/free/stack-check/#ck-enquiry'
+  const ENQUIRY = 'https://checkableai.com/stack-check/#ck-enquiry'
   const E = window.AISDLCEngine
   const $ = id => document.getElementById(id)
   let Q = null
