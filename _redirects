@@ -11,6 +11,3 @@
 /DEPLOYMENT.md / 301
 /README.md / 301
 
-# The Atlas preview is now the AI Stack Check preview
-/atlas-preview /stack-check/ 301
-/atlas-preview/* /stack-check/:splat 301

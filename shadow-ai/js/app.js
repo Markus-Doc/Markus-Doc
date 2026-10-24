@@ -6,7 +6,7 @@
 // option. The KB index is read from /stack-check/data/ when present, and the page works without it.
 ;(function () {
   const TOOL = 'shadow-ai'
-  const ENQUIRY = '/stack-check/?from=shadow-ai#ck-enquiry'
+  const ENQUIRY = 'https://checkableai.com/stack-check/?from=shadow-ai#ck-enquiry'
   const E = window.ShadowAIEngine
   const $ = id => document.getElementById(id)
   let Q = null, R = null, INDEX = null
@@ -141,7 +141,7 @@
       const s = R.sources[id]
       if (!s) return null
       if (s.kind === 'decision') return h('li', { title: s.note || '' }, s.title)
-      if (s.kind === 'kb') return h('li', {}, h('a', { href: '/stack-check/atlas/' }, s.title))
+      if (s.kind === 'kb') return h('li', {}, h('a', { href: 'https://checkableai.com/stack-check/atlas/' }, s.title))
       return h('li', {}, h('a', { href: s.url, rel: 'noopener' }, s.title))
     }))
   }
@@ -192,7 +192,7 @@
             h('td', { 'data-label': 'Where it came from', text: p.inStack ? 'Your saved stack' + (p.account ? ', ' + p.account + ' account' : '') : 'Staff use, not on your saved list' }),
             h('td', { 'data-label': 'Account types sold' }, p.accountTypes.map(t => h('span', { class: 'sa-tag', text: t })), p.shadow ? h('span', { class: 'sa-tag is-shadow', text: 'Sells a personal plan' }) : null),
             h('td', { 'data-label': 'What that account gives you' }, p.controls ? [h('strong', { text: (p.inStack ? p.shownTypeName + '. ' : 'If staff use the ' + p.shownTypeName.toLowerCase() + ': ') }), p.controls] : 'Save which account type you use to see this.')))))
-      : h('p', { class: 'rc-note' }, INDEX ? 'Save your AI tools in the ' : 'Our knowledge base did not load, so vendor facts are missing. Save your AI tools in the ', h('a', { href: '/stack-check/' }, 'AI Stack Check'), ' and the platforms in it appear here with their account types and training defaults.')
+      : h('p', { class: 'rc-note' }, INDEX ? 'Save your AI tools in the ' : 'Our knowledge base did not load, so vendor facts are missing. Save your AI tools in the ', h('a', { href: 'https://checkableai.com/stack-check/' }, 'AI Stack Check'), ' and the platforms in it appear here with their account types and training defaults.')
 
     box.replaceChildren(...[
       h('div', { class: 'sa-print-meta' }, h('p', { class: 'rc-note', text: 'Shadow AI Check result, ' + today + '. Question bank ' + res.bank + ', rules ' + res.rules + '.' })),
@@ -235,7 +235,7 @@
   function linkText(href) {
     if (href.startsWith('/ai-register')) return 'Open the AI register.'
     if (href.startsWith('/stack-pack')) return 'Open your stack pack.'
-    if (href.startsWith('/readiness-check')) return 'Open the AU Frameworks Check.'
+    if (href.startsWith('https://checkableai.com/readiness-check')) return 'Open the AU Frameworks Check.'
     return 'Open.'
   }
 
@@ -267,7 +267,7 @@
       $('sa-status').textContent = 'The questions did not load. Reload the page to try again.'
       return
     }
-    try { INDEX = await getJSON('/stack-check/data/index.json') } catch (e) { INDEX = null }
+    try { INDEX = await getJSON('https://checkableai.com/stack-check/data/index.json') } catch (e) { INDEX = null }
     // In account mode the stack arrives after the page loads, so wait for the library first.
     try { if (profile().ready) await profile().ready } catch (e) { /* carry on with what is loaded */ }
     try { if (window.MWProfileBar && $('mw-profile-bar')) window.MWProfileBar.mount($('mw-profile-bar'), { tool: TOOL }) } catch (e) { /* the bar is optional */ }

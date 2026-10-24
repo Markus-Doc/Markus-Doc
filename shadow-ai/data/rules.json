@@ -19,13 +19,13 @@
     "kb-account-types": {
       "kind": "kb",
       "title": "AI Stack Check knowledge base: account types and the controls each gives",
-      "url": "/stack-check/data/index.json",
+      "url": "https://checkableai.com/stack-check/data/index.json",
       "path": "procurement_account_types"
     },
     "kb-shadow-flag": {
       "kind": "kb",
       "title": "AI Stack Check knowledge base: shadow AI flag on each platform that sells a personal plan",
-      "url": "/stack-check/data/index.json",
+      "url": "https://checkableai.com/stack-check/data/index.json",
       "path": "platforms[].procurement.shadow_ai"
     },
     "oaic-ai": {
@@ -514,7 +514,7 @@
       "horizon": 30,
       "title": "Work out whether the Privacy Act covers you",
       "detail": "The AU Frameworks Check asks the questions that decide it and shows which other rules apply.",
-      "link": "/readiness-check/",
+      "link": "https://checkableai.com/readiness-check/",
       "basis": ["privacy-act"]
     },
     {

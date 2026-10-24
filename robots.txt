@@ -1,6 +1,3 @@
 User-agent: *
 Allow: /
-# BEGIN readiness-check (draft, managed by tools/publish_site.py)
-Disallow: /readiness-check/
-# END readiness-check
 Sitemap: https://www.markuswalker.com/sitemap.xml

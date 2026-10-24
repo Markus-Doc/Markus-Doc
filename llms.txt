@@ -22,7 +22,7 @@ Clearance: current AGSVA Baseline, eligible for NV1 and NV2.
 
 Each project has its own page and was accurate at the time of writing. Index: https://www.markuswalker.com/projects/
 
-- [Ask the Atlas: an interactive questionnaire over the knowledge base](https://www.markuswalker.com/projects/ask-the-atlas/): an interactive questionnaire over a sample of the Offerings Atlas that shows how it walks the knowledge base to a cited answer (October 2026). [Try it](https://www.markuswalker.com/atlas/)
+- [Ask the Atlas: an interactive questionnaire over the knowledge base](https://www.markuswalker.com/projects/ask-the-atlas/): an interactive questionnaire over a sample of the Offerings Atlas that shows how it walks the knowledge base to a cited answer (October 2026). [Try it](https://checkableai.com/stack-check/)
 - [An agent-run knowledge base for AI agent controls](https://www.markuswalker.com/projects/offerings-atlas/): a knowledge base of AI agent security controls across 151 platforms and tools that agents research, verify and keep current, with checkable provenance and an enterprise questionnaire (October 2026). [Full text](https://www.markuswalker.com/assets/docs/Markus_Walker_Offerings_Atlas)
 - [A local gateway for headless Claude and Codex](https://www.markuswalker.com/projects/llm-gateway/): a personal LiteLLM gateway that routes agent calls to headless Claude Code and Codex on my own subscriptions, with JSON-schema output and a proof record per call (October 2026). [Full text](https://www.markuswalker.com/assets/docs/Markus_Walker_LLM_Gateway)
 - [Building a governed AI agent on an open knowledge base](https://www.markuswalker.com/projects/governed-ai-agent/): a custom AI agent that runs in the cloud, draws everything it knows from an open knowledge base and can only act inside policy written as code (September 2026). [Full text](https://www.markuswalker.com/assets/docs/Markus_Walker_Governed_AI_Agent)
@@ -36,8 +36,7 @@ Each project has its own page and was accurate at the time of writing. Index: ht
 
 ## Tools
 
-- [AI Stack Check](https://www.markuswalker.com/stack-check/): name the AI tools you use and see the security gaps, with the vendor evidence.
-- [AU Readiness Check](https://www.markuswalker.com/readiness-check/): see which Australian governance frameworks likely apply to your business and how ready you look.
+- [AI Stack Check](https://checkableai.com/stack-check/): name the AI tools you use and see the security gaps, with the vendor evidence.
 
 ## Experience
 

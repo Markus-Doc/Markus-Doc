@@ -6,10 +6,10 @@
   const M = window.ARModel
   const P = window.MWProfile
   const NOTES_KEY = 'mw-ai-register-notes-v1'
-  const INDEX_URL = '/stack-check/data/index.json'
-  const RESIDENCY_URL = '/stack-check/assets/assessment/residency.json'
+  const INDEX_URL = 'https://checkableai.com/stack-check/data/index.json'
+  const RESIDENCY_URL = 'https://checkableai.com/stack-check/assets/assessment/residency.json'
   const ANSWERS_BUDGET = 15000
-  const CELLS_URL = id => '/stack-check/data/cells/' + encodeURIComponent(id) + '.json'
+  const CELLS_URL = id => 'https://checkableai.com/stack-check/data/cells/' + encodeURIComponent(id) + '.json'
 
   const state = { kb: M.buildKb(null, null), answers: { rows: [], dismissed: [] }, notes: {}, editing: null, saving: false, lastRemoved: null }
   const $ = id => document.getElementById(id)
@@ -370,7 +370,7 @@
       add('Documented controls', 'This platform is in our catalogue, but its detail is not in the free version.')
     }
     box.append(el('h3', {}, 'What the vendor documents'), dl,
-      el('p', { class: 'ar-note' }, 'From vendor documentation as at ' + fmtDate(state.kb.asAt) + '. Not a test of your accounts or settings. ', el('a', { href: '/stack-check/atlas/' }, 'See the knowledge base'), '.'))
+      el('p', { class: 'ar-note' }, 'From vendor documentation as at ' + fmtDate(state.kb.asAt) + '. Not a test of your accounts or settings. ', el('a', { href: 'https://checkableai.com/stack-check/atlas/' }, 'See the knowledge base'), '.'))
   }
 
   function renderSuggestion(r) {

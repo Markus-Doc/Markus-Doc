@@ -7,7 +7,7 @@
 // /stack-check/data/ for platform names and groups, and the page works without it.
 ;(function () {
   const M = window.TMModel
-  const ENQUIRY = '/stack-check/?from=threat-model#ck-enquiry'
+  const ENQUIRY = 'https://checkableai.com/stack-check/?from=threat-model#ck-enquiry'
   const $ = id => document.getElementById(id)
   let KB = M.buildKb(null)
   let indexLoaded = null   // null until the fetch has been tried
@@ -76,7 +76,7 @@
     const toolsN = rows.length - agentsN
     const el = $('tm-from')
     if (!stackN && !rows.length) {
-      el.replaceChildren('Nothing is saved yet. Pick a few tool types or add an agent below, or save your tools in the ', h('a', { href: '/stack-check/' }, 'AI Stack Check'), ' and your agents in the ', h('a', { href: '/ai-register/' }, 'AI register'), '.')
+      el.replaceChildren('Nothing is saved yet. Pick a few tool types or add an agent below, or save your tools in the ', h('a', { href: 'https://checkableai.com/stack-check/' }, 'AI Stack Check'), ' and your agents in the ', h('a', { href: '/ai-register/' }, 'AI register'), '.')
       return
     }
     const parts = []
@@ -189,7 +189,7 @@
     try { if (window.MWProfileBar && $('mw-profile-bar')) window.MWProfileBar.mount($('mw-profile-bar'), { tool: M.TOOL_ID }) } catch (e) { /* the bar is optional */ }
     restore()
     render()
-    try { KB = M.buildKb(await getJSON('/stack-check/data/index.json')); indexLoaded = true } catch (e) { indexLoaded = false }
+    try { KB = M.buildKb(await getJSON('https://checkableai.com/stack-check/data/index.json')); indexLoaded = true } catch (e) { indexLoaded = false }
     render()
     try { P().onChange(() => { restore(); render() }) } catch (e) { /* no live updates without the library */ }
     setTimeout(profileBarFallback, 300)

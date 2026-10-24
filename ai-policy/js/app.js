@@ -6,7 +6,7 @@
 // memory and are lost on reload.
 ;(function () {
   const D = window.APDraft
-  const INDEX_URL = '/stack-check/data/index.json'
+  const INDEX_URL = 'https://checkableai.com/stack-check/data/index.json'
   const state = { profile: null, index: null, facts: null, picks: null, doc: null, edited: {}, title: null }
   const $ = id => document.getElementById(id)
 
