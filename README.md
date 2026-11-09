@@ -1,8 +1,5 @@
 <p align="center">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="docs/img/hero-dark.svg">
-    <img src="docs/img/hero-light.svg" width="100%" alt="Markus Walker. AI engineer, end to end. Grounded in cybersecurity. Portfolio, November 2026. Three links orbit the centre: Checkable AI, the portfolio at markuswalker.com, and the public repositories below.">
-  </picture>
+  <img src="docs/img/hero.jpg" width="100%" alt="Markus Walker. AI engineer, end to end. Grounded in cybersecurity. Portfolio, November 2026. An engraved brass orrery with a rust core on aged parchment, in the style of a scholar's field notebook.">
 </p>
 
 <p align="center">
