@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/img/hero.jpg" width="100%" alt="Markus Walker. AI engineer, end to end. Grounded in cybersecurity. Portfolio, November 2026. An engraved brass orrery with a rust core on aged parchment, in the style of a scholar's field notebook.">
+  <img src="docs/img/hero-clean.jpg" width="100%" alt="Markus Walker. AI engineer, end to end. Grounded in cybersecurity. Portfolio, November 2026. Three stacked layers for agents, knowledge and controls, linked by one line.">
 </p>
 
 <p align="center">
