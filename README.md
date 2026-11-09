@@ -9,6 +9,7 @@
 
 <p align="center">
   <a href="https://www.markuswalker.com/"><img src="https://img.shields.io/badge/R%C3%A9sum%C3%A9%20and%20CV-markuswalker.com-263d35?style=for-the-badge" alt="Résumé, CV and portfolio: markuswalker.com"></a>
+  <a href="https://www.markuswalker.com/projects/"><img src="https://img.shields.io/badge/Read-my%20write--ups-263d35?style=for-the-badge" alt="Read my write-ups and white papers"></a>
   <a href="https://www.linkedin.com/in/markus-walker-au/"><img src="https://img.shields.io/badge/Connect-LinkedIn-263d35?style=for-the-badge" alt="Connect on LinkedIn"></a>
 </p>
 
@@ -22,7 +23,7 @@
 I'm an AI engineer in Brisbane. I take agentic AI from the first scoping conversation through architecture, build, security controls and handover, with thirteen years of cybersecurity, IT infrastructure and operational technology behind it. The quickest way to judge my work is to use it, so start with what I have built.
 
 > [!TIP]
-> **Start with Checkable AI.** Its tools, knowledge base and demos are live and open to try. My résumé, CV and written projects are on my portfolio site.
+> **Start with Checkable AI.** Its tools, knowledge base and demos are live and open to try. My résumé, CV, white papers and write-ups are on my portfolio site.
 
 ## Start here
 
@@ -30,11 +31,24 @@ I'm an AI engineer in Brisbane. I take agentic AI from the first scoping convers
 |---|---|
 | **[Checkable AI](https://www.checkableai.com/)**<br>Free AI checks, a knowledge base of what AI vendors document and a working CI demo. Real, running and open to try.<br><br>**[Source on GitHub](https://github.com/checkable-ai)** | **[markuswalker.com](https://www.markuswalker.com/)**<br>Résumé and CV, project write-ups, experience and how I work.<br><br>**[Résumé (PDF)](https://www.markuswalker.com/Markus_Walker_Resume.pdf)** |
 
-## Checkable AI on GitHub
+## Selected writing
 
-- **[knowledge-base-preview](https://github.com/checkable-ai/knowledge-base-preview)**: what 116 AI platforms document, checked against the same 46 security controls, with one plain page per answer.
-- **[ci-demo](https://github.com/checkable-ai/ci-demo)**: catches AI vendor changes before your code ships, with nightly vendor change pull requests, a named sign-off gate, a deploy gate and a Kubernetes check.
+| Title | What it is |
+|---|---|
+| [Securing Claude Cowork: controls, gaps and safer defaults](https://www.markuswalker.com/projects/claude-cowork-controls-cheat-sheet/) | What the Claude Cowork admin console, device policy and third-party deployments control, where they fall short, and which defaults to change first. Version 1.4, September 2026. |
+| [Human, script or AI? Spotting AI-driven attacks in the SOC](https://www.markuswalker.com/projects/distinguishing-ai-driven-attacks/) | A SOC advisory white paper on telling AI-driven attacks apart from human and automated activity, with guidance for detection, triage and response. Version 5, September 2026. |
+| [Turning a knowledge base into a graph you can check](https://www.markuswalker.com/projects/checked-knowledge-graph/) | How Markdown knowledge bases become RDF graphs with a provenance receipt on every link and a rulebook on every build, checked across 3.1 million triples on one host. October 2026. |
+| [The Offerings Atlas](https://www.markuswalker.com/projects/offerings-atlas/) | A knowledge base of AI agent security controls across AI platforms and tools, which agents research, verify and keep current, with checkable provenance. October 2026. |
+
+**[All write-ups and white papers](https://www.markuswalker.com/projects/)**, plus [security write-ups and lab walkthroughs](https://markus-doc.github.io/cybersecurity-writeups/) from earlier in the year.
+
+## Checkable AI: publications and open samples
+
+- **[Reports](https://www.checkableai.com/reports/)**: dated reports from the register of AI platforms, each with its count, method and sources. The first, [only 7 of 230 AI services document security telemetry a security team can use](https://www.checkableai.com/reports/soc-telemetry-2026/).
+- **[Guides](https://www.checkableai.com/guides/)**: plain-words articles on AI security and Australian rules, such as [the Privacy Act and AI tools](https://www.checkableai.com/guides/privacy-act-and-ai-tools/) and [AI and the Essential Eight](https://www.checkableai.com/guides/ai-and-the-essential-eight/).
+- **The knowledge base**: every AI platform tracked, with its findings and sources. Browse the [knowledge base](https://www.checkableai.com/stack-check/atlas/), [explore the graph](https://www.checkableai.com/stack-check/graph/), see the [unsolved controls](https://www.checkableai.com/stack-check/open-problems/) or open the [frameworks map](https://www.checkableai.com/readiness-check/landscape.html).
 - **Live checks**: the [AI Stack Check](https://www.checkableai.com/stack-check/) and the [AU Frameworks Check](https://www.checkableai.com/readiness-check/) run on the same knowledge base.
+- **Open samples on GitHub**: [knowledge-base-preview](https://github.com/checkable-ai/knowledge-base-preview) holds what 116 AI platforms document, checked against the same 46 security controls, one plain page per answer. [ci-demo](https://github.com/checkable-ai/ci-demo) catches AI vendor changes before your code ships, with nightly pull requests, a named sign-off gate, a deploy gate and a Kubernetes check.
 
 ## My public repositories
 
