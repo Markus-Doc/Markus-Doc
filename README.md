@@ -8,6 +8,9 @@
 <p align="center">
   <a href="https://www.checkableai.com/"><img src="https://img.shields.io/badge/See%20it%20built-checkableai.com-8a3a1e?style=for-the-badge" alt="See it built: checkableai.com"></a>
   <a href="https://github.com/checkable-ai"><img src="https://img.shields.io/badge/Checkable%20AI-on%20GitHub-8a3a1e?style=for-the-badge" alt="Checkable AI on GitHub"></a>
+</p>
+
+<p align="center">
   <a href="https://www.markuswalker.com/"><img src="https://img.shields.io/badge/R%C3%A9sum%C3%A9%20and%20CV-markuswalker.com-263d35?style=for-the-badge" alt="Résumé, CV and portfolio: markuswalker.com"></a>
   <a href="https://www.linkedin.com/in/markus-walker-au/"><img src="https://img.shields.io/badge/Connect-LinkedIn-263d35?style=for-the-badge" alt="Connect on LinkedIn"></a>
 </p>
