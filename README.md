@@ -36,7 +36,7 @@ I'm an AI engineer in Brisbane. I take agentic AI from the first scoping convers
 Checkable AI runs on a knowledge base that agents research, verify and keep current, and that knowledge base runs on an ontology I designed: a shared vocabulary of AI platforms, security controls, findings, sources and frameworks, so every answer traces back to the page and line it came from. The graphs are built on open W3C standards (RDF 1.1, SPARQL 1.1, SHACL, PROV-O and SKOS), so any standard tool can load, query and re-check them.
 
 - **[Graph explorer](https://www.checkableai.com/stack-check/graph/)**: the knowledge graph behind the AI Stack Check, live. Turn the dial to a platform to see the controls it documents, then pick a control to open the finding, its receipt and the path it takes through the graph.
-- **[Knowledge base](https://www.checkableai.com/stack-check/atlas/)**: every tracked AI platform with its findings and sources, one plain page per answer.
+- **[Knowledge base](https://www.checkableai.com/stack-check/knowledge-base/)**: every tracked AI platform with its findings and sources, one plain page per answer.
 - **[How the graph is checked](https://www.markuswalker.com/projects/checked-knowledge-graph/)**: Markdown knowledge bases become RDF graphs with a provenance receipt on every link and a SHACL rulebook on every build, checked across 3.1 million triples on one host. October 2026.
 - **[The Offerings Atlas](https://www.markuswalker.com/projects/offerings-atlas/)**: the knowledge base behind it, with checkable provenance on every finding.
 
